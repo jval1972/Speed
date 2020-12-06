@@ -1,8 +1,10 @@
-//------------------------------------------------------------------------------
 //
-//  DelphiDoom: A modified and improved DOOM engine for Windows
-//  based on original Linux Doom as published by "id Software"
-//  Copyright (C) 2004-2016 by Jim Valavanis
+//  Speed
+//  Engine remake of the game "Speed Haste" based on the DelphiDoom engine
+//
+//  Copyright (C) 1995 by Noriaworks
+//  Copyright (C) 1993-1996 by id Software, Inc.
+//  Copyright (C) 2004-2021 by Jim Valavanis
 //
 //  This program is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU General Public License
@@ -20,11 +22,10 @@
 //  02111-1307, USA.
 //
 //------------------------------------------------------------------------------
-//  E-Mail: jimmyvalavanis@yahoo.gr
-//  Site  : http://sourceforge.net/projects/delphidoom/
+//  Site  : https://sourceforge.net/projects/speed-game/
 //------------------------------------------------------------------------------
 
-{$I Doom32.inc}
+{$I speed.inc}
 
 unit jpg_dDctMgr;
 

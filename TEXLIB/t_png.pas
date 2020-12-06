@@ -1,9 +1,10 @@
-//------------------------------------------------------------------------------
 //
-//  DelphiDoom: A modified and improved DOOM engine for Windows
-//  based on original Linux Doom as published by "id Software"
+//  Speed
+//  Engine remake of the game "Speed Haste" based on the DelphiDoom engine
+//
+//  Copyright (C) 1995 by Noriaworks
 //  Copyright (C) 1993-1996 by id Software, Inc.
-//  Copyright (C) 2004-2020 by Jim Valavanis
+//  Copyright (C) 2004-2021 by Jim Valavanis
 //
 //  This program is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU General Public License
@@ -24,10 +25,10 @@
 //  PNG image format.
 //
 //------------------------------------------------------------------------------
-//  Site  : http://sourceforge.net/projects/delphidoom/
+//  Site  : https://sourceforge.net/projects/speed-game/
 //------------------------------------------------------------------------------
 
-{$I Doom32.inc}
+{$I speed.inc}
 
 {Portable Network Graphics Delphi 1.564      (31 July 2006)   }
 
@@ -35,7 +36,7 @@
 {It has native support for most of png features including the }
 {partial transparency, gamma and more.                        }
 {for the latest version, please be sure to check my website   }
-{http://pngdelphi.sourceforge.net                             }
+//  Site  : https://sourceforge.net/projects/speed-game/
 {Gustavo Huffenbacher Daud (gustavo.daud@terra.com.br)        }
 
 
@@ -217,7 +218,7 @@
             I'm receiving so far.}
 
 {My email is    : gustavo.daud@terra.com.br}
-{Website link   : http://pngdelphi.sourceforge.net}
+//  Site  : https://sourceforge.net/projects/speed-game/
 {Gustavo Huffenbacher Daud}
 
 unit t_png;
