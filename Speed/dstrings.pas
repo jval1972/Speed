@@ -39,7 +39,7 @@ interface
 
 // Misc. other strings.
 var
-  SAVEGAMENAME: string = 'doomsav';
+  SAVEGAMENAME: string = 'gamesav';
 
 const
 //

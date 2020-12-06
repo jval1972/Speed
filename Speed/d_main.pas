@@ -1095,7 +1095,7 @@ begin
   // French stuff.
   sprintf(doom2fwad, '%s\doom2f.wad', [doomwaddir]);
 
-  basedefault := {$IFDEF FPC}'Doom32f.ini'{$ELSE}'Doom32.ini'{$ENDIF};
+  basedefault := 'Speed.ini';
 
   p := M_CheckParm('-mainwad');
   if p = 0 then
@@ -1122,7 +1122,7 @@ begin
     D_AddFile(DEVDATA + 'doom1.wad');
     D_AddFile(DEVMAPS + 'data_se/texture1.lmp');
     D_AddFile(DEVMAPS + 'data_se/pnames.lmp');
-    basedefault := DEVDATA + {$IFDEF FPC}'Doom32f.ini'{$ELSE}'Doom32.ini'{$ENDIF};
+    basedefault := DEVDATA + 'speed.ini';
     exit;
   end;
 

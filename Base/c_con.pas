@@ -71,7 +71,7 @@ var
 
 const
 {$IFDEF DOOM}
-  DEFAUTOEXEC = 'Doom32.con';
+  DEFAUTOEXEC = 'Speed.con';
 {$ENDIF}
 {$IFDEF HERETIC}
   DEFAUTOEXEC = 'Heretic32.con';

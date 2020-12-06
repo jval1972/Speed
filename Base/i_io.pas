@@ -124,7 +124,7 @@ end;
 
 const
 {$IFDEF DOOM}
-  basename = 'Doom';
+  basename = 'Speed';
 {$ENDIF}
 {$IFDEF HERETIC}
   basename = 'Heretic';
