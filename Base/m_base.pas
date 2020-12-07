@@ -33,7 +33,7 @@ interface
 
 const
 {$IFDEF DOOM}
-  _GAME = 'Doom';
+  _GAME = 'Speed';
 {$ENDIF}
 {$IFDEF HERETIC}
   _GAME = 'Heretic';
