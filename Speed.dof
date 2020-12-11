@@ -100,7 +100,7 @@ Conditionals=DOOM;OPTIMIZE_FOR_SPEED;
 DebugSourceDirs=
 UsePackages=0
 [Parameters]
-RunParams=-nofullscreen -geom 1920x1080 -file HBFM29.wad
+RunParams=-geom 1280x800 -nofullscreen -file F:\DelphiDoom_Release\SPEEDHASTE\data\speedh.wad -geom 720x480  ACTORDEF.zip
 HostApplication=
 Launcher=
 UseLauncher=0
