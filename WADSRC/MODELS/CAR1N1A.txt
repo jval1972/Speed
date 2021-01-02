@@ -1,0 +1,4 @@
+face 169 vertex 0 visible 1 x 3755 y 2206 z 1553 tx -10066330 ty 3355443 color 96
+face 169 vertex 1 visible 1 x 4297 y 967 z 1581 tx 0 ty 13421773 color 96
+face 169 vertex 2 visible 1 x 4297 y 970 z 3924 tx -16777216 ty 13421773 color 96
+face 169 vertex 3 visible 1 x 3755 y 2206 z 2833 tx -16777216 ty 3355443 color 96
