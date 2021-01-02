@@ -1,0 +1,6 @@
+face 6 vertex 0 visible 0 x -790 y 2095 z -887 tx 0 ty 0 color 96
+face 6 vertex 1 visible 0 x -1460 y 2095 z 271 tx 0 ty 0 color 96
+face 6 vertex 2 visible 0 x -790 y 2095 z 1431 tx 0 ty 0 color 96
+face 6 vertex 3 visible 0 x 547 y 2095 z 1431 tx 0 ty 0 color 96
+face 6 vertex 4 visible 0 x 1217 y 2095 z 271 tx 4476966 ty 4476966 color 96
+face 6 vertex 5 visible 0 x 547 y 2095 z -887 tx 0 ty 0 color 96
