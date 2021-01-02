@@ -1,0 +1,8 @@
+face 0 vertex 0 visible 1 x 1366 y 2244 z 523 tx 0 ty 0 color 96
+face 0 vertex 1 visible 1 x 1366 y 2244 z 2005 tx -1677722 ty 0 color 96
+face 0 vertex 2 visible 1 x -2732 y 2244 z 2005 tx -1677722 ty 1677722 color 96
+face 0 vertex 3 visible 1 x -2732 y 2244 z 523 tx 0 ty 1677722 color 96
+face 5 vertex 0 visible 0 x -2732 y -684 z 2005 tx 0 ty 0 color 96
+face 5 vertex 1 visible 0 x 1366 y -684 z 2005 tx 0 ty 0 color 96
+face 5 vertex 2 visible 0 x 1366 y -684 z 523 tx 0 ty 0 color 96
+face 5 vertex 3 visible 0 x -2732 y -684 z 523 tx 0 ty 0 color 96
