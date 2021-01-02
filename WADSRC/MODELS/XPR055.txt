@@ -1,0 +1,4 @@
+face 0 vertex 0 visible 1 x -218 y 3681 z 750 tx 0 ty 0 color 96
+face 0 vertex 1 visible 1 x -218 y 3681 z 1445 tx 0 ty 0 color 96
+face 0 vertex 2 visible 1 x -970 y 3681 z 1445 tx 0 ty 0 color 96
+face 0 vertex 3 visible 1 x -970 y 3681 z 750 tx 0 ty 0 color 96
