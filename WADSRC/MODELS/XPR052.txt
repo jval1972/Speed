@@ -1,0 +1,8 @@
+face 14 vertex 0 visible 1 x 2765 y 549 z -3358 tx 0 ty -294910 color 96
+face 14 vertex 1 visible 1 x -2854 y 549 z -3358 tx -67108864 ty -294910 color 96
+face 14 vertex 2 visible 1 x -2854 y -6 z -3358 tx -67108864 ty 17215488 color 96
+face 14 vertex 3 visible 1 x 2765 y -6 z -3358 tx 0 ty 17215488 color 96
+face 11 vertex 0 visible 0 x 2765 y -6 z -3358 tx 0 ty 0 color 96
+face 11 vertex 1 visible 0 x -2854 y -6 z -3358 tx 0 ty 0 color 96
+face 11 vertex 2 visible 0 x -2854 y -6 z 3026 tx 0 ty 0 color 96
+face 11 vertex 3 visible 0 x 2765 y -6 z 3026 tx 0 ty 0 color 96
