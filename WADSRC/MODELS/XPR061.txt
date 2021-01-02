@@ -1,0 +1,8 @@
+face 0 vertex 0 visible 1 x 2026 y 2160 z 64 tx 0 ty -65532 color 96
+face 0 vertex 1 visible 1 x 2026 y 5371 z 64 tx 0 ty -15584054 color 96
+face 0 vertex 2 visible 1 x -2033 y 5371 z 64 tx -16708614 ty -15584054 color 96
+face 0 vertex 3 visible 1 x -2033 y 2160 z 64 tx -16708614 ty -65532 color 96
+face 1 vertex 0 visible 1 x -2033 y 5371 z -64 tx -294910 ty 524288 color 96
+face 1 vertex 1 visible 1 x 2026 y 5371 z -64 tx -16723965 ty 524288 color 96
+face 1 vertex 2 visible 1 x 2026 y 2160 z -64 tx -16723965 ty 16714956 color 96
+face 1 vertex 3 visible 1 x -2033 y 2160 z -64 tx -294910 ty 16714956 color 96
