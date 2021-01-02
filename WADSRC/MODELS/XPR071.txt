@@ -1,0 +1,12 @@
+face 25 vertex 0 visible 1 x 801 y 505 z 764 tx 0 ty 0 color 96
+face 25 vertex 1 visible 1 x 800 y 505 z -333 tx -50331648 ty 0 color 96
+face 25 vertex 2 visible 1 x -865 y 505 z -330 tx -50331648 ty 50331648 color 96
+face 25 vertex 3 visible 1 x -865 y 505 z 766 tx 0 ty 50331648 color 96
+face 24 vertex 0 visible 1 x 909 y 4 z 835 tx 0 ty 0 color 96
+face 24 vertex 1 visible 1 x 801 y 505 z 764 tx -50331648 ty 0 color 96
+face 24 vertex 2 visible 1 x -865 y 505 z 766 tx -50331648 ty 50331648 color 96
+face 24 vertex 3 visible 1 x -973 y 4 z 838 tx 0 ty 50331648 color 96
+face 23 vertex 0 visible 1 x -974 y 4 z -401 tx 0 ty 0 color 96
+face 23 vertex 1 visible 1 x -865 y 505 z -330 tx -50331648 ty 0 color 96
+face 23 vertex 2 visible 1 x 800 y 505 z -333 tx -50331648 ty 50331648 color 96
+face 23 vertex 3 visible 1 x 908 y 4 z -404 tx 0 ty 50331648 color 96
