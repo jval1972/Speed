@@ -1,0 +1,8 @@
+face 2 vertex 0 visible 0 x 1098 y -821 z -6 tx 0 ty 0 color 96
+face 2 vertex 1 visible 0 x 1098 y -821 z 2464 tx 0 ty 0 color 96
+face 2 vertex 2 visible 0 x 1575 y -821 z 2464 tx 0 ty 0 color 96
+face 2 vertex 3 visible 0 x 1575 y -821 z -6 tx 0 ty 0 color 96
+face 8 vertex 0 visible 0 x -1616 y -821 z -6 tx 0 ty 0 color 96
+face 8 vertex 1 visible 0 x -1616 y -821 z 2464 tx 0 ty 0 color 96
+face 8 vertex 2 visible 0 x -1139 y -821 z 2464 tx 0 ty 0 color 96
+face 8 vertex 3 visible 0 x -1139 y -821 z -6 tx 0 ty 0 color 96
