@@ -46,6 +46,7 @@ uses
   c_con,
   mt_utils,
   i_video,
+  psi_overlay,
   r_main,
   r_depthbuffer,
   r_cache_main,
@@ -114,6 +115,7 @@ begin
   R_InitFuzzTable;         // Re-calculate fuzz tabble offsets
   {$ENDIF}
   R_InitNegoArray;         // Re-calculate the nego-array
+  overlay.ReCalcOverlayLookUp;
   result := true;
 end;
 
