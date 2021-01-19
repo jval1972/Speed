@@ -729,6 +729,7 @@ begin
       WM_DESTROY:
         begin
           result := 0;
+          ShowWindow(hWnd, SW_HIDE);
           I_Destroy(0);
           exit;
         end;
