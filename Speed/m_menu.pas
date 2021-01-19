@@ -2821,6 +2821,12 @@ var
   i: integer;
   palette: PByteArray;
 begin
+  if gamestate = GS_ENDOOM then
+  begin
+    result := false;
+    exit;
+  end;
+
   if (ev.data1 = KEY_RALT) or (ev.data1 = KEY_LALT) then
   begin
     m_altdown := ev._type = ev_keydown;
@@ -3355,7 +3361,7 @@ var
 procedure M_MenuShader;
 begin
   shademenubackground := shademenubackground mod 3;
-  if (not wipedisplay) and (shademenubackground >= 1) then
+  if not wipedisplay and (shademenubackground >= 1) then
   begin
     if usemultithread then
     begin
