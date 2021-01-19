@@ -337,7 +337,15 @@ uses
   p_musinfo in 'Base\p_musinfo.pas',
   p_levelinfo in 'Base\p_levelinfo.pas',
   deh_base in 'Base\deh_base.pas',
-  p_animdefs in 'Base\p_animdefs.pas';
+  p_animdefs in 'Base\p_animdefs.pas',
+  libflac in 'AUDIOLIB\libflac.pas',
+  libogg in 'AUDIOLIB\libogg.pas',
+  libsndfile in 'AUDIOLIB\libsndfile.pas',
+  libvorbis in 'AUDIOLIB\libvorbis.pas',
+  c_lib in 'C_LIB\c_lib.pas',
+  scanf in 'C_LIB\scanf.pas',
+  scanf_c in 'C_LIB\scanf_c.pas',
+  audiolib in 'AUDIOLIB\audiolib.pas';
 
 var
   Saved8087CW: Word;
