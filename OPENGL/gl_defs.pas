@@ -171,7 +171,7 @@ var
 const
   MAP_COEFF = 128.0; // If this is changed, must be changed and to r_softgl
   MAP_SCALE = MAP_COEFF * FRACUNIT;
-  FLATUVSCALE = FRACUNIT * 64.0;
+  FLATUVSCALE = FRACUNIT * 8192; //64.0;
 
 const  
   COORDMIN = -1.0E38;
