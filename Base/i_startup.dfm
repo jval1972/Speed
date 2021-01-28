@@ -1,5 +1,5 @@
 object StartUpConsoleForm: TStartUpConsoleForm
-  Left = 52
+  Left = 74
   Top = 0
   Cursor = crHourGlass
   BorderIcons = []

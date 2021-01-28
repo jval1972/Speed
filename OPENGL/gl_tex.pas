@@ -168,9 +168,7 @@ end;
 
 function gld_GetTexDimension(value: integer): integer;
 begin
-  result := 1;
-  while result < value do
-    result := result * 2;
+  result := value;
   if result > gld_max_texturesize then
     result := gld_max_texturesize;
 end;
