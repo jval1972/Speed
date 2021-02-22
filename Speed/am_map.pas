@@ -1452,7 +1452,9 @@ begin
         else if am_cheating <> 0 then
         begin
           AM_drawMline(@l, TSWALLCOLORS + lightlev);
-        end;
+        end
+        else
+          AM_drawMline(@l, WALLCOLORS + lightlev);
       end;
     end
     else if plr.powers[Ord(pw_allmap)] <> 0 then
