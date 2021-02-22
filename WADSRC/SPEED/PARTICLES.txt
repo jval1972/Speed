@@ -66,3 +66,29 @@ ACTOR MT_DIRT2B : MT_DIRT2A
 {
   +FLIPSPRITE
 }
+
+
+///////////////////////////////
+// MT_DIRT3A
+///////////////////////////////
+ACTOR MT_DIRT3A
+{
+  Radius 24
+  Height 24
+  Health 1000
+  Mass 1000
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      GND2 A 5
+      GND2 B 5
+      GND2 C 5
+      GND2 D 5
+      GND2 E 5
+      GND2 F 5
+      Stop
+    }
+  }
+}
