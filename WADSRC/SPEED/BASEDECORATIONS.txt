@@ -225,3 +225,23 @@ ACTOR MT_DECORATION42 42
 }
 
 
+///////////////////////////////
+// MT_DECORATION43 (CABIN1)
+///////////////////////////////
+ACTOR MT_DECORATION43 43
+{
+  Radius 64
+  Height 64
+  Health 1000
+  Mass 1000
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      S02B A -1
+      Stop
+    }
+  }
+}
+
