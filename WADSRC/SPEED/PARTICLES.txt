@@ -92,3 +92,12 @@ ACTOR MT_DIRT3A
     }
   }
 }
+
+
+///////////////////////////////
+// MT_DIRT3B
+///////////////////////////////
+ACTOR MT_DIRT3B : MT_DIRT3A
+{
+  +FLIPSPRITE
+}
