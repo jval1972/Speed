@@ -348,7 +348,8 @@ uses
   audiolib in 'AUDIOLIB\audiolib.pas',
   i3d_model in 'OPENGL\i3d_model.pas',
   i3d_palette in 'OPENGL\i3d_palette.pas',
-  i3d_structs in 'OPENGL\i3d_structs.pas';
+  i3d_structs in 'OPENGL\i3d_structs.pas',
+  mdl_i3d in 'OPENGL\mdl_i3d.pas';
 
 var
   Saved8087CW: Word;

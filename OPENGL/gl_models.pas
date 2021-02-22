@@ -51,6 +51,7 @@ var
 type
   modeltype_t = (
     mt_md2,     // md2 (Quake2) models
+    mt_i3d,     // Speed Haste
     mt_ddmodel, // DelphiDoom Procedural model (source code)
     mt_dmx,     // DelphiDoom Procedural model (binary)
     mt_dll,     // External DLL  
@@ -153,6 +154,7 @@ uses
   i_system,
   info,
   mdl_md2,
+  mdl_i3d,
   mdl_ddmodel,
   mdl_dllmodel,
   gl_tex,
@@ -610,6 +612,11 @@ begin
   begin
     fmodel := TMD2Model.Create(name, xoffset, yoffset, zoffset, xscale, yscale, zscale, additionalframes);
     fmodeltype := mt_md2;
+  end
+  else if ext = 'I3D' then
+  begin
+    fmodel := TI3DModel.Create(name, xoffset, yoffset, zoffset, xscale, yscale, zscale, additionalframes);
+    fmodeltype := mt_i3d;
   end
   else if (ext = '.DDMODEL') or (ext = '.TXT') then
   begin
