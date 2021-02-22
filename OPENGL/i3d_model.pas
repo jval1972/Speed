@@ -54,7 +54,7 @@ type
   PI3dModelCorrectionArray = ^TI3dModelCorrectionArray;
 
 type
-  TI3DModel = class(TObject)
+  TI3DModelLoader = class(TObject)
   private
     obj: O3DM_TObject_p;
     objfaces: PO3DM_TFaceArray;
@@ -102,11 +102,12 @@ implementation
 
 uses
   dglOpenGL,
+  gl_tex,
   Graphics,
   i3d_palette,
   sc_engine;
 
-constructor TI3DModel.Create;
+constructor TI3DModelLoader.Create;
 begin
   Inherited Create;
   obj := nil;
@@ -118,14 +119,14 @@ begin
   numcorrections := 0;
 end;
 
-destructor TI3DModel.Destroy;
+destructor TI3DModelLoader.Destroy;
 begin
   Clear;
   fbitmaps.Free;
   Inherited Destroy;
 end;
 
-function TI3DModel.GetNumFaces: integer;
+function TI3DModelLoader.GetNumFaces: integer;
 begin
   if obj = nil then
     Result := 0
@@ -133,7 +134,7 @@ begin
     Result := obj.nFaces;
 end;
 
-function TI3DModel.GetFace(Index: Integer): O3DM_TFace_p;
+function TI3DModelLoader.GetFace(Index: Integer): O3DM_TFace_p;
 begin
   if obj = nil then
     Result := nil
@@ -143,7 +144,7 @@ begin
     Result := nil;
 end;
 
-function TI3DModel.LoadFromStream(const strm: TDStream): boolean;
+function TI3DModelLoader.LoadFromStream(const strm: TDStream): boolean;
 var
   magic: LongWord;
   base: LongWord;
@@ -254,7 +255,7 @@ begin
   Result := True;
 end;
 
-function TI3DModel.CreateTexture(const m: O3DM_TMaterial_p): integer;
+function TI3DModelLoader.CreateTexture(const m: O3DM_TMaterial_p): integer;
 type
   TLongWordArrayBuffer = array[0..$3FFF] of LongWord;
   PLongWordArrayBuffer = ^TLongWordArrayBuffer;
@@ -311,7 +312,7 @@ begin
   inc(numtextures);
 end;
 
-function TI3DModel.LoadFromFile(const fname: string): boolean;
+function TI3DModelLoader.LoadFromFile(const fname: string): boolean;
 var
   fs: TFile;
 begin
@@ -323,7 +324,7 @@ begin
   end;
 end;
 
-procedure TI3DModel.Clear;
+procedure TI3DModelLoader.Clear;
 var
   i, l: integer;
 begin
@@ -362,7 +363,7 @@ begin
   end;
 end;
 
-procedure TI3DModel.ApplyCorrection(const cor: PI3dModelCorrection);
+procedure TI3DModelLoader.ApplyCorrection(const cor: PI3dModelCorrection);
 var
   face: O3DM_TFace_p;
 begin
@@ -386,7 +387,7 @@ begin
     face.h.material.color := cor.color;
 end;
 
-function TI3DModel.AddCorrection(const face: integer; const vertex: integer; const visible: boolean;
+function TI3DModelLoader.AddCorrection(const face: integer; const vertex: integer; const visible: boolean;
   const x, y, z: integer; const du, dv: single; const c: LongWord): boolean;
 var
   i, idx: integer;
@@ -437,7 +438,7 @@ begin
   Result := True;
 end;
 
-procedure TI3DModel.SaveCorrectionsToStream(const strm: TDStream);
+procedure TI3DModelLoader.SaveCorrectionsToStream(const strm: TDStream);
 var
   i: integer;
   s: TDStringList;
@@ -470,7 +471,7 @@ begin
   end;
 end;
 
-procedure TI3DModel.SaveCorrectionsToFile(const fname: string);
+procedure TI3DModelLoader.SaveCorrectionsToFile(const fname: string);
 var
   fs: TFile;
 begin
@@ -482,7 +483,7 @@ begin
   end;
 end;
 
-procedure TI3DModel.LoadCorrectionsFromStream(const strm: TDStream);
+procedure TI3DModelLoader.LoadCorrectionsFromStream(const strm: TDStream);
 var
   sc: TScriptEngine;
   s: TDStringList;
@@ -549,7 +550,7 @@ begin
   end;
 end;
 
-procedure TI3DModel.LoadCorrectionsFromFile(const fname: string);
+procedure TI3DModelLoader.LoadCorrectionsFromFile(const fname: string);
 var
   fs: TFile;
 begin
@@ -564,19 +565,19 @@ end;
 const
   UVGLCONST = 262144 * 64;
 
-procedure TI3DModel.UVtoGL(const tx, tv: integer; var du, dv: single);
+procedure TI3DModelLoader.UVtoGL(const tx, tv: integer; var du, dv: single);
 begin
   du := -tx / UVGLCONST;
   dv := tv / UVGLCONST;
 end;
 
-procedure TI3DModel.GLtoUV(const du, dv: single; var tx, tv: integer);
+procedure TI3DModelLoader.GLtoUV(const du, dv: single; var tx, tv: integer);
 begin
   tx := -Round(du * UVGLCONST);
   tv := Round(dv * UVGLCONST);
 end;
 
-function TI3DModel.RenderGL(const scale: single): integer;
+function TI3DModelLoader.RenderGL(const scale: single): integer;
 var
   i, j: integer;
   lasttex, newtex: LongWord;
@@ -660,9 +661,11 @@ begin
 
     Result := Result + objfaces[i].h.nVerts - 2;
   end;
+  glEnable(GL_TEXTURE_2D);
+  gld_ResetLastTexture
 end;
 
-procedure TI3DModel.RenderSelectionCubeGL(const scale: single);
+procedure TI3DModelLoader.RenderSelectionCubeGL(const scale: single);
 const
   BOUNDSIZE = 384;
 var
