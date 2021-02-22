@@ -291,7 +291,7 @@ ACTOR MT_DECORATION45 45
 ///////////////////////////////
 // MT_DECORATION46 (BUSH2)
 ///////////////////////////////
-ACTOR MT_DECORATION45 46
+ACTOR MT_DECORATION46 46
 {
   Radius 24
   Height 24
@@ -303,6 +303,27 @@ ACTOR MT_DECORATION45 46
     Spawn:
     {
       S02D A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// MT_DECORATION47 (ROCK1)
+///////////////////////////////
+ACTOR MT_DECORATION47 47
+{
+  Radius 24
+  Height 24
+  Health 1000
+  Mass 1000
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      S02F A -1
       Stop
     }
   }
