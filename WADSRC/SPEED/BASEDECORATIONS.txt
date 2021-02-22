@@ -315,7 +315,7 @@ ACTOR MT_DECORATION46 46
   {
     Spawn:
     {
-      S02D A -1
+      S02E A -1
       Stop
     }
   }
