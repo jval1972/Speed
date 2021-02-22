@@ -2103,7 +2103,7 @@ end;
 //
 procedure M_DrawMainMenu;
 begin
-  V_DrawPatch(94, 2, SCN_TMP, 'M_DOOM', false);
+  V_DrawPatch(160, 40, SCN_TMP, 'DEMOLOGO', false);
 end;
 
 //
