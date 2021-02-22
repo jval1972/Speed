@@ -129,3 +129,12 @@ ACTOR MT_SMOKE1A
     }
   }
 }
+
+
+///////////////////////////////
+// MT_SMOKE1B
+///////////////////////////////
+ACTOR MT_SMOKE1B : MT_SMOKE1A
+{
+  +FLIPSPRITE
+}
