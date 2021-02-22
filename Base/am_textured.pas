@@ -526,7 +526,7 @@ begin
       for j := 0 to ssector.numlines - 1 do
       begin
         if not seg.miniseg then
-          if seg.linedef.flags and ML_MAPPED <> 0 then
+//          if seg.linedef.flags and ML_MAPPED <> 0 then
           begin
             drawit := True;
             Break;
@@ -587,7 +587,7 @@ begin
       for j := 0 to ssector.numlines - 1 do
       begin
         if not seg.miniseg then
-          if seg.linedef.flags and ML_MAPPED <> 0 then
+//          if seg.linedef.flags and ML_MAPPED <> 0 then
           begin
             wasdrawned := True;
             Break;
