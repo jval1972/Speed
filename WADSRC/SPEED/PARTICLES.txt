@@ -22,3 +22,12 @@ ACTOR MT_DIRT1A
     }
   }
 }
+
+
+///////////////////////////////
+// MT_DIRT1B
+///////////////////////////////
+ACTOR MT_DIRT1B : MT_DIRT1A
+{
+  +FLIPSPRITE
+}
