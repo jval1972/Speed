@@ -1543,9 +1543,12 @@ begin
     begin
       for j := sprites[i].numframes - 1 downto 0 do
       begin
-        sflump := @sprites[i].spriteframes[j].lump;
-        for k := 7 downto 0 do
-          gld_BindPatch(gld_RegisterPatch(firstspritelump + sflump[k], Ord(CR_DEFAULT)), Ord(CR_DEFAULT));
+        if sprites[i].spriteframes[j].rotate >= 0 then
+        begin
+          sflump := @sprites[i].spriteframes[j].lump;
+          for k := 7 downto 0 do
+            gld_BindPatch(gld_RegisterPatch(firstspritelump + sflump[k], Ord(CR_DEFAULT)), Ord(CR_DEFAULT));
+        end;
       end;
     end;
 
