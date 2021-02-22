@@ -349,6 +349,8 @@ const
   MF3_EX_NOCRASH = 16;
   // Blood do not check damage
   MF3_EX_BLOODIGNOREDAMAGE = 32;
+  // Flip sprite
+  MF3_EX_FLIPSPRITE = 64;
 
 type
 // Map Object definition.

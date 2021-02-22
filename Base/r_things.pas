@@ -1648,7 +1648,7 @@ begin
   end;
   {$ENDIF}
 {$IFDEF OPENGL}
-  vis.flip := flip;
+  vis.flip := flip <> (thing.flags3_ex and MF3_EX_FLIPSPRITE <> 0);
 {$ENDIF}
 
 {$IFNDEF OPENGL}
@@ -1816,7 +1816,7 @@ begin
 
   lump := sprframe.lump[0];
 {$IFNDEF OPENGL}
-  flip := sprframe.flip[0];
+  flip := sprframe.flip[0] <> (thing.flags3_ex and MF3_EX_FLIPSPRITE <> 0);
 {$ENDIF}
 
   // calculate edges of the shape
