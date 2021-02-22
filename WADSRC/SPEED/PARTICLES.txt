@@ -101,3 +101,31 @@ ACTOR MT_DIRT3B : MT_DIRT3A
 {
   +FLIPSPRITE
 }
+
+
+///////////////////////////////
+// MT_SMOKE1A
+///////////////////////////////
+ACTOR MT_SMOKE1A
+{
+  Radius 24
+  Height 24
+  Health 1000
+  Mass 1000
+  RenderStyle Translucent
+  Alpha 0.6
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      SMOK A 5
+      SMOK B 5
+      SMOK C 5
+      SMOK D 5
+      SMOK E 5
+      SMOK F 5
+      Stop
+    }
+  }
+}
