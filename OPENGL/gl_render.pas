@@ -541,7 +541,7 @@ begin
     canuselightmaps := (gld_max_texturesize3d >= LIGHTMAPSIZEX) and
                        (gld_max_texturesize3d >= LIGHTMAPSIZEY) and
                        (gld_max_texturesize3d >= LIGHTMAPSIZEZ);
-                       
+
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
@@ -1460,7 +1460,7 @@ begin
   begin
     // We have arrived at a subsector. The divline list contains all
     // the partition lines that carve out the subsector.
-    ssidx := bspnode and (not NF_SUBSECTOR);
+    ssidx := bspnode and not NF_SUBSECTOR;
     if not sectorclosed[subsectors[ssidx].sector.iSectorID] then
       gld_FlatConvexCarver(ssidx, numdivlines, divlines);
     exit;
@@ -2463,7 +2463,7 @@ var
   end;
 
 begin
-  if (not gl_drawsky) and (wall.flag >= GLDWF_SKY) then
+  if not gl_drawsky and (wall.flag >= GLDWF_SKY) then
     exit;
 
   if wall.gltexture.index = 0 then
@@ -3341,11 +3341,6 @@ var
 begin
   if flat.sectornum < 0 then
     exit;
-
-{  if flat.ceiling then
-    glCullFace(GL_BACK)
-  else
-    glCullFace(GL_FRONT);   }
 
   glsec := @sectorloops[flat.sectornum];
   sec := @sectors[flat.sectornum];
