@@ -1,1 +1,3 @@
 #include "SPEED\BASEDECORATIONS.txt"
+#include "SPEED\PARTICLES.txt"
+#include "SPEED\SPEEDALIAS.txt"
