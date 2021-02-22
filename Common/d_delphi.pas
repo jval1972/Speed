@@ -528,6 +528,7 @@ type
     function  LoadFromStream(const strm: TDStream): boolean; virtual;
     procedure Move(CurIndex, NewIndex: Integer); virtual;
     function SaveToFile(const FileName: string): boolean; virtual;
+    function SaveToStream(const Strm: TDStream): boolean; virtual;
     procedure SetText(Text: PChar); virtual;
     property Capacity: Integer read GetCapacity write SetCapacity;
     property CommaText: string read GetCommaText write SetCommaText;
@@ -2949,6 +2950,16 @@ begin
   end
   else
     result := false;
+end;
+
+function TDStrings.SaveToStream(const Strm: TDStream): boolean;
+var
+  i: integer;
+  S: string;
+begin
+  S := GetTextStr;
+  for i := 1 to Length(S) do
+    Strm.Write(S[i], 1);
 end;
 
 procedure TDStrings.SetCapacity(NewCapacity: Integer);
