@@ -74,7 +74,7 @@ const
 
 var
   tran_filter_pct: integer = 66;
-  use_fog: boolean = true; //false;
+  use_fog: boolean = true;
   fog_density: integer = 100; // 200
   gl_nearclip: integer = 5;
   gl_tex_filter_string: string;
@@ -171,7 +171,7 @@ var
 const
   MAP_COEFF = 128.0; // If this is changed, must be changed and to r_softgl
   MAP_SCALE = MAP_COEFF * FRACUNIT;
-  FLATUVSCALE = FRACUNIT * 8192; //64.0;
+  FLATUVSCALE = FRACUNIT * 8192;
 
 const  
   COORDMIN = -1.0E38;
