@@ -138,3 +138,31 @@ ACTOR MT_SMOKE1B : MT_SMOKE1A
 {
   +FLIPSPRITE
 }
+
+
+///////////////////////////////
+// MT_SPARK1A
+///////////////////////////////
+ACTOR MT_SPARK1A
+{
+  Radius 24
+  Height 24
+  Health 1000
+  Mass 1000
+  RenderStyle Translucent
+  Alpha 0.6
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      SPRK A 5
+      SPRK B 5
+      SPRK C 5
+      SPRK D 5
+      SPRK E 5
+      SPRK F 5
+      Stop
+    }
+  }
+}
