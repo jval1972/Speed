@@ -166,3 +166,12 @@ ACTOR MT_SPARK1A
     }
   }
 }
+
+
+///////////////////////////////
+// MT_SPARK1B
+///////////////////////////////
+ACTOR MT_SPARK1B : MT_SPARK1A
+{
+  +FLIPSPRITE
+}
