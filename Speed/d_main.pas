@@ -486,11 +486,11 @@ begin
   if paused then
   begin
     if amstate = am_only then
-      y := 4
+      y := 20
     else
-      y := (viewwindowy * 200) div SCREENHEIGHT + 4;
-    V_DrawPatch((320 - 68) div 2, y, SCN_FG,
-      'M_PAUSE', true);
+      y := (viewwindowy * 200) div SCREENHEIGHT + 20;
+    V_DrawPatch(160, y, SCN_FG,
+      'PAUSE', true);
   end;
 
   if drawhu then
