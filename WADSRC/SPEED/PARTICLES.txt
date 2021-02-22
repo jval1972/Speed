@@ -57,3 +57,12 @@ ACTOR MT_DIRT2A
     }
   }
 }
+
+
+///////////////////////////////
+// MT_DIRT2B
+///////////////////////////////
+ACTOR MT_DIRT2B : MT_DIRT2A
+{
+  +FLIPSPRITE
+}
