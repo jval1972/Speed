@@ -1,5 +1,6 @@
 #include "SPEED\BASEDECORATIONS.txt"
 #include "SPEED\CAMERA.txt"
+#include "SPEED\MODELDECORATIONS.txt"
 #include "SPEED\PARTICLES.txt"
 #include "SPEED\PATH.txt"
 #include "SPEED\SPEEDALIAS.txt"

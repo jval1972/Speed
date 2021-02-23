@@ -1,0 +1,570 @@
+///////////////////////////////
+// MT_XPR040
+///////////////////////////////
+ACTOR MT_XPR040 64
+{
+  Radius 100
+  Height 100
+  Health 1000000
+  Mass 1000000
+  Reactiontime 8
+  NOBLOCKMAP
+  States
+  {
+    Spawn:
+    {
+      TNT1 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// MT_XPR041
+///////////////////////////////
+ACTOR MT_XPR041 65
+{
+  Radius 100
+  Height 100
+  Health 1000000
+  Mass 1000000
+  Reactiontime 8
+  NOBLOCKMAP
+  States
+  {
+    Spawn:
+    {
+      TNT1 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// MT_XPR042
+///////////////////////////////
+ACTOR MT_XPR042 66
+{
+  Radius 100
+  Height 100
+  Health 1000000
+  Mass 1000000
+  Reactiontime 8
+  NOBLOCKMAP
+  States
+  {
+    Spawn:
+    {
+      TNT1 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// MT_XPR043
+///////////////////////////////
+ACTOR MT_XPR043 67
+{
+  Radius 100
+  Height 100
+  Health 1000000
+  Mass 1000000
+  Reactiontime 8
+  NOBLOCKMAP
+  States
+  {
+    Spawn:
+    {
+      TNT1 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// MT_XPR044
+///////////////////////////////
+ACTOR MT_XPR044 68
+{
+  Radius 100
+  Height 100
+  Health 1000000
+  Mass 1000000
+  Reactiontime 8
+  NOBLOCKMAP
+  States
+  {
+    Spawn:
+    {
+      TNT1 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// MT_XPR045
+///////////////////////////////
+ACTOR MT_XPR045 69
+{
+  Radius 100
+  Height 100
+  Health 1000000
+  Mass 1000000
+  Reactiontime 8
+  NOBLOCKMAP
+  States
+  {
+    Spawn:
+    {
+      TNT1 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// MT_XPR050
+///////////////////////////////
+ACTOR MT_XPR050 80
+{
+  Radius 100
+  Height 100
+  Health 1000000
+  Mass 1000000
+  Reactiontime 8
+  NOBLOCKMAP
+  States
+  {
+    Spawn:
+    {
+      TNT1 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// MT_XPR051
+///////////////////////////////
+ACTOR MT_XPR051 81
+{
+  Radius 100
+  Height 100
+  Health 1000000
+  Mass 1000000
+  Reactiontime 8
+  NOBLOCKMAP
+  States
+  {
+    Spawn:
+    {
+      TNT1 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// MT_XPR052
+///////////////////////////////
+ACTOR MT_XPR052 82
+{
+  Radius 100
+  Height 100
+  Health 1000000
+  Mass 1000000
+  Reactiontime 8
+  NOBLOCKMAP
+  States
+  {
+    Spawn:
+    {
+      TNT1 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// MT_XPR053
+///////////////////////////////
+ACTOR MT_XPR053 83
+{
+  Radius 100
+  Height 100
+  Health 1000000
+  Mass 1000000
+  Reactiontime 8
+  NOBLOCKMAP
+  States
+  {
+    Spawn:
+    {
+      TNT1 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// MT_XPR054
+///////////////////////////////
+ACTOR MT_XPR054 84
+{
+  Radius 100
+  Height 100
+  Health 1000000
+  Mass 1000000
+  Reactiontime 8
+  NOBLOCKMAP
+  States
+  {
+    Spawn:
+    {
+      TNT1 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// MT_XPR055
+///////////////////////////////
+ACTOR MT_XPR055 85
+{
+  Radius 100
+  Height 100
+  Health 1000000
+  Mass 1000000
+  Reactiontime 8
+  NOBLOCKMAP
+  States
+  {
+    Spawn:
+    {
+      TNT1 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// MT_XPR056
+///////////////////////////////
+ACTOR MT_XPR056 86
+{
+  Radius 100
+  Height 100
+  Health 1000000
+  Mass 1000000
+  Reactiontime 8
+  NOBLOCKMAP
+  States
+  {
+    Spawn:
+    {
+      TNT1 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// MT_XPR057
+///////////////////////////////
+ACTOR MT_XPR057 87
+{
+  Radius 100
+  Height 100
+  Health 1000000
+  Mass 1000000
+  Reactiontime 8
+  NOBLOCKMAP
+  States
+  {
+    Spawn:
+    {
+      TNT1 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// MT_XPR058
+///////////////////////////////
+ACTOR MT_XPR058 88
+{
+  Radius 100
+  Height 100
+  Health 1000000
+  Mass 1000000
+  Reactiontime 8
+  NOBLOCKMAP
+  States
+  {
+    Spawn:
+    {
+      TNT1 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// MT_XPR059
+///////////////////////////////
+ACTOR MT_XPR059 89
+{
+  Radius 100
+  Height 100
+  Health 1000000
+  Mass 1000000
+  Reactiontime 8
+  NOBLOCKMAP
+  States
+  {
+    Spawn:
+    {
+      TNT1 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// MT_XPR05A
+///////////////////////////////
+ACTOR MT_XPR05A 90
+{
+  Radius 100
+  Height 100
+  Health 1000000
+  Mass 1000000
+  Reactiontime 8
+  NOBLOCKMAP
+  States
+  {
+    Spawn:
+    {
+      TNT1 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// MT_XPR05B
+///////////////////////////////
+ACTOR MT_XPR05B 91
+{
+  Radius 100
+  Height 100
+  Health 1000000
+  Mass 1000000
+  Reactiontime 8
+  NOBLOCKMAP
+  States
+  {
+    Spawn:
+    {
+      TNT1 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// MT_XPR05C
+///////////////////////////////
+ACTOR MT_XPR05C 92
+{
+  Radius 100
+  Height 100
+  Health 1000000
+  Mass 1000000
+  Reactiontime 8
+  NOBLOCKMAP
+  States
+  {
+    Spawn:
+    {
+      TNT1 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// MT_XPR060
+///////////////////////////////
+ACTOR MT_XPR060 96
+{
+  Radius 100
+  Height 100
+  Health 1000000
+  Mass 1000000
+  Reactiontime 8
+  NOBLOCKMAP
+  States
+  {
+    Spawn:
+    {
+      TNT1 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// MT_XPR061
+///////////////////////////////
+ACTOR MT_XPR061 97
+{
+  Radius 100
+  Height 100
+  Health 1000000
+  Mass 1000000
+  Reactiontime 8
+  NOBLOCKMAP
+  States
+  {
+    Spawn:
+    {
+      TNT1 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// MT_XPR070
+///////////////////////////////
+ACTOR MT_XPR070 112
+{
+  Radius 100
+  Height 100
+  Health 1000000
+  Mass 1000000
+  Reactiontime 8
+  NOBLOCKMAP
+  States
+  {
+    Spawn:
+    {
+      TNT1 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// MT_XPR071
+///////////////////////////////
+ACTOR MT_XPR071 113
+{
+  Radius 100
+  Height 100
+  Health 1000000
+  Mass 1000000
+  Reactiontime 8
+  NOBLOCKMAP
+  States
+  {
+    Spawn:
+    {
+      TNT1 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// MT_XPR080
+///////////////////////////////
+ACTOR MT_XPR080 128
+{
+  Radius 100
+  Height 100
+  Health 1000000
+  Mass 1000000
+  Reactiontime 8
+  NOBLOCKMAP
+  States
+  {
+    Spawn:
+    {
+      TNT1 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// MT_XPR081
+///////////////////////////////
+ACTOR MT_XPR081 129
+{
+  Radius 100
+  Height 100
+  Health 1000000
+  Mass 1000000
+  Reactiontime 8
+  NOBLOCKMAP
+  States
+  {
+    Spawn:
+    {
+      TNT1 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// MT_XPR090
+///////////////////////////////
+ACTOR MT_XPR090 144
+{
+  Radius 100
+  Height 100
+  Health 1000000
+  Mass 1000000
+  Reactiontime 8
+  NOBLOCKMAP
+  States
+  {
+    Spawn:
+    {
+      TNT1 A -1
+      Stop
+    }
+  }
+}
