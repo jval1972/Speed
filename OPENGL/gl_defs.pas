@@ -35,7 +35,8 @@ uses
   doomdef,
   dglOpenGL,
   m_fixed,
-  r_draw;
+  r_draw,
+  speed_xlat_wad;
 
 type
   GLTexType = (
@@ -171,7 +172,7 @@ var
 const
   MAP_COEFF = 128.0; // If this is changed, must be changed and to r_softgl
   MAP_SCALE = MAP_COEFF * FRACUNIT;
-  IFLATUVSCALE = 16384;
+  IFLATUVSCALE = SPEED_LEVEL_SCALE * 4096;
   FLATUVSCALE = FRACUNIT * IFLATUVSCALE;
 
 const  

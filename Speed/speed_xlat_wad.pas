@@ -38,6 +38,9 @@ procedure Speed2Stream_Game(const fname: string; const handle: TDStream);
 
 procedure Speed2WAD_Game(const fin, fout: string);
 
+const
+  SPEED_LEVEL_SCALE = 2;
+
 implementation
 
 uses
@@ -1770,7 +1773,7 @@ begin
   GeneratePalette;
   GenerateTranslationTables;
   GenerateTextures('PNAMES', 'TEXTURE1');
-  GenerateLevels(4);
+  GenerateLevels(SPEED_LEVEL_SCALE);
   GenerateFlats;
   GenerateMapFlats(false);
   GenerateGraphics;
