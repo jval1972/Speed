@@ -137,7 +137,7 @@ end;
 
 procedure TI3DModel.DrawSimple(const frm: integer);
 begin
-  fmdl.RenderGL(fxscale);
+  fmdl.RenderGL(fxscale, fyscale, fzscale);
 end;
 
 end.
