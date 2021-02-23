@@ -181,18 +181,18 @@ begin
 
   l.x1 := x1;
   l.y1 := y1;
-  l.u1 := u1 / FRACUNIT / 8192;
-  l.v1 := v1 / FRACUNIT / 8192;
+  l.u1 := u1 / FRACUNIT / IFLATUVSCALE;
+  l.v1 := v1 / FRACUNIT / IFLATUVSCALE;
 
   l.x2 := x2;
   l.y2 := y2;
-  l.u2 := u2 / FRACUNIT / 8192;
-  l.v2 := v2 / FRACUNIT / 8192;
+  l.u2 := u2 / FRACUNIT / IFLATUVSCALE;
+  l.v2 := v2 / FRACUNIT / IFLATUVSCALE;
 
   l.x3 := x3;
   l.y3 := y3;
-  l.u3 := u3 / FRACUNIT / 8192;
-  l.v3 := v3 / FRACUNIT / 8192;
+  l.u3 := u3 / FRACUNIT / IFLATUVSCALE;
+  l.v3 := v3 / FRACUNIT / IFLATUVSCALE;
 
   l.r := ((cc shr 16) and $FF) / 255;
   l.g := ((cc shr 8) and $FF) / 255;

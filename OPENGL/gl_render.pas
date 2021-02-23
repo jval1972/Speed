@@ -1421,8 +1421,8 @@ begin
       epoint := @edgepoints[0];
       for i := 0 to numedgepoints - 1 do
       begin
-        gld_texcoords[gld_num_vertexes].u := (epoint.x / FRACUNIT) / 8192.0;
-        gld_texcoords[gld_num_vertexes].v := (-epoint.y / FRACUNIT) / 8192.0;
+        gld_texcoords[gld_num_vertexes].u := (epoint.x / FRACUNIT) / IFLATUVSCALE;
+        gld_texcoords[gld_num_vertexes].v := (-epoint.y / FRACUNIT) / IFLATUVSCALE;
         vert := @gld_vertexes[gld_num_vertexes];
         vert.x := -epoint.x / MAP_SCALE;
         vert.y := 0.0;
@@ -1542,8 +1542,8 @@ begin
       seg := @segs[ssector.firstline];
       for j := 0 to numedgepoints - 1 do
       begin
-        gld_texcoords[gld_num_vertexes].u := (seg.v1.x / FRACUNIT) / 8192.0;
-        gld_texcoords[gld_num_vertexes].v :=(-seg.v1.y / FRACUNIT) / 8192.0;
+        gld_texcoords[gld_num_vertexes].u := (seg.v1.x / FRACUNIT) / IFLATUVSCALE;
+        gld_texcoords[gld_num_vertexes].v :=(-seg.v1.y / FRACUNIT) / IFLATUVSCALE;
         vert := @gld_vertexes[gld_num_vertexes];
         vert.x := -seg.v1.x / MAP_SCALE;
         vert.y := 0.0;
