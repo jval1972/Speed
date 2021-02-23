@@ -1,5 +1,5 @@
 object StartUpConsoleForm: TStartUpConsoleForm
-  Left = 74
+  Left = 134
   Top = 0
   Cursor = crHourGlass
   BorderIcons = []
@@ -1145,7 +1145,9 @@ object StartUpConsoleForm: TStartUpConsoleForm
   end
   object OpenDialog1: TOpenDialog
     FileName = 'SPEEDH.JCL'
-    Filter = 'SPEEDH.JCL|SPEEDH.JCL|JCL files (*.jcl)|*.jcl|All files (*.*)|*.*'
+    Filter = 
+      'SPEEDH.JCL|SPEEDH.JCL|JCL files (*.jcl)|*.jcl|All files (*.*)|*.' +
+      '*'
     Options = [ofHideReadOnly, ofNoChangeDir, ofPathMustExist, ofFileMustExist, ofEnableSizing]
     Title = 'Locate SPEEDH.JCL file'
     OnCanClose = OpenDialog1CanClose
