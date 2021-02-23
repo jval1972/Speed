@@ -176,6 +176,7 @@ uses
   p_mobj,
   ps_main,
   psi_overlay,
+  speed_alias,
   r_draw,
   r_main,
   r_hires,
@@ -1997,9 +1998,7 @@ begin
   p := M_CheckParm('-autoscreenshot');
   autoscreenshot := p > 0;
 
-  {$IFNDEF FPC}
   SUC_Progress(25);
-  {$ENDIF}
 
   nodrawers := M_CheckParm('-nodraw') <> 0;
   noblit := M_CheckParm('-noblit') <> 0;
@@ -2053,9 +2052,7 @@ begin
   printf('Z_Init: Init zone memory allocation daemon, allocation %d MB.'#13#10, [mb_used]);
   Z_Init;
 
-  {$IFNDEF FPC}
   SUC_Progress(30);
-  {$ENDIF}
 
   p := M_CheckParm('-nothinkers');
   if p = 0 then
@@ -2069,16 +2066,12 @@ begin
     Info_Init(false);
   end;
 
-  {$IFNDEF FPC}
   SUC_Progress(31);
-  {$ENDIF}
 
   printf('Info_InitStateOwners(): Initialize State Owners.'#13#10);
   Info_InitStateOwners;
 
-  {$IFNDEF FPC}
   SUC_Progress(32);
-  {$ENDIF}
 
   for p := 1 to myargc do
     if (strupper(fext(myargv[p])) = '.WAD') or (strupper(fext(myargv[p])) = '.OUT') then
@@ -2128,12 +2121,15 @@ begin
     end;
   end;
 
+  printf('SH_InitSpeedAlias: Initialize SPEED HASTE alias entries.'#13#10);
+  SH_InitSpeedAlias;
+
+  SUC_Progress(35);
+
   printf('W_AutoLoadPakFiles: Autoload required pak files.'#13#10);
   W_AutoLoadPakFiles;
 
-  {$IFNDEF FPC}
   SUC_Progress(40);
-  {$ENDIF}
 
   printf('DEH_Init: Initializing dehacked subsystem.'#13#10);
   DEH_Init;
@@ -2151,9 +2147,7 @@ begin
     if not DEH_ParseLumpName('HACX.DEH') then
       I_Warning('DEH_ParseLumpName(): GAMEDEF lump for HACX not found, using defaults.'#13#10);
 
-  {$IFNDEF FPC}
   SUC_Progress(41);
-  {$ENDIF}
 
   printf('SC_Init: Initializing script engine.'#13#10);
   SC_Init;
@@ -2161,16 +2155,12 @@ begin
   printf('PS_Init: Initializing pascal script compiler.'#13#10);
   PS_Init;
 
-  {$IFNDEF FPC}
   SUC_Progress(43);
-  {$ENDIF}
 
   printf('SC_ParseSndInfoLumps: Parsing SNDINFO lumps.'#13#10);
   SC_ParseSndInfoLumps;
 
-  {$IFNDEF FPC}
   SUC_Progress(44);
-  {$ENDIF}
 
   p := M_CheckParm('-noactordef');
   if p <= 0 then
@@ -2194,9 +2184,7 @@ begin
   printf('Info_CheckStates: Check states tables'#13#10);
   Info_CheckStates;
 
-  {$IFNDEF FPC}
   SUC_Progress(50);
-  {$ENDIF}
 
   for i := 0 to NUM_STARTUPMESSAGES - 1 do
     if startmsg[i] <> '' then
@@ -2440,23 +2428,17 @@ begin
     end;
   end;
 
-  {$IFNDEF FPC}
   SUC_Progress(66);
-  {$ENDIF}
 
   printf('Info_InitRandom: Initializing randomizers.'#13#10);
   Info_InitRandom;
 
-  {$IFNDEF FPC}
   SUC_Progress(67);
-  {$ENDIF}
 
   printf('M_Init: Init miscellaneous info.'#13#10);
   M_Init;
 
-  {$IFNDEF FPC}
   SUC_Progress(68);
-  {$ENDIF}
 
   p := M_CheckParm('-mmx');
   if p > 0 then
@@ -2474,51 +2456,37 @@ begin
   printf('MT_Init: Initializing multithreading utilities.'#13#10);
   MT_Init;
 
-  {$IFNDEF FPC}
   SUC_Progress(69);
-  {$ENDIF}
 
   printf('R_Init: Init DOOM refresh daemon.'#13#10);
   R_Init;
 
-  {$IFNDEF FPC}
   SUC_Progress(80);
-  {$ENDIF}
 
   printf('P_Init: Init Playloop state.'#13#10);
   P_Init;
 
-  {$IFNDEF FPC}
   SUC_Progress(81);
-  {$ENDIF}
 
   printf('D_CheckNetGame: Checking network game status.'#13#10);
   D_CheckNetGame;
 
-  {$IFNDEF FPC}
   SUC_Progress(87);
-  {$ENDIF}
 
   printf('S_Init: Setting up sound.'#13#10);
   S_Init(snd_SfxVolume, snd_MusicVolume);
 
-  {$IFNDEF FPC}
   SUC_Progress(90);
-  {$ENDIF}
 
   printf('HU_Init: Setting up heads up display.'#13#10);
   HU_Init;
 
-  {$IFNDEF FPC}
   SUC_Progress(91);
-  {$ENDIF}
 
   printf('ST_Init: Init status bar.'#13#10);
   ST_Init;
 
-  {$IFNDEF FPC}
   SUC_Progress(92);
-  {$ENDIF}
 
   //    // check for a driver that wants intermission stats
   p := M_CheckParm('-statcopy');
@@ -2544,16 +2512,12 @@ begin
   I_InitGraphics;
 {$ENDIF}
 
-  {$IFNDEF FPC}
   SUC_Progress(95);
-  {$ENDIF}
 
   printf('I_Init: Setting up machine state.'#13#10);
   I_Init;
 
-  {$IFNDEF FPC}
   SUC_Progress(96);
-  {$ENDIF}
 
   printf('C_Init: Initializing console.'#13#10);
   C_Init;
@@ -2572,17 +2536,13 @@ begin
   end;
 
   // JVAL: PascalScript
-  {$IFNDEF FPC}
   SUC_Progress(97);
-  {$ENDIF}
   printf('PS_CompileAllScripts: Compiling all scripts.'#13#10);
   PS_CompileAllScripts;
 
-  {$IFNDEF FPC}
   SUC_Progress(100);
 
   SUC_Close;
-  {$ENDIF}
 
   p := M_CheckParm('-playdemo');
   if (p <> 0) and (p < myargc - 1) then
@@ -2660,6 +2620,8 @@ begin
   Z_ShutDown;
   printf('W_ShutDown: Shut down WAD file system.'#13#10);
   W_ShutDown;
+  printf('SH_ShutDownSpeedAlias: Shut down SPEED HASTE alias entries.'#13#10);
+  SH_ShutDownSpeedAlias;
   printf('V_ShutDown: Shut down screens.'#13#10);
   V_ShutDown;
   printf('MT_ShutDown: Shut down multithreading utilities.'#13#10);

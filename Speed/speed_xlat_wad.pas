@@ -1745,7 +1745,7 @@ begin
   if pk3entry.Count = 0 then
     exit;
 
-  wadwriter.AddString('PK3ENTRY', pk3entry.Text);
+  wadwriter.AddString(S_SPEEDINF, pk3entry.Text);
 end;
 
 procedure TSpeedToWADConverter.Convert(const fname: string);

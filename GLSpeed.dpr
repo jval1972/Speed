@@ -358,7 +358,8 @@ uses
   speed_patch in 'Speed\speed_patch.pas',
   speed_sounds in 'Speed\speed_sounds.pas',
   speed_things in 'Speed\speed_things.pas',
-  speed_xlat_wad in 'Speed\speed_xlat_wad.pas';
+  speed_xlat_wad in 'Speed\speed_xlat_wad.pas',
+  speed_alias in 'Speed\speed_alias.pas';
 
 var
   Saved8087CW: Word;

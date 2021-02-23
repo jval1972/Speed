@@ -211,6 +211,9 @@ const
                 (Ord('A') shl 16) or
                 (Ord('D') shl 24));
 
+const
+  S_SPEEDINF = 'SPEEDINF';
+
 implementation
 
 uses
