@@ -179,7 +179,7 @@ var
     dsec.ceilingheight := ceilingheight;
     dsec.floorpic := stringtochar8(floortexture);
     dsec.ceilingpic := stringtochar8(ceilingtexture);
-    dsec.lightlevel := 192;
+    dsec.lightlevel := 255;
     dsec.special := 0;
     dsec.tag := 0;
 
