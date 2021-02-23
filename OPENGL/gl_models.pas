@@ -613,7 +613,7 @@ begin
     fmodel := TMD2Model.Create(name, xoffset, yoffset, zoffset, xscale, yscale, zscale, additionalframes);
     fmodeltype := mt_md2;
   end
-  else if ext = 'I3D' then
+  else if ext = '.I3D' then
   begin
     fmodel := TI3DModel.Create(name, xoffset, yoffset, zoffset, xscale, yscale, zscale, additionalframes);
     fmodeltype := mt_i3d;
