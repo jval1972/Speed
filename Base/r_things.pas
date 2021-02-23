@@ -1816,7 +1816,7 @@ begin
 
   lump := sprframe.lump[0];
 {$IFNDEF OPENGL}
-  flip := sprframe.flip[0] <> (thing.flags3_ex and MF3_EX_FLIPSPRITE <> 0);
+  flip := sprframe.flip[0] <> (viewplayer.mo.flags3_ex and MF3_EX_FLIPSPRITE <> 0);
 {$ENDIF}
 
   // calculate edges of the shape

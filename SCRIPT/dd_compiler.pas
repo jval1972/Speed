@@ -32,204 +32,50 @@ unit dd_compiler;
 
 interface
 
-{$IFDEF DOOM}
-function dd_compile_doom(
-{$ENDIF}
-{$IFDEF HERETIC}
-function dd_compile_heretic(
-{$ENDIF}
-{$IFDEF HEXEN}
-function dd_compile_hexen(
-{$ENDIF}
-{$IFDEF STRIFE}
-function dd_compile_strife(
-{$ENDIF}
+function dd_compile_speed(
   const _inp: PChar; const _inpsize: Integer;
   var _out: PChar; var _outsize: Integer;
   var _msgs: PChar; var _msgssize: Integer): Boolean; stdcall;
 
-{$IFDEF DOOM}
-procedure dd_getavailableunits_doom(
-{$ENDIF}
-{$IFDEF HERETIC}
-procedure dd_getavailableunits_heretic(
-{$ENDIF}
-{$IFDEF HEXEN}
-procedure dd_getavailableunits_hexen(
-{$ENDIF}
-{$IFDEF STRIFE}
-procedure dd_getavailableunits_strife(
-{$ENDIF}
+procedure dd_getavailableunits_speed(
   var _out: PChar; var _outsize: Integer); stdcall;
 
-{$IFDEF DOOM}
-procedure dd_getunitfunctions_doom(
-{$ENDIF}
-{$IFDEF HERETIC}
-procedure dd_getunitfunctions_heretic(
-{$ENDIF}
-{$IFDEF HEXEN}
-procedure dd_getunitfunctions_hexen(
-{$ENDIF}
-{$IFDEF STRIFE}
-procedure dd_getunitfunctions_strife(
-{$ENDIF}
+procedure dd_getunitfunctions_speed(
   const _inp: PChar; const _inpsize: Integer;
   var _out: PChar; var _outsize: Integer); stdcall;
 
-{$IFDEF DOOM}
-procedure dd_getconstants_doom(
-{$ENDIF}
-{$IFDEF HERETIC}
-procedure dd_getconstants_heretic(
-{$ENDIF}
-{$IFDEF HEXEN}
-procedure dd_getconstants_hexen(
-{$ENDIF}
-{$IFDEF STRIFE}
-procedure dd_getconstants_strife(
-{$ENDIF}
+procedure dd_getconstants_speed(
   var _out: PChar; var _outsize: Integer); stdcall;
 
-{$IFDEF DOOM}
-procedure dd_getvariables_doom(
-{$ENDIF}
-{$IFDEF HERETIC}
-procedure dd_getvariables_heretic(
-{$ENDIF}
-{$IFDEF HEXEN}
-procedure dd_getvariables_hexen(
-{$ENDIF}
-{$IFDEF STRIFE}
-procedure dd_getvariables_strife(
-{$ENDIF}
+procedure dd_getvariables_speed(
   var _out: PChar; var _outsize: Integer); stdcall;
 
-{$IFDEF DOOM}
-procedure dd_gettypes_doom(
-{$ENDIF}
-{$IFDEF HERETIC}
-procedure dd_gettypes_heretic(
-{$ENDIF}
-{$IFDEF HEXEN}
-procedure dd_gettypes_hexen(
-{$ENDIF}
-{$IFDEF STRIFE}
-procedure dd_gettypes_strife(
-{$ENDIF}
+procedure dd_gettypes_speed(
   var _out: PChar; var _outsize: Integer); stdcall;
 
-{$IFDEF DOOM}
-procedure dd_getclasses_doom(
-{$ENDIF}
-{$IFDEF HERETIC}
-procedure dd_getclasses_heretic(
-{$ENDIF}
-{$IFDEF HEXEN}
-procedure dd_getclasses_hexen(
-{$ENDIF}
-{$IFDEF STRIFE}
-procedure dd_getclasses_strife(
-{$ENDIF}
+procedure dd_getclasses_speed(
   var _out: PChar; var _outsize: Integer); stdcall;
 
-{$IFDEF DOOM}
-procedure dd_getdisassembly_doom(
-{$ENDIF}
-{$IFDEF HERETIC}
-procedure dd_getdisassembly_heretic(
-{$ENDIF}
-{$IFDEF HEXEN}
-procedure dd_getdisassembly_hexen(
-{$ENDIF}
-{$IFDEF STRIFE}
-procedure dd_getdisassembly_strife(
-{$ENDIF}
+procedure dd_getdisassembly_speed(
   const _inp: PChar; const _inpsize: Integer;
   var _out: PChar; var _outsize: Integer); stdcall;
 
-{$IFDEF DOOM}
-procedure dd_getevents_doom(
-{$ENDIF}
-{$IFDEF HERETIC}
-procedure dd_getevents_heretic(
-{$ENDIF}
-{$IFDEF HEXEN}
-procedure dd_getevents_hexen(
-{$ENDIF}
-{$IFDEF STRIFE}
-procedure dd_getevents_strife(
-{$ENDIF}
+procedure dd_getevents_speed(
   var _out: PChar; var _outsize: Integer); stdcall;
 
-{$IFDEF DOOM}
-procedure dd_getactordeffunctions_doom(
-{$ENDIF}
-{$IFDEF HERETIC}
-procedure dd_getactordeffunctions_heretic(
-{$ENDIF}
-{$IFDEF HEXEN}
-procedure dd_getactordeffunctions_hexen(
-{$ENDIF}
-{$IFDEF STRIFE}
-procedure dd_getactordeffunctions_strife(
-{$ENDIF}
+procedure dd_getactordeffunctions_speed(
   var _out: PChar; var _outsize: Integer); stdcall;
 
-{$IFDEF DOOM}
-procedure dd_getmobjinfocsv_doom(
-{$ENDIF}
-{$IFDEF HERETIC}
-procedure dd_getmobjinfocsv_heretic(
-{$ENDIF}
-{$IFDEF HEXEN}
-procedure dd_getmobjinfocsv_hexen(
-{$ENDIF}
-{$IFDEF STRIFE}
-procedure dd_getmobjinfocsv_strife(
-{$ENDIF}
+procedure dd_getmobjinfocsv_speed(
   var _out: PChar; var _outsize: Integer); stdcall;
 
-{$IFDEF DOOM}
-procedure dd_getstatescsv_doom(
-{$ENDIF}
-{$IFDEF HERETIC}
-procedure dd_getstatescsv_heretic(
-{$ENDIF}
-{$IFDEF HEXEN}
-procedure dd_getstatescsv_hexen(
-{$ENDIF}
-{$IFDEF STRIFE}
-procedure dd_getstatescsv_strife(
-{$ENDIF}
+procedure dd_getstatescsv_speed(
   var _out: PChar; var _outsize: Integer); stdcall;
 
-{$IFDEF DOOM}
-procedure dd_getspritescsv_doom(
-{$ENDIF}
-{$IFDEF HERETIC}
-procedure dd_getspritescsv_heretic(
-{$ENDIF}
-{$IFDEF HEXEN}
-procedure dd_getspritescsv_hexen(
-{$ENDIF}
-{$IFDEF STRIFE}
-procedure dd_getspritescsv_strife(
-{$ENDIF}
+procedure dd_getspritescsv_speed(
   var _out: PChar; var _outsize: Integer); stdcall;
 
-{$IFDEF DOOM}
-procedure dd_getactordef_doom(
-{$ENDIF}
-{$IFDEF HERETIC}
-procedure dd_getactordef_heretic(
-{$ENDIF}
-{$IFDEF HEXEN}
-procedure dd_getactordef_hexen(
-{$ENDIF}
-{$IFDEF STRIFE}
-procedure dd_getactordef_strife(
-{$ENDIF}
+procedure dd_getactordef_speed(
   var m: integer; var _out: PChar; var _outsize: Integer); stdcall;
 
 implementation
@@ -301,18 +147,7 @@ begin
   end;
 end;
 
-{$IFDEF DOOM}
-function dd_compile_doom(
-{$ENDIF}
-{$IFDEF HERETIC}
-function dd_compile_heretic(
-{$ENDIF}
-{$IFDEF HEXEN}
-function dd_compile_hexen(
-{$ENDIF}
-{$IFDEF STRIFE}
-function dd_compile_strife(
-{$ENDIF}
+function dd_compile_speed(
   const _inp: PChar; const _inpsize: Integer;
   var _out: PChar; var _outsize: Integer;
   var _msgs: PChar; var _msgssize: Integer): Boolean; stdcall;
@@ -367,18 +202,7 @@ begin
     outstr[i + 1] := _inp[i];
 end;
 
-{$IFDEF DOOM}
-procedure dd_getavailableunits_doom(
-{$ENDIF}
-{$IFDEF HERETIC}
-procedure dd_getavailableunits_heretic(
-{$ENDIF}
-{$IFDEF HEXEN}
-procedure dd_getavailableunits_hexen(
-{$ENDIF}
-{$IFDEF STRIFE}
-procedure dd_getavailableunits_strife(
-{$ENDIF}
+procedure dd_getavailableunits_speed(
   var _out: PChar; var _outsize: Integer); stdcall;
 var
   unitnames: string;
@@ -392,18 +216,7 @@ begin
   end;
 end;
 
-{$IFDEF DOOM}
-procedure dd_getunitfunctions_doom(
-{$ENDIF}
-{$IFDEF HERETIC}
-procedure dd_getunitfunctions_heretic(
-{$ENDIF}
-{$IFDEF HEXEN}
-procedure dd_getunitfunctions_hexen(
-{$ENDIF}
-{$IFDEF STRIFE}
-procedure dd_getunitfunctions_strife(
-{$ENDIF}
+procedure dd_getunitfunctions_speed(
   const _inp: PChar; const _inpsize: Integer;
   var _out: PChar; var _outsize: Integer); stdcall;
 var
@@ -686,18 +499,7 @@ begin
 end;
 
 
-{$IFDEF DOOM}
-procedure dd_getconstants_doom(
-{$ENDIF}
-{$IFDEF HERETIC}
-procedure dd_getconstants_heretic(
-{$ENDIF}
-{$IFDEF HEXEN}
-procedure dd_getconstants_hexen(
-{$ENDIF}
-{$IFDEF STRIFE}
-procedure dd_getconstants_strife(
-{$ENDIF}
+procedure dd_getconstants_speed(
   var _out: PChar; var _outsize: Integer); stdcall;
 var
   pcode: string;
@@ -718,18 +520,7 @@ begin
   end;
 end;
 
-{$IFDEF DOOM}
-procedure dd_getvariables_doom(
-{$ENDIF}
-{$IFDEF HERETIC}
-procedure dd_getvariables_heretic(
-{$ENDIF}
-{$IFDEF HEXEN}
-procedure dd_getvariables_hexen(
-{$ENDIF}
-{$IFDEF STRIFE}
-procedure dd_getvariables_strife(
-{$ENDIF}
+procedure dd_getvariables_speed(
   var _out: PChar; var _outsize: Integer); stdcall;
 var
   pcode: string;
@@ -750,18 +541,7 @@ begin
   end;
 end;
 
-{$IFDEF DOOM}
-procedure dd_gettypes_doom(
-{$ENDIF}
-{$IFDEF HERETIC}
-procedure dd_gettypes_heretic(
-{$ENDIF}
-{$IFDEF HEXEN}
-procedure dd_gettypes_hexen(
-{$ENDIF}
-{$IFDEF STRIFE}
-procedure dd_gettypes_strife(
-{$ENDIF}
+procedure dd_gettypes_speed(
   var _out: PChar; var _outsize: Integer); stdcall;
 var
   pcode: string;
@@ -782,18 +562,7 @@ begin
   end;
 end;
 
-{$IFDEF DOOM}
-procedure dd_getclasses_doom(
-{$ENDIF}
-{$IFDEF HERETIC}
-procedure dd_getclasses_heretic(
-{$ENDIF}
-{$IFDEF HEXEN}
-procedure dd_getclasses_hexen(
-{$ENDIF}
-{$IFDEF STRIFE}
-procedure dd_getclasses_strife(
-{$ENDIF}
+procedure dd_getclasses_speed(
   var _out: PChar; var _outsize: Integer); stdcall;
 var
   pcode: string;
@@ -814,18 +583,7 @@ begin
   end;
 end;
 
-{$IFDEF DOOM}
-procedure dd_getdisassembly_doom(
-{$ENDIF}
-{$IFDEF HERETIC}
-procedure dd_getdisassembly_heretic(
-{$ENDIF}
-{$IFDEF HEXEN}
-procedure dd_getdisassembly_hexen(
-{$ENDIF}
-{$IFDEF STRIFE}
-procedure dd_getdisassembly_strife(
-{$ENDIF}
+procedure dd_getdisassembly_speed(
   const _inp: PChar; const _inpsize: Integer;
   var _out: PChar; var _outsize: Integer); stdcall;
 var
@@ -850,18 +608,7 @@ begin
   end;
 end;
 
-{$IFDEF DOOM}
-procedure dd_getevents_doom(
-{$ENDIF}
-{$IFDEF HERETIC}
-procedure dd_getevents_heretic(
-{$ENDIF}
-{$IFDEF HEXEN}
-procedure dd_getevents_hexen(
-{$ENDIF}
-{$IFDEF STRIFE}
-procedure dd_getevents_strife(
-{$ENDIF}
+procedure dd_getevents_speed(
   var _out: PChar; var _outsize: Integer); stdcall;
 var
   estr: string;
@@ -873,18 +620,7 @@ begin
   DD_CopyStringToPChar(estr, _out, _outsize);
 end;
 
-{$IFDEF DOOM}
-procedure dd_getactordeffunctions_doom(
-{$ENDIF}
-{$IFDEF HERETIC}
-procedure dd_getactordeffunctions_heretic(
-{$ENDIF}
-{$IFDEF HEXEN}
-procedure dd_getactordeffunctions_hexen(
-{$ENDIF}
-{$IFDEF STRIFE}
-procedure dd_getactordeffunctions_strife(
-{$ENDIF}
+procedure dd_getactordeffunctions_speed(
   var _out: PChar; var _outsize: Integer); stdcall;
 var
   afstr: string;
@@ -901,18 +637,7 @@ begin
   end;
 end;
 
-{$IFDEF DOOM}
-procedure dd_getmobjinfocsv_doom(
-{$ENDIF}
-{$IFDEF HERETIC}
-procedure dd_getmobjinfocsv_heretic(
-{$ENDIF}
-{$IFDEF HEXEN}
-procedure dd_getmobjinfocsv_hexen(
-{$ENDIF}
-{$IFDEF STRIFE}
-procedure dd_getmobjinfocsv_strife(
-{$ENDIF}
+procedure dd_getmobjinfocsv_speed(
   var _out: PChar; var _outsize: Integer); stdcall;
 var
   csvstr: string;
@@ -929,18 +654,7 @@ begin
   end;
 end;
 
-{$IFDEF DOOM}
-procedure dd_getstatescsv_doom(
-{$ENDIF}
-{$IFDEF HERETIC}
-procedure dd_getstatescsv_heretic(
-{$ENDIF}
-{$IFDEF HEXEN}
-procedure dd_getstatescsv_hexen(
-{$ENDIF}
-{$IFDEF STRIFE}
-procedure dd_getstatescsv_strife(
-{$ENDIF}
+procedure dd_getstatescsv_speed(
   var _out: PChar; var _outsize: Integer); stdcall;
 var
   csvstr: string;
@@ -957,18 +671,7 @@ begin
   end;
 end;
 
-{$IFDEF DOOM}
-procedure dd_getspritescsv_doom(
-{$ENDIF}
-{$IFDEF HERETIC}
-procedure dd_getspritescsv_heretic(
-{$ENDIF}
-{$IFDEF HEXEN}
-procedure dd_getspritescsv_hexen(
-{$ENDIF}
-{$IFDEF STRIFE}
-procedure dd_getspritescsv_strife(
-{$ENDIF}
+procedure dd_getspritescsv_speed(
   var _out: PChar; var _outsize: Integer); stdcall;
 var
   csvstr: string;
@@ -985,18 +688,7 @@ begin
   end;
 end;
 
-{$IFDEF DOOM}
-procedure dd_getactordef_doom(
-{$ENDIF}
-{$IFDEF HERETIC}
-procedure dd_getactordef_heretic(
-{$ENDIF}
-{$IFDEF HEXEN}
-procedure dd_getactordef_hexen(
-{$ENDIF}
-{$IFDEF STRIFE}
-procedure dd_getactordef_strife(
-{$ENDIF}
+procedure dd_getactordef_speed(
   var m: integer; var _out: PChar; var _outsize: Integer); stdcall;
 var
   actorstr: string;

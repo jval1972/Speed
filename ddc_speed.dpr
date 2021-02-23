@@ -369,23 +369,33 @@ uses
   deh_base in 'Base\deh_base.pas',
   r_sprite in 'Base\r_sprite.pas',
   r_tallcolumn in 'Base\r_tallcolumn.pas',
-  p_animdefs in 'Base\p_animdefs.pas';
+  p_animdefs in 'Base\p_animdefs.pas',
+  speed_alias in 'Speed\speed_alias.pas',
+  speed_bitmap in 'Speed\speed_bitmap.pas',
+  speed_defs in 'Speed\speed_defs.pas',
+  speed_is2 in 'Speed\speed_is2.pas',
+  speed_level in 'Speed\speed_level.pas',
+  speed_palette in 'Speed\speed_palette.pas',
+  speed_patch in 'Speed\speed_patch.pas',
+  speed_sounds in 'Speed\speed_sounds.pas',
+  speed_things in 'Speed\speed_things.pas',
+  speed_xlat_wad in 'Speed\speed_xlat_wad.pas';
 
 exports
-  dd_compile_doom,
-  dd_getavailableunits_doom,
-  dd_getunitfunctions_doom,
-  dd_getconstants_doom,
-  dd_getvariables_doom,
-  dd_getclasses_doom,
-  dd_getdisassembly_doom,
-  dd_gettypes_doom,
-  dd_getevents_doom,
-  dd_getactordeffunctions_doom,
-  dd_getmobjinfocsv_doom,
-  dd_getstatescsv_doom,
-  dd_getspritescsv_doom,
-  dd_getactordef_doom;
+  dd_compile_speed,
+  dd_getavailableunits_speed,
+  dd_getunitfunctions_speed,
+  dd_getconstants_speed,
+  dd_getvariables_speed,
+  dd_getclasses_speed,
+  dd_getdisassembly_speed,
+  dd_gettypes_speed,
+  dd_getevents_speed,
+  dd_getactordeffunctions_speed,
+  dd_getmobjinfocsv_speed,
+  dd_getstatescsv_speed,
+  dd_getspritescsv_speed,
+  dd_getactordef_speed;
 
 begin
 
