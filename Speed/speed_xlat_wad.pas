@@ -149,7 +149,7 @@ var
   i: integer;
 begin
   for i := 0 to numl - 1 do
-    if getlumpname(@l[i]) = lmp then
+    if getjcllumpname(@l[i]) = lmp then
     begin
       f.Seek(l[i].start, sFrombeginning);
       size := l[i].size;
@@ -169,7 +169,7 @@ var
   i: integer;
 begin
   for i := 0 to numl - 1 do
-    if getlumpname(@l[i]) = lmp then
+    if getjcllumpname(@l[i]) = lmp then
     begin
       result := i;
       exit;
@@ -197,8 +197,8 @@ var
     nii, njj: string;
     eii, ejj: string;
   begin
-    fii := getlumpname(@lumps[ii]);
-    fjj := getlumpname(@lumps[jj]);
+    fii := getjcllumpname(@lumps[ii]);
+    fjj := getjcllumpname(@lumps[jj]);
     splitstring(fii, nii, eii, '.');
     splitstring(fjj, njj, ejj, '.');
     vii := atoi(nii);
@@ -320,7 +320,7 @@ begin
   lst := TDStringList.Create;
   for i := 0 to numlumps - 1 do
   begin
-    rname := getlumpname(@lumps[i]);
+    rname := getjcllumpname(@lumps[i]);
     if strupper(RightStr(rname, 4)) = '.IS2' then
     begin
       splitstring(rname, s1, s2, '.');
@@ -1136,7 +1136,7 @@ begin
   lst := TDStringList.Create;
   for i := 0 to numlumps - 1 do
   begin
-    rname := getlumpname(@lumps[i]);
+    rname := getjcllumpname(@lumps[i]);
     if strupper(RightStr(rname, 4)) = '.PIX' then
       lst.Add(rname);
   end;
@@ -1158,7 +1158,7 @@ begin
 
   for i := 0 to numlumps - 1 do
   begin
-    rname := getlumpname(@lumps[i]);
+    rname := getjcllumpname(@lumps[i]);
     if strupper(RightStr(rname, 4)) = '.IS2' then
     begin
       splitstring(rname, s1, s2, '.');
@@ -1716,7 +1716,7 @@ begin
   lst := TDStringList.Create;
   for i := 0 to numlumps - 1 do
   begin
-    rname := getlumpname(@lumps[i]);
+    rname := getjcllumpname(@lumps[i]);
     if strupper(RightStr(rname, 4)) = '.RAW' then
       lst.Add(rname);
   end;

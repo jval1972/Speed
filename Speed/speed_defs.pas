@@ -54,7 +54,7 @@ type
     lastoffset: integer;
   end;
 
-function getlumpname(const l: speedlump_p): string;
+function getjcllumpname(const l: speedlump_p): string;
 
 const
   SH_FLAT_PREFIX = 'FLAT';
@@ -62,7 +62,7 @@ const
 
 implementation
 
-function getlumpname(const l: speedlump_p): string;
+function getjcllumpname(const l: speedlump_p): string;
 var
   i: integer;
 begin
