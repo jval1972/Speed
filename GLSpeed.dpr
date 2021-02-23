@@ -349,7 +349,16 @@ uses
   i3d_model in 'OPENGL\i3d_model.pas',
   i3d_palette in 'OPENGL\i3d_palette.pas',
   i3d_structs in 'OPENGL\i3d_structs.pas',
-  mdl_i3d in 'OPENGL\mdl_i3d.pas';
+  mdl_i3d in 'OPENGL\mdl_i3d.pas',
+  speed_bitmap in 'Speed\speed_bitmap.pas',
+  speed_defs in 'Speed\speed_defs.pas',
+  speed_is2 in 'Speed\speed_is2.pas',
+  speed_level in 'Speed\speed_level.pas',
+  speed_palette in 'Speed\speed_palette.pas',
+  speed_patch in 'Speed\speed_patch.pas',
+  speed_sounds in 'Speed\speed_sounds.pas',
+  speed_things in 'Speed\speed_things.pas',
+  speed_xlat_wad in 'Speed\speed_xlat_wad.pas';
 
 var
   Saved8087CW: Word;
