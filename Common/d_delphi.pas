@@ -102,6 +102,10 @@ type
   PObjectArray = ^TObjectArray;
 
 type
+  string255 = string[255];
+  Pstring255 = ^string255;
+  
+type
   charset_t = set of char;
 
   twobytes_t = packed record
@@ -1589,7 +1593,7 @@ begin
   if result <> nil then
     ZeroMemory(result, size);
 end;
-                  
+
 procedure realloc(var p: pointer; const oldsize, newsize: integer);
 begin
   if newsize = 0 then
@@ -2277,7 +2281,7 @@ begin
 end;
 
 ////////////////////////////////////////////////////////////////////////////////
-// TDNumberList
+// T2DNumberList
 constructor T2DNumberList.Create;
 begin
   fList := nil;
