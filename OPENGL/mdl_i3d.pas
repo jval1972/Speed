@@ -104,21 +104,24 @@ begin
   fmdl.LoadFromStream(strm);
   strm.Free;
 
-  ext := fname;
-  ext[Length(ext) - 2] := 't';
-  ext[Length(ext) - 1] := 'x';
-  ext[Length(ext) - 0] := 't';
-
-  strm := TPakStream.Create(fname, pm_prefered, gamedirectories);
-  if strm.IOResult <> 0 then
+  if Length(fname) > 4 then
   begin
-    strm.Free;
-    strm := TPakStream.Create(fname, pm_short, '', FOLDER_MODELS);
-  end;
-  if strm.IOResult = 0 then
-    fmdl.LoadCorrectionsFromStream(strm);
+    ext := fname;
+    ext[Length(ext) - 2] := 't';
+    ext[Length(ext) - 1] := 'x';
+    ext[Length(ext) - 0] := 't';
 
-  strm.Free;
+    strm := TPakStream.Create(fname, pm_prefered, gamedirectories);
+    if strm.IOResult <> 0 then
+    begin
+      strm.Free;
+      strm := TPakStream.Create(fname, pm_short, '', FOLDER_MODELS);
+    end;
+    if strm.IOResult = 0 then
+      fmdl.LoadCorrectionsFromStream(strm);
+
+    strm.Free;
+  end;
 end;
 
 destructor TI3DModel.Destroy;
