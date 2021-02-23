@@ -3411,7 +3411,7 @@ begin
     glPushMatrix;
     glMultMatrixf(@rippletexmatrix);
   end;
-  if (not flat.ceiling) and (sec.renderflags and SRF_SLOPEFLOOR <> 0) then
+  if not flat.ceiling and (sec.renderflags and SRF_SLOPEFLOOR <> 0) then
   begin
     // go through all loops of this sector
     for loopnum := 0 to glsec.loopcount - 1 do
