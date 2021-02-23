@@ -662,7 +662,7 @@ begin
     Result := Result + objfaces[i].h.nVerts - 2;
   end;
   glEnable(GL_TEXTURE_2D);
-  gld_ResetLastTexture
+  gld_ResetLastTexture;
 end;
 
 procedure TI3DModelLoader.RenderSelectionCubeGL(const scale: single);
