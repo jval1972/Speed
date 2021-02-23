@@ -8,6 +8,7 @@ ACTOR MT_DECORATION32 32
   Health 1000
   Mass 1000
   Reactiontime 8
+  Scale 2
   +SOLID
   States
   {
@@ -29,6 +30,7 @@ ACTOR MT_DECORATION33 33
   Health 1000
   Mass 1000
   Reactiontime 8
+  Scale 2
   +SOLID
   States
   {
@@ -51,6 +53,7 @@ ACTOR MT_DECORATION34 34
   Health 1000
   Mass 1000
   Reactiontime 8
+  Scale 2
   +SOLID
   States
   {
@@ -72,6 +75,7 @@ ACTOR MT_DECORATION35 35
   Health 1000
   Mass 1000
   Reactiontime 8
+  Scale 2
   +SOLID
   States
   {
@@ -94,6 +98,7 @@ ACTOR MT_DECORATION36 36
   Health 1000
   Mass 1000
   Reactiontime 8
+  Scale 2
   +SOLID
   States
   {
@@ -116,6 +121,7 @@ ACTOR MT_DECORATION37 37
   Health 1000
   Mass 1000
   Reactiontime 8
+  Scale 2
   +SOLID
   States
   {
@@ -138,6 +144,7 @@ ACTOR MT_DECORATION38 38
   Health 1000
   Mass 1000
   Reactiontime 8
+  Scale 2
   +SOLID
   States
   {
@@ -159,6 +166,7 @@ ACTOR MT_DECORATION39 39
   Health 1000
   Mass 1000
   Reactiontime 8
+  Scale 2
   +SOLID
   States
   {
@@ -180,6 +188,7 @@ ACTOR MT_DECORATION40 40
   Health 1000
   Mass 1000
   Reactiontime 8
+  Scale 2
   +SOLID
   States
   {
@@ -202,6 +211,7 @@ ACTOR MT_DECORATION41 41
   Health 1000
   Mass 1000
   Reactiontime 8
+  Scale 2
   +SOLID
   States
   {
@@ -224,6 +234,7 @@ ACTOR MT_DECORATION42 42
   Health 1000
   Mass 1000
   Reactiontime 8
+  Scale 2
   +SOLID
   States
   {
@@ -246,6 +257,7 @@ ACTOR MT_DECORATION43 43
   Health 1000
   Mass 1000
   Reactiontime 8
+  Scale 2
   +SOLID
   States
   {
@@ -268,6 +280,7 @@ ACTOR MT_DECORATION44 44
   Health 1000
   Mass 1000
   Reactiontime 8
+  Scale 2
   +SOLID
   States
   {
@@ -290,6 +303,7 @@ ACTOR MT_DECORATION45 45
   Health 1000
   Mass 1000
   Reactiontime 8
+  Scale 2
   States
   {
     Spawn:
@@ -311,6 +325,7 @@ ACTOR MT_DECORATION46 46
   Health 1000
   Mass 1000
   Reactiontime 8
+  Scale 2
   States
   {
     Spawn:
@@ -332,6 +347,7 @@ ACTOR MT_DECORATION47 47
   Health 1000
   Mass 1000
   Reactiontime 8
+  Scale 2
   +SOLID
   States
   {
