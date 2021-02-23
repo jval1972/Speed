@@ -53,6 +53,7 @@ uses
   speed_level,
   r_defs,
   v_video,
+  w_pak,
   w_wadwriter,
   w_wad;
 
@@ -72,6 +73,7 @@ type
     pk3entry: TDStringList;
     textures: TDStringList;
     numflats: integer;
+    ffilename: string;
   protected
     function ReadLump(const l: Pspeedlump_tArray; const numl: integer;
       const lmp: string; var buf: pointer; var size: integer): boolean;
@@ -95,11 +97,13 @@ type
     function GenerateSmallFont: boolean;
     function GenerateSprites: boolean;
     function GenerateSounds: boolean;
+    function GeneratePK3ModelEntries: boolean;
     procedure WritePK3Entry;
+    function AddPAKFileSystemEntry(const lumpname: string; const aliasname: string): boolean;
   public
     constructor Create; virtual;
     destructor Destroy; override;
-    procedure Convert(const fname: string);
+    procedure ConvertGame(const fname: string);
     procedure SavetoFile(const fname: string);
     procedure SavetoStream(const strm: TDStream);
   end;
@@ -113,6 +117,7 @@ begin
   pk3entry := nil;
   textures := nil;
   numflats := 0;
+  ffilename := '';
   Inherited;
 end;
 
@@ -1746,6 +1751,23 @@ begin
   lst.Free;
 end;
 
+function TSpeedToWADConverter.GeneratePK3ModelEntries: boolean;
+var
+  i: integer;
+  rname: string;
+begin
+  Result := False;
+  for i := 0 to numlumps - 1 do
+  begin
+    rname := getjcllumpname(@lumps[i]);
+    if strupper(RightStr(rname, 4)) = '.I3D' then
+    begin
+      PAK_AddEntry(lumps[i].start, lumps[i].size, 'MODELS\' + rname, ffilename);
+      Result := True;
+    end;
+  end;
+end;
+
 procedure TSpeedToWADConverter.WritePK3Entry;
 begin
   if pk3entry = nil then
@@ -1756,10 +1778,28 @@ begin
   wadwriter.AddString(S_SPEEDINF, pk3entry.Text);
 end;
 
-procedure TSpeedToWADConverter.Convert(const fname: string);
+function TSpeedToWADConverter.AddPAKFileSystemEntry(const lumpname: string; const aliasname: string): boolean;
+var
+  lump: integer;
+begin
+  lump := FindLump(lumps, numlumps, lumpname);
+  if lump < 0 then
+  begin
+    result := false;
+    exit;
+  end;
+
+  result := true;
+
+  PAK_AddEntry(lumps[lump].start, lumps[lump].size, aliasname, ffilename);
+end;
+
+procedure TSpeedToWADConverter.ConvertGame(const fname: string);
 begin
   if not fexists(fname) then
     exit;
+
+  ffilename := fname;
 
   Clear;
 
@@ -1780,6 +1820,7 @@ begin
   GenerateSmallFont;
   GenerateSprites;
   GenerateSounds;
+  GeneratePK3ModelEntries;
   WritePK3Entry;
 end;
 
@@ -1799,7 +1840,7 @@ var
 begin
   cnv := TSpeedToWADConverter.Create;
   try
-    cnv.Convert(fname);
+    cnv.ConvertGame(fname);
     cnv.SavetoStream(handle);
   finally
     cnv.Free;
@@ -1812,7 +1853,7 @@ var
 begin
   cnv := TSpeedToWADConverter.Create;
   try
-    cnv.Convert(fin);
+    cnv.ConvertGame(fin);
     cnv.SavetoFile(fout);
   finally
     cnv.Free;
