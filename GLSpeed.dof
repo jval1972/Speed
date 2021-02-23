@@ -100,7 +100,7 @@ Conditionals=OPENGL;DOOM;
 DebugSourceDirs=
 UsePackages=0
 [Parameters]
-RunParams=-geom 1280x800 -nofullscreen
+RunParams=-geom 1280x800 -nofullscreen doom-models.pk3
 HostApplication=
 Launcher=
 UseLauncher=0

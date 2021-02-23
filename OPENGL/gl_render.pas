@@ -3816,7 +3816,9 @@ begin
     end;
 
     glBindTexture(GL_TEXTURE_2D, texitem.tex);
-  end;
+  end
+  else
+    glBindTexture(GL_TEXTURE_2D, 0);
 
   modelinf := @modelmanager.items[info.modelidx];
   if modelinf.model = nil then
