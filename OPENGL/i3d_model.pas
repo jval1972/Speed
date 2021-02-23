@@ -82,8 +82,7 @@ type
     function LoadFromFile(const fname: string): boolean;
     procedure Clear;
     function CreateTexture(const m: O3DM_TMaterial_p): integer;
-    function RenderGL(const scale: single): integer;
-    procedure RenderSelectionCubeGL(const scale: single);
+    function RenderGL(const scalex, scaley, scalez: single): integer;
     function AddCorrection(const face: integer; const vertex: integer; const visible: boolean;
       const x, y, z: integer; const du, dv: single; const c: LongWord): boolean;
     procedure SaveCorrectionsToStream(const strm: TDStream);
@@ -577,7 +576,7 @@ begin
   tv := Round(dv * UVGLCONST);
 end;
 
-function TI3DModelLoader.RenderGL(const scale: single): integer;
+function TI3DModelLoader.RenderGL(const scalex, scaley, scalez: single): integer;
 var
   i, j: integer;
   lasttex, newtex: LongWord;
@@ -603,7 +602,7 @@ var
 
   procedure _glvertex(const x, y, z: integer);
   begin
-    glVertex3f(x * scale, y * scale, z * scale);
+    glVertex3f(x * scalex, y * scaley, z * scalez);
   end;
 
 begin
@@ -663,111 +662,6 @@ begin
   end;
   glEnable(GL_TEXTURE_2D);
   gld_ResetLastTexture;
-end;
-
-procedure TI3DModelLoader.RenderSelectionCubeGL(const scale: single);
-const
-  BOUNDSIZE = 384;
-var
-  minx, maxx: integer;
-  miny, maxy: integer;
-  minz, maxz: integer;
-  face: O3DM_TFace_p;
-  i: integer;
-  procedure _glvertex(const x, y, z: integer);
-  begin
-    glVertex3f(x * scale, y * scale, z * scale);
-  end;
-begin
-  if obj = nil then
-    Exit;
-
-  if not IsIntegerInRange(fselected, 0, obj.nFaces - 1) then
-    Exit;
-
-  face := @objfaces[fselected];
-  minx := MAXINT;
-  maxx := -MAXINT;
-  miny := MAXINT;
-  maxy := -MAXINT;
-  minz := MAXINT;
-  maxz := -MAXINT;
-
-  for i := 0 to face.h.nVerts - 1 do
-  begin
-    if face.verts[i].vert.x < minx then
-      minx := face.verts[i].vert.x;
-    if face.verts[i].vert.x > maxx then
-      maxx := face.verts[i].vert.x;
-    if face.verts[i].vert.y < miny then
-      miny := face.verts[i].vert.y;
-    if face.verts[i].vert.y > maxy then
-      maxy := face.verts[i].vert.y;
-    if face.verts[i].vert.z < minz then
-      minz := face.verts[i].vert.z;
-    if face.verts[i].vert.z > maxz then
-      maxz := face.verts[i].vert.z;
-  end;
-
-  minx := minx - BOUNDSIZE;
-  maxx := maxx + BOUNDSIZE;
-  miny := miny - BOUNDSIZE;
-  maxy := maxy + BOUNDSIZE;
-  minz := minz - BOUNDSIZE;
-  maxz := maxz + BOUNDSIZE;
-
-  glBegin(GL_LINES);
-    // Left rect
-    _glvertex(minx, miny, minz);
-    _glvertex(minx, miny, maxz);
-
-    _glvertex(minx, miny, maxz);
-    _glvertex(minx, maxy, maxz);
-
-    _glvertex(minx, maxy, maxz);
-    _glvertex(minx, maxy, minz);
-
-    _glvertex(minx, maxy, minz);
-    _glvertex(minx, miny, minz);
-
-    // Right rect
-    _glvertex(maxx, miny, minz);
-    _glvertex(maxx, miny, maxz);
-
-    _glvertex(maxx, miny, maxz);
-    _glvertex(maxx, maxy, maxz);
-
-    _glvertex(maxx, maxy, maxz);
-    _glvertex(maxx, maxy, minz);
-
-    _glvertex(maxx, maxy, minz);
-    _glvertex(maxx, miny, minz);
-
-    // Connect left & right rect
-    _glvertex(minx, miny, minz);
-    _glvertex(maxx, miny, minz);
-
-    _glvertex(minx, maxy, minz);
-    _glvertex(maxx, maxy, minz);
-
-    _glvertex(minx, maxy, maxz);
-    _glvertex(maxx, maxy, maxz);
-
-    _glvertex(minx, miny, maxz);
-    _glvertex(maxx, miny, maxz);
-
-    // Axes
-    _glvertex(minx - 2 * BOUNDSIZE, (maxy + miny) div 2, (maxz + minz) div 2);
-    _glvertex(maxx + 2 * BOUNDSIZE, (maxy + miny) div 2, (maxz + minz) div 2);
-
-    _glvertex((maxx + minx) div 2, miny - 2 * BOUNDSIZE, (maxz + minz) div 2);
-    _glvertex((maxx + minx) div 2, maxy + 2 * BOUNDSIZE, (maxz + minz) div 2);
-
-    _glvertex((maxx + minx) div 2, (maxy + miny) div 2, minz - 2 * BOUNDSIZE);
-    _glvertex((maxx + minx) div 2, (maxy + miny) div 2, maxz + 2 * BOUNDSIZE);
-
-  glEnd;
-
 end;
 
 end.

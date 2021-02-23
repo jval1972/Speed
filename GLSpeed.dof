@@ -100,7 +100,7 @@ Conditionals=OPENGL;DOOM;
 DebugSourceDirs=
 UsePackages=0
 [Parameters]
-RunParams=-geom 1280x800 -nofullscreen -file speed.pk3
+RunParams=-geom 1280x800 -nofullscreen
 HostApplication=
 Launcher=
 UseLauncher=0
