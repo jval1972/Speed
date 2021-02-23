@@ -218,6 +218,9 @@ implementation
 
 uses
   i_system,
+  speed_alias,
+  speed_defs,
+  speed_xlat_wad,
   w_pak,
   z_zone;
 
@@ -311,16 +314,6 @@ begin
     result[i] := #0;
 end;
 
-function filelength(handle: TCachedFile): integer;
-begin
-  try
-    result := handle.Size;
-  except
-    result := 0;
-    I_Error('filelength(): Error fstating');
-  end;
-end;
-
 procedure ExtractFileBase(const path: string; var dest: string);
 var
   i: integer;
@@ -382,16 +375,18 @@ var
   lump_p: Plumpinfo_t;
   i: integer;
   j: integer;
-  handle: TCachedFile;
+  handle: TDStream;
   len: integer;
   startlump: integer;
   fileinfo: Pfilelump_tArray;
   pfi: Pfilelump_t;
   singleinfo: filelump_t;
-  storehandle: TCachedFile;
+  storehandle: TDStream;
   ext: string;
   iswad: boolean;
   c: char;
+  isspeedjcl: boolean;
+  speedheader: speedheader_t;
 begin
   // open the file and add to directory
   // handle reload indicator.
@@ -419,13 +414,35 @@ begin
     exit;
   end;
 
+  ext := strupper(fext(filename));
+
+  isspeedjcl := false;
+  if ext = '.JCL' then
+  begin
+    // Check jcl header
+    handle.Seek(SizeOf(speedheader_t), sFromEnd);
+    handle.Read(speedheader, SizeOf(speedheader_t));
+    isspeedjcl := speedheader.magic = JCL_MAGIC;
+  end;
+
+  if isspeedjcl then
+  begin
+    handle.Free;
+    // xlat radix data
+    handle := TDMemoryStream.Create;
+    Speed2Stream_Game(filename, handle);
+    {$IFDEF DEBUG}
+    Speed2Wad_Game(filename, 'speedh.wad');
+    {$ENDIF}
+    handle.Seek(0, sFromBeginning);
+
+  end;
+
   result := handle;
 
   handle.OnBeginBusy := I_BeginDiskBusy;
 
   startlump := numlumps;
-
-  ext := strupper(fext(filename));
 
   iswad := false;
   if ext = '.OUT' then
@@ -439,13 +456,13 @@ begin
     handle.Seek(0, sFromBeginning);
   end;
 
-  if not iswad and (ext <> '.WAD') and (ext <> '.SWD') {$IFDEF OPENGL} and (ext <> '.GWA'){$ENDIF} then
+  if not iswad and not isspeedjcl and (ext <> '.WAD') and (ext <> '.SWD') {$IFDEF OPENGL} and (ext <> '.GWA'){$ENDIF} then
   begin
     // single lump file
     len := 0;
     fileinfo := @singleinfo;
     singleinfo.filepos := 0;
-    singleinfo.size := filelength(handle);
+    singleinfo.size := handle.Size;
     ExtractFileBase8(filename, singleinfo.name);
     inc(numlumps);
     printf(' adding %s'#13#10, [filename]);
@@ -514,7 +531,7 @@ var
   lumphit: integer;
   ind_A: array[0..IND_MAX - 1] of integer;
 
-  procedure _check_indicator;
+  procedure _check_indicator_desc;
   var
     x: integer;
   begin
@@ -545,7 +562,7 @@ begin
   lumphit := 0;
   for i := numlumps - 1 downto 0 do
   begin
-    _check_indicator;
+    _check_indicator_desc;
     lumpinfo[i].flags := 0;
     for j := 0 to IND_MAX - 1 do
       if ind_A[j] > 0 then
@@ -657,7 +674,7 @@ var
   header: wadinfo_t;
   lumpcount: integer;
   lump_p: Plumpinfo_t;
-  i: integer;
+  i, j: integer;
   handle: TDStream;
   len: integer;
   fileinfo: Pfilelump_tArray;
@@ -787,7 +804,8 @@ begin
 
     lump_p.position := fileinfo[i - start].filepos;
     lump_p.size := fileinfo[i - start].size;
-    lump_p.name := fileinfo[i - start].name;
+    for j := 0 to 7 do
+      lump_p.name[j] := toupper(fileinfo[i - start].name[j]);
     lump_p.flags := 0;
   end;
 
@@ -924,10 +942,10 @@ var
   hash: integer;
 begin
   len := Length(name);
-  if len > 8 then // JVAL: Original an I_Error ocurred. Now we call I_DevError
+  if len > 8 then
   begin
-    I_Warning('W_CheckNumForName(): name string has more than 8 characters: %s'#13#10, [name]);
-    len := 8;
+    result := SH_FindAliasLump(name);
+    exit;
   end;
 
   // make the name into two integers for easy compares
@@ -941,19 +959,27 @@ begin
 
   // JVAL
   // Hash hit factor is at about 80% for standard WADs, good
-  hash := djb2Hash(name8.s);
-  if (lumphash[hash].name.x[0] = v1) and
-     (lumphash[hash].name.x[1] = v2) then
-    if (flags = 0) or (lumpinfo[lumphash[hash].position].flags and flags <> 0) then
+  if lumphash <> nil then
+  begin
+    hash := djb2Hash(name8.s);
+    if (lumphash[hash].name.x[0] = v1) and
+       (lumphash[hash].name.x[1] = v2) then
+      if (flags = 0) or (lumpinfo[lumphash[hash].position].flags and flags <> 0) then
+      begin
+        result := lumphash[hash].position;
+        exit;
+      end;
+
+    // JVAL: If hash position is -1 then the lump does not exist!
+    result := lumphash[hash].position;
+    if result = -1 then
     begin
-      result := lumphash[hash].position;
+      result := SH_FindAliasLump(name);
       exit;
     end;
-
-  // JVAL: If hash position is -1 then the lump does not exist!
-  result := lumphash[hash].position;
-  if result = -1 then
-    exit;
+  end
+  else
+    result := numlumps;
 
   // scan backwards so patch lump files take precedence
   lfirst := @lumpinfo[0];
@@ -973,7 +999,7 @@ begin
   end;
 
   // TFB. Not found.
-  result := -1;
+  result := SH_FindAliasLump(name);
 end;
 
 function W_CheckFirstNumForName(const name: string): integer;
@@ -987,9 +1013,9 @@ var
   llast: Plumpinfo_t;
 begin
   len := Length(name);
-  if len > 8 then // JVAL: Original an I_Error ocurred. Now we call I_DevError
+  if len > 8 then
   begin
-    I_DevError('W_CheckNumForName(): name string has more than 8 characters: %s'#13#10, [name]);
+    I_Warning('W_CheckNumForName(): name string has more than 8 characters: %s'#13#10, [name]);
     len := 8;
   end;
 
@@ -1032,9 +1058,9 @@ var
   hash: integer;
 begin
   len := Length(name);
-  if len > 8 then // JVAL: Original an I_Error ocurred. Now we call I_DevError
+  if len > 8 then
   begin
-    I_DevError('W_CheckNumForName(): name string has more than 8 characters: %s'#13#10, [name]);
+    I_Warning('W_CheckNumForName(): name string has more than 8 characters: %s'#13#10, [name]);
     len := 8;
   end;
 

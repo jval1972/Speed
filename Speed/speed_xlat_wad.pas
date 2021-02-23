@@ -31,12 +31,16 @@ unit speed_xlat_wad;
 
 interface
 
-procedure Speed2WAD(const fin, fout: string);
+uses
+  d_delphi;
+
+procedure Speed2Stream_Game(const fname: string; const handle: TDStream);
+
+procedure Speed2WAD_Game(const fin, fout: string);
 
 implementation
 
 uses
-  d_delphi,
   speed_defs,
   speed_palette,
   speed_patch,
@@ -94,6 +98,7 @@ type
     destructor Destroy; override;
     procedure Convert(const fname: string);
     procedure SavetoFile(const fname: string);
+    procedure SavetoStream(const strm: TDStream);
   end;
 
 constructor TSpeedToWADConverter.Create;
@@ -1780,7 +1785,25 @@ begin
   wadwriter.SaveToFile(fname);
 end;
 
-procedure Speed2WAD(const fin, fout: string);
+procedure TSpeedToWADConverter.SavetoStream(const strm: TDStream);
+begin
+  wadwriter.SaveToStream(strm);
+end;
+
+procedure Speed2Stream_Game(const fname: string; const handle: TDStream);
+var
+  cnv: TSpeedToWADConverter;
+begin
+  cnv := TSpeedToWADConverter.Create;
+  try
+    cnv.Convert(fname);
+    cnv.SavetoStream(handle);
+  finally
+    cnv.Free;
+  end;
+end;
+
+procedure Speed2WAD_Game(const fin, fout: string);
 var
   cnv: TSpeedToWADConverter;
 begin

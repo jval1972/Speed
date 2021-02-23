@@ -146,7 +146,7 @@ var
 {$ENDIF}
 
 type
-  ttype_t = (tString, tInteger, tBoolean, tGroup);
+  ttype_t = (tString, tstring255, tInteger, tBoolean, tGroup);
 
   default_t = record
     name: string;
@@ -160,7 +160,7 @@ type
   Pdefault_t = ^default_t;
 
 const
-  NUMDEFAULTS = {$IFDEF FPC}193{$ELSE}195{$ENDIF};
+  NUMDEFAULTS = {$IFDEF FPC}194{$ELSE}196{$ENDIF};
 
 // JVAL
 // Note: All setable defaults must be in lowercase, don't ask why. Just do it. :)
@@ -1729,7 +1729,7 @@ const
      defaultsvalue: '';
      defaultivalue: 0;
      defaultbvalue: false;
-     _type: tString),
+     _type: tString255),
 
     (name: 'paks_autoload';
      location: @paks_autoload;
@@ -1737,7 +1737,15 @@ const
      defaultsvalue: '';
      defaultivalue: 0;
      defaultbvalue: false;
-     _type: tString)
+     _type: tString255),
+
+    (name: 'speed_jcl_file';
+     location: @speed_jcl_file;
+     setable: DFS_NEVER;
+     defaultsvalue: '';
+     defaultivalue: 0;
+     defaultbvalue: false;
+     _type: tString255)
   );
 
 implementation

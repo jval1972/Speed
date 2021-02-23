@@ -48,8 +48,10 @@ type
     NetPanel: TPanel;
     NetMsgLabel: TLabel;
     AbortNetButton: TButton;
+    OpenDialog1: TOpenDialog;
     procedure FormCreate(Sender: TObject);
     procedure AbortNetButtonClick(Sender: TObject);
+    procedure OpenDialog1CanClose(Sender: TObject; var CanClose: Boolean);
   private
     { Private declarations }
   public
@@ -81,6 +83,8 @@ procedure SUC_SecondaryProgress(const p: integer);
 procedure SUC_StartingNetwork(const msg: string);
 
 procedure SUC_FinishedNetwork;
+
+function SUC_LocateSpeedDataFile: string;
 
 implementation
 
@@ -192,8 +196,16 @@ begin
 end;
 
 procedure TStartUpConsoleForm.FormCreate(Sender: TObject);
+var
+  i: integer;
 begin
   Caption := D_Version + ' - ' + D_VersionBuilt;
+
+  DoubleBuffered := True;
+  for i := 0 to ComponentCount - 1 do
+    if Components[i].InheritsFrom(TWinControl) then
+      if not (Components[i] is TListBox) then
+        (Components[i] as TWinControl).DoubleBuffered := True;
 end;
 
 procedure TStartUpConsoleForm.AbortNetButtonClick(Sender: TObject);
@@ -260,6 +272,36 @@ end;
 procedure SUC_FinishedNetwork;
 begin
   StartUpConsoleForm.NetPanel.Visible := False;
+end;
+
+function SUC_LocateSpeedDataFile: string;
+begin
+  if StartUpConsoleForm.OpenDialog1.Execute then
+    result := StartUpConsoleForm.OpenDialog1.Filename
+  else
+    result := '';
+end;
+
+procedure TStartUpConsoleForm.OpenDialog1CanClose(Sender: TObject;
+  var CanClose: Boolean);
+var
+  f: TFileStream;
+  c: char;
+  i: integer;
+  check: string;
+begin
+  if OpenDialog1.FileName <> '' then
+    if fexists(OpenDialog1.FileName) then
+    begin
+      f := TFileStream.Create(OpenDialog1.FileName, fmOpenRead);
+      try
+        CanClose := f.Size > 100; // ?
+        if not CanClose then
+          ShowMessage('Invalid data file');
+      finally
+        f.Free;
+      end;
+    end;
 end;
 
 end.

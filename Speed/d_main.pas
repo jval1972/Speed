@@ -115,6 +115,7 @@ var
 var
   wads_autoload: string = '';
   paks_autoload: string = '';
+  speed_jcl_file: string[255] = '';
 
 function D_FileInDoomPath(const fn: string): string;
 
@@ -1006,7 +1007,7 @@ begin
 end;
 
 const
-  SYSWAD = 'Doom32.swd';
+  SYSWAD = 'Speed.pk3';
 
 procedure D_AddSystemWAD;
 var
@@ -1014,10 +1015,58 @@ var
 begin
   ddsyswad := D_FileInDoomPath(SYSWAD);
   if fexists(ddsyswad) then
-    D_AddFile(ddsyswad)
+    PAK_AddFile(ddsyswad)
   else
-    I_Warning('D_AddSystemWAD(): System WAD %s not found.'#13#10, [SYSWAD]);
+    I_Warning('D_AddSystemWAD(): System WAD "%s" not found.'#13#10, [SYSWAD]);
 end;
+
+const
+  SPEED_DATA_FILE = 'SPEEDH.JCL';
+  SPEED_DEF_DATA_FILE = 'C:\SPEED\SPEEDH.JC';
+
+// Add SPEEDH.JCL
+procedure D_AddSpeedJCL;
+var
+  jcldat: string;
+  tmpdat: string;
+  p: integer;
+begin
+  p := M_CheckParm('-ijcl');
+  if (p > 0) and (p < myargc) then
+    tmpdat := myargv[p + 1]
+  else
+  begin
+    tmpdat := SPEED_DATA_FILE;
+    if speed_jcl_file <> '' then
+      if fexists(speed_jcl_file) then
+        tmpdat := speed_jcl_file;
+  end;
+
+  jcldat := D_FileInDoomPath(tmpdat);
+
+  if not fexists(speed_jcl_file) then
+    if fexists(SPEED_DEF_DATA_FILE) then
+      jcldat := SPEED_DEF_DATA_FILE;
+
+  if not fexists(jcldat) then
+  begin
+    tmpdat := SUC_LocateSpeedDataFile;
+    if tmpdat <> '' then
+      if fexists(tmpdat) then
+      begin
+        speed_jcl_file := tmpdat;
+        jcldat := tmpdat;
+      end;
+  end;
+
+  if fexists(jcldat) then
+  begin
+    D_AddFile(jcldat);
+  end
+  else
+    I_Warning('D_AddSpeedJCL(): SPEED HASTE data file "%s" not found.'#13#10, [tmpdat]);
+end;
+
 
 var
   doomcwad: string = ''; // Custom main WAD
@@ -1496,12 +1545,8 @@ var
   s1, s2: string;
   kparm: string;
 begin
-  {$IFDEF FPC}
-  outproc := @I_IOprintf;
-  {$ELSE}
   SUC_Open;
   outproc := @SUC_Outproc;
-  {$ENDIF}
   wadfiles := TDSTringList.Create;
 
   printf('Starting %s, %s'#13#10, [D_Version, D_VersionBuilt]);
@@ -1513,18 +1558,25 @@ begin
   C_AddCmd('startthinkers', @D_StartThinkers);
   C_AddCmd('stopthinkers', @D_StopThinkers);
 
-  {$IFNDEF FPC}
   SUC_Progress(1);
-  {$ENDIF}
 
   printf('M_InitArgv: Initializing command line parameters.'#13#10);
   M_InitArgv;
 
-  {$IFNDEF FPC}
   SUC_Progress(2);
-  {$ENDIF}
 
   FindResponseFile;
+
+  if M_CheckParmCDROM then
+  begin
+    printf(D_CDROM);
+    basedefault := CD_WORKDIR + 'Speed.ini';
+  end
+  else
+    basedefault := 'Speed.ini';
+
+  printf('M_LoadDefaults: Load system defaults.'#13#10);
+  M_LoadDefaults;              // load before initing other systems
 
   printf('I_InitializeIO: Initializing input/output streams.'#13#10);
   I_InitializeIO;
@@ -1532,18 +1584,15 @@ begin
   printf('I_InitTempFiles: Initializing temporary file managment.'#13#10);
   I_InitTempFiles;
 
-  {$IFNDEF FPC}
   SUC_Progress(3);
-  {$ENDIF}
 
   D_AddSystemWAD; // Add system wad first
 
-  {$IFNDEF FPC}
+
   SUC_Progress(5);
-  {$ENDIF}
 
   IdentifyVersion;
-
+  D_AddSpeedJCL; // Add SPEEDH.JCL
   modifiedgame := false;
 
   nomonsters := M_CheckParm('-nomonsters') > 0;
@@ -1553,9 +1602,7 @@ begin
   hackshareware := M_CheckParm('-hackshareware') > 0;
   debugmode := M_CheckParm('-debugmode') > 0;
 
-  {$IFNDEF FPC}
   SUC_Progress(6);
-  {$ENDIF}
 
   if M_CheckParm('-altdeath') > 0 then
     deathmatch := 2
@@ -1606,12 +1653,6 @@ begin
   if devparm then
     printf(D_DEVSTR);
 
-  if M_CheckParmCDROM then
-  begin
-    printf(D_CDROM);
-    basedefault := CD_WORKDIR + {$IFDEF FPC}'Doom32f.ini'{$ELSE}'Doom32.ini'{$ENDIF};
-  end;
-
   // turbo option
   p := M_CheckParm('-turbo');
   if p <> 0 then
@@ -1634,9 +1675,7 @@ begin
     sidemove[1] := sidemove[1] * scale div 100;
   end;
 
-  {$IFNDEF FPC}
   SUC_Progress(7);
-  {$ENDIF}
 
   // add any files specified on the command line with -file wadfile
   // to the wad list
@@ -1675,45 +1714,33 @@ begin
     D_AddFile(filename);
   end;
 
-  {$IFNDEF FPC}
   SUC_Progress(8);
-  {$ENDIF}
 
   D_AddWADFiles('-file');
   for p := 1 to 9 do
     D_AddWADFiles('-file' + itoa(p));
   D_AddWADFiles('-lfile');  // JVAL launcher specific
 
-  {$IFNDEF FPC}
   SUC_Progress(9);
-  {$ENDIF}
 
   printf('PAK_InitFileSystem: Init PAK/ZIP/PK3/PK4 files.'#13#10);
   PAK_InitFileSystem;
 
-  {$IFNDEF FPC}
   SUC_Progress(10);
-  {$ENDIF}
 
   PAK_LoadPendingPaks;
 
-  {$IFNDEF FPC}
   SUC_Progress(11);
-  {$ENDIF}
 
   D_AddPAKFiles('-pakfile');
   for p := 1 to 9 do
     D_AddPAKFiles('-pakfile' + itoa(p));
 
-  {$IFNDEF FPC}
   SUC_Progress(15);
-  {$ENDIF}
 
   D_AddPAKFiles('-lpakfile'); // JVAL launcher specific
 
-  {$IFNDEF FPC}
   SUC_Progress(16);
-  {$ENDIF}
 
   p := M_CheckParm('-playdemo');
 
@@ -1763,15 +1790,10 @@ begin
   if (p <> 0) and (p <= myargc - 1) and (deathmatch <> 0) then
     printf('Austin Virtual Gaming: Levels will end after 20 minutes'#13#10);
 
-  printf('M_LoadDefaults: Load system defaults.'#13#10);
-  M_LoadDefaults;              // load before initing other systems
-
   D_WadsAutoLoad(wads_autoload);
   D_PaksAutoload(paks_autoload);
 
-  {$IFNDEF FPC}
   SUC_Progress(20);
-  {$ENDIF}
 
   p := M_CheckParm('-fullscreen');
   if (p <> 0) and (p <= myargc - 1) then
@@ -1902,9 +1924,13 @@ begin
     SCREENWIDTH := atoi(s1);
     if SCREENWIDTH > MAXWIDTH then
       SCREENWIDTH := MAXWIDTH;
+    if SCREENWIDTH < MINHEIGHT then
+      SCREENWIDTH := MINHEIGHT;
     SCREENHEIGHT := atoi(s2);
     if SCREENHEIGHT > MAXHEIGHT then
       SCREENHEIGHT := MAXHEIGHT;
+    if SCREENHEIGHT < MINHEIGHT then
+      SCREENHEIGHT := MINHEIGHT;
   end;
 
   p := M_CheckParm('-fullhd');
@@ -2151,6 +2177,9 @@ begin
 
   printf('SC_Init: Initializing script engine.'#13#10);
   SC_Init;
+
+  SUC_Progress(42);
+
   // JVAL: PascalScript
   printf('PS_Init: Initializing pascal script compiler.'#13#10);
   PS_Init;
@@ -2169,9 +2198,7 @@ begin
     SC_ParseActordefLumps;
   end;
 
-  {$IFNDEF FPC}
   SUC_Progress(45);
-  {$ENDIF}
 
   if M_CheckParm('-nowaddehacked') = 0 then
     if not DEH_ParseLumpName('DEHACKED') then
@@ -2190,23 +2217,17 @@ begin
     if startmsg[i] <> '' then
       printf('%s'#13#10, [startmsg[i]]);
 
-  {$IFNDEF FPC}
   SUC_Progress(51);
-  {$ENDIF}
 
   printf('T_Init: Initializing texture manager.'#13#10);
   T_Init;
 
-  {$IFNDEF FPC}
   SUC_Progress(55);
-  {$ENDIF}
 
   printf('V_Init: allocate screens.'#13#10);
   V_Init;
 
-  {$IFNDEF FPC}
   SUC_Progress(56);
-  {$ENDIF}
 
   printf('AM_Init: initializing automap.'#13#10);
   AM_Init;
@@ -2214,9 +2235,7 @@ begin
   printf('MObj_Init: initializing mobj commands.'#13#10);
   MObj_Init;
 
-  {$IFNDEF FPC}
   SUC_Progress(57);
-  {$ENDIF}
 
   p := M_CheckParm('-autoexec');
   if (p <> 0) and (p < myargc - 1) then
@@ -2227,9 +2246,7 @@ begin
   printf('M_InitMenus: Initializing menus.'#13#10);
   M_InitMenus;
 
-  {$IFNDEF FPC}
   SUC_Progress(58);
-  {$ENDIF}
 
   if gamemode = indetermined then
   begin
@@ -2319,16 +2336,12 @@ begin
     {$ENDIF}
   end;
 
-  {$IFNDEF FPC}
   SUC_Progress(59);
-  {$ENDIF}
 
   printf('D_IdentifyGameDirectories: Identify game directories.'#13#10);
   D_IdentifyGameDirectories;
 
-  {$IFNDEF FPC}
   SUC_Progress(60);
-  {$ENDIF}
 
   p := M_CheckParm('-warp');
   if (p <> 0) and (p < myargc - 1) then
@@ -2349,9 +2362,7 @@ begin
     end;
   end;
 
-  {$IFNDEF FPC}
   SUC_Progress(61);
-  {$ENDIF}
 
   // Check for -file in shareware
   // JVAL
@@ -2403,16 +2414,14 @@ begin
     if showmessageboxonmodified then
     begin
       oldoutproc := outproc;
-      I_IOSetWindowHandle({$IFDEF FPC}0{$ELSE}SUC_GetHandle{$ENDIF});
+      I_IOSetWindowHandle(SUC_GetHandle);
       outproc := @I_IOMessageBox; // Print the message again to messagebox
       printf(MSG_MODIFIEDGAME);
       outproc := oldoutproc;
     end;
   end;
 
-  {$IFNDEF FPC}
   SUC_Progress(65);
-  {$ENDIF}
 
   case gamemode of
     shareware,
@@ -2458,7 +2467,7 @@ begin
 
   SUC_Progress(69);
 
-  printf('R_Init: Init DOOM refresh daemon.'#13#10);
+  printf('R_Init: Init Rendering Engine.'#13#10);
   R_Init;
 
   SUC_Progress(80);
@@ -2535,8 +2544,9 @@ begin
       M_SetKeyboardMode(2);
   end;
 
-  // JVAL: PascalScript
   SUC_Progress(97);
+
+  // JVAL: PascalScript
   printf('PS_CompileAllScripts: Compiling all scripts.'#13#10);
   PS_CompileAllScripts;
 
@@ -2595,7 +2605,7 @@ begin
   C_ShutDown;
   printf('P_ShutDown: Shut down Playloop state.'#13#10);
   P_ShutDown;
-  printf('R_ShutDown: Shut down DOOM refresh daemon.');
+  printf('R_ShutDown: Shut down Rendering Engine.');
   R_ShutDown;
   printf('Info_ShutDownRandom: Shut down randomizers.'#13#10);
   Info_ShutDownRandom;
@@ -2606,7 +2616,7 @@ begin
   printf('SC_ShutDown: Shut down script engine.'#13#10);
   SC_ShutDown;
   // JVAL: PascalScript
-  printf('PS_ShutDown: Shut down pascal script compiler.'#13#10);
+  printf('PS_ShutDown: Shut down PascalScript compiler.'#13#10);
   PS_ShutDown;
   printf('DEH_ShutDown: Shut down dehacked subsystem.'#13#10);
   DEH_ShutDown;

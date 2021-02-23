@@ -8,7 +8,7 @@ object StartUpConsoleForm: TStartUpConsoleForm
   ClientHeight = 361
   ClientWidth = 624
   Color = clBtnFace
-  Font.Charset = GREEK_CHARSET
+  Font.Charset = ANSI_CHARSET
   Font.Color = clWindowText
   Font.Height = -13
   Font.Name = 'Arial'
@@ -1058,7 +1058,7 @@ object StartUpConsoleForm: TStartUpConsoleForm
     Cursor = crHourGlass
     Align = alClient
     Color = 4210752
-    Font.Charset = GREEK_CHARSET
+    Font.Charset = ANSI_CHARSET
     Font.Color = clWhite
     Font.Height = -11
     Font.Name = 'Courier New'
@@ -1067,9 +1067,8 @@ object StartUpConsoleForm: TStartUpConsoleForm
       '')
     ParentFont = False
     ReadOnly = True
-    ScrollBars = ssBoth
+    ScrollBars = ssVertical
     TabOrder = 0
-    WordWrap = False
   end
   object GamePanel: TPanel
     Left = 0
@@ -1143,5 +1142,14 @@ object StartUpConsoleForm: TStartUpConsoleForm
       TabOrder = 0
       OnClick = AbortNetButtonClick
     end
+  end
+  object OpenDialog1: TOpenDialog
+    FileName = 'SPEEDH.JCL'
+    Filter = 'SPEEDH.JCL|SPEEDH.JCL|JCL files (*.jcl)|*.jcl|All files (*.*)|*.*'
+    Options = [ofHideReadOnly, ofNoChangeDir, ofPathMustExist, ofFileMustExist, ofEnableSizing]
+    Title = 'Locate SPEEDH.JCL file'
+    OnCanClose = OpenDialog1CanClose
+    Left = 112
+    Top = 208
   end
 end
