@@ -2181,7 +2181,7 @@ begin
   SUC_Progress(42);
 
   // JVAL: PascalScript
-  printf('PS_Init: Initializing pascal script compiler.'#13#10);
+  printf('PS_Init: Initializing PascalScript compiler.'#13#10);
   PS_Init;
 
   SUC_Progress(43);
