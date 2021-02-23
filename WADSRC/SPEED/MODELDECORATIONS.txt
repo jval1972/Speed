@@ -8,7 +8,6 @@ ACTOR MT_XPR040 64
   Health 1000000
   Mass 1000000
   Reactiontime 8
-  NOBLOCKMAP
   States
   {
     Spawn:
@@ -30,7 +29,6 @@ ACTOR MT_XPR041 65
   Health 1000000
   Mass 1000000
   Reactiontime 8
-  NOBLOCKMAP
   States
   {
     Spawn:
@@ -52,7 +50,6 @@ ACTOR MT_XPR042 66
   Health 1000000
   Mass 1000000
   Reactiontime 8
-  NOBLOCKMAP
   States
   {
     Spawn:
@@ -74,7 +71,6 @@ ACTOR MT_XPR043 67
   Health 1000000
   Mass 1000000
   Reactiontime 8
-  NOBLOCKMAP
   States
   {
     Spawn:
@@ -96,7 +92,6 @@ ACTOR MT_XPR044 68
   Health 1000000
   Mass 1000000
   Reactiontime 8
-  NOBLOCKMAP
   States
   {
     Spawn:
@@ -118,7 +113,6 @@ ACTOR MT_XPR045 69
   Health 1000000
   Mass 1000000
   Reactiontime 8
-  NOBLOCKMAP
   States
   {
     Spawn:
@@ -140,7 +134,6 @@ ACTOR MT_XPR050 80
   Health 1000000
   Mass 1000000
   Reactiontime 8
-  NOBLOCKMAP
   States
   {
     Spawn:
@@ -162,7 +155,6 @@ ACTOR MT_XPR051 81
   Health 1000000
   Mass 1000000
   Reactiontime 8
-  NOBLOCKMAP
   States
   {
     Spawn:
@@ -184,7 +176,6 @@ ACTOR MT_XPR052 82
   Health 1000000
   Mass 1000000
   Reactiontime 8
-  NOBLOCKMAP
   States
   {
     Spawn:
@@ -206,7 +197,6 @@ ACTOR MT_XPR053 83
   Health 1000000
   Mass 1000000
   Reactiontime 8
-  NOBLOCKMAP
   States
   {
     Spawn:
@@ -228,7 +218,6 @@ ACTOR MT_XPR054 84
   Health 1000000
   Mass 1000000
   Reactiontime 8
-  NOBLOCKMAP
   States
   {
     Spawn:
@@ -250,7 +239,6 @@ ACTOR MT_XPR055 85
   Health 1000000
   Mass 1000000
   Reactiontime 8
-  NOBLOCKMAP
   States
   {
     Spawn:
@@ -272,7 +260,6 @@ ACTOR MT_XPR056 86
   Health 1000000
   Mass 1000000
   Reactiontime 8
-  NOBLOCKMAP
   States
   {
     Spawn:
@@ -294,7 +281,6 @@ ACTOR MT_XPR057 87
   Health 1000000
   Mass 1000000
   Reactiontime 8
-  NOBLOCKMAP
   States
   {
     Spawn:
@@ -316,7 +302,6 @@ ACTOR MT_XPR058 88
   Health 1000000
   Mass 1000000
   Reactiontime 8
-  NOBLOCKMAP
   States
   {
     Spawn:
@@ -338,7 +323,6 @@ ACTOR MT_XPR059 89
   Health 1000000
   Mass 1000000
   Reactiontime 8
-  NOBLOCKMAP
   States
   {
     Spawn:
@@ -360,7 +344,6 @@ ACTOR MT_XPR05A 90
   Health 1000000
   Mass 1000000
   Reactiontime 8
-  NOBLOCKMAP
   States
   {
     Spawn:
@@ -382,7 +365,6 @@ ACTOR MT_XPR05B 91
   Health 1000000
   Mass 1000000
   Reactiontime 8
-  NOBLOCKMAP
   States
   {
     Spawn:
@@ -404,7 +386,6 @@ ACTOR MT_XPR05C 92
   Health 1000000
   Mass 1000000
   Reactiontime 8
-  NOBLOCKMAP
   States
   {
     Spawn:
@@ -426,7 +407,6 @@ ACTOR MT_XPR060 96
   Health 1000000
   Mass 1000000
   Reactiontime 8
-  NOBLOCKMAP
   States
   {
     Spawn:
@@ -448,7 +428,6 @@ ACTOR MT_XPR061 97
   Health 1000000
   Mass 1000000
   Reactiontime 8
-  NOBLOCKMAP
   States
   {
     Spawn:
@@ -470,7 +449,6 @@ ACTOR MT_XPR070 112
   Health 1000000
   Mass 1000000
   Reactiontime 8
-  NOBLOCKMAP
   States
   {
     Spawn:
@@ -492,7 +470,6 @@ ACTOR MT_XPR071 113
   Health 1000000
   Mass 1000000
   Reactiontime 8
-  NOBLOCKMAP
   States
   {
     Spawn:
@@ -514,7 +491,6 @@ ACTOR MT_XPR080 128
   Health 1000000
   Mass 1000000
   Reactiontime 8
-  NOBLOCKMAP
   States
   {
     Spawn:
@@ -536,7 +512,6 @@ ACTOR MT_XPR081 129
   Health 1000000
   Mass 1000000
   Reactiontime 8
-  NOBLOCKMAP
   States
   {
     Spawn:
@@ -558,7 +533,6 @@ ACTOR MT_XPR090 144
   Health 1000000
   Mass 1000000
   Reactiontime 8
-  NOBLOCKMAP
   States
   {
     Spawn:
