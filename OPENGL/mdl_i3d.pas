@@ -111,11 +111,11 @@ begin
     ext[Length(ext) - 1] := 'x';
     ext[Length(ext) - 0] := 't';
 
-    strm := TPakStream.Create(fname, pm_prefered, gamedirectories);
+    strm := TPakStream.Create(ext, pm_prefered, gamedirectories);
     if strm.IOResult <> 0 then
     begin
       strm.Free;
-      strm := TPakStream.Create(fname, pm_short, '', FOLDER_MODELS);
+      strm := TPakStream.Create(ext, pm_short, '', FOLDER_MODELS);
     end;
     if strm.IOResult = 0 then
       fmdl.LoadCorrectionsFromStream(strm);
