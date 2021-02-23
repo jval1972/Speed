@@ -1,0 +1,518 @@
+///////////////////////////////
+// MT_XPR040
+///////////////////////////////
+modeldef "XPR040.I3D"
+{
+  xoffset 0.0
+  yoffset 0.0
+  zoffset 0.0
+  xscale 0.1
+  yscale 0.1
+  zscale 0.1
+}
+
+state "S_MT_XPR0400"
+{
+  model "XPR040.I3D"
+  frame 0
+}
+
+
+///////////////////////////////
+// MT_XPR041
+///////////////////////////////
+modeldef "XPR041.I3D"
+{
+  xoffset 0.0
+  yoffset 0.0
+  zoffset 0.0
+  xscale 0.1
+  yscale 0.1
+  zscale 0.1
+}
+
+state "S_MT_XPR0410"
+{
+  model "XPR041.I3D"
+  frame 0
+}
+
+
+///////////////////////////////
+// MT_XPR042
+///////////////////////////////
+modeldef "XPR042.I3D"
+{
+  xoffset 0.0
+  yoffset 0.0
+  zoffset 0.0
+  xscale 0.1
+  yscale 0.1
+  zscale 0.1
+}
+
+state "S_MT_XPR0420"
+{
+  model "XPR042.I3D"
+  frame 0
+}
+
+
+///////////////////////////////
+// MT_XPR043
+///////////////////////////////
+modeldef "XPR043.I3D"
+{
+  xoffset 0.0
+  yoffset 0.0
+  zoffset 0.0
+  xscale 0.1
+  yscale 0.1
+  zscale 0.1
+}
+
+state "S_MT_XPR0430"
+{
+  model "XPR043.I3D"
+  frame 0
+}
+
+
+///////////////////////////////
+// MT_XPR044
+///////////////////////////////
+modeldef "XPR044.I3D"
+{
+  xoffset 0.0
+  yoffset 0.0
+  zoffset 0.0
+  xscale 0.1
+  yscale 0.1
+  zscale 0.1
+}
+
+state "S_MT_XPR0440"
+{
+  model "XPR044.I3D"
+  frame 0
+}
+
+
+///////////////////////////////
+// MT_XPR045
+///////////////////////////////
+modeldef "XPR045.I3D"
+{
+  xoffset 0.0
+  yoffset 0.0
+  zoffset 0.0
+  xscale 0.1
+  yscale 0.1
+  zscale 0.1
+}
+
+state "S_MT_XPR0450"
+{
+  model "XPR045.I3D"
+  frame 0
+}
+
+
+///////////////////////////////
+// MT_XPR050
+///////////////////////////////
+modeldef "XPR050.I3D"
+{
+  xoffset 0.0
+  yoffset 0.0
+  zoffset 0.0
+  xscale 0.1
+  yscale 0.1
+  zscale 0.1
+}
+
+state "S_MT_XPR0500"
+{
+  model "XPR050.I3D"
+  frame 0
+}
+
+
+///////////////////////////////
+// MT_XPR051
+///////////////////////////////
+modeldef "XPR051.I3D"
+{
+  xoffset 0.0
+  yoffset 0.0
+  zoffset 0.0
+  xscale 0.1
+  yscale 0.1
+  zscale 0.1
+}
+
+state "S_MT_XPR0510"
+{
+  model "XPR051.I3D"
+  frame 0
+}
+
+
+///////////////////////////////
+// MT_XPR052
+///////////////////////////////
+modeldef "XPR052.I3D"
+{
+  xoffset 0.0
+  yoffset 0.0
+  zoffset 0.0
+  xscale 0.1
+  yscale 0.1
+  zscale 0.1
+}
+
+state "S_MT_XPR0520"
+{
+  model "XPR052.I3D"
+  frame 0
+}
+
+
+///////////////////////////////
+// MT_XPR053
+///////////////////////////////
+modeldef "XPR053.I3D"
+{
+  xoffset 0.0
+  yoffset 0.0
+  zoffset 0.0
+  xscale 0.1
+  yscale 0.1
+  zscale 0.1
+}
+
+state "S_MT_XPR0530"
+{
+  model "XPR053.I3D"
+  frame 0
+}
+
+
+///////////////////////////////
+// MT_XPR054
+///////////////////////////////
+modeldef "XPR054.I3D"
+{
+  xoffset 0.0
+  yoffset 0.0
+  zoffset 0.0
+  xscale 0.1
+  yscale 0.1
+  zscale 0.1
+}
+
+state "S_MT_XPR0540"
+{
+  model "XPR054.I3D"
+  frame 0
+}
+
+
+///////////////////////////////
+// MT_XPR055
+///////////////////////////////
+modeldef "XPR055.I3D"
+{
+  xoffset 0.0
+  yoffset 0.0
+  zoffset 0.0
+  xscale 0.1
+  yscale 0.1
+  zscale 0.1
+}
+
+state "S_MT_XPR0550"
+{
+  model "XPR055.I3D"
+  frame 0
+}
+
+
+///////////////////////////////
+// MT_XPR056
+///////////////////////////////
+modeldef "XPR056.I3D"
+{
+  xoffset 0.0
+  yoffset 0.0
+  zoffset 0.0
+  xscale 0.1
+  yscale 0.1
+  zscale 0.1
+}
+
+state "S_MT_XPR0560"
+{
+  model "XPR056.I3D"
+  frame 0
+}
+
+
+///////////////////////////////
+// MT_XPR057
+///////////////////////////////
+modeldef "XPR057.I3D"
+{
+  xoffset 0.0
+  yoffset 0.0
+  zoffset 0.0
+  xscale 0.1
+  yscale 0.1
+  zscale 0.1
+}
+
+state "S_MT_XPR0570"
+{
+  model "XPR057.I3D"
+  frame 0
+}
+
+
+///////////////////////////////
+// MT_XPR058
+///////////////////////////////
+modeldef "XPR058.I3D"
+{
+  xoffset 0.0
+  yoffset 0.0
+  zoffset 0.0
+  xscale 0.1
+  yscale 0.1
+  zscale 0.1
+}
+
+state "S_MT_XPR0580"
+{
+  model "XPR058.I3D"
+  frame 0
+}
+
+
+///////////////////////////////
+// MT_XPR059
+///////////////////////////////
+modeldef "XPR059.I3D"
+{
+  xoffset 0.0
+  yoffset 0.0
+  zoffset 0.0
+  xscale 0.1
+  yscale 0.1
+  zscale 0.1
+}
+
+state "S_MT_XPR0590"
+{
+  model "XPR059.I3D"
+  frame 0
+}
+
+
+///////////////////////////////
+// MT_XPR05A
+///////////////////////////////
+modeldef "XPR05A.I3D"
+{
+  xoffset 0.0
+  yoffset 0.0
+  zoffset 0.0
+  xscale 0.1
+  yscale 0.1
+  zscale 0.1
+}
+
+state "S_MT_XPR05A0"
+{
+  model "XPR05A.I3D"
+  frame 0
+}
+
+
+///////////////////////////////
+// MT_XPR05B
+///////////////////////////////
+modeldef "XPR05B.I3D"
+{
+  xoffset 0.0
+  yoffset 0.0
+  zoffset 0.0
+  xscale 0.1
+  yscale 0.1
+  zscale 0.1
+}
+
+state "S_MT_XPR05B0"
+{
+  model "XPR05B.I3D"
+  frame 0
+}
+
+
+///////////////////////////////
+// MT_XPR05C
+///////////////////////////////
+modeldef "XPR05C.I3D"
+{
+  xoffset 0.0
+  yoffset 0.0
+  zoffset 0.0
+  xscale 0.1
+  yscale 0.1
+  zscale 0.1
+}
+
+state "S_MT_XPR05C0"
+{
+  model "XPR05C.I3D"
+  frame 0
+}
+
+
+///////////////////////////////
+// MT_XPR060
+///////////////////////////////
+modeldef "XPR060.I3D"
+{
+  xoffset 0.0
+  yoffset 0.0
+  zoffset 0.0
+  xscale 0.1
+  yscale 0.1
+  zscale 0.1
+}
+
+state "S_MT_XPR0600"
+{
+  model "XPR060.I3D"
+  frame 0
+}
+
+
+///////////////////////////////
+// MT_XPR061
+///////////////////////////////
+modeldef "XPR061.I3D"
+{
+  xoffset 0.0
+  yoffset 0.0
+  zoffset 0.0
+  xscale 0.1
+  yscale 0.1
+  zscale 0.1
+}
+
+state "S_MT_XPR0610"
+{
+  model "XPR061.I3D"
+  frame 0
+}
+
+
+///////////////////////////////
+// MT_XPR070
+///////////////////////////////
+modeldef "XPR070.I3D"
+{
+  xoffset 0.0
+  yoffset 0.0
+  zoffset 0.0
+  xscale 0.1
+  yscale 0.1
+  zscale 0.1
+}
+
+state "S_MT_XPR0700"
+{
+  model "XPR070.I3D"
+  frame 0
+}
+
+
+///////////////////////////////
+// MT_XPR071
+///////////////////////////////
+modeldef "XPR071.I3D"
+{
+  xoffset 0.0
+  yoffset 0.0
+  zoffset 0.0
+  xscale 0.1
+  yscale 0.1
+  zscale 0.1
+}
+
+state "S_MT_XPR0710"
+{
+  model "XPR071.I3D"
+  frame 0
+}
+
+
+///////////////////////////////
+// MT_XPR080
+///////////////////////////////
+modeldef "XPR080.I3D"
+{
+  xoffset 0.0
+  yoffset 0.0
+  zoffset 0.0
+  xscale 0.1
+  yscale 0.1
+  zscale 0.1
+}
+
+state "S_MT_XPR0800"
+{
+  model "XPR080.I3D"
+  frame 0
+}
+
+
+///////////////////////////////
+// MT_XPR081
+///////////////////////////////
+modeldef "XPR081.I3D"
+{
+  xoffset 0.0
+  yoffset 0.0
+  zoffset 0.0
+  xscale 0.1
+  yscale 0.1
+  zscale 0.1
+}
+
+state "S_MT_XPR0810"
+{
+  model "XPR081.I3D"
+  frame 0
+}
+
+
+///////////////////////////////
+// MT_XPR090
+///////////////////////////////
+modeldef "XPR090.I3D"
+{
+  xoffset 0.0
+  yoffset 0.0
+  zoffset 0.0
+  xscale 0.1
+  yscale 0.1
+  zscale 0.1
+}
+
+state "S_MT_XPR0900"
+{
+  model "XPR090.I3D"
+  frame 0
+}
