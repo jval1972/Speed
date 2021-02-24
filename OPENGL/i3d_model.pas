@@ -70,6 +70,8 @@ type
     fselected: integer;
     corrections: PI3dModelCorrectionArray;
     numcorrections: integer;
+    defPos: R3D_TPosVector;
+    defRot: R3D_TAngles;
   protected
     function GetNumFaces: integer; virtual;
     function GetFace(Index: Integer): O3DM_TFace_p; virtual;
@@ -109,6 +111,12 @@ uses
 constructor TI3DModelLoader.Create;
 begin
   Inherited Create;
+  defPos[0] := 0;
+  defPos[1] := 0;
+  defPos[2] := 0;
+  defRot[0] := 0;
+  defRot[1] := 0;
+  defRot[2] := 0;
   obj := nil;
   objsize := 0;
   numtextures := 0;
@@ -179,8 +187,21 @@ begin
   obj.normals := _OF(obj.normals);
   obj.facecache := _OF(obj.facecache);
   obj.materials := _OF(obj.materials);
-  obj.pos := _OF(obj.pos);
-  obj.rot := _OF(obj.rot);
+  if obj.pos = nil then
+    obj.pos := @defPos
+  else
+    obj.pos := _OF(obj.pos);
+  if obj.rot = nil then
+    obj.rot := @defRot
+  else
+    obj.rot := _OF(obj.rot);
+
+  if obj.scx = 0 then
+    obj.scx := DEF_I3D_SCALE;
+  if obj.scy = 0 then
+    obj.scy := DEF_I3D_SCALE;
+  if obj.scz = 0 then
+    obj.scz := DEF_I3D_SCALE;
 
   GetMem(objfaces, obj.nFaces * SizeOf(O3DM_TFace));
 
@@ -607,7 +628,11 @@ var
 
   procedure _glvertex(const x, y, z: integer);
   begin
-    glVertex3f(x * scalex + offsetx, y * scaley + offsety, z * scalez + offsetz);
+    glVertex3f(
+      (1.0 * x - obj.dcx) * obj.scx / DEF_I3D_SCALE * scalex + offsetx,
+      (1.0 * y - obj.dcy) * obj.scy / DEF_I3D_SCALE * scaley + offsety,
+      -(1.0 * z - obj.dcz) * obj.scz / DEF_I3D_SCALE * scalez + offsetz
+    );
   end;
 
 begin
