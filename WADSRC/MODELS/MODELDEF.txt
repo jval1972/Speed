@@ -6,9 +6,9 @@ modeldef "XPR040.I3D"
   xoffset 0.0
   yoffset 0.0
   zoffset 0.0
-  xscale 0.0244140625
-  yscale 0.0244140625
-  zscale 0.0244140625
+  xscale 0.01220703125
+  yscale 0.01220703125
+  zscale 0.01220703125
 }
 
 state "S_MT_XPR0400"
@@ -26,9 +26,9 @@ modeldef "XPR041.I3D"
   xoffset 0.0
   yoffset 0.0
   zoffset 0.0
-  xscale 0.0244140625
-  yscale 0.0244140625
-  zscale 0.0244140625
+  xscale 0.01220703125
+  yscale 0.01220703125
+  zscale 0.01220703125
 }
 
 state "S_MT_XPR0410"
@@ -46,9 +46,9 @@ modeldef "XPR042.I3D"
   xoffset 0.0
   yoffset 0.0
   zoffset 0.0
-  xscale 0.0244140625
-  yscale 0.0244140625
-  zscale 0.0244140625
+  xscale 0.01220703125
+  yscale 0.01220703125
+  zscale 0.01220703125
 }
 
 state "S_MT_XPR0420"
@@ -66,9 +66,9 @@ modeldef "XPR043.I3D"
   xoffset 0.0
   yoffset 0.0
   zoffset 0.0
-  xscale 0.0244140625
-  yscale 0.0244140625
-  zscale 0.0244140625
+  xscale 0.01220703125
+  yscale 0.01220703125
+  zscale 0.01220703125
 }
 
 state "S_MT_XPR0430"
@@ -86,9 +86,9 @@ modeldef "XPR044.I3D"
   xoffset 0.0
   yoffset 0.0
   zoffset 0.0
-  xscale 0.0244140625
-  yscale 0.0244140625
-  zscale 0.0244140625
+  xscale 0.01220703125
+  yscale 0.01220703125
+  zscale 0.01220703125
 }
 
 state "S_MT_XPR0440"
@@ -106,9 +106,9 @@ modeldef "XPR045.I3D"
   xoffset 0.0
   yoffset 0.0
   zoffset 0.0
-  xscale 0.0244140625
-  yscale 0.0244140625
-  zscale 0.0244140625
+  xscale 0.01220703125
+  yscale 0.01220703125
+  zscale 0.01220703125
 }
 
 state "S_MT_XPR0450"
@@ -126,9 +126,9 @@ modeldef "XPR050.I3D"
   xoffset 0.0
   yoffset 0.0
   zoffset 0.0
-  xscale 0.0244140625
-  yscale 0.0244140625
-  zscale 0.0244140625
+  xscale 0.01220703125
+  yscale 0.01220703125
+  zscale 0.01220703125
 }
 
 state "S_MT_XPR0500"
@@ -146,9 +146,9 @@ modeldef "XPR051.I3D"
   xoffset 0.0
   yoffset 0.0
   zoffset 0.0
-  xscale 0.0244140625
-  yscale 0.0244140625
-  zscale 0.0244140625
+  xscale 0.01220703125
+  yscale 0.01220703125
+  zscale 0.01220703125
 }
 
 state "S_MT_XPR0510"
@@ -166,9 +166,9 @@ modeldef "XPR052.I3D"
   xoffset 0.0
   yoffset 0.0
   zoffset 0.0
-  xscale 0.0244140625
-  yscale 0.0244140625
-  zscale 0.0244140625
+  xscale 0.01220703125
+  yscale 0.01220703125
+  zscale 0.01220703125
 }
 
 state "S_MT_XPR0520"
@@ -186,9 +186,9 @@ modeldef "XPR053.I3D"
   xoffset 0.0
   yoffset 0.0
   zoffset 0.0
-  xscale 0.0244140625
-  yscale 0.0244140625
-  zscale 0.0244140625
+  xscale 0.01220703125
+  yscale 0.01220703125
+  zscale 0.01220703125
 }
 
 state "S_MT_XPR0530"
@@ -206,9 +206,9 @@ modeldef "XPR054.I3D"
   xoffset 0.0
   yoffset 0.0
   zoffset 0.0
-  xscale 0.0244140625
-  yscale 0.0244140625
-  zscale 0.0244140625
+  xscale 0.01220703125
+  yscale 0.01220703125
+  zscale 0.01220703125
 }
 
 state "S_MT_XPR0540"
@@ -226,9 +226,9 @@ modeldef "XPR055.I3D"
   xoffset 0.0
   yoffset 0.0
   zoffset 0.0
-  xscale 0.0244140625
-  yscale 0.0244140625
-  zscale 0.0244140625
+  xscale 0.01220703125
+  yscale 0.01220703125
+  zscale 0.01220703125
 }
 
 state "S_MT_XPR0550"
@@ -246,9 +246,9 @@ modeldef "XPR056.I3D"
   xoffset 0.0
   yoffset 0.0
   zoffset 0.0
-  xscale 0.0244140625
-  yscale 0.0244140625
-  zscale 0.0244140625
+  xscale 0.01220703125
+  yscale 0.01220703125
+  zscale 0.01220703125
 }
 
 state "S_MT_XPR0560"
@@ -266,9 +266,9 @@ modeldef "XPR057.I3D"
   xoffset 0.0
   yoffset 0.0
   zoffset 0.0
-  xscale 0.0244140625
-  yscale 0.0244140625
-  zscale 0.0244140625
+  xscale 0.01220703125
+  yscale 0.01220703125
+  zscale 0.01220703125
 }
 
 state "S_MT_XPR0570"
@@ -286,9 +286,9 @@ modeldef "XPR058.I3D"
   xoffset 0.0
   yoffset 0.0
   zoffset 0.0
-  xscale 0.0244140625
-  yscale 0.0244140625
-  zscale 0.0244140625
+  xscale 0.01220703125
+  yscale 0.01220703125
+  zscale 0.01220703125
 }
 
 state "S_MT_XPR0580"
@@ -306,9 +306,9 @@ modeldef "XPR059.I3D"
   xoffset 0.0
   yoffset 0.0
   zoffset 0.0
-  xscale 0.0244140625
-  yscale 0.0244140625
-  zscale 0.0244140625
+  xscale 0.01220703125
+  yscale 0.01220703125
+  zscale 0.01220703125
 }
 
 state "S_MT_XPR0590"
@@ -326,9 +326,9 @@ modeldef "XPR05A.I3D"
   xoffset 0.0
   yoffset 0.0
   zoffset 0.0
-  xscale 0.0244140625
-  yscale 0.0244140625
-  zscale 0.0244140625
+  xscale 0.01220703125
+  yscale 0.01220703125
+  zscale 0.01220703125
 }
 
 state "S_MT_XPR05A0"
@@ -346,9 +346,9 @@ modeldef "XPR05B.I3D"
   xoffset 0.0
   yoffset 0.0
   zoffset 0.0
-  xscale 0.0244140625
-  yscale 0.0244140625
-  zscale 0.0244140625
+  xscale 0.01220703125
+  yscale 0.01220703125
+  zscale 0.01220703125
 }
 
 state "S_MT_XPR05B0"
@@ -366,9 +366,9 @@ modeldef "XPR05C.I3D"
   xoffset 0.0
   yoffset 0.0
   zoffset 0.0
-  xscale 0.0244140625
-  yscale 0.0244140625
-  zscale 0.0244140625
+  xscale 0.01220703125
+  yscale 0.01220703125
+  zscale 0.01220703125
 }
 
 state "S_MT_XPR05C0"
@@ -386,9 +386,9 @@ modeldef "XPR060.I3D"
   xoffset 0.0
   yoffset 0.0
   zoffset 0.0
-  xscale 0.0244140625
-  yscale 0.0244140625
-  zscale 0.0244140625
+  xscale 0.01220703125
+  yscale 0.01220703125
+  zscale 0.01220703125
 }
 
 state "S_MT_XPR0600"
@@ -406,9 +406,9 @@ modeldef "XPR061.I3D"
   xoffset 0.0
   yoffset 0.0
   zoffset 0.0
-  xscale 0.0244140625
-  yscale 0.0244140625
-  zscale 0.0244140625
+  xscale 0.01220703125
+  yscale 0.01220703125
+  zscale 0.01220703125
 }
 
 state "S_MT_XPR0610"
@@ -426,9 +426,9 @@ modeldef "XPR070.I3D"
   xoffset 0.0
   yoffset 0.0
   zoffset 0.0
-  xscale 0.0244140625
-  yscale 0.0244140625
-  zscale 0.0244140625
+  xscale 0.01220703125
+  yscale 0.01220703125
+  zscale 0.01220703125
 }
 
 state "S_MT_XPR0700"
@@ -446,9 +446,9 @@ modeldef "XPR071.I3D"
   xoffset 0.0
   yoffset 0.0
   zoffset 0.0
-  xscale 0.0244140625
-  yscale 0.0244140625
-  zscale 0.0244140625
+  xscale 0.01220703125
+  yscale 0.01220703125
+  zscale 0.01220703125
 }
 
 state "S_MT_XPR0710"
@@ -466,9 +466,9 @@ modeldef "XPR080.I3D"
   xoffset 0.0
   yoffset 0.0
   zoffset 0.0
-  xscale 0.0244140625
-  yscale 0.0244140625
-  zscale 0.0244140625
+  xscale 0.01220703125
+  yscale 0.01220703125
+  zscale 0.01220703125
 }
 
 state "S_MT_XPR0800"
@@ -486,9 +486,9 @@ modeldef "XPR081.I3D"
   xoffset 0.0
   yoffset 0.0
   zoffset 0.0
-  xscale 0.0244140625
-  yscale 0.0244140625
-  zscale 0.0244140625
+  xscale 0.01220703125
+  yscale 0.01220703125
+  zscale 0.01220703125
 }
 
 state "S_MT_XPR0810"
@@ -506,9 +506,9 @@ modeldef "XPR090.I3D"
   xoffset 0.0
   yoffset 0.0
   zoffset 0.0
-  xscale 0.0244140625
-  yscale 0.0244140625
-  zscale 0.0244140625
+  xscale 0.01220703125
+  yscale 0.01220703125
+  zscale 0.01220703125
 }
 
 state "S_MT_XPR0900"
@@ -516,5 +516,3 @@ state "S_MT_XPR0900"
   model "XPR090.I3D"
   frame 0
 }
-
-
