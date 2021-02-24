@@ -132,12 +132,12 @@ end;
 
 procedure TI3DModel.Draw(const frm1, frm2: integer; const offset: float);
 begin
-  fmdl.RenderGL(fxscale, fyscale, fzscale);
+  fmdl.RenderGL(fxscale, fyscale, fzscale, fxoffset, fyoffset, fzoffset);
 end;
 
 procedure TI3DModel.DrawSimple(const frm: integer);
 begin
-  fmdl.RenderGL(fxscale, fyscale, fzscale);
+  fmdl.RenderGL(fxscale, fyscale, fzscale, fxoffset, fyoffset, fzoffset);
 end;
 
 end.

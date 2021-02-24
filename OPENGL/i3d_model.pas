@@ -82,7 +82,8 @@ type
     function LoadFromFile(const fname: string): boolean;
     procedure Clear;
     function CreateTexture(const m: O3DM_TMaterial_p): integer;
-    function RenderGL(const scalex, scaley, scalez: single): integer;
+    function RenderGL(const scalex, scaley, scalez: single;
+      const offsetx, offsety, offsetz: single): integer;
     function AddCorrection(const face: integer; const vertex: integer; const visible: boolean;
       const x, y, z: integer; const du, dv: single; const c: LongWord): boolean;
     procedure SaveCorrectionsToStream(const strm: TDStream);
@@ -576,7 +577,8 @@ begin
   tv := Round(dv * UVGLCONST);
 end;
 
-function TI3DModelLoader.RenderGL(const scalex, scaley, scalez: single): integer;
+function TI3DModelLoader.RenderGL(const scalex, scaley, scalez: single;
+  const offsetx, offsety, offsetz: single): integer;
 var
   i, j: integer;
   lasttex, newtex: LongWord;
@@ -602,7 +604,7 @@ var
 
   procedure _glvertex(const x, y, z: integer);
   begin
-    glVertex3f(x * scalex, y * scaley, z * scalez);
+    glVertex3f(x * scalex + offsetx, y * scaley + offsety, z * scalez + offsetz);
   end;
 
 begin
