@@ -179,6 +179,8 @@ begin
   obj.normals := _OF(obj.normals);
   obj.facecache := _OF(obj.facecache);
   obj.materials := _OF(obj.materials);
+  obj.pos := _OF(obj.pos);
+  obj.rot := _OF(obj.rot);
 
   GetMem(objfaces, obj.nFaces * SizeOf(O3DM_TFace));
 

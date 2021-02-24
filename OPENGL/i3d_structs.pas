@@ -92,6 +92,9 @@ const
 // -----------------------------------------
 // Disk image of the object.
 
+const
+  DEF_I3D_SCALE = 256 * 2048;
+
 type
   vec3i_t = packed record
     x, y, z: integer;
@@ -242,6 +245,11 @@ type
   O3DM_PFaceArray = packed array[0..$FFF] of O3DM_TFace_p;
   PO3DM_PFaceArray = ^O3DM_PFaceArray;
 
+  R3D_TPosVector = packed array[0..2] of LongWord;
+  R3D_PPosVector = ^R3D_TPosVector;
+
+  R3D_TAngles = packed array[0..2] of word;
+  R3D_PAngles = ^R3D_TAngles;
 
   O3DM_TObject = packed record
     nVerts: word;        // Are rotated and translated.
@@ -256,6 +264,14 @@ type
     normals: PO3DM_TNormalArray;
     facecache: PByteArray;
     materials: PO3DM_TMaterialArray;
+    pos: R3D_PPosVector;
+    rot: R3D_PAngles;
+    scx, scy, scz: Integer;     // Scale factors for the application to handle.
+                                // Recommended format is 16.16.
+                                // But note that they default to 0.
+    dcx, dcy, dcz: Integer;     // Center for the application to handle.
+                                // Recommended format is: same as vertices
+                                // *before* scaling.
   end;
   O3DM_TObject_p = ^O3DM_TObject;
   O3DM_TObjectArray = packed array[0..$FFF] of O3DM_TObject;
