@@ -36,8 +36,7 @@ interface
 
 uses
   d_delphi,
-//  SysUtils,
-//  Classes,
+  dglOpenGL,
   i3d_structs;
 
 type
@@ -59,7 +58,7 @@ type
     obj: O3DM_TObject_p;
     objfaces: PO3DM_TFaceArray;
     objsize: integer;
-    textures: array[0..$7F] of LongWord;  // texid is shortint (-128..127)
+    textures: array[0..$7F] of TGluint; // texid is shortint (-128..127)
     numtextures: integer;
     headers: PO3DM_TFaceHeaderArray;
     materials: PO3DM_TMaterialArray;
@@ -101,7 +100,7 @@ type
 implementation
 
 uses
-  dglOpenGL,
+  gl_defs,
   gl_tex,
   Graphics,
   i3d_palette,
@@ -263,8 +262,9 @@ var
   buffer: PLongWordArrayBuffer;
   i: integer;
   dest: PLongWord;
+  color: LongWord;
   TEXDIMX, TEXDIMY: integer;
-  gltex: LongWord;
+  gltex: TGluint;
   bm: TBitmap;
 begin
   if m.flags and O3DMF_256 <> 0 then
@@ -286,8 +286,9 @@ begin
   dest := @buffer[0];
   for i := 0 to TEXDIMX * TEXDIMY - 1 do
   begin
-    dest^ := I3DPalColorL(m.texture[i]);
-    bm.Canvas.Pixels[i mod TEXDIMX, i div TEXDIMX] := dest^;
+    color := I3DPalColorL(m.texture[i]);
+    bm.Canvas.Pixels[i mod TEXDIMX, i div TEXDIMX] := color;
+    dest^ := color or $FF000000;
     inc(dest);
   end;
 
@@ -296,7 +297,7 @@ begin
   glGenTextures(1, @gltex);
   glBindTexture(GL_TEXTURE_2D, gltex);
 
-  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8,
+  glTexImage2D(GL_TEXTURE_2D, 0, gl_tex_format,
                TEXDIMX, TEXDIMY,
                0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -581,7 +582,7 @@ function TI3DModelLoader.RenderGL(const scalex, scaley, scalez: single;
   const offsetx, offsety, offsetz: single): integer;
 var
   i, j: integer;
-  lasttex, newtex: LongWord;
+  lasttex, newtex: TGluint;
 
   procedure _glcolor(const m: O3DM_TMaterial_p);
   var

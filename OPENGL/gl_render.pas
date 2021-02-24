@@ -4715,6 +4715,7 @@ begin
 
   // Floors and ceilings
   glDisable(GL_BLEND);
+
   for i := gld_drawinfo.num_drawitems downto 0 do
   begin
     pglitem := @gld_drawinfo.drawitems[i];
