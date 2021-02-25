@@ -79,6 +79,7 @@ function GetCRC32(const FileName: string): string;
 
 function GetLumpCRC32(const LumpName: string): string; overload;
 function GetLumpCRC32(const LumpNum: integer): string; overload;
+function GetBufCRC32(const buf: pointer; const bufsize: integer): string;
 
 implementation
 
@@ -160,6 +161,26 @@ begin
   for i := 0 to len - 1 do
     CRC := RecountCRC(b[i], CRC);
   Z_ChangeTag(b, PU_CACHE);
+  CRC := not CRC;
+  result := HextL(CRC);
+end;
+
+function GetBufCRC32(const buf: pointer; const bufsize: integer): string;
+var
+  b: PByteArray;
+  CRC: Cardinal;
+  i, len: integer;
+begin
+  if bufsize <= 0 then
+  begin
+    result := 'DEADDEAD';
+    exit;
+  end;
+  CRC := $FFFFFFFF;
+  b := buf;
+  len := bufsize;
+  for i := 0 to len - 1 do
+    CRC := RecountCRC(b[i], CRC);
   CRC := not CRC;
   result := HextL(CRC);
 end;
