@@ -126,11 +126,11 @@ const
   THNT_HUMANPOS = $1300;
 
 const
-    FLSF_VECTOR  = $0001;
-    FLSF_NOSCALE = $0002;
+  FLSF_VECTOR  = $0001;
+  FLSF_NOSCALE = $0002;
 
-    // Mesh flags (in O3DM_Object).
-    FLOF_HASTIRES = $0001;
+  // Mesh flags (in O3DM_Object).
+  FLOF_HASTIRES = $0001;
 
 function SH_CreateDoomLevel(const prefix: string; const levelname: string;
   const bufmap: pointer; const bufmapsize: integer;
