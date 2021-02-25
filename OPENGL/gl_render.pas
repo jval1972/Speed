@@ -3834,7 +3834,7 @@ begin
       I_Warning('gld_DrawModel(): Can not load model %s'#13#10, [modelinf.name]);
       exit;
     end;
-    modelinf.model.DrawSimple(info.startframe);
+    modelinf.model.DrawSimple(info.startframe, sprite.mo.scale);
     if restoreblend then
       glAlphaFunc(GL_GEQUAL, 0.01);
     if restoreequation then
@@ -3849,21 +3849,21 @@ begin
   begin
     if isgamesuspended then
     begin
-      modelinf.model.DrawSimple(modelinf.model.lastdrawframe);
+      modelinf.model.DrawSimple(modelinf.model.lastdrawframe, sprite.mo.scale);
     end
     else
     begin
       nextframe := gld_FindNextModelFrame(sprite.mo, info.modelidx);
-      modelinf.model.Draw(info.startframe, nextframe, 1.0 - (sprite.mo.tics - ticfrac / FRACUNIT) / sprite.mo.state.tics);
+      modelinf.model.Draw(info.startframe, nextframe, 1.0 - (sprite.mo.tics - ticfrac / FRACUNIT) / sprite.mo.state.tics, sprite.mo.scale);
     end;
   end
   else if gl_smoothmodelmovement and not isgamesuspended and ((sprite.aproxdist < MODELINTERPOLATERANGE) or (modelinf.model.modeltype = mt_dll)) then
   begin
     nextframe := gld_FindNextModelFrame(sprite.mo, info.modelidx);
-    modelinf.model.Draw(info.startframe, nextframe, 1.0 - (sprite.mo.tics - ticfrac / FRACUNIT) / sprite.mo.state.tics);
+    modelinf.model.Draw(info.startframe, nextframe, 1.0 - (sprite.mo.tics - ticfrac / FRACUNIT) / sprite.mo.state.tics, sprite.mo.scale);
   end
   else
-    modelinf.model.DrawSimple(info.startframe);
+    modelinf.model.DrawSimple(info.startframe, sprite.mo.scale);
 
   if restoreblend then
     glAlphaFunc(GL_GEQUAL, 0.01);

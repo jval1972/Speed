@@ -68,8 +68,8 @@ type
     constructor Create(const name, proc: string; const xoffset, yoffset, zoffset,
       xscale, yscale, zscale: float; const additionalframes: TDStringList); virtual;
     destructor Destroy; override;
-    procedure Draw(const frm1, frm2: integer; const offset: float);
-    procedure DrawSimple(const frm: integer);
+    procedure Draw(const frm1, frm2: integer; const offset: float; const scale: fixed_t);
+    procedure DrawSimple(const frm: integer; const scale: fixed_t);
     property modeltype: modeltype_t read fmodeltype;
     property lastdrawframe: integer read flastdrawframe;
   end;
@@ -647,18 +647,32 @@ end;
 
 //------------------------------------------------------------------------------
 
-procedure TModel.Draw(const frm1, frm2: integer; const offset: float);
+procedure TModel.Draw(const frm1, frm2: integer; const offset: float; const scale: fixed_t);
 begin
+  if scale <> FRACUNIT then
+  begin
+    glPushMatrix;
+    glScalef(scale / FRACUNIT, scale / FRACUNIT, scale / FRACUNIT);
+  end;
   fmodel.Draw(frm1, frm2, offset);
   flastdrawframe := Round(frm1 * (1.0 - offset) + frm2 * offset);
+  if scale <> FRACUNIT then
+    glPopMatrix;
 end;
 
 //------------------------------------------------------------------------------
 
-procedure TModel.DrawSimple(const frm: integer);
+procedure TModel.DrawSimple(const frm: integer; const scale: fixed_t);
 begin
+  if scale <> FRACUNIT then
+  begin
+    glPushMatrix;
+    glScalef(scale / FRACUNIT, scale / FRACUNIT, scale / FRACUNIT);
+  end;
   fmodel.DrawSimple(frm);
   flastdrawframe := frm;
+  if scale <> FRACUNIT then
+    glPopMatrix;
 end;
 
 //------------------------------------------------------------------------------
