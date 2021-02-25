@@ -45,6 +45,7 @@ implementation
 
 uses
   doomdata,
+  m_crc32,
   r_defs,
   sc_engine,
   speed_defs,
@@ -132,6 +133,23 @@ const
   // Mesh flags (in O3DM_Object).
   FLOF_HASTIRES = $0001;
 
+function Speed_levelCRC(const aname: string): string;
+var
+  lname: string;
+begin
+  lname := strupper(aname);
+  if lname = 'MAP01' then Result := '46fc71d9'
+  else if lname = 'MAP02' then Result := '94f91b53'
+  else if lname = 'MAP03' then Result := '75100e6e'
+  else if lname = 'MAP04' then Result := '30e731a9'
+  else if lname = 'MAP05' then Result := '876cc30c'
+  else if lname = 'MAP06' then Result := 'af4b978f'
+  else if lname = 'MAP07' then Result := '9308dfe6'
+  else if lname = 'MAP08' then Result := 'ee9e2aa1'
+  else Result := '';
+  Result := strupper(Result);
+end;
+
 function SH_CreateDoomLevel(const prefix: string; const levelname: string;
   const bufmap: pointer; const bufmapsize: integer;
   const bufsec: pointer; const bufsecsize: integer;
@@ -149,6 +167,7 @@ var
   doomsectors: Pmapsector_tArray;
   numdoomsectors: integer;
   sec1: integer;
+  originalspeedlevel: boolean;
 
   procedure AddDoomThingToWad(const x, y: integer; const angle: smallint; const mtype: word; const options: smallint);
   var
@@ -159,6 +178,23 @@ var
 
     mthing.x := xyscale * x;
     mthing.y := xyscale * y;
+
+    mthing.angle := angle;
+    mthing._type := mtype;
+    mthing.options := options;
+
+    inc(numdoomthings);
+  end;
+
+  procedure AddDoomThingToWadUntranslated(const x, y: integer; const angle: smallint; const mtype: word; const options: smallint);
+  var
+    mthing: Pmapthing_t;
+  begin
+    realloc(pointer(doomthings), numdoomthings * SizeOf(mapthing_t), (numdoomthings + 1) * SizeOf(mapthing_t));
+    mthing := @doomthings[numdoomthings];
+
+    mthing.x := x;
+    mthing.y := y;
 
     mthing.angle := angle;
     mthing._type := mtype;
@@ -461,6 +497,36 @@ var
     sc.Free;
   end;
 
+  procedure _move_thing(const oldx, oldy: integer; const newx, newy: integer);
+  var
+    ii: integer;
+  begin
+    for ii := 0 to numdoomthings - 1 do
+      if doomthings[ii].x = oldx then
+        if doomthings[ii].y = oldy then
+        begin
+          doomthings[ii].x := newx;
+          doomthings[ii].y := newy;
+        end;
+  end;
+
+  procedure _do_fixes;
+  begin
+    if levelname = 'MAP01' then
+    begin
+      _move_thing(3656, 716, 3604, 716);
+      _move_thing(3904, 712, 3808, 716);
+      _move_thing(4160, 712, 4010, 716);
+      _move_thing(4416, 712, 4214, 716);
+      _move_thing(4672, 712, 4418, 716);
+      _move_thing(4936, 712, 4622, 716);
+      _move_thing(5184, 712, 4826, 716);
+      _move_thing(5448, 712, 5030, 716);
+      AddDoomThingToWadUntranslated(5234, 716, 90, _SHTH_DECORATION82, 7);
+      AddDoomThingToWadUntranslated(5438, 716, 90, _SHTH_DECORATION82, 7);
+    end;
+  end;
+
 begin
   doomthings := nil;
   numdoomthings := 0;
@@ -473,10 +539,16 @@ begin
   doomsectors := nil;
   numdoomsectors := 0;
 
+
+  originalspeedlevel := Speed_levelCRC(levelname) = strupper(GetBufCRC32(bufmap, bufmapsize));
+
   _do_main_sector;
   _do_dat_file;
   _do_pth_file;
   _do_sec_file;
+
+  if originalspeedlevel then
+    _do_fixes;
 
   wadwriter.AddSeparator(levelname);
   wadwriter.AddData('THINGS', doomthings, numdoomthings * SizeOf(mapthing_t));
