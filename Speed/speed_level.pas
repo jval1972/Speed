@@ -39,7 +39,7 @@ function SH_CreateDoomLevel(const prefix: string; const levelname: string;
   const bufmap: pointer; const bufmapsize: integer;
   const bufsec: pointer; const bufsecsize: integer;
   const bufpath: pointer; const bufpathsize: integer;
-  const xyscale: integer; const wadwriter: TWadWriter): boolean;
+  const xyscale: integer; const extraflat: string; const wadwriter: TWadWriter): boolean;
 
 implementation
 
@@ -154,7 +154,7 @@ function SH_CreateDoomLevel(const prefix: string; const levelname: string;
   const bufmap: pointer; const bufmapsize: integer;
   const bufsec: pointer; const bufsecsize: integer;
   const bufpath: pointer; const bufpathsize: integer;
-  const xyscale: integer; const wadwriter: TWadWriter): boolean;
+  const xyscale: integer; const extraflat: string; const wadwriter: TWadWriter): boolean;
 var
   doomthings: Pmapthing_tArray;
   numdoomthings: integer;
@@ -320,6 +320,43 @@ var
     doomlinedefs[l2].sidenum[0] := AddSidedefToWAD('', '', '', sec1);
     doomlinedefs[l3].sidenum[0] := AddSidedefToWAD('', '', '', sec1);
     doomlinedefs[l4].sidenum[0] := AddSidedefToWAD('', '', '', sec1);
+  end;
+
+  procedure _do_extra_sector;
+  const
+    EXTRA_SECTOR_OFFSET = 1024;
+  var
+    l1, l2, l3, l4: integer;
+    l5, l6, l7, l8: integer;
+    secid: integer;
+  begin
+    secid := AddSectorToWAD(0, 0, extraflat, 'F_SKY1');
+
+    l1 := AddLineToWAD(0, 0, 0, 4096);
+    l2 := AddLineToWAD(0, 4096, 4096, 4096);
+    l3 := AddLineToWAD(4096, 4096, 4096, 0);
+    l4 := AddLineToWAD(4096, 0, 0, 0);
+
+    doomlinedefs[l1].sidenum[1] := AddSidedefToWAD('', '', '', secid);
+    doomlinedefs[l2].sidenum[1] := AddSidedefToWAD('', '', '', secid);
+    doomlinedefs[l3].sidenum[1] := AddSidedefToWAD('', '', '', secid);
+    doomlinedefs[l4].sidenum[1] := AddSidedefToWAD('', '', '', secid);
+
+    doomlinedefs[l1].flags := ML_BLOCKING or ML_TWOSIDED;
+    doomlinedefs[l2].flags := ML_BLOCKING or ML_TWOSIDED;
+    doomlinedefs[l3].flags := ML_BLOCKING or ML_TWOSIDED;
+    doomlinedefs[l4].flags := ML_BLOCKING or ML_TWOSIDED;
+
+    l5 := AddLineToWAD(-EXTRA_SECTOR_OFFSET, -EXTRA_SECTOR_OFFSET, -EXTRA_SECTOR_OFFSET, 4096 + EXTRA_SECTOR_OFFSET);
+    l6 := AddLineToWAD(-EXTRA_SECTOR_OFFSET, 4096 + EXTRA_SECTOR_OFFSET, 4096 + EXTRA_SECTOR_OFFSET, 4096 + EXTRA_SECTOR_OFFSET);
+    l7 := AddLineToWAD(4096 + EXTRA_SECTOR_OFFSET, 4096 + EXTRA_SECTOR_OFFSET, 4096 + EXTRA_SECTOR_OFFSET, -EXTRA_SECTOR_OFFSET);
+    l8 := AddLineToWAD(4096 + EXTRA_SECTOR_OFFSET, -EXTRA_SECTOR_OFFSET, -EXTRA_SECTOR_OFFSET, -EXTRA_SECTOR_OFFSET);
+
+    doomlinedefs[l5].sidenum[0] := AddSidedefToWAD('', '', '', secid);
+    doomlinedefs[l6].sidenum[0] := AddSidedefToWAD('', '', '', secid);
+    doomlinedefs[l7].sidenum[0] := AddSidedefToWAD('', '', '', secid);
+    doomlinedefs[l8].sidenum[0] := AddSidedefToWAD('', '', '', secid);
+
   end;
 
   procedure _do_dat_file;
@@ -546,6 +583,7 @@ begin
   _do_dat_file;
   _do_pth_file;
   _do_sec_file;
+  _do_extra_sector;
 
   if originalspeedlevel then
     _do_fixes;

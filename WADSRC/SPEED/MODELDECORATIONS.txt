@@ -360,11 +360,12 @@ ACTOR MT_XPR05A 90
 ///////////////////////////////
 ACTOR MT_XPR05B 91
 {
-  Radius 100
-  Height 100
+  Radius 200
+  Height 200
   Health 1000000
   Mass 1000000
   Reactiontime 8
+  Scale 2.0
   States
   {
     Spawn:
@@ -428,6 +429,7 @@ ACTOR MT_XPR061 97
   Health 1000000
   Mass 1000000
   Reactiontime 8
+  Scale 4
   States
   {
     Spawn:
