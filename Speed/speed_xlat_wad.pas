@@ -40,6 +40,7 @@ procedure Speed2WAD_Game(const fin, fout: string);
 
 const
   SPEED_LEVEL_SCALE = 2;
+  NUM_SPEED_MAPS = 8;
 
 implementation
 
@@ -76,6 +77,7 @@ type
     textures: TDStringList;
     numflats: integer;
     ffilename: string;
+    extramapflats: array[0..NUM_SPEED_MAPS - 1] of string;
   protected
     function ReadLump(const l: Pspeedlump_tArray; const numl: integer;
       const lmp: string; var buf: pointer; var size: integer): boolean;
@@ -641,7 +643,8 @@ end;
 
 function TSpeedToWADConverter.GenerateLevels(const scale: integer): boolean;
 
-  function _makelevel(const prefix, prefix2: string; const mapname: string): boolean;
+  function _makelevel(const prefix, prefix2: string; const mapname: string;
+    const mapsprite, mapsky, mapmount, extraflat: string): boolean;
   var
     bufmap: pointer;
     bufmapsize: integer;
@@ -650,6 +653,7 @@ function TSpeedToWADConverter.GenerateLevels(const scale: integer): boolean;
     bufpath: pointer;
     bufpathsize: integer;
     ret1, ret2, ret3: boolean;
+    lst: TDStringList;
   begin
     bufmap := nil;
     bufmapsize := 0;
@@ -680,25 +684,34 @@ function TSpeedToWADConverter.GenerateLevels(const scale: integer): boolean;
       bufsec, bufsecsize,
       bufpath, bufpathsize,
       scale,
+      extraflat,
       wadwriter
     );
 
     memfree(pointer(bufmap), bufmapsize);
     memfree(pointer(bufsec), bufsecsize);
     memfree(pointer(bufpath), bufpathsize);
+
+    lst := TDStringList.Create;
+    lst.Add('sprite=' + mapsprite);
+    lst.Add('sky=' + mapsky);
+    lst.Add('mountain=' + mapmount);
+    lst.Add('ground=' + extraflat);
+    wadwriter.AddString('MAPDATA', lst.Text);
+    lst.Free;
   end;
 
 begin
   result := true;
 
-  _makelevel('00', '00', 'MAP01');
-  _makelevel('01', '01', 'MAP02');
-  _makelevel('02', '02', 'MAP03');
-  _makelevel('03', '03', 'MAP04');
-  _makelevel('04', '04', 'MAP05');
-  _makelevel('05', '05', 'MAP06');
-  _makelevel('06', '06', 'MAP07');
-  _makelevel('07', '07', 'MAP08');
+  _makelevel('00', '00', 'MAP01', 'MAPSPR00', 'NUBES0', 'MOUNT0' ,extramapflats[0]);
+  _makelevel('01', '01', 'MAP02', 'MAPSPR01', 'NUBES1', 'MOUNT1' ,extramapflats[1]);
+  _makelevel('02', '02', 'MAP03', 'MAPSPR02', 'NUBES2', 'MOUNT2' ,extramapflats[2]);
+  _makelevel('03', '03', 'MAP04', 'MAPSPR03', 'NUBES3', 'MOUNT3' ,extramapflats[3]);
+  _makelevel('04', '04', 'MAP05', 'MAPSPR04', 'NUBES4', 'MOUNT4' ,extramapflats[4]);
+  _makelevel('05', '05', 'MAP06', 'MAPSPR05', 'NUBES5', 'MOUNT5' ,extramapflats[5]);
+  _makelevel('06', '06', 'MAP07', 'MAPSPR06', 'NUBES6', 'MOUNT6' ,extramapflats[6]);
+  _makelevel('07', '07', 'MAP08', 'MAPSPR07', 'NUBES7', 'MOUNT7' ,extramapflats[7]);
 end;
 
 function TSpeedToWADConverter.GenerateCSVs(const path: string): boolean;
@@ -854,7 +867,7 @@ var
           pt[ii * 64 + jj] := buf[jj * 64 + 63 - ii];
   end;
 
-  function GenerateMapBitmap(const smap: string): boolean;
+  function GenerateMapBitmap(const smap: string; const mapid: integer): boolean;
   type
     bmbuffer4096_t = packed array[0..4095, 0..4095] of byte;
     bmbuffer4096_p = ^bmbuffer4096_t;
@@ -887,6 +900,8 @@ var
     f.Seek(pl.start + 4, sFromBeginning);
     f.Read(map, SizeOf(map));
     f.Read(angles, SizeOf(angles));
+
+    extramapflats[mapid] := SH_FLAT_PREFIX + IntToStrZFill(4, map[0] + 1);
 
     bmbuffer4096 := malloc(SizeOf(bmbuffer4096_t));
     for m := 0 to 4095 do
@@ -961,14 +976,14 @@ begin
 
   wadwriter.AddSeparator('F_START');
 
-  GenerateMapBitmap('00');
-  GenerateMapBitmap('01');
-  GenerateMapBitmap('02');
-  GenerateMapBitmap('03');
-  GenerateMapBitmap('04');
-  GenerateMapBitmap('05');
-  GenerateMapBitmap('06');
-  GenerateMapBitmap('07');
+  GenerateMapBitmap('00', 0);
+  GenerateMapBitmap('01', 1);
+  GenerateMapBitmap('02', 2);
+  GenerateMapBitmap('03', 3);
+  GenerateMapBitmap('04', 4);
+  GenerateMapBitmap('05', 5);
+  GenerateMapBitmap('06', 6);
+  GenerateMapBitmap('07', 7);
 
   wadwriter.AddSeparator('F_END');
 
@@ -1835,9 +1850,9 @@ begin
   GeneratePalette;
   GenerateTranslationTables;
   GenerateTextures('PNAMES', 'TEXTURE1');
-  GenerateLevels(SPEED_LEVEL_SCALE);
   GenerateFlats;
   GenerateMapFlats(false);
+  GenerateLevels(SPEED_LEVEL_SCALE);
   GenerateGraphics;
   GenerateSmallFont;
   GenerateSprites;
