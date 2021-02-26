@@ -45,6 +45,7 @@ implementation
 
 uses
   speed_defs,
+  speed_flatsize,
   speed_palette,
   speed_patch,
   speed_bitmap,
@@ -71,6 +72,7 @@ type
     greenfromblue_tr: array[0..255] of byte;
     yellowfromblue_tr: array[0..255] of byte;
     pk3entry: TDStringList;
+    sflatsize: TDStringList;
     textures: TDStringList;
     numflats: integer;
     ffilename: string;
@@ -99,6 +101,7 @@ type
     function GenerateSounds: boolean;
     function GeneratePK3ModelEntries: boolean;
     procedure WritePK3Entry;
+    procedure WriteFlatSizeEntry;
     function AddPAKFileSystemEntry(const lumpname: string; const aliasname: string): boolean;
   public
     constructor Create; virtual;
@@ -115,6 +118,7 @@ begin
   lumps := nil;
   numlumps := 0;
   pk3entry := nil;
+  sflatsize := nil;
   textures := nil;
   numflats := 0;
   ffilename := '';
@@ -137,6 +141,9 @@ begin
 
   if pk3entry <> nil then
     pk3entry.Free;
+
+  if sflatsize <> nil then
+    sflatsize.Free;
 
   if textures <> nil then
     textures.Free;
@@ -801,12 +808,14 @@ begin
     f.Read(buf^, 64 * 64);
     stmp := SH_FLAT_PREFIX + IntToStrZFill(4, i + 1);
     wadwriter.AddData(stmp, buf, 64 * 64);
+    sflatsize.Add(stmp + '=' + itoa(SPEED_LEVEL_SCALE * 64));
   end;
 
   // Create F_SKY1
   c := V_FindAproxColorIndex(@def_palL, 77 shl 16 + 179 shl 8 + 255);
   memset(buf, c, 64 * 64);
   wadwriter.AddData('F_SKY1', buf, 64 * 64);
+  sflatsize.Add('F_SKY1=64');
 
   memfree(pointer(buf), 64 * 64);
 
@@ -925,6 +934,8 @@ var
     end
     else
       wadwriter.AddData('FMAP' + smap, bmbuffer4096, SizeOf(bmbuffer4096_t));
+
+    sflatsize.Add('FMAP' + smap + '=' + itoa(SPEED_LEVEL_SCALE * 4096));
 
     memfree(pointer(bmbuffer4096), SizeOf(bmbuffer4096_t));
 
@@ -1778,6 +1789,16 @@ begin
   wadwriter.AddString(S_SPEEDINF, pk3entry.Text);
 end;
 
+procedure TSpeedToWADConverter.WriteFlatSizeEntry;
+begin
+  if sflatsize = nil then
+    exit;
+  if sflatsize.Count = 0 then
+    exit;
+
+  wadwriter.AddString(FLATSIZELUMPNAME, sflatsize.Text);
+end;
+
 function TSpeedToWADConverter.AddPAKFileSystemEntry(const lumpname: string; const aliasname: string): boolean;
 var
   lump: integer;
@@ -1806,6 +1827,7 @@ begin
   f := TFile.Create(fname, fOpenReadOnly);
   wadwriter := TWadWriter.Create;
   pk3entry := TDStringList.Create;
+  sflatsize := TDStringList.Create;
   textures := TDStringList.Create;
 
   ReadHeader;
@@ -1822,6 +1844,7 @@ begin
   GenerateSounds;
   GeneratePK3ModelEntries;
   WritePK3Entry;
+  WriteFlatSizeEntry;
 end;
 
 procedure TSpeedToWADConverter.SavetoFile(const fname: string);

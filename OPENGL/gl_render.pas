@@ -1421,8 +1421,8 @@ begin
       epoint := @edgepoints[0];
       for i := 0 to numedgepoints - 1 do
       begin
-        gld_texcoords[gld_num_vertexes].u := (epoint.x / FRACUNIT) / IFLATUVSCALE;
-        gld_texcoords[gld_num_vertexes].v := (-epoint.y / FRACUNIT) / IFLATUVSCALE;
+        gld_texcoords[gld_num_vertexes].u := (epoint.x / FRACUNIT) / 64.0;
+        gld_texcoords[gld_num_vertexes].v := (-epoint.y / FRACUNIT) / 64.0;
         vert := @gld_vertexes[gld_num_vertexes];
         vert.x := -epoint.x / MAP_SCALE;
         vert.y := 0.0;
@@ -1542,8 +1542,8 @@ begin
       seg := @segs[ssector.firstline];
       for j := 0 to numedgepoints - 1 do
       begin
-        gld_texcoords[gld_num_vertexes].u := (seg.v1.x / FRACUNIT) / IFLATUVSCALE;
-        gld_texcoords[gld_num_vertexes].v :=(-seg.v1.y / FRACUNIT) / IFLATUVSCALE;
+        gld_texcoords[gld_num_vertexes].u := (seg.v1.x / FRACUNIT) / 64.0;
+        gld_texcoords[gld_num_vertexes].v :=(-seg.v1.y / FRACUNIT) / 64.0;
         vert := @gld_vertexes[gld_num_vertexes];
         vert.x := -seg.v1.x / MAP_SCALE;
         vert.y := 0.0;
@@ -3361,7 +3361,7 @@ begin
           glBegin(currentloop.mode);
           for i := currentloop.vertexindex to currentloop.vertexindex + currentloop.vertexcount - 1 do
           begin
-            glTexCoord2fv(@gld_texcoords[i]);
+            glTexCoord2f(gld_texcoords[i].u * flat.gltexture.texturescale, gld_texcoords[i].v * flat.gltexture.texturescale);
             glVertex3fv(@gld_vertexes[i]);
           end;
           glEnd;
@@ -3399,8 +3399,8 @@ begin
   begin
     glMatrixMode(GL_TEXTURE);
     glPushMatrix;
-    glTranslatef(flat.uoffs {$IFDEF HEXEN}* 64 / flat.gltexture.width{$ENDIF},
-                 flat.voffs {$IFDEF HEXEN}* 64 / flat.gltexture.height{$ENDIF},
+    glTranslatef(flat.uoffs * flat.gltexture.texturescale {$IFDEF HEXEN}* 64 / flat.gltexture.width{$ENDIF},
+                 flat.voffs * flat.gltexture.texturescale {$IFDEF HEXEN}* 64 / flat.gltexture.height{$ENDIF},
                  0.0);
   end;
   {$ENDIF}
@@ -3420,7 +3420,7 @@ begin
       glBegin(currentloop.mode);
       for i := currentloop.vertexindex to currentloop.vertexindex + currentloop.vertexcount - 1 do
       begin
-        glTexCoord2fv(@gld_texcoords[i]);
+        glTexCoord2f(gld_texcoords[i].u * flat.gltexture.texturescale, gld_texcoords[i].v * flat.gltexture.texturescale);
         glVertex3f(gld_vertexes[i].x, gld_FloorHeight(sec, gld_vertexes[i].x, gld_vertexes[i].z) - fz, gld_vertexes[i].z)
       end;
       glEnd;
@@ -3435,7 +3435,7 @@ begin
       glBegin(currentloop.mode);
       for i := currentloop.vertexindex to currentloop.vertexindex + currentloop.vertexcount - 1 do
       begin
-        glTexCoord2fv(@gld_texcoords[i]);
+        glTexCoord2f(gld_texcoords[i].u * flat.gltexture.texturescale, gld_texcoords[i].v * flat.gltexture.texturescale);
         glVertex3f(gld_vertexes[i].x, gld_CeilingHeight(sec, gld_vertexes[i].x, gld_vertexes[i].z) - fz, gld_vertexes[i].z)
       end;
       glEnd;

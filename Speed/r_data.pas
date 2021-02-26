@@ -152,6 +152,7 @@ uses
   r_slopes, // JVAL: Slopes
   r_patch,
 {$ENDIF}
+  speed_flatsize,
   v_data,
   v_video,
   vx_voxelsprite,
@@ -870,7 +871,8 @@ begin
     flat.flat32 := nil;
     {$ENDIF}
     // JVAL: 9 December 2007, Added terrain types
-    flat.terraintype := P_TerrainTypeForName(flat.name);
+    flat.terraintype := P_TerrainTypeForName(char8tostring(flat.name));
+    flat.Size := SH_GetFlatSize(char8tostring(flat.name));
     flats[i] := flat;
   end;
 end;

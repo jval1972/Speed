@@ -178,6 +178,7 @@ uses
   ps_main,
   psi_overlay,
   speed_alias,
+  speed_flatsize,
   r_draw,
   r_main,
   r_hires,
@@ -2146,6 +2147,11 @@ begin
 
   SUC_Progress(35);
 
+  printf('SH_InitFlatSize: Initialize SPEED HASTE flat sizes.'#13#10);
+  SH_InitFlatSize;
+
+  SUC_Progress(36);
+
   printf('W_AutoLoadPakFiles: Autoload required pak files.'#13#10);
   W_AutoLoadPakFiles;
 
@@ -2626,6 +2632,8 @@ begin
   W_ShutDown;
   printf('SH_ShutDownSpeedAlias: Shut down SPEED HASTE alias entries.'#13#10);
   SH_ShutDownSpeedAlias;
+  printf('SH_ShutDownFlatSize: Shut down SPEED HASTE flat size.'#13#10);
+  SH_ShutDownFlatSize;
   printf('V_ShutDown: Shut down screens.'#13#10);
   V_ShutDown;
   printf('MT_ShutDown: Shut down multithreading utilities.'#13#10);

@@ -59,6 +59,7 @@ type
     leftoffset, topoffset: integer;
     tex_width, tex_height: integer;
     realtexwidth, realtexheight: integer;
+    texturescale: single;
     buffer_width, buffer_height: integer;
     buffer_size: integer;
     heightscale: single;
@@ -172,8 +173,7 @@ var
 const
   MAP_COEFF = 128.0; // If this is changed, must be changed and to r_softgl
   MAP_SCALE = MAP_COEFF * FRACUNIT;
-  IFLATUVSCALE = SPEED_LEVEL_SCALE * 4096;
-  FLATUVSCALE = FRACUNIT * IFLATUVSCALE;
+  FLATUVSCALE = FRACUNIT * 64.0;
 
 const  
   COORDMIN = -1.0E38;
