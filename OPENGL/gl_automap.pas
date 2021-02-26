@@ -181,18 +181,18 @@ begin
 
   l.x1 := x1;
   l.y1 := y1;
-  l.u1 := u1 / FRACUNIT / IFLATUVSCALE;
-  l.v1 := v1 / FRACUNIT / IFLATUVSCALE;
+  l.u1 := u1 / FRACUNIT / 64;
+  l.v1 := v1 / FRACUNIT / 64;
 
   l.x2 := x2;
   l.y2 := y2;
-  l.u2 := u2 / FRACUNIT / IFLATUVSCALE;
-  l.v2 := v2 / FRACUNIT / IFLATUVSCALE;
+  l.u2 := u2 / FRACUNIT / 64;
+  l.v2 := v2 / FRACUNIT / 64;
 
   l.x3 := x3;
   l.y3 := y3;
-  l.u3 := u3 / FRACUNIT / IFLATUVSCALE;
-  l.v3 := v3 / FRACUNIT / IFLATUVSCALE;
+  l.u3 := u3 / FRACUNIT / 64;
+  l.v3 := v3 / FRACUNIT / 64;
 
   l.r := ((cc shr 16) and $FF) / 255;
   l.g := ((cc shr 8) and $FF) / 255;
@@ -236,17 +236,23 @@ begin
 end;
 
 procedure gld_DrawAMTriangle(const l: Pglamrenderitem_t);
+var
+  tex: PGLTexture;
 begin
   glEnable(GL_TEXTURE_2D);
 
   glColor4f(l.r, l.g, l.b, 1.0);
 
-  gld_BindFlat(gld_RegisterFlat(l.lump, true));
+  tex := gld_RegisterFlat(l.lump, true);
+  gld_BindFlat(tex);
 
   glBegin(GL_TRIANGLES);
-    glTexCoord2f(l.v1, l.u1); glVertex2i(l.x1, l.y1);
-    glTexCoord2f(l.v2, l.u2); glVertex2i(l.x2, l.y2);
-    glTexCoord2f(l.v3, l.u3); glVertex2i(l.x3, l.y3);
+    glTexCoord2f(l.v1 * tex.texturescale, l.u1 * tex.texturescale);
+    glVertex2i(l.x1, l.y1);
+    glTexCoord2f(l.v2 * tex.texturescale, l.u2 * tex.texturescale);
+    glVertex2i(l.x2, l.y2);
+    glTexCoord2f(l.v3 * tex.texturescale, l.u3 * tex.texturescale);
+    glVertex2i(l.x3, l.y3);
   glEnd;
 
   glDisable(GL_TEXTURE_2D);
