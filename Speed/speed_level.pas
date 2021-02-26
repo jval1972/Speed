@@ -547,6 +547,19 @@ var
         end;
   end;
 
+  procedure _move_vertex(const oldx, oldy: integer; const newx, newy: integer);
+  var
+    ii: integer;
+  begin
+    for ii := 0 to numdoomvertexes - 1 do
+      if doomvertexes[ii].x = oldx then
+        if doomvertexes[ii].y = oldy then
+        begin
+          doomvertexes[ii].x := newx;
+          doomvertexes[ii].y := newy;
+        end;
+  end;
+
   procedure _do_fixes;
   begin
     if levelname = 'MAP01' then
@@ -586,6 +599,18 @@ var
       _move_thing(3656, 4176, 3636, 4192);
       _move_thing(3904, 4168, 3880, 4192);
       _move_thing(4144, 4176, 4124, 4192);
+      // Spectators
+      _move_thing(2472, 5200, 2432, 5280);
+      _move_thing(2612, 5076, 2618, 5094);
+      _move_thing(2720, 4960, 2804, 4908);
+      _move_vertex(2376, 5586, 2400, 5600);
+      // Advertisments
+      _move_vertex(424, 1954, 424, 1980);
+      _move_vertex(616, 984, 620, 970);
+      _move_vertex(970, 902, 1211, 832);
+      // White buildings (length = 244)
+      _move_thing(1728, 712, 1732, 712);
+      _move_thing(436, 704, 452, 712);
     end;
   end;
 
