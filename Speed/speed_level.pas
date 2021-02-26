@@ -551,6 +551,7 @@ var
   begin
     if levelname = 'MAP01' then
     begin
+      // Spectators (Start)
       _move_thing(3656, 716, 3604, 716);
       _move_thing(3904, 712, 3808, 716);
       _move_thing(4160, 712, 4010, 716);
@@ -559,8 +560,32 @@ var
       _move_thing(4936, 712, 4622, 716);
       _move_thing(5184, 712, 4826, 716);
       _move_thing(5448, 712, 5030, 716);
+      // Add more spectators
       AddDoomThingToWadUntranslated(5234, 716, 90, _SHTH_DECORATION82, 7);
       AddDoomThingToWadUntranslated(5438, 716, 90, _SHTH_DECORATION82, 7);
+      // Spectators
+      _move_thing(6528, 5696, 6592, 5760);
+      _move_thing(6700, 5500, 6778, 5574);
+      _move_thing(6880, 5320, 6964, 5388);
+      // Trees (behind spectators)
+      _move_thing(7136, 5520, 7216, 5586);
+      _move_thing(7048, 5552, 7040, 5760);
+      _move_thing(6944, 5672, 6944, 5856);
+      _move_thing(6848, 5760, 6848, 5952);
+      _move_thing(6792, 5840, 6752, 6048);
+      // White buildings (length = 244)
+      _move_thing(5848, 6232, 5856, 6240);
+      _move_thing(5600, 6216, 5612, 6240);
+      _move_thing(5320, 6216, 5368, 6240);
+      // Advertisment
+      _move_thing(4568, 5920, 4576, 5920);
+      _move_thing(4440, 5792, 4384, 5728);
+      _move_thing(4168, 5544, 4192, 5536);
+      // White buildings (length = 244)
+      _move_thing(3408, 4168, 3392, 4192);
+      _move_thing(3656, 4176, 3636, 4192);
+      _move_thing(3904, 4168, 3880, 4192);
+      _move_thing(4144, 4176, 4124, 4192);
     end;
   end;
 
