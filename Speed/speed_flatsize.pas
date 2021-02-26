@@ -63,21 +63,25 @@ var
   idx: integer;
 begin
   lst := TDStringList.Create;
-  lst.Text := W_TextLumpNum(lump);
-  for i := 0 to lst.Count - 1 do
-  begin
-    splitstring(lst.Strings[i], s1, s2, '=');
-    s1 := strupper(strtrim(s1));
-    s2 := strtrim(s2);
-    sz := atoi(s2, -1);
-    if sz > 0 then
+  try
+    lst.Text := W_TextLumpNum(lump);
+    for i := 0 to lst.Count - 1 do
     begin
-      idx := flatsize.IndexOf(s1);
-      if idx < 0 then
-        flatsize.AddObject(s1, TInteger.Create(sz))
-      else
-        (flatsize.Objects[idx] as TInteger).intnum := sz;
+      splitstring(lst.Strings[i], s1, s2, '=');
+      s1 := strupper(strtrim(s1));
+      s2 := strtrim(s2);
+      sz := atoi(s2, -1);
+      if sz > 0 then
+      begin
+        idx := flatsize.IndexOf(s1);
+        if idx < 0 then
+          flatsize.AddObject(s1, TInteger.Create(sz))
+        else
+          (flatsize.Objects[idx] as TInteger).intnum := sz;
+      end;
     end;
+  finally
+    lst.Free;
   end;
 end;
 
