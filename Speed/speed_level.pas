@@ -41,6 +41,16 @@ function SH_CreateDoomLevel(const prefix: string; const levelname: string;
   const bufpath: pointer; const bufpathsize: integer;
   const xyscale: integer; const extraflat: string; const wadwriter: TWadWriter): boolean;
 
+type  
+  mapspeedpathpoint_t = packed record
+    x, y: LongWord;
+    dir: LongWord; //word dir;
+    speed: integer;
+  end;
+  mapspeedpathpoint_p = ^mapspeedpathpoint_t;
+  mapspeedpathpoint_tArray = packed array[0..$FFF] of mapspeedpathpoint_t;
+  Pmapspeedpathpoint_tArray = ^mapspeedpathpoint_tArray;
+
 implementation
 
 uses
@@ -101,15 +111,6 @@ type
     speed: integer;
     ncars: integer;
   end;
-
-  mapspeedpathpoint_t = packed record
-    x, y: LongWord;
-    dir: LongWord; //word dir;
-    speed: integer;
-  end;
-  mapspeedpathpoint_p = ^mapspeedpathpoint_t;
-  mapspeedpathpoint_tArray = packed array[0..$FFF] of mapspeedpathpoint_t;
-  Pmapspeedpathpoint_tArray = ^mapspeedpathpoint_tArray;
 
 const
   PATHSIGNATURE = $48544150; // "PATH"
@@ -649,7 +650,7 @@ begin
   wadwriter.AddData('SECTORS', doomsectors, numdoomsectors * SizeOf(mapsector_t));
   wadwriter.AddSeparator('REJECT');
   wadwriter.AddSeparator('BLOCKMAP');
-  wadwriter.AddData('PATH', @(PByteArray(bufpath)[$100]), bufpathsize - $100);
+  wadwriter.AddData('PATH', @(PByteArray(bufpath)[$100]), PSmallIntArray(bufpath)[98] * SizeOf(mapspeedpathpoint_t));
 
   // Free Doom data
   memfree(pointer(doomthings), numdoomthings * SizeOf(mapthing_t));

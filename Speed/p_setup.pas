@@ -178,6 +178,8 @@ uses
   ps_main,    // JVAL: Script Events
   r_data,
   r_things,
+  speed_path,
+  speed_things,
   info_rnd,
   m_rnd,
   mt_utils,
@@ -847,7 +849,8 @@ begin
   for i := 0 to numthings - 1 do
   begin
     if P_GameValidThing(mt._type) then // Do spawn all other stuff.
-      P_SpawnMapThing(mt);
+      if mt._type <> _SHTH_PATH then
+        P_SpawnMapThing(mt);
 
     inc(mt);
   end;
@@ -856,9 +859,6 @@ begin
 
   P_CheckThings;
 end;
-
-var
-  delphidoom_ver8_map: boolean;
 
 //
 // JVAL: Changed for compatibility with DelphiDoom ver 0.8
@@ -953,35 +953,6 @@ begin
 
     inc(mld);
     inc(ld);
-  end;
-
-  // JVAL: Translate old specials
-  if delphidoom_ver8_map then
-  begin
-    mld := Pmaplinedef_t(data);
-    ld := @lines[0];
-
-    for i := 0 to numlines - 1 do
-    begin
-      if mld.special = 142 then  // SCROLLING TEXTURES
-        ld.special := 85
-      else if mld.special = 143 then
-        ld.special := 273
-      else if mld.special = 144 then
-        ld.special := 274
-      else if mld.special = 145 then
-        ld.special := 275
-      else if mld.special = 146 then
-        ld.special := 276
-      else if mld.special = 147 then
-        ld.special := 277
-      else if mld.special = 148 then
-        ld.special := 278;
-
-      inc(mld);
-      inc(ld);
-    end;
-
   end;
 
   Z_Free (data);
@@ -1704,7 +1675,6 @@ var
 {$IFDEF OPENGL}
   glmapname: string;
 {$ENDIF}
-  clumpname: string;
   gwa: TGWAFile;
   gwaname: string;
   gwaloaded: boolean;
@@ -1781,14 +1751,6 @@ begin
     glnodesver := 0;
   end;
 {$ENDIF}
-
-  delphidoom_ver8_map := false;
-  if lumpnum + Ord(ML_CODE) < W_NumLumps then
-  begin
-    clumpname := strupper(char8tostring(W_GetNameForNum(lumpnum + Ord(ML_CODE))));
-    if (clumpname = 'CODE') or (clumpname = 'PCODE') then
-      delphidoom_ver8_map := true;
-  end;
 
   leveltime := 0;
 
@@ -1904,6 +1866,11 @@ begin
   if devparm then
     printf('P_SpawnSpecials()'#13#10);
   P_SpawnSpecials;
+
+  // JVAL: 20210309 - Load path
+  if devparm then
+    printf('SH_LoadPath()'#13#10);
+  SH_LoadPath(lumpnum + Ord(ML_THINGS), lumpnum + Ord(ML_PATH));
 
   {$IFNDEF OPENGL}
   if devparm then
