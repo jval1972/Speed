@@ -1055,7 +1055,7 @@ begin
   // check for missile attack
   if actor.info.missilestate <> 0 then
   begin
-    if (gameskill < sk_nightmare) and (not fastparm) and (actor.movecount <> 0) then
+    if (gameskill < sk_nightmare) and not fastparm and (actor.movecount <> 0) then
       nomissile := true
     else if not P_CheckMissileRange(actor) then
       nomissile := true;
@@ -1078,7 +1078,7 @@ begin
 
   // chase towards player
   actor.movecount := actor.movecount - 1;
-  if (actor.movecount < 0) or (not P_Move(actor)) then
+  if (actor.movecount < 0) or not P_Move(actor) then
     P_NewChaseDir(actor);
 
   if fast then
@@ -1126,7 +1126,7 @@ begin
   if actor.target = nil then
     exit;
 
-  actor.flags := actor.flags and (not MF_AMBUSH);
+  actor.flags := actor.flags and not MF_AMBUSH;
 
   actor.angle :=
     R_PointToAngle2(actor.x, actor.y, actor.target.x, actor.target.y);
