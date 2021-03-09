@@ -360,7 +360,8 @@ uses
   speed_things in 'Speed\speed_things.pas',
   speed_xlat_wad in 'Speed\speed_xlat_wad.pas',
   speed_alias in 'Speed\speed_alias.pas',
-  speed_flatsize in 'Speed\speed_flatsize.pas';
+  speed_flatsize in 'Speed\speed_flatsize.pas',
+  speed_cars in 'Speed\speed_cars.pas';
 
 var
   Saved8087CW: Word;
