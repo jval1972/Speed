@@ -40,8 +40,10 @@ function SH_LoadPath(const lmpthings, lmppath: integer): boolean;
 implementation
 
 uses
+  d_delphi,
   doomdata,
   m_fixed,
+  tables,
   p_maputl,
   p_mobj_h,
   p_mobj,
@@ -62,6 +64,43 @@ type
 var
   numpaths: integer;
   rtlpaths: Prtlpath_tArray;
+
+procedure SH_GroupPathSequence;
+var
+  aheadpaths: TDNumberList;
+  i, j: integer;
+  an: angle_t;
+  dist, mindist: fixed_t;
+  best: integer;
+begin
+  aheadpaths := TDNumberList.Create;
+
+  for i := 0 to numpaths - 1 do
+  begin
+    aheadpaths.FastClear;
+    for j := 0 to numpaths - 1 do
+      if i <> j then
+      begin
+        an := R_PointToAngle2(rtlpaths[i].mo.x, rtlpaths[i].mo.y, rtlpaths[j].mo.x, rtlpaths[j].mo.y) - rtlpaths[j].mo.angle;
+        if (an <= ANG90) or (an >= ANG270) then
+          aheadpaths.Add(j);
+      end;
+    best := 0;
+    mindist := MAXINT;
+    for j := 0 to aheadpaths.Count - 1 do
+    begin
+      dist := P_AproxDistance(rtlpaths[i].mo.x - rtlpaths[aheadpaths.Numbers[j]].mo.x, rtlpaths[i].mo.y - rtlpaths[aheadpaths.Numbers[j]].mo.y);
+      if dist < mindist then
+      begin
+        mindist := dist;
+        best := aheadpaths.Numbers[j];
+      end;
+    end;
+    rtlpaths[i].next := best;
+  end;
+
+  aheadpaths.Free;
+end;
 
 function SH_LoadPath(const lmpthings, lmppath: integer): boolean;
 var
@@ -111,6 +150,8 @@ begin
 
   Z_Free(data);
   Z_Free(mappaths);
+
+  SH_GroupPathSequence;
 
   Result := True;
 end;
