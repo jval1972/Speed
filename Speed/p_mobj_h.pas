@@ -363,6 +363,10 @@ type
     x: fixed_t;
     y: fixed_t;
     z: fixed_t;
+    // old x, y, z
+    oldx: fixed_t;
+    oldy: fixed_t;
+    oldz: fixed_t;
 
     // More list: links in sector (if needed)
     snext: Pmobj_t;
@@ -370,6 +374,7 @@ type
 
     //More drawing info: to determine current sprite.
     angle: angle_t;       // orientation
+    oldangle: angle_t;    // old orientation
     viewangle: angle_t;   // JVAL Turn head direction
     sprite: integer;// used to find patch_t and flip value
     frame: integer; // might be ORed with FF_FULLBRIGHT

@@ -716,12 +716,12 @@ end;
 //
 // P_MobjThinker
 //
-procedure P_MobjThinker(mobj: Pmobj_t);
+procedure P_DoMobjThinker(mobj: Pmobj_t);
 var
   onmo: Pmobj_t;
 begin
   // JVAL: Clear just spawned flag
-  mobj.flags := mobj.flags and (not MF_JUSTAPPEARED);
+  mobj.flags := mobj.flags and not MF_JUSTAPPEARED;
 
   // momentum movement
   if (mobj.momx <> 0) or
@@ -815,6 +815,15 @@ begin
 
     P_NightmareRespawn(mobj);
   end;
+end;
+
+procedure P_MobjThinker(mobj: Pmobj_t);
+begin
+  mobj.oldx := mobj.x;
+  mobj.oldy := mobj.y;
+  mobj.oldz := mobj.z;
+  mobj.oldangle := mobj.angle;
+  P_DoMobjThinker(mobj);
 end;
 
 //
@@ -987,6 +996,11 @@ begin
   mobj.prevangle := mobj.angle;
   mobj.nextangle := mobj.angle;
   mobj.intrplcnt := 0;
+
+  mobj.oldx := mobj.x;
+  mobj.oldy := mobj.y;
+  mobj.oldz := mobj.z;
+  mobj.oldangle := mobj.oldangle;
 
   result := mobj;
 end;
