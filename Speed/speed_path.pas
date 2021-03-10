@@ -32,24 +32,10 @@ unit speed_path;
 interface
 
 uses
+  m_fixed,
+  p_mobj_h,
   speed_level,
   speed_things;
-
-function SH_LoadPath(const lmpthings, lmppath: integer): boolean;
-
-implementation
-
-uses
-  d_delphi,
-  doomdata,
-  m_fixed,
-  tables,
-  p_maputl,
-  p_mobj_h,
-  p_mobj,
-  r_main,
-  w_wad,
-  z_zone;
 
 type
   rtlpath_t = record
@@ -60,6 +46,22 @@ type
   Prtlpath_t = ^rtlpath_t;
   rtlpath_tArray = array[0..$FF] of rtlpath_t;
   Prtlpath_tArray = ^rtlpath_tArray;
+
+function SH_LoadPath(const lmpthings, lmppath: integer): boolean;
+
+function SH_GetNextPath(const mo: Pmobj_t): Prtlpath_t;
+
+implementation
+
+uses
+  d_delphi,
+  doomdata,
+  tables,
+  p_maputl,
+  p_mobj,
+  r_main,
+  w_wad,
+  z_zone;
 
 var
   numpaths: integer;
@@ -154,6 +156,46 @@ begin
   SH_GroupPathSequence;
 
   Result := True;
+end;
+
+function SH_GetNextPath(const mo: Pmobj_t): Prtlpath_t;
+var
+  i: integer;
+  tmppaths: TDNumberList;
+  an: angle_t;
+  dist, mindist: fixed_t;
+  best: integer;
+begin
+  tmppaths := TDNumberList.Create;
+
+  for i := 0 to numpaths - 1 do
+  begin
+    if mo.x = rtlpaths[i].mo.x then
+      if mo.y = rtlpaths[i].mo.y then
+      begin
+        tmppaths.Free;
+        Result := @rtlpaths[rtlpaths[i].next];
+        Exit;
+      end;
+
+    an := R_PointToAngle2(mo.x, mo.y, rtlpaths[i].mo.x, rtlpaths[i].mo.y) - rtlpaths[i].mo.angle;
+    if (an <= ANG90) or (an >= ANG270) then
+      tmppaths.Add(i);
+  end;
+  best := 0;
+  mindist := MAXINT;
+  for i := 0 to tmppaths.Count - 1 do
+  begin
+    dist := P_AproxDistance(mo.x - rtlpaths[tmppaths.Numbers[i]].mo.x, mo.y - rtlpaths[tmppaths.Numbers[i]].mo.y);
+    if dist < mindist then
+    begin
+      mindist := dist;
+      best := tmppaths.Numbers[i];
+    end;
+  end;
+
+  tmppaths.Free;
+  Result := @rtlpaths[best];
 end;
 
 end.

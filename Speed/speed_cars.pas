@@ -34,6 +34,7 @@ interface
 uses
   p_mobj_h,
   m_fixed,
+  speed_path,
   tables;
 
 type
@@ -41,7 +42,7 @@ type
     mo: Pmobj_t;
     toAngle: angle_t;
     toSpeed: fixed_t;
-    toPath: integer;
+    toPath: Prtlpath_t;
     gear: integer;
     cartype: integer;
     maxspeed: integer;
@@ -51,6 +52,54 @@ type
   car_tArray = array[0..$FF] of car_t;
   Pcar_tArray = ^car_tArray;
 
+procedure SH_InitLevelCars;
+
 implementation
+
+uses
+  d_delphi,
+  d_think,
+  p_tick,
+  p_mobj,
+  speed_things,
+  z_zone;
+
+var
+  numcars: integer;
+  rtlcars: Pcar_tArray;
+
+procedure SH_InitLevelCars;
+var
+  mo: Pmobj_t;
+  think: Pthinker_t;
+  lst: TDPointerList;
+  i: integer;
+begin
+  lst := TDPointerList.Create;
+  think := thinkercap.next;
+  while think <> @thinkercap do
+  begin
+    if @think._function.acp1 <> @P_MobjThinker then
+    begin
+      think := think.next;
+      continue;
+    end;
+
+    mo := Pmobj_t(think);
+
+    if mo.info.doomednum = _SHTH_STARPOSITION then
+      lst.Add(mo);
+    think := think.next;
+  end;
+
+  numcars := lst.Count;
+  rtlcars := Z_Malloc(numcars * SizeOf(car_t), PU_LEVEL, nil);
+  for i := 0 to lst.Count - 1 do
+  begin
+    rtlcars[i].mo := lst.Pointers[i];
+    rtlcars[i].toPath := SH_GetNextPath(lst.Pointers[i]);
+  end;
+  lst.Free;
+end;
 
 end.

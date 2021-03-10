@@ -178,6 +178,7 @@ uses
   ps_main,    // JVAL: Script Events
   r_data,
   r_things,
+  speed_cars,
   speed_path,
   speed_things,
   info_rnd,
@@ -1871,6 +1872,11 @@ begin
   if devparm then
     printf('SH_LoadPath()'#13#10);
   SH_LoadPath(lumpnum + Ord(ML_THINGS), lumpnum + Ord(ML_PATH));
+
+  // JVAL: 20210310 - Init cars
+  if devparm then
+    printf('SH_InitLevelCars()'#13#10);
+  SH_InitLevelCars;
 
   {$IFNDEF OPENGL}
   if devparm then
