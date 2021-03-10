@@ -516,3 +516,23 @@ state "S_MT_XPR0900"
   model "XPR090.I3D"
   frame 0
 }
+
+
+///////////////////////////////
+// MT_CAR
+///////////////////////////////
+modeldef "CAR0N0A.I3D"
+{
+  xoffset 0.0
+  yoffset 0.0
+  zoffset 0.0
+  xscale -0.02441406250
+  yscale 0.02441406250
+  zscale 0.02441406250
+}
+
+state "S_MT_CAR0"
+{
+  model "CAR0N0A.I3D"
+  frame 0
+}

@@ -210,7 +210,6 @@ begin
   an := c.mo.angle shr ANGLETOFINESHIFT;
   c.mo.momx := FixedMul(curspeed, finecosine[an]);
   c.mo.momy := FixedMul(curspeed, finesine[an]);
-
 end;
 
 procedure SH_MoveCars;
