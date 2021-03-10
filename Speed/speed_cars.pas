@@ -37,6 +37,22 @@ uses
   speed_path,
   tables;
 
+
+type
+  cartype_t = (ct_formula, ct_stock);
+
+  carinfo_t = record
+    tex1old, tex1: string[64]; // Replacement textures
+    tex2old, tex2: string[64]; // Replacement textures
+    number: integer;  // Number (as seen in texture replacements)
+    maxspeed: integer;  // km/h
+    model3d: string[64];
+    cartype: cartype_t;
+  end;
+  Pcarinfo_t = ^carinfo_t;
+  carinfo_tArray = array[0..$FF] of carinfo_t;
+  Pcarinfo_tArray = ^carinfo_tArray;
+
 type
   car_t = record
     mo: Pmobj_t;
@@ -44,7 +60,7 @@ type
     toSpeed: fixed_t;
     toPath: Prtlpath_t;
     gear: integer;
-    cartype: integer;
+    info: Pcarinfo_t;
     maxspeed: integer;
     damage: integer;
   end;
@@ -53,6 +69,9 @@ type
   Pcar_tArray = ^car_tArray;
 
 procedure SH_InitLevelCars;
+
+const
+  KMH_TO_FIXED = 4370; // Speed in fixed point arithmetic
 
 implementation
 
@@ -98,6 +117,12 @@ begin
   begin
     rtlcars[i].mo := lst.Pointers[i];
     rtlcars[i].toPath := SH_GetNextPath(lst.Pointers[i]);
+    rtlcars[i].toAngle := rtlcars[i].toPath.mo.angle;
+    rtlcars[i].toSpeed := rtlcars[i].toPath.speed;
+    rtlcars[i].gear := 0;
+    rtlcars[i].info := 0;
+    rtlcars[i].maxspeed := 0;
+    rtlcars[i].damage := 0;
   end;
   lst.Free;
 end;
