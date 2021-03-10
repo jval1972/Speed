@@ -1,0 +1,19 @@
+///////////////////////////////
+// MT_CAR
+///////////////////////////////
+ACTOR MT_CAR 241
+{
+  Radius 16
+  Height 32
+  Health 100000
+  Mass 1000
+  +SOLID
+  States
+  {
+    Spawn:
+    {
+      TNT1 A -1
+      Stop
+    }
+  }
+}
