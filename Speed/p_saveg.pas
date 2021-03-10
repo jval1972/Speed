@@ -112,15 +112,6 @@ uses
   w_wad,
   z_zone;
 
-// Pads save_p to a 4-byte boundary
-//  so that the load/save works on SGI&Gecko.
-
-procedure PADSAVEP;
-begin
-  if savegameversion < VERSION122 then
-    save_p := PByteArray(integer(save_p) + ((4 - (integer(save_p) and 3) and 3)));
-end;
-
 //
 // P_ArchivePlayers
 //
@@ -135,8 +126,6 @@ begin
     if not playeringame[i] then
       continue;
 
-    PADSAVEP;
-
     dest := Pplayer_t(save_p);
     memcpy(dest, @players[i], SizeOf(player_t));
     save_p := PByteArray(integer(save_p) + SizeOf(player_t));
@@ -149,82 +138,6 @@ end;
 //
 // P_UnArchivePlayers
 //
-function P_UnArchiveOldPlayer122(pp: Pplayer_t): boolean;
-var
-  p1: player_t122;
-  p: Pplayer_t122;
-begin
-  p := @p1;
-  if savegameversion <= VERSION114 then
-  begin
-    memcpy(pointer(p), save_p, SizeOf(player_t114));
-    incp(pointer(save_p), SizeOf(player_t114));
-    p.attackerx := 0;
-    p.attackery := 0;
-    p.lastsoundstepx := 0;
-    p.lastsoundstepy := 0;
-    p.lastbreath := 0;
-    p.hardbreathtics := 0;
-    p.angletargetx := 0;
-    p.angletargety := 0;
-    p.angletargetticks := 0;
-    p.laddertics := 0;
-    p.viewbob := p.bob;
-    p.slopetics := 0; // JVAL: Slopes
-    p.oldviewz := p.viewz;
-    p.teleporttics := 0;
-    p.quaketics := 0;
-    result := true;
-  end
-  else if savegameversion <= VERSION118 then
-  begin
-    memcpy(pointer(p), save_p, SizeOf(player_t118));
-    incp(pointer(save_p), SizeOf(player_t118));
-    p.lastsoundstepx := 0;
-    p.lastsoundstepy := 0;
-    p.lastbreath := 0;
-    p.hardbreathtics := 0;
-    p.angletargetx := 0;
-    p.angletargety := 0;
-    p.angletargetticks := 0;
-    p.laddertics := 0;
-    p.viewbob := p.bob;
-    p.slopetics := 0; // JVAL: Slopes
-    p.oldviewz := p.viewz;
-    p.teleporttics := 0;
-    p.quaketics := 0;
-    result := true;
-  end
-  else if savegameversion <= VERSION121 then
-  begin
-    memcpy(pointer(p), save_p, SizeOf(player_t121));
-    incp(pointer(save_p), SizeOf(player_t121));
-    p.laddertics := 0;
-    p.viewbob := p.bob;
-    p.slopetics := 0; // JVAL: Slopes
-    p.oldviewz := p.viewz;
-    p.teleporttics := 0;
-    p.quaketics := 0;
-    result := true;
-  end
-  else if savegameversion <= VERSION122 then
-  begin
-    memcpy(pointer(p), save_p, SizeOf(player_t122));
-    incp(pointer(save_p), SizeOf(player_t122));
-    result := true;
-  end
-  else
-  begin
-    result := false;
-    exit;
-  end;
-
-  memcpy(pointer(pp), pointer(p), SizeOf(player_t122));
-  pp.lookdir16 := pp.lookdir * 16; // JVAL Smooth Look Up/Down
-  Pticcmd_t202(@pp.cmd)^ := pp.cmd202;
-  pp.cmd.lookupdown16 := pp.cmd.lookupdown * 256;
-end;
-
 procedure P_UnArchivePlayers;
 var
   i: integer;
@@ -235,15 +148,8 @@ begin
     if not playeringame[i] then
       continue;
 
-    PADSAVEP;
-
-    if savegameversion >= VERSION203 then
-    begin
-      memcpy(@players[i], save_p, SizeOf(player_t));
-      incp(pointer(save_p), SizeOf(player_t));
-    end
-    else if not P_UnArchiveOldPlayer122(@players[i]) then
-      I_Error('P_UnArchivePlayers(): Unsupported saved game version: %d', [savegameversion]);
+    memcpy(@players[i], save_p, SizeOf(player_t));
+    incp(pointer(save_p), SizeOf(player_t));
 
     // will be set when unarc thinker
     players[i].mo := nil;
@@ -380,42 +286,25 @@ var
 begin
   get := PSmallIntArray(save_p);
 
-  if savegameversion >= VERSION205 then
-  begin
-    levelinf := P_GetLevelInfo(P_GetMapName(gameepisode, gamemap));
-    levelinf.musname := Pchar8_t(get)^;
-    get := @get[SizeOf(char8_t) div SizeOf(SmallInt)];
-    levelinf.skyflat := Pchar8_t(get)^;
-    get := @get[SizeOf(char8_t) div SizeOf(SmallInt)];
-  end;
+  levelinf := P_GetLevelInfo(P_GetMapName(gameepisode, gamemap));
+  levelinf.musname := Pchar8_t(get)^;
+  get := @get[SizeOf(char8_t) div SizeOf(SmallInt)];
+  levelinf.skyflat := Pchar8_t(get)^;
+  get := @get[SizeOf(char8_t) div SizeOf(SmallInt)];
 
   // do sectors
   i := 0;
   while i < numsectors do
   begin
     sec := Psector_t(@sectors[i]);
-    if savegameversion <= VERSION121 then
-    begin
-      sec.floorheight := get[0] * FRACUNIT;
-      get := @get[1];
-      sec.ceilingheight := get[0] * FRACUNIT;
-      get := @get[1];
-      sec.floorpic := get[0];
-      get := @get[1];
-      sec.ceilingpic := get[0];
-      get := @get[1];
-    end
-    else
-    begin
-      sec.floorheight := PInteger(get)^;
-      get := @get[2];
-      sec.ceilingheight := PInteger(get)^;
-      get := @get[2];
-      sec.floorpic := R_FlatNumForName(Pchar8_t(get)^);
-      get := @get[SizeOf(char8_t) div SizeOf(SmallInt)];
-      sec.ceilingpic := R_FlatNumForName(Pchar8_t(get)^);
-      get := @get[SizeOf(char8_t) div SizeOf(SmallInt)];
-    end;
+    sec.floorheight := PInteger(get)^;
+    get := @get[2];
+    sec.ceilingheight := PInteger(get)^;
+    get := @get[2];
+    sec.floorpic := R_FlatNumForName(Pchar8_t(get)^);
+    get := @get[SizeOf(char8_t) div SizeOf(SmallInt)];
+    sec.ceilingpic := R_FlatNumForName(Pchar8_t(get)^);
+    get := @get[SizeOf(char8_t) div SizeOf(SmallInt)];
     sec.lightlevel := get[0];
     get := @get[1];
     sec.special := get[0]; // needed?
@@ -427,74 +316,36 @@ begin
     sec.lightingdata := nil;
     sec.soundtarget := nil;
 
-    if savegameversion > VERSION115 then
-    begin
-      if savegameversion <= VERSION121 then
-      begin
-        sec.floor_xoffs := get[0] * FRACUNIT;
-        get := @get[1];
-        sec.floor_yoffs := get[0] * FRACUNIT;
-        get := @get[1];
-        sec.ceiling_xoffs := get[0] * FRACUNIT;
-        get := @get[1];
-        sec.ceiling_yoffs := get[0] * FRACUNIT;
-        get := @get[1];
-      end
-      else
-      begin
-        sec.floor_xoffs := PInteger(get)^;
-        get := @get[2];
-        sec.floor_yoffs := PInteger(get)^;
-        get := @get[2];
-        sec.ceiling_xoffs := PInteger(get)^;
-        get := @get[2];
-        sec.ceiling_yoffs := PInteger(get)^;
-        get := @get[2];
-        sec.renderflags := PLongWord(get)^;
-        get := @get[2];
-        sec.flags := PLongWord(get)^;
-        get := @get[2];
-      end
-    end
-    else
-    begin
-      sec.floor_xoffs := 0;
-      sec.floor_yoffs := 0;
-      sec.ceiling_xoffs := 0;
-      sec.ceiling_yoffs := 0;
-    end;
-    // JVAL: 3d Floors
-    if savegameversion >= VERSION122 then
-    begin
-      sec.midsec := PInteger(get)^;
-      get := @get[2];
-      sec.midline := PInteger(get)^;
-      get := @get[2];
-    end
-    else
-    begin
-      sec.midsec := -1;
-      sec.midline := -1;
-    end;
-    // JVAL: sector gravity (VERSION 204)
-    if savegameversion >= VERSION204 then
-    begin
-      sec.gravity := PInteger(get)^;
-      get := @get[2];
-    end
-    else
-      sec.gravity := GRAVITY;
+    sec.floor_xoffs := PInteger(get)^;
+    get := @get[2];
+    sec.floor_yoffs := PInteger(get)^;
+    get := @get[2];
+    sec.ceiling_xoffs := PInteger(get)^;
+    get := @get[2];
+    sec.ceiling_yoffs := PInteger(get)^;
+    get := @get[2];
+    sec.renderflags := PLongWord(get)^;
+    get := @get[2];
+    sec.flags := PLongWord(get)^;
+    get := @get[2];
 
-    if savegameversion >= VERSION122 then
+    // JVAL: 3d Floors
+    sec.midsec := PInteger(get)^;
+    get := @get[2];
+    sec.midline := PInteger(get)^;
+    get := @get[2];
+
+    // JVAL: sector gravity (VERSION 204)
+    sec.gravity := PInteger(get)^;
+    get := @get[2];
+
+    sec.num_saffectees := PInteger(get)^;
+    get := @get[2];
+    Z_Realloc(sec.saffectees, sec.num_saffectees * SizeOf(integer), PU_LEVEL, nil);
+    for j := 0 to sec.num_saffectees - 1 do
     begin
-      sec.num_saffectees := PInteger(get)^;
+      sec.saffectees[j] := PInteger(get)^;
       get := @get[2];
-      Z_Realloc(sec.saffectees, sec.num_saffectees * SizeOf(integer), PU_LEVEL, nil);
-      for j := 0 to sec.num_saffectees - 1 do
-      begin
-        sec.saffectees[j] := PInteger(get)^;
-        get := @get[2];
-      end;
     end;
 
     sec.touching_thinglist := nil;
@@ -513,52 +364,34 @@ begin
     get := @get[1];
     li.tag := get[0];
     get := @get[1];
-    if savegameversion >= VERSION122 then
-    begin
-      li.renderflags := PLongWord(get)^;
-      get := @get[2];
-    end;
+    li.renderflags := PLongWord(get)^;
+    get := @get[2];
+
     for j := 0 to 1 do
     begin
       if li.sidenum[j] = -1 then
         continue;
       si := @sides[li.sidenum[j]];
 
-      if savegameversion <= VERSION121 then
-      begin
-        si.textureoffset := get[0] * FRACUNIT;
-        get := @get[1];
-        si.rowoffset := get[0] * FRACUNIT;
-        get := @get[1];
-        si.toptexture := get[0];
-        get := @get[1];
-        si.bottomtexture := get[0];
-        get := @get[1];
-        si.midtexture := get[0];
-        get := @get[1];
-      end
-      else
-      begin
-        si.textureoffset := PInteger(get)^;
-        get := @get[2];
-        si.rowoffset := PInteger(get)^;
-        get := @get[2];
+      si.textureoffset := PInteger(get)^;
+      get := @get[2];
+      si.rowoffset := PInteger(get)^;
+      get := @get[2];
 
-        si.toptexture := R_SafeTextureNumForName(Pchar8_t(get)^);
-        if si.toptexture = 0 then
-          si.toptexture := -1 - R_CustomColorMapForName(Pchar8_t(get)^);
-        get := @get[SizeOf(char8_t) div SizeOf(SmallInt)];
+      si.toptexture := R_SafeTextureNumForName(Pchar8_t(get)^);
+      if si.toptexture = 0 then
+        si.toptexture := -1 - R_CustomColorMapForName(Pchar8_t(get)^);
+      get := @get[SizeOf(char8_t) div SizeOf(SmallInt)];
 
-        si.bottomtexture := R_SafeTextureNumForName(Pchar8_t(get)^);
-        if si.bottomtexture = 0 then
-          si.bottomtexture := -1 - R_CustomColorMapForName(Pchar8_t(get)^);
-        get := @get[SizeOf(char8_t) div SizeOf(SmallInt)];
+      si.bottomtexture := R_SafeTextureNumForName(Pchar8_t(get)^);
+      if si.bottomtexture = 0 then
+        si.bottomtexture := -1 - R_CustomColorMapForName(Pchar8_t(get)^);
+      get := @get[SizeOf(char8_t) div SizeOf(SmallInt)];
 
-        si.midtexture := R_SafeTextureNumForName(Pchar8_t(get)^);
-        if si.midtexture = 0 then
-          si.midtexture := -1 - R_CustomColorMapForName(Pchar8_t(get)^);
-        get := @get[SizeOf(char8_t) div SizeOf(SmallInt)];
-      end;
+      si.midtexture := R_SafeTextureNumForName(Pchar8_t(get)^);
+      if si.midtexture = 0 then
+        si.midtexture := -1 - R_CustomColorMapForName(Pchar8_t(get)^);
+      get := @get[SizeOf(char8_t) div SizeOf(SmallInt)];
     end;
     inc(i);
   end;
@@ -588,7 +421,6 @@ begin
     begin
       save_p[0] := Ord(tc_mobj);
       save_p := @save_p[1];
-      PADSAVEP;
       mobj := Pmobj_t(save_p);
       memcpy(mobj, th, SizeOf(mobj_t));
       incp(pointer(save_p), SizeOf(mobj_t));
@@ -653,7 +485,6 @@ begin
 
       Ord(tc_mobj):
         begin
-          PADSAVEP;
           mobj := Z_Malloc(SizeOf(mobj_t), PU_LEVEL, nil);
 
           memcpy(mobj, save_p, SizeOf(mobj_t));
@@ -768,7 +599,6 @@ begin
       begin
         save_p[0] := Ord(tc_ceiling);
         save_p := @save_p[1];
-        PADSAVEP;
         ceiling := Pceiling_t(save_p);
         memcpy(ceiling, th, SizeOf(ceiling_t));
         incp(pointer(save_p), SizeOf(ceiling_t));
@@ -781,7 +611,6 @@ begin
     begin
       save_p[0] := Ord(tc_ceiling);
       save_p := @save_p[1];
-      PADSAVEP;
       ceiling := Pceiling_t(save_p);
       memcpy(ceiling, th, SizeOf(ceiling_t));
       incp(pointer(save_p), SizeOf(ceiling_t));
@@ -793,7 +622,6 @@ begin
     begin
       save_p[0] := Ord(tc_door);
       save_p := @save_p[1];
-      PADSAVEP;
       door := Pvldoor_t(save_p);
       memcpy(door, th, SizeOf(vldoor_t));
       incp(pointer(save_p), SizeOf(vldoor_t));
@@ -809,7 +637,6 @@ begin
     begin
       save_p[0] := Ord(tc_floor);
       save_p := @save_p[1];
-      PADSAVEP;
       floor := Pfloormove_t(save_p);
       memcpy(floor, th, SizeOf(floormove_t));
       incp(pointer(save_p), SizeOf(floormove_t));
@@ -821,7 +648,6 @@ begin
     begin
       save_p[0] := Ord(tc_plat);
       save_p := @save_p[1];
-      PADSAVEP;
       plat := Pplat_t(save_p);
       memcpy(plat, th, SizeOf(plat_t));
       incp(pointer(save_p), SizeOf(plat_t));
@@ -833,7 +659,6 @@ begin
     begin
       save_p[0] := Ord(tc_flash);
       save_p := @save_p[1];
-      PADSAVEP;
       flash := Plightflash_t(save_p);
       memcpy(flash, th, SizeOf(lightflash_t));
       incp(pointer(save_p), SizeOf(lightflash_t));
@@ -845,7 +670,6 @@ begin
     begin
       save_p[0] := Ord(tc_strobe);
       save_p := @save_p[1];
-      PADSAVEP;
       strobe := Pstrobe_t(save_p);
       memcpy(strobe, th, SizeOf(strobe_t));
       incp(pointer(save_p), SizeOf(strobe_t));
@@ -857,7 +681,6 @@ begin
     begin
       save_p[0] := Ord(tc_glow);
       save_p := @save_p[1];
-      PADSAVEP;
       glow := Pglow_t(save_p);
       memcpy(glow, th, SizeOf(glow_t));
       incp(pointer(save_p), SizeOf(glow_t));
@@ -869,7 +692,6 @@ begin
     begin
       save_p[0] := Ord(tc_scroll);
       save_p := @save_p[1];
-      PADSAVEP;
       scroll := Pscroll_t(save_p);
       memcpy(scroll, th, SizeOf(scroll_t));
       incp(pointer(save_p), SizeOf(scroll_t));
@@ -880,7 +702,6 @@ begin
     begin
       save_p[0] := Ord(tc_friction);
       save_p := @save_p[1];
-      PADSAVEP;
       friction := Pfriction_t(save_p);
       memcpy(friction, th, SizeOf(friction_t));
       incp(pointer(save_p), SizeOf(friction_t));
@@ -891,7 +712,6 @@ begin
     begin
       save_p[0] := Ord(tc_pusher);
       save_p := @save_p[1];
-      PADSAVEP;
       pusher := Ppusher_t(save_p);
       memcpy(pusher, th, SizeOf(pusher_t));
       incp(pointer(save_p), SizeOf(pusher_t));
@@ -902,7 +722,6 @@ begin
     begin
       save_p[0] := Ord(tc_fireflicker);
       save_p := @save_p[1];
-      PADSAVEP;
       flicker := Pfireflicker_t(save_p);
       memcpy(flicker, th, SizeOf(fireflicker_t));
       incp(pointer(save_p), SizeOf(fireflicker_t));
@@ -923,11 +742,8 @@ procedure P_UnArchiveSpecials;
 var
   tclass: byte;
   ceiling: Pceiling_t;
-  ceiling115: Pceiling_t115;
   door: Pvldoor_t;
-  door115: Pvldoor_t115;
   floor: Pfloormove_t;
-  floor115: Pfloormove_t115;
   plat: Pplat_t;
   flash: Plightflash_t;
   strobe: Pstrobe_t;
@@ -948,34 +764,9 @@ begin
 
       Ord(tc_ceiling):
         begin
-          PADSAVEP;
           ceiling := Z_Malloc(SizeOf(ceiling_t), PU_LEVEL, nil);
-          if savegameversion <= VERSION115 then
-          begin
-            ceiling115 := malloc(SizeOf(ceiling_t115));
-            memcpy(ceiling115, save_p, SizeOf(ceiling_t115));
-            incp(pointer(save_p), SizeOf(ceiling_t115));
-            ceiling.thinker := ceiling115.thinker;
-            ceiling._type := ceiling115._type;
-            ceiling.sector := ceiling115.sector;
-            ceiling.bottomheight := ceiling115.bottomheight;
-            ceiling.topheight := ceiling115.topheight;
-            ceiling.speed := ceiling115.speed;
-            ceiling.oldspeed := ceiling115.speed;
-            ceiling.crush := ceiling115.crush;
-            ceiling.direction := ceiling115.direction;
-            ceiling.newspecial := 0;
-            ceiling.oldspecial := 0;
-            ceiling.texture := 0;
-            ceiling.tag := ceiling115.tag;
-            ceiling.olddirection := ceiling115.olddirection;
-            memfree(pointer(ceiling115), SizeOf(ceiling_t115));
-          end
-          else
-          begin
-            memcpy(ceiling, save_p, SizeOf(ceiling_t));
-            incp(pointer(save_p), SizeOf(ceiling_t));
-          end;
+          memcpy(ceiling, save_p, SizeOf(ceiling_t));
+          incp(pointer(save_p), SizeOf(ceiling_t));
           ceiling.sector := @sectors[integer(ceiling.sector)];
           ceiling.sector.ceilingdata := ceiling;
 
@@ -988,29 +779,9 @@ begin
 
       Ord(tc_door):
         begin
-          PADSAVEP;
           door := Z_Malloc(SizeOf(vldoor_t), PU_LEVEL, nil);
-          if savegameversion <= VERSION115 then
-          begin
-            door115 := malloc(SizeOf(vldoor_t115));
-            memcpy(door115, save_p, SizeOf(vldoor_t115));
-            incp(pointer(save_p), SizeOf(vldoor_t115));
-            door.thinker := door115.thinker;
-            door._type := door115._type;
-            door.sector := door115.sector;
-            door.line := Pline_t(-1);
-            door.topheight := door115.topheight;
-            door.speed := door115.speed;
-            door.direction := door115.direction;
-            door.topwait := door115.topwait;
-            door.topcountdown := door115.topcountdown;
-            memfree(pointer(door115), SizeOf(vldoor_t115));
-          end
-          else
-          begin
-            memcpy(door, save_p, SizeOf(vldoor_t));
-            incp(pointer(save_p), SizeOf(vldoor_t));
-          end;
+          memcpy(door, save_p, SizeOf(vldoor_t));
+          incp(pointer(save_p), SizeOf(vldoor_t));
           door.sector := @sectors[integer(door.sector)];
           door.sector.ceilingdata := door;
           if integer(door.line) = -1 then
@@ -1024,30 +795,9 @@ begin
 
       Ord(tc_floor):
         begin
-          PADSAVEP;
           floor := Z_Malloc(SizeOf(floormove_t), PU_LEVEL, nil);
-          if savegameversion <= VERSION115 then
-          begin
-            floor115 := malloc(SizeOf(floormove_t115));
-            memcpy(floor115, save_p, SizeOf(floormove_t115));
-            incp(pointer(save_p), SizeOf(floormove_t115));
-            floor.thinker := floor115.thinker;
-            floor._type := floor115._type;
-            floor.crush := floor115.crush;
-            floor.sector := floor115.sector;
-            floor.direction := floor115.direction;
-            floor.newspecial := floor115.newspecial;
-            floor.oldspecial := floor115.newspecial;
-            floor.texture := floor115.texture;
-            floor.floordestheight := floor115.floordestheight;
-            floor.speed := floor115.speed;
-            memfree(pointer(floor115), SizeOf(floormove_t115));
-          end
-          else
-          begin
-            memcpy(floor, save_p, SizeOf(floormove_t));
-            incp(pointer(save_p), SizeOf(floormove_t));
-          end;
+          memcpy(floor, save_p, SizeOf(floormove_t));
+          incp(pointer(save_p), SizeOf(floormove_t));
           floor.sector := @sectors[integer(floor.sector)];
           floor.sector.floordata := floor;
           @floor.thinker._function.acp1 := @T_MoveFloor;
@@ -1056,7 +806,6 @@ begin
 
       Ord(tc_plat):
         begin
-          PADSAVEP;
           plat := Z_Malloc(SizeOf(plat_t), PU_LEVEL, nil);
           memcpy(plat, save_p, SizeOf(plat_t));
           incp(pointer(save_p), SizeOf(plat_t));
@@ -1072,7 +821,6 @@ begin
 
       Ord(tc_flash):
         begin
-          PADSAVEP;
           flash := Z_Malloc(Sizeof(lightflash_t), PU_LEVEL, nil);
           memcpy(flash, save_p, SizeOf(lightflash_t));
           incp(pointer(save_p), SizeOf(lightflash_t));
@@ -1083,7 +831,6 @@ begin
 
       Ord(tc_strobe):
         begin
-          PADSAVEP;
           strobe := Z_Malloc(SizeOf(strobe_t), PU_LEVEL, nil);
           memcpy(strobe, save_p, SizeOf(strobe_t));
           incp(pointer(save_p), SizeOf(strobe_t));
@@ -1094,7 +841,6 @@ begin
 
       Ord(tc_glow):
         begin
-          PADSAVEP;
           glow := Z_Malloc(SizeOf(glow_t), PU_LEVEL, nil);
           memcpy(glow, save_p, SizeOf(glow_t));
           incp(pointer(save_p), SizeOf(glow_t));
@@ -1105,10 +851,6 @@ begin
 
       Ord(tc_scroll):
         begin
-          if savegameversion <= VERSION115 then // JVAL: tc_scroll = old value of tc_endspecials
-            exit;
-
-          PADSAVEP;
           scroll := Z_Malloc(SizeOf(scroll_t), PU_LEVEL, nil);
           memcpy(scroll, save_p, SizeOf(scroll_t));
           incp(pointer(save_p), SizeOf(scroll_t));
@@ -1118,10 +860,6 @@ begin
 
       Ord(tc_friction):
         begin
-          if savegameversion <= VERSION116 then // JVAL: tc_friction = old value of tc_endspecials
-            exit;
-
-          PADSAVEP;
           friction := Z_Malloc(SizeOf(friction_t), PU_LEVEL, nil);
           memcpy(friction, save_p, SizeOf(friction_t));
           incp(pointer(save_p), SizeOf(friction_t));
@@ -1131,10 +869,6 @@ begin
 
       Ord(tc_pusher):
         begin
-          if savegameversion <= VERSION116 then // JVAL: tc_pusher = old value of tc_endspecials
-            I_Error('P_UnarchiveSpecials(): Unknown tclass %d in savegame', [tclass]);
-
-          PADSAVEP;
           pusher := Z_Malloc(SizeOf(pusher_t), PU_LEVEL, nil);
           memcpy(pusher, save_p, SizeOf(pusher_t));
           incp(pointer(save_p), SizeOf(pusher_t));
@@ -1145,10 +879,6 @@ begin
 
       Ord(tc_fireflicker):
         begin
-          if savegameversion <= VERSION203 then // JVAL: tc_fireflicker = old value of tc_endspecials
-            exit;
-
-          PADSAVEP;
           flicker := Z_Malloc(SizeOf(fireflicker_t), PU_LEVEL, nil);
           memcpy(flicker, save_p, SizeOf(fireflicker_t));
           incp(pointer(save_p), SizeOf(fireflicker_t));
@@ -1204,9 +934,6 @@ procedure P_UnArchiveGlobalVariables(const vars: TGlobalVariablesList);
 var
   sz: integer;
 begin
-  if savegameversion <= VERSION121 then
-    Exit;
-
   sz := PInteger(save_p)^;
   incp(pointer(save_p), SizeOf(integer));
   vars.LoadFromBuffer(save_p);
@@ -1224,9 +951,6 @@ var
   fname: string;
   sz: Integer;
 begin
-  if savegameversion <= VERSION121 then
-    Exit;
-
   sz := PInteger(save_p)^;
   incp(pointer(save_p), SizeOf(integer));
 
@@ -1244,17 +968,11 @@ end;
 
 procedure P_ArchiveOverlay;
 begin
-  if savegameversion <= VERSION121 then
-    Exit;
-
   overlay.SaveToBuffer(Pointer(save_p));
 end;
 
 procedure P_UnArchiveOverlay;
 begin
-  if savegameversion <= VERSION121 then
-    Exit;
-
   overlay.LoadFromBuffer(Pointer(save_p));
 end;
 
