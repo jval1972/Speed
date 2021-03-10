@@ -8,6 +8,7 @@ ACTOR MT_CAR 241
   Health 100000
   Mass 1000
   +SOLID
+  +SLIDE
   +PUSHABLE
   States
   {
