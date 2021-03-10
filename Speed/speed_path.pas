@@ -52,6 +52,10 @@ function SH_LoadPath(const lmpthings, lmppath: integer): boolean;
 
 function SH_GetNextPath(const mo: Pmobj_t): Prtlpath_t;
 
+var
+  numpaths: integer;
+  rtlpaths: Prtlpath_tArray;
+
 implementation
 
 uses
@@ -63,10 +67,6 @@ uses
   r_main,
   w_wad,
   z_zone;
-
-var
-  numpaths: integer;
-  rtlpaths: Prtlpath_tArray;
 
 procedure SH_GroupPathSequence;
 var

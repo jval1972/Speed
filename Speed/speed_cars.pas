@@ -37,6 +37,8 @@ uses
   speed_path,
   tables;
 
+const
+  KMH_TO_FIXED = 4370; // Speed in fixed point arithmetic
 
 type
   cartype_t = (ct_formula, ct_stock);
@@ -45,13 +47,47 @@ type
     tex1old, tex1: string[64]; // Replacement textures
     tex2old, tex2: string[64]; // Replacement textures
     number: integer;  // Number (as seen in texture replacements)
-    maxspeed: integer;  // km/h
+    maxspeed: fixed_t;  // in Doom units (fixed_t)
+    baseaccel: fixed_t; // Acceleration speed (Doom units per TIC)
+    basedeccel: fixed_t;  // Brake speed (Doom units per TIC)
+    turnspeed: angle_t; // angle to turn per TIC
     model3d: string[64];
     cartype: cartype_t;
   end;
   Pcarinfo_t = ^carinfo_t;
   carinfo_tArray = array[0..$FF] of carinfo_t;
   Pcarinfo_tArray = ^carinfo_tArray;
+
+const
+  NUMCARINFO_FORMULA = 5;
+
+  carinfo_formula: array[0..NUMCARINFO_FORMULA - 1] of carinfo_t = (
+    (
+      tex1old: 'f_1_4';
+      tex1: '';
+      tex2old: 'f_1_5';
+      tex2: '';
+      number: 27;
+      maxspeed: 315 * KMH_TO_FIXED;
+      baseaccel: FRACUNIT div 4;
+      basedeccel: FRACUNIT;
+      turnspeed: 2 * ANG1;
+      model3d: 'CAR0N0A.I3D';
+      cartype: ct_formula
+    ),
+    (
+      tex1old: ''
+    ),
+    (
+      tex1old: ''
+    ),
+    (
+      tex1old: ''
+    ),
+    (
+      tex1old: ''
+    )
+  );
 
 type
   car_t = record
@@ -68,10 +104,15 @@ type
   car_tArray = array[0..$FF] of car_t;
   Pcar_tArray = ^car_tArray;
 
+var
+  numcars: integer;
+  rtlcars: Pcar_tArray;
+
 procedure SH_InitLevelCars;
 
-const
-  KMH_TO_FIXED = 4370; // Speed in fixed point arithmetic
+procedure SH_MoveCar(const c: Pcar_t);
+
+procedure SH_MoveCars;
 
 implementation
 
@@ -80,12 +121,9 @@ uses
   d_think,
   p_tick,
   p_mobj,
+  r_main,
   speed_things,
   z_zone;
-
-var
-  numcars: integer;
-  rtlcars: Pcar_tArray;
 
 procedure SH_InitLevelCars;
 var
@@ -120,11 +158,67 @@ begin
     rtlcars[i].toAngle := rtlcars[i].toPath.mo.angle;
     rtlcars[i].toSpeed := rtlcars[i].toPath.speed;
     rtlcars[i].gear := 0;
-    rtlcars[i].info := 0;
+    rtlcars[i].info := @carinfo_formula[0];
     rtlcars[i].maxspeed := 0;
     rtlcars[i].damage := 0;
   end;
   lst.Free;
+end;
+
+procedure SH_MoveCar(const c: Pcar_t);
+var
+  curspeed: fixed_t;
+  curx, cury, destx, desty: integer;
+  an, destan: angle_t;
+  destspeed: fixed_t;
+begin
+  curspeed := Trunc(FRACUNIT * Sqrt(FixedMul(c.mo.x - c.mo.oldx, c.mo.x - c.mo.oldx) + FixedMul(c.mo.y - c.mo.oldy, c.mo.y - c.mo.oldy)));
+  if curspeed > c.info.maxspeed then
+    curspeed := c.info.maxspeed;
+
+  c.toPath := SH_GetNextPath(c.mo);
+  curx := c.mo.x;
+  cury := c.mo.y;
+  destx := c.toPath.mo.x;
+  desty := c.toPath.mo.y;
+  destspeed := c.toPath.speed * KMH_TO_FIXED;
+  if (destx = curx) and (desty = cury) then
+  begin
+    destx := rtlpaths[c.toPath.next].mo.x;
+    desty := rtlpaths[c.toPath.next].mo.y;
+  end;
+
+  destan := R_PointToAngle2(destx, desty, curx, cury) - c.mo.angle;
+  if destan < ANG180 then
+    c.mo.angle := c.mo.angle - c.info.turnspeed
+  else
+    c.mo.angle := c.mo.angle + c.info.turnspeed;
+
+  if curspeed > destspeed then
+  begin
+    curspeed := curspeed - c.info.basedeccel;
+    if curspeed < destspeed then
+      curspeed := destspeed;
+  end
+  else if curspeed < destspeed then
+  begin
+    curspeed := curspeed + c.info.baseaccel;
+    if curspeed > destspeed then
+      curspeed := destspeed;
+  end;
+
+  an := c.mo.angle shr ANGLETOFINESHIFT;
+  c.mo.momx := FixedMul(curspeed, finecosine[an]);
+  c.mo.momy := FixedMul(curspeed, finesine[an]);
+
+end;
+
+procedure SH_MoveCars;
+var
+  i: integer;
+begin
+  for i := 0 to numcars - 1 do
+    SH_MoveCar(@rtlcars[i]);
 end;
 
 end.
