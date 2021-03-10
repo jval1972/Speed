@@ -41,6 +41,7 @@ type
   rtlpath_t = record
     mo: Pmobj_t;
     speed: fixed_t;
+    prev: integer;
     next: integer;
   end;
   Prtlpath_t = ^rtlpath_t;
@@ -99,6 +100,7 @@ begin
       end;
     end;
     rtlpaths[i].next := best;
+    rtlpaths[best].prev := i;
   end;
 
   aheadpaths.Free;
