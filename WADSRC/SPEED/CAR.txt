@@ -3,7 +3,7 @@
 ///////////////////////////////
 ACTOR MT_CAR 241
 {
-  Radius 16
+  Radius 32
   Height 32
   Health 100000
   Mass 1000
