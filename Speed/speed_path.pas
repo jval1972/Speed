@@ -105,6 +105,8 @@ begin
 end;
 
 function SH_LoadPath(const lmpthings, lmppath: integer): boolean;
+const
+  PATH_TO_KMH_DIV = 10240;
 var
   data: pointer;
   i, p: integer;
@@ -126,6 +128,7 @@ begin
 
   numpaths := W_LumpLength(lmppath) div SizeOf(mapspeedpathpoint_t);
   rtlpaths := Z_Malloc(numpaths * SizeOf(rtlpath_t), PU_LEVEL, nil);
+  ZeroMemory(rtlpaths, numpaths * SizeOf(rtlpath_t));
   mappaths := W_CacheLumpNum(lmppath, PU_STATIC);
 
   data := W_CacheLumpNum(lmpthings, PU_STATIC);
@@ -140,7 +143,7 @@ begin
       if p < numpaths then
       begin
         rtlpaths[p].mo := P_SpawnMapThing(mt);
-        rtlpaths[p].speed := mappaths[p].speed;
+        rtlpaths[p].speed := mappaths[p].speed div PATH_TO_KMH_DIV;
         inc(p);
       end
       else
