@@ -70,6 +70,7 @@ type
     destructor Destroy; override;
     procedure Draw(const frm1, frm2: integer; const offset: float; const scale: fixed_t);
     procedure DrawSimple(const frm: integer; const scale: fixed_t);
+    property model: TBaseModel read fmodel;
     property modeltype: modeltype_t read fmodeltype;
     property lastdrawframe: integer read flastdrawframe;
   end;

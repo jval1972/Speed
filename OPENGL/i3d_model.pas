@@ -85,6 +85,9 @@ type
     function CreateTexture(const m: O3DM_TMaterial_p): integer;
     function RenderGL(const scalex, scaley, scalez: single;
       const offsetx, offsety, offsetz: single): integer;
+    function RenderGLEx(const scalex, scaley, scalez: single;
+      const offsetx, offsety, offsetz: single;
+      const oldtex1, tex1, oldtex2, tex2: string): integer;
     function AddCorrection(const face: integer; const vertex: integer; const visible: boolean;
       const x, y, z: integer; const du, dv: single; const c: LongWord): boolean;
     procedure SaveCorrectionsToStream(const strm: TDStream);
@@ -106,6 +109,7 @@ uses
   gl_tex,
   Graphics,
   i3d_palette,
+  i3d_textures,
   sc_engine;
 
 constructor TI3DModelLoader.Create;
@@ -692,6 +696,50 @@ begin
   end;
   glEnable(GL_TEXTURE_2D);
   gld_ResetLastTexture;
+end;
+
+function TI3DModelLoader.RenderGLEx(const scalex, scaley, scalez: single;
+  const offsetx, offsety, offsetz: single;
+  const oldtex1, tex1, oldtex2, tex2: string): integer;
+var
+  do1, do2: boolean;
+  i: integer;
+  savetex1, savetex2: TGluint;
+  idx1, idx2: integer;
+begin
+  do1 := tex1 <> '';
+  do2 := tex2 <> '';
+
+  savetex1 := 0;
+  savetex2 := 0;
+  idx1 := -1;
+  idx2 := -1;
+
+  if do1 then
+    for i := 0 to obj.nMaterials - 1 do
+      if obj.materials[i].texname = oldtex1 then
+      begin
+        idx1 := i;
+        savetex1 := textures[obj.materials[i].texid];
+        textures[obj.materials[i].texid] := gld_RegisterI3DTexture(tex1);
+        Break;
+      end;
+  if do2 then
+    for i := 0 to obj.nMaterials - 1 do
+      if obj.materials[i].texname = oldtex2 then
+      begin
+        idx2 := i;
+        savetex2 := textures[obj.materials[i].texid];
+        textures[obj.materials[i].texid] := gld_RegisterI3DTexture(tex2);
+        Break;
+      end;
+
+  Result := RenderGL(scalex, scaley, scalez, offsetx, offsety, offsetz);
+
+  if idx1 >= 0 then
+    textures[obj.materials[idx1].texid] := savetex1;
+  if idx2 >= 0 then
+    textures[obj.materials[idx2].texid] := savetex2;
 end;
 
 end.

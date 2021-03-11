@@ -362,7 +362,8 @@ uses
   speed_alias in 'Speed\speed_alias.pas',
   speed_flatsize in 'Speed\speed_flatsize.pas',
   speed_cars in 'Speed\speed_cars.pas',
-  speed_path in 'Speed\speed_path.pas';
+  speed_path in 'Speed\speed_path.pas',
+  i3d_textures in 'OPENGL\i3d_textures.pas';
 
 var
   Saved8087CW: Word;

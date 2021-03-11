@@ -61,7 +61,7 @@ type
 const
   NUMCARINFO_FORMULA = 20;
 
-  carinfo_formula: array[0..NUMCARINFO_FORMULA - 1] of carinfo_t = (
+  carinfo: array[0..NUMCARINFO_FORMULA - 1] of carinfo_t = (
     (
       tex1old: 'f_1_4';
       tex1: '';
@@ -414,8 +414,8 @@ begin
     else
       id := i mod NUMCARINFO_FORMULA;
 
-    rtlcars[i].info := @carinfo_formula[id];
-    rtlcars[i].mo.carid := id;
+    rtlcars[i].info := @carinfo[id];
+    rtlcars[i].mo.carid := i;
     P_SetMobjState(rtlcars[i].mo, statenum_t(rtlcars[i].mo.info.spawnstate + id));
 
     rtlcars[i].maxspeed := 0;

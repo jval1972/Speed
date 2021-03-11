@@ -37,7 +37,8 @@ interface
 uses
   d_delphi,
   mdl_base,
-  i3d_model;
+  i3d_model,
+  speed_cars;
 
 type
   TI3DModel = class(TBaseModel)
@@ -55,6 +56,7 @@ type
     destructor Destroy; override;
     procedure Draw(const frm1, frm2: integer; const offset: float); override;
     procedure DrawSimple(const frm: integer); override;
+    procedure DrawCar(const car: Pcarinfo_t);
   end;
 
 implementation
@@ -138,6 +140,12 @@ end;
 procedure TI3DModel.DrawSimple(const frm: integer);
 begin
   fmdl.RenderGL(fxscale, fyscale, fzscale, fxoffset, fyoffset, fzoffset);
+end;
+
+procedure TI3DModel.DrawCar(const car: Pcarinfo_t);
+begin
+  fmdl.RenderGLEx(fxscale, fyscale, fzscale, fxoffset, fyoffset, fzoffset,
+    car.tex1old, car.tex1, car.tex2old, car.tex2);
 end;
 
 end.

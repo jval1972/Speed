@@ -106,6 +106,9 @@ uses
   r_colormaps,
   {$ENDIF}
   doomdata,
+  i3d_textures,
+  mdl_i3d,
+  speed_cars,
   info_h,
   g_game,
   v_video,
@@ -602,6 +605,7 @@ begin
   gld_InitVoxels;
   gld_InitLightmap;
   gld_InitAmbient;
+  gld_InitI3DTextures;
 end;
 
 
@@ -3845,7 +3849,14 @@ begin
   printf('**drawing model %d'#13#10, [idx]);
   {$ENDIF}
 
-  if modelinf.model.modeltype in [mt_ddmodel, mt_dmx] then
+  if modelinf.model.modeltype = mt_i3d then
+  begin
+    if sprite.mo.carid >= 0 then
+      (modelinf.model.model as TI3DModel).DrawCar(rtlcars[sprite.mo.carid].info)
+    else
+      modelinf.model.DrawSimple(info.startframe, sprite.mo.scale);
+  end
+  else if modelinf.model.modeltype in [mt_ddmodel, mt_dmx] then
   begin
     if isgamesuspended then
     begin
@@ -4909,6 +4920,7 @@ begin
     gld_ClipperDone;
     gld_AmbientDone;
     gld_ShutDownAutomap;
+    gld_ShutDownI3DTextures;
   end;
 end;
 
