@@ -415,6 +415,7 @@ begin
       id := i mod NUMCARINFO_FORMULA;
 
     rtlcars[i].info := @carinfo_formula[id];
+    rtlcars[i].mo.carid := id;
     P_SetMobjState(rtlcars[i].mo, statenum_t(rtlcars[i].mo.info.spawnstate + id));
 
     rtlcars[i].maxspeed := 0;

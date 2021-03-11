@@ -872,6 +872,7 @@ begin
   if mobj.flags_ex and MF_EX_FLOATBOB <> 0 then
     mobj.bob := N_Random and FLOATBOBMASK;
   mobj.health := info.spawnhealth;
+  mobj.carid := -1;
 
   if gameskill <> sk_nightmare then
     mobj.reactiontime := info.reactiontime;
