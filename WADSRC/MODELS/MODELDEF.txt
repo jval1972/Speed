@@ -521,6 +521,8 @@ state "S_MT_XPR0900"
 ///////////////////////////////
 // MT_CAR
 ///////////////////////////////
+// FORMULA1
+///////////////////////////////
 modeldef "CAR0N0A.I3D"
 {
   xoffset 0.0
@@ -531,8 +533,358 @@ modeldef "CAR0N0A.I3D"
   zscale 0.02441406250
 }
 
+modeldef "CAR0N1A.I3D"
+{
+  xoffset 0.0
+  yoffset 0.0
+  zoffset 0.0
+  xscale -0.02441406250
+  yscale 0.02441406250
+  zscale 0.02441406250
+}
+
+modeldef "CAR0N2A.I3D"
+{
+  xoffset 0.0
+  yoffset 0.0
+  zoffset 0.0
+  xscale -0.02441406250
+  yscale 0.02441406250
+  zscale 0.02441406250
+}
+
+modeldef "CAR0N3A.I3D"
+{
+  xoffset 0.0
+  yoffset 0.0
+  zoffset 0.0
+  xscale -0.02441406250
+  yscale 0.02441406250
+  zscale 0.02441406250
+}
+
+modeldef "CAR0N4A.I3D"
+{
+  xoffset 0.0
+  yoffset 0.0
+  zoffset 0.0
+  xscale -0.02441406250
+  yscale 0.02441406250
+  zscale 0.02441406250
+}
+
+modeldef "CAR0N5A.I3D"
+{
+  xoffset 0.0
+  yoffset 0.0
+  zoffset 0.0
+  xscale -0.02441406250
+  yscale 0.02441406250
+  zscale 0.02441406250
+}
+
+
 state "S_MT_CAR0"
 {
   model "CAR0N0A.I3D"
+  frame 0
+}
+
+state "S_MT_CAR1"
+{
+  model "CAR0N0A.I3D"
+  frame 0
+}
+
+state "S_MT_CAR2"
+{
+  model "CAR0N0A.I3D"
+  frame 0
+}
+
+state "S_MT_CAR3"
+{
+  model "CAR0N0A.I3D"
+  frame 0
+}
+
+state "S_MT_CAR4"
+{
+  model "CAR0N1A.I3D"
+  frame 0
+}
+
+state "S_MT_CAR5"
+{
+  model "CAR0N1A.I3D"
+  frame 0
+}
+
+state "S_MT_CAR6"
+{
+  model "CAR0N1A.I3D"
+  frame 0
+}
+
+state "S_MT_CAR7"
+{
+  model "CAR0N2A.I3D"
+  frame 0
+}
+
+state "S_MT_CAR8"
+{
+  model "CAR0N2A.I3D"
+  frame 0
+}
+
+state "S_MT_CAR9"
+{
+  model "CAR0N2A.I3D"
+  frame 0
+}
+
+state "S_MT_CAR10"
+{
+  model "CAR0N2A.I3D"
+  frame 0
+}
+
+state "S_MT_CAR11"
+{
+  model "CAR0N3A.I3D"
+  frame 0
+}
+
+state "S_MT_CAR12"
+{
+  model "CAR0N3A.I3D"
+  frame 0
+}
+
+state "S_MT_CAR13"
+{
+  model "CAR0N3A.I3D"
+  frame 0
+}
+
+state "S_MT_CAR14"
+{
+  model "CAR0N3A.I3D"
+  frame 0
+}
+
+state "S_MT_CAR15"
+{
+  model "CAR0N4A.I3D"
+  frame 0
+}
+
+state "S_MT_CAR16"
+{
+  model "CAR0N4A.I3D"
+  frame 0
+}
+
+state "S_MT_CAR17"
+{
+  model "CAR0N4A.I3D"
+  frame 0
+}
+
+state "S_MT_CAR18"
+{
+  model "CAR0N5A.I3D"
+  frame 0
+}
+
+state "S_MT_CAR19"
+{
+  model "CAR0N5A.I3D"
+  frame 0
+}
+
+
+///////////////////////////////
+// STOCK
+///////////////////////////////
+modeldef "CAR1N0A.I3D"
+{
+  xoffset 0.0
+  yoffset 0.0
+  zoffset 0.0
+  xscale -0.02441406250
+  yscale 0.02441406250
+  zscale 0.02441406250
+}
+
+modeldef "CAR1N1A.I3D"
+{
+  xoffset 0.0
+  yoffset 0.0
+  zoffset 0.0
+  xscale -0.02441406250
+  yscale 0.02441406250
+  zscale 0.02441406250
+}
+
+modeldef "CAR1N2A.I3D"
+{
+  xoffset 0.0
+  yoffset 0.0
+  zoffset 0.0
+  xscale -0.02441406250
+  yscale 0.02441406250
+  zscale 0.02441406250
+}
+
+modeldef "CAR1N3A.I3D"
+{
+  xoffset 0.0
+  yoffset 0.0
+  zoffset 0.0
+  xscale -0.02441406250
+  yscale 0.02441406250
+  zscale 0.02441406250
+}
+
+modeldef "CAR1N4A.I3D"
+{
+  xoffset 0.0
+  yoffset 0.0
+  zoffset 0.0
+  xscale -0.02441406250
+  yscale 0.02441406250
+  zscale 0.02441406250
+}
+
+modeldef "CAR1N5A.I3D"
+{
+  xoffset 0.0
+  yoffset 0.0
+  zoffset 0.0
+  xscale -0.02441406250
+  yscale 0.02441406250
+  zscale 0.02441406250
+}
+
+
+state "S_MT_CAR20"
+{
+  model "CAR1N0A.I3D"
+  frame 0
+}
+
+state "S_MT_CAR21"
+{
+  model "CAR1N0A.I3D"
+  frame 0
+}
+
+state "S_MT_CAR22"
+{
+  model "CAR1N0A.I3D"
+  frame 0
+}
+
+state "S_MT_CAR23"
+{
+  model "CAR1N0A.I3D"
+  frame 0
+}
+
+state "S_MT_CAR24"
+{
+  model "CAR1N1A.I3D"
+  frame 0
+}
+
+state "S_MT_CAR25"
+{
+  model "CAR1N1A.I3D"
+  frame 0
+}
+
+state "S_MT_CAR26"
+{
+  model "CAR1N1A.I3D"
+  frame 0
+}
+
+state "S_MT_CAR27"
+{
+  model "CAR1N2A.I3D"
+  frame 0
+}
+
+state "S_MT_CAR28"
+{
+  model "CAR1N2A.I3D"
+  frame 0
+}
+
+state "S_MT_CAR29"
+{
+  model "CAR1N2A.I3D"
+  frame 0
+}
+
+state "S_MT_CAR30"
+{
+  model "CAR1N2A.I3D"
+  frame 0
+}
+
+state "S_MT_CAR31"
+{
+  model "CAR1N3A.I3D"
+  frame 0
+}
+
+state "S_MT_CAR32"
+{
+  model "CAR1N3A.I3D"
+  frame 0
+}
+
+state "S_MT_CAR33"
+{
+  model "CAR1N3A.I3D"
+  frame 0
+}
+
+state "S_MT_CAR34"
+{
+  model "CAR1N3A.I3D"
+  frame 0
+}
+
+state "S_MT_CAR35"
+{
+  model "CAR1N4A.I3D"
+  frame 0
+}
+
+state "S_MT_CAR36"
+{
+  model "CAR1N4A.I3D"
+  frame 0
+}
+
+state "S_MT_CAR37"
+{
+  model "CAR1N4A.I3D"
+  frame 0
+}
+
+state "S_MT_CAR38"
+{
+  model "CAR1N5A.I3D"
+  frame 0
+}
+
+state "S_MT_CAR39"
+{
+  model "CAR1N5A.I3D"
   frame 0
 }

@@ -359,8 +359,10 @@ implementation
 uses
   d_delphi,
   d_think,
+  info_h,
   p_tick,
   p_mobj,
+  m_rnd,
   r_main,
   speed_things,
   z_zone;
@@ -370,7 +372,8 @@ var
   mo: Pmobj_t;
   think: Pthinker_t;
   lst: TDPointerList;
-  i: integer;
+  carids: TDNumberList;
+  i, id, idx: integer;
 begin
   lst := TDPointerList.Create;
   think := thinkercap.next;
@@ -389,6 +392,10 @@ begin
     think := think.next;
   end;
 
+  carids := TDNumberList.Create;
+  for i := 0 to NUMCARINFO_FORMULA - 1 do
+    carids.Add(i);
+
   numcars := lst.Count;
   rtlcars := Z_Malloc(numcars * SizeOf(car_t), PU_LEVEL, nil);
   for i := 0 to lst.Count - 1 do
@@ -398,10 +405,23 @@ begin
     rtlcars[i].toAngle := rtlcars[i].toPath.mo.angle;
     rtlcars[i].toSpeed := rtlcars[i].toPath.speed;
     rtlcars[i].gear := 0;
-    rtlcars[i].info := @carinfo_formula[0];
+    if carids.Count > 0 then
+    begin
+      idx := Sys_Random mod carids.Count;
+      id := carids.Numbers[idx];
+      carids.Delete(idx);
+    end
+    else
+      id := i mod NUMCARINFO_FORMULA;
+
+    rtlcars[i].info := @carinfo_formula[id];
+    P_SetMobjState(rtlcars[i].mo, statenum_t(rtlcars[i].mo.info.spawnstate + id));
+
     rtlcars[i].maxspeed := 0;
     rtlcars[i].damage := 0;
   end;
+
+  carids.Free;
   lst.Free;
 end;
 
