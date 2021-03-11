@@ -15,6 +15,45 @@ ACTOR MT_CAR 241
     Spawn:
     {
       TNT1 A -1
+      TNT1 A -1
+      TNT1 A -1
+      TNT1 A -1
+      TNT1 A -1
+      TNT1 A -1
+      TNT1 A -1
+      TNT1 A -1
+      TNT1 A -1
+      TNT1 A -1
+      TNT1 A -1
+      TNT1 A -1
+      TNT1 A -1
+      TNT1 A -1
+      TNT1 A -1
+      TNT1 A -1
+      TNT1 A -1
+      TNT1 A -1
+      TNT1 A -1
+      TNT1 A -1
+      TNT1 A -1
+      TNT1 A -1
+      TNT1 A -1
+      TNT1 A -1
+      TNT1 A -1
+      TNT1 A -1
+      TNT1 A -1
+      TNT1 A -1
+      TNT1 A -1
+      TNT1 A -1
+      TNT1 A -1
+      TNT1 A -1
+      TNT1 A -1
+      TNT1 A -1
+      TNT1 A -1
+      TNT1 A -1
+      TNT1 A -1
+      TNT1 A -1
+      TNT1 A -1
+      TNT1 A -1
       Stop
     }
   }
