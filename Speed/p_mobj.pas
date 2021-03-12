@@ -251,7 +251,7 @@ begin
     if mo.flags and MF_SKULLFLY <> 0 then
     begin
       // the skull slammed into something
-      mo.flags := mo.flags and (not MF_SKULLFLY);
+      mo.flags := mo.flags and not MF_SKULLFLY;
       mo.momx := 0;
       mo.momy := 0;
       mo.momz := 0;
@@ -365,7 +365,7 @@ begin
         mo.momy := 0;
       end;
     end;
-  until not ((xmove <> 0) or (ymove <> 0));
+  until (xmove = 0) and (ymove = 0);
 
   // slow down
   if (player <> nil) and (player.cheats and CF_NOMOMENTUM <> 0) then
@@ -376,10 +376,10 @@ begin
     exit;
   end;
 
-  if (mo.flags and (MF_MISSILE or MF_SKULLFLY)) <> 0 then
+  if mo.flags and (MF_MISSILE or MF_SKULLFLY) <> 0 then
     exit; // no friction for missiles ever
 
-  if (mo.flags3_ex and MF3_EX_BOUNCE) <> 0 then
+  if mo.flags3_ex and MF3_EX_BOUNCE <> 0 then
     exit; // no friction for bouncing objects
 
   if (player <> nil) and (player.laddertics > 0) then
