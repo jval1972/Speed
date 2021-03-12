@@ -379,7 +379,10 @@ uses
   speed_patch in 'Speed\speed_patch.pas',
   speed_sounds in 'Speed\speed_sounds.pas',
   speed_things in 'Speed\speed_things.pas',
-  speed_xlat_wad in 'Speed\speed_xlat_wad.pas';
+  speed_xlat_wad in 'Speed\speed_xlat_wad.pas',
+  speed_flatsize in 'Speed\speed_flatsize.pas',
+  speed_cars in 'Speed\speed_cars.pas',
+  speed_path in 'Speed\speed_path.pas';
 
 exports
   dd_compile_speed,
