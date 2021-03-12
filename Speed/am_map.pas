@@ -81,8 +81,6 @@ const
   FDWALLRANGE = BROWNRANGE;
   CDWALLCOLORS = YELLOWS;
   CDWALLRANGE = YELLOWRANGE;
-  THINGCOLORS = GREENS;
-  THINGRANGE = GREENRANGE;
   SECRETWALLCOLORS = WALLCOLORS;
   SECRETWALLRANGE = WALLRANGE;
   GRIDCOLORS = GRAYS + (GRAYSRANGE div 2);
@@ -200,6 +198,12 @@ const
 
 var
   thintriangle_guy: array[0..NUMTHINTRIANGLEGUYLINES - 1] of mline_t;
+
+const
+  NUMQUADGUYLINES = 4;
+
+var
+  quad_guy: array[0..NUMQUADGUYLINES - 1] of mline_t;
 
 type
   automapstate_t = (am_inactive, am_only, am_overlay, AM_NUMSTATES);
@@ -331,6 +335,7 @@ uses
 {$ELSE}
   gl_automap,
 {$ENDIF}
+  speed_things,
   v_data,
   v_video;
 
@@ -1567,13 +1572,15 @@ begin
   end;
 end;
 
-procedure AM_drawThings(colors: integer; colorrange: integer);
+procedure AM_drawThings;
 var
   i: integer;
   t: Pmobj_t;
   x, y: fixed_t;
   plrx, plry: fixed_t;
   plra: angle_t;
+  color: integer;
+  radius: integer;
 begin
   plrx := plr.mo.x div FRACTOMAPUNIT;
   plry := plr.mo.y div FRACTOMAPUNIT;
@@ -1583,15 +1590,28 @@ begin
     t := sectors[i].thinglist;
     while t <> nil do
     begin
-      x := t.x div FRACTOMAPUNIT;
-      y := t.y div FRACTOMAPUNIT;
+      if (am_cheating = 2) or ((t.info.doomednum <> _SHTH_MOVINGCAMERA) and (t.info.doomednum <> _SHTH_PATH)) then
+      begin
+        x := t.x div FRACTOMAPUNIT;
+        y := t.y div FRACTOMAPUNIT;
 
-      if allowautomaprotate then
-        AM_rotate(@x, @y, plra, plrx, plry);
+        if allowautomaprotate then
+          AM_rotate(@x, @y, plra, plrx, plry);
 
-      AM_drawLineCharacter
-        (@thintriangle_guy, NUMTHINTRIANGLEGUYLINES,
-        16 * FRACUNIT, t.angle, colors + lightlev, x, y);
+        radius := t.info.radius;
+        if t.info.doomednum = _SHTH_STARPOSITION then
+          color := YELLOWS
+        else if (t.info.doomednum = _SHTH_MOVINGCAMERA) or (t.info.doomednum = _SHTH_PATH) then
+          color := GRAYS + 8
+        else if t.player <> nil then
+          color := YELLOWS
+        else
+          color := WHITE;
+        AM_drawLineCharacter(
+//          @thintriangle_guy, NUMTHINTRIANGLEGUYLINES,
+          @quad_guy, NUMQUADGUYLINES,
+          radius, t.angle, color, x, y);
+      end;
       t := t.snext;
     end;
   end;
@@ -1659,8 +1679,7 @@ begin
   AM_drawMarks;
 
   AM_drawPlayers;
-  if am_cheating = 2 then
-    AM_drawThings(THINGCOLORS, THINGRANGE);
+  AM_drawThings;
 
   {$IFDEF OPENGL}
   gld_DrawAutomap;
@@ -1812,6 +1831,32 @@ begin
   pl.a.y := -((8 * PLAYERRADIUS) div 7) div 7 - ((8 * PLAYERRADIUS) div 7) div 32;
   pl.b.x := ((8 * PLAYERRADIUS) div 7) div 6 + ((8 * PLAYERRADIUS) div 7) div 10;
   pl.b.y := -((8 * PLAYERRADIUS) div 7) div 7;
+
+////////////////////////////////////////////////////////////////////////////////
+
+  pl := @quad_guy[0];
+  pl.a.x := round(-0.5 * MAPUNIT);
+  pl.a.y := round(-0.5 * MAPUNIT);
+  pl.b.x := round(0.5 * MAPUNIT);
+  pl.b.y := round(-0.5 * MAPUNIT);
+
+  inc(pl);
+  pl.a.x := round(0.5 * MAPUNIT);
+  pl.a.y := round(-0.5 * MAPUNIT);
+  pl.b.x := round(0.5 * MAPUNIT);
+  pl.b.y := round(0.5 * MAPUNIT);
+
+  inc(pl);
+  pl.a.x := round(0.5 * MAPUNIT);
+  pl.a.y := round(0.5 * MAPUNIT);
+  pl.b.x := round(-0.5 * MAPUNIT);
+  pl.b.y := round(0.5 * MAPUNIT);
+
+  inc(pl);
+  pl.a.x := round(-0.5 * MAPUNIT);
+  pl.a.y := round(0.5 * MAPUNIT);
+  pl.b.x := round(-0.5 * MAPUNIT);
+  pl.b.y := round(-0.5 * MAPUNIT);
 
 ////////////////////////////////////////////////////////////////////////////////
 
