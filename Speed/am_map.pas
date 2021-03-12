@@ -1626,19 +1626,6 @@ begin
   end;
 end;
 
-procedure AM_drawCrosshair(color: integer);
-begin
-  {$IFNDEF OPENGL}
-  if videomode = vm32bit then
-    fb32[(f_w * (f_h div 2)) + (f_w div 2)] := videopal[color] // single point for now
-  else
-    fb[(f_w * (f_h div 2)) + (f_w div 2)] := color; // single point for now
-  {$ELSE}
-  gld_AddAutomapLine(f_w div 2 - 1, f_h div 2, f_w div 2 + 1, f_h div 2,  videopal[color]);
-  gld_AddAutomapLine(f_w div 2, f_h div 2 - 1, f_w div 2, f_h div 2 + 1,  videopal[color]);
-  {$ENDIF}
-end;
-
 procedure AM_Drawer;
 begin
   if amstate = am_inactive then
@@ -1674,7 +1661,6 @@ begin
   AM_drawPlayers;
   if am_cheating = 2 then
     AM_drawThings(THINGCOLORS, THINGRANGE);
-  AM_drawCrosshair(XHAIRCOLORS);
 
   {$IFDEF OPENGL}
   gld_DrawAutomap;
