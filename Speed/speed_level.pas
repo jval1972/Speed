@@ -358,6 +358,11 @@ var
     l7 := AddLineToWAD(4096 + EXTRA_SECTOR_OFFSET, 4096 + EXTRA_SECTOR_OFFSET, 4096 + EXTRA_SECTOR_OFFSET, -EXTRA_SECTOR_OFFSET);
     l8 := AddLineToWAD(4096 + EXTRA_SECTOR_OFFSET, -EXTRA_SECTOR_OFFSET, -EXTRA_SECTOR_OFFSET, -EXTRA_SECTOR_OFFSET);
 
+    doomlinedefs[l5].flags := doomlinedefs[l5].flags or ML_AUTOMAPIGNOGE;
+    doomlinedefs[l6].flags := doomlinedefs[l6].flags or ML_AUTOMAPIGNOGE;
+    doomlinedefs[l7].flags := doomlinedefs[l7].flags or ML_AUTOMAPIGNOGE;
+    doomlinedefs[l8].flags := doomlinedefs[l8].flags or ML_AUTOMAPIGNOGE;
+
     doomlinedefs[l5].sidenum[0] := AddSidedefToWAD('', '', '', secid);
     doomlinedefs[l6].sidenum[0] := AddSidedefToWAD('', '', '', secid);
     doomlinedefs[l7].sidenum[0] := AddSidedefToWAD('', '', '', secid);
