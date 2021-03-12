@@ -363,7 +363,8 @@ uses
   speed_cars in 'Speed\speed_cars.pas',
   speed_path in 'Speed\speed_path.pas',
   i3d_textures in 'OPENGL\i3d_textures.pas',
-  gl_scrollingsky in 'OPENGL\gl_scrollingsky.pas';
+  gl_scrollingsky in 'OPENGL\gl_scrollingsky.pas',
+  speed_race in 'Speed\speed_race.pas';
 
 var
   Saved8087CW: Word;
