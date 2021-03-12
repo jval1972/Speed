@@ -120,7 +120,7 @@ uses
   gl_main,
   gl_misc,
   gl_tex,
-  gl_sky,
+//  gl_sky,
   gl_lights,
   gl_types,
   r_dynlights,
@@ -132,6 +132,7 @@ uses
   gl_frustum,
   gl_lightmaps,
   gl_clipper,
+  gl_scrollingsky,
   gl_shadows,
   gl_slopes,
   p_3dfloors,
@@ -598,7 +599,7 @@ begin
   last_screensync := gl_screensync;
 
   gld_InitLightTable;
-  gld_CalculateSky(100000.0);
+//  gld_CalculateSky(100000.0);
   R_InitDynamicLights;
   gld_InitDynamicShadows;
   gld_InitModels;
@@ -2475,7 +2476,6 @@ begin
 
   if wall.blend <> fblend then
     exit;
-
 
   if (wall.flag = GLDWF_TOPFLUD) or (wall.flag = GLDWF_BOTFLUD) then
   begin
@@ -4686,21 +4686,24 @@ var
   wall: PGLWall;
   seg: PGLSeg;
 begin
-  if zaxisshift then
+(*  if zaxisshift then
   begin
     wallrange := GLDWF_BOTFLUD;
     if not gl_stencilsky and dodrawsky then
     begin
       if pitch <= -35.0 then
-        gld_DrawSky(true, false)
+        gld_DrawSky(gamemap) // true, false)
       else if pitch >= 35.0 then
-        gld_DrawSky(false, true)
+        gld_DrawSky(gamemap) //false, true)
       else
-        gld_DrawSky(true, true);
+        gld_DrawSky(gamemap); //true, true);
     end;
   end
   else
-    wallrange := GLDWF_SKYFLIP;
+    wallrange := GLDWF_SKYFLIP;*)
+
+  wallrange := GLDWF_BOTFLUD;
+  gl_scrollingsky.gld_DrawSky(gamemap);
 
   // Sort the dynamic lights
   gld_SortDlights;
@@ -4794,7 +4797,7 @@ begin
   glDisableClientState(GL_TEXTURE_COORD_ARRAY);
   glDisableClientState(GL_VERTEX_ARRAY);
 
-  if zaxisshift then
+(*  if zaxisshift then
   begin
     if gl_drawsky and dodrawsky then
     begin
@@ -4828,18 +4831,18 @@ begin
 
         glDisable(GL_DEPTH_TEST);
         if pitch <= -35.0 then
-          gld_DrawSky(true, false)
+          gld_DrawSky(gamemap) //true, false)
         else if pitch >= 35.0 then
-          gld_DrawSky(false, true)
+          gld_DrawSky(gamemap) //false, true)
         else
-          gld_DrawSky(true, true);
+          gld_DrawSky(gamemap); //true, true);
 
         glEnable(GL_DEPTH_TEST);
         glDisable(GL_STENCIL_TEST); // Turn off the stencil buffer test
 
       end;
     end;
-  end;
+  end;*)
 
 {$IFDEF DEBUG}
   printf('rendered_visplanes := %d'#13#10'rendered_segs := %d'#13#10'rendered_vissprites := %d'#13#10#13#10,
@@ -4911,7 +4914,7 @@ procedure R_ShutDownOpenGL;
 begin
   if gl_initialized then
   begin
-    gld_SkyDone;
+//    gld_SkyDone;
     R_DynamicLightsDone;
     gld_DynamicShadowsDone;
     gld_ModelsDone;

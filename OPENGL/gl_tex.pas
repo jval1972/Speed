@@ -84,7 +84,8 @@ procedure gld_BindTexture(gltexture: PGLTexture);
 
 function gld_RegisterPatch(lump: integer; cm: integer; const unload: boolean = true): PGLTexture;
 
-procedure gld_BindPatch(gltexture: PGLTexture; cm: integer);
+procedure gld_BindPatch(gltexture: PGLTexture; cm: integer; const clamp: boolean = True;
+  const transparent: boolean = False);
 
 function gld_RegisterFlat(lump: integer; mipmap: boolean): PGLTexture;
 
@@ -1205,11 +1206,13 @@ begin
   end;
 end;
 
-procedure gld_BindPatch(gltexture: PGLTexture; cm: integer);
+procedure gld_BindPatch(gltexture: PGLTexture; cm: integer; const clamp: boolean = True;
+  const transparent: boolean = False);
 var
   patch: Ppatch_t;
   i: integer;
   buffer: PByteArray;
+  pl: PLongWordArray;
 begin
   if (gltexture = last_gltexture) and (cm = last_cm) then
     exit;
@@ -1255,11 +1258,28 @@ begin
                  0, GL_COLOR_INDEX, GL_UNSIGNED_BYTE, buffer);
   end
   else
+  begin
+    if transparent then
+    begin
+      pl := @buffer[0];
+      for i := 0 to gltexture.buffer_width * gltexture.buffer_height - 1 do
+        if pl[i] = $FF000000 then
+          pl[i] := 0;
+    end;
     glTexImage2D(GL_TEXTURE_2D, 0, gl_tex_format,
                  gltexture.buffer_width, gltexture.buffer_height,
                  0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+  end;
+  if clamp then
+  begin
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+  end
+  else
+  begin
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+  end;
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, gl_tex_filter);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, gl_tex_filter);
   memfree(pointer(buffer), gltexture.buffer_size);
