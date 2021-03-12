@@ -84,15 +84,15 @@ begin
     glRotatef(180.0 - camera.rotation[1], 0.0, 1.0, 0.0);
 
     glBegin(GL_QUADS);
-      glTexCoord2f(u, v);         glVertex3f( x, 0.0,  z);
-      glTexCoord2f(u, 0.0);       glVertex3f( x,   y,  z);
-      glTexCoord2f(u + 2.0, 0.0); glVertex3f(-x,   y,  z);
-      glTexCoord2f(u + 2.0, v);   glVertex3f(-x, 0.0,  z);
+      glTexCoord2f(u, v);         glVertex3f( x, 0.0, z);
+      glTexCoord2f(u, 0.0);       glVertex3f( x,   y, z);
+      glTexCoord2f(u + 2.0, 0.0); glVertex3f(-x,   y, z);
+      glTexCoord2f(u + 2.0, v);   glVertex3f(-x, 0.0, z);
 
-      glTexCoord2f(u, 0.0);       glVertex3f( x,   y,  z);
-      glTexCoord2f(u + 2.0, 0.0); glVertex3f(-x,   y,  z);
-      glTexCoord2f(u + 2.0, 0.0); glVertex3f(-x,   y,  -z);
-      glTexCoord2f(u, 0.0);       glVertex3f( x,   y,  -z);
+      glTexCoord2f(u, 0.0); glVertex3f( x, y,  z);
+      glTexCoord2f(u, 0.0); glVertex3f(-x, y,  z);
+      glTexCoord2f(u, 0.0); glVertex3f(-x, y, -z);
+      glTexCoord2f(u, 0.0); glVertex3f( x, y, -z);
     glEnd;
 
     glPopMatrix;
