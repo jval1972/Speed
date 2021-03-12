@@ -75,6 +75,24 @@ begin
 end;
 
 function SH_GroundTypeAtXY(const x, y: fixed_t): groundtype_t;
+var
+  nx, ny: integer;
+  g: byte;
+begin
+  race.ground := W_CacheLumpNum(race.groundlump, PU_LEVEL);
+  nx := GetIntegerInRange((x div FRACUNIT) div SPEED_LEVEL_SCALE, 0, 4095);
+  ny := GetIntegerInRange((y div FRACUNIT) div SPEED_LEVEL_SCALE, 0, 4095);
+  g := race.ground[4095 - ny, nx];
+  if IsIntegerInRange(g, 160, 191) then
+    Result := gt_asphalt
+  else if IsIntegerInRange(g, 48, 63) then
+    Result := gt_sand
+  else if IsIntegerInRange(g, 64, 79) then
+    Result := gt_grass
+  else if IsIntegerInRange(g, 128, 143) then
+    Result := gt_dirt
+  else
+    Result := gt_unknown;
 end;
 
 end.
