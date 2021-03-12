@@ -1899,7 +1899,7 @@ begin
 
  // gld_AmbientExecute;
 
-  R_DrawPlayer;
+//  R_DrawPlayer;
 
   if scissoron then
     glDisable(GL_SCISSOR_TEST);
