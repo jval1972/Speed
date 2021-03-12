@@ -180,6 +180,7 @@ uses
   r_things,
   speed_cars,
   speed_path,
+  speed_race,
   speed_things,
   info_rnd,
   m_rnd,
@@ -1877,6 +1878,11 @@ begin
   if devparm then
     printf('SH_InitLevelCars()'#13#10);
   SH_InitLevelCars;
+
+  // JVAL: 20210312 - Init race
+  if devparm then
+    printf('SH_InitRace()'#13#10);
+  SH_InitRace;
 
   {$IFNDEF OPENGL}
   if devparm then

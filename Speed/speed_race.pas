@@ -31,6 +31,48 @@ unit speed_race;
 
 interface
 
+uses
+  d_delphi,
+  m_fixed,
+  speed_cars;
+
+type
+  ground_t = packed array[0..4095, 0..4095] of byte;
+  Pground_t = ^ground_t;
+
+  groundtype_t = (gt_asphalt, gt_grass, gt_dirt, gt_sand, gt_unknown);
+
+  racestatus_t = (rs_waiting, rs_racing);
+
+  race_t = record
+    cartype: cartype_t;
+    racestatus: racestatus_t;
+    completed: boolean;
+    ground: Pground_t;
+    groundlump: integer;
+  end;
+
+var
+  race: race_t;
+
+procedure SH_InitRace;
+
+function SH_GroundTypeAtXY(const x, y: fixed_t): groundtype_t;
+
 implementation
+
+uses
+  p_setup,
+  r_data,
+  speed_xlat_wad,
+  w_wad,
+  z_zone;
+
+procedure SH_InitRace;
+begin
+end;
+
+function SH_GroundTypeAtXY(const x, y: fixed_t): groundtype_t;
+end;
 
 end.
