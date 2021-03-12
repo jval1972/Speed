@@ -57,19 +57,19 @@ const
   AM_MSGEXITED = AM_MSGHEADER or (Ord('x') shl 8);
 
 const
-  REDS = 256 - (5 * 16);
-  REDRANGE = 16;
-  BLUES = (256 - (4 * 16)) + 8;
+  REDS = 200;
+  REDRANGE = 8;
+  BLUES = 120;
   BLUERANGE = 8;
-  GREENS = 7 * 16;
-  GREENRANGE = 16;
-  GRAYS = 6 * 16;
+  GREENS = 88;
+  GREENRANGE = 8;
+  GRAYS = 176;
   GRAYSRANGE = 16;
-  BROWNS = 4 * 16;
+  BROWNS = 128;
   BROWNRANGE = 16;
-  YELLOWS = (256 - 32) + 7;
-  YELLOWRANGE = 1;
-  WHITE = 256 - 47;
+  YELLOWS = 48;
+  YELLOWRANGE = 8;
+  WHITE = 160;
 
   { Automap colors }
   YOURCOLORS = WHITE;
