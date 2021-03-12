@@ -120,7 +120,6 @@ uses
   gl_main,
   gl_misc,
   gl_tex,
-//  gl_sky,
   gl_lights,
   gl_types,
   r_dynlights,
@@ -599,7 +598,6 @@ begin
   last_screensync := gl_screensync;
 
   gld_InitLightTable;
-//  gld_CalculateSky(100000.0);
   R_InitDynamicLights;
   gld_InitDynamicShadows;
   gld_InitModels;
@@ -4686,24 +4684,9 @@ var
   wall: PGLWall;
   seg: PGLSeg;
 begin
-(*  if zaxisshift then
-  begin
-    wallrange := GLDWF_BOTFLUD;
-    if not gl_stencilsky and dodrawsky then
-    begin
-      if pitch <= -35.0 then
-        gld_DrawSky(gamemap) // true, false)
-      else if pitch >= 35.0 then
-        gld_DrawSky(gamemap) //false, true)
-      else
-        gld_DrawSky(gamemap); //true, true);
-    end;
-  end
-  else
-    wallrange := GLDWF_SKYFLIP;*)
-
   wallrange := GLDWF_BOTFLUD;
-  gl_scrollingsky.gld_DrawSky(gamemap);
+
+  gld_DrawSky(gamemap);
 
   // Sort the dynamic lights
   gld_SortDlights;
@@ -4746,7 +4729,6 @@ begin
 
   gld_DrawWalls(wallrange, false);
 
-//  glCullFace(GL_BACK);
   // Walls
   // Sprites
   if gld_drawinfo.num_sprites > 1000 then
@@ -4796,53 +4778,6 @@ begin
 
   glDisableClientState(GL_TEXTURE_COORD_ARRAY);
   glDisableClientState(GL_VERTEX_ARRAY);
-
-(*  if zaxisshift then
-  begin
-    if gl_drawsky and dodrawsky then
-    begin
-
-      if gl_stencilsky then
-      begin
-        glClear(GL_STENCIL_BUFFER_BIT); // Clear the stencil buffer the first time
-        glEnable(GL_STENCIL_TEST);      // Turn on the stencil buffer test
-        glDisable(GL_TEXTURE_2D);
-        glColor4f(1.0, 1.0, 1.0, 1.0);
-        glStencilFunc(GL_ALWAYS, 1, 1); // Setup the stencil buffer to write
-        glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);  // a 1 everywhere the plane is.
-
-        for j := 0 to gld_drawinfo.num_walls - 1 do
-          if gld_drawinfo.walls[j].flag >= GLDWF_SKY then
-          begin
-            wall := @gld_drawinfo.walls[j];
-            seg := wall.glseg;
-            glBegin(GL_TRIANGLE_STRIP);
-              glVertex3f(seg.x1, wall.ytop, seg.z1);
-              glVertex3f(seg.x1, wall.ybottom, seg.z1);
-              glVertex3f(seg.x2, wall.ytop, seg.z2);
-              glVertex3f(seg.x2, wall.ybottom, seg.z2);
-            glEnd;
-          end;
-
-        glStencilFunc(GL_EQUAL, 1, 1);          // Set the stencil buffer to update
-        glStencilOp(GL_KEEP, GL_KEEP, GL_INCR); // only where it finds a 1 from the plane and increment the buffer
-
-        glEnable(GL_TEXTURE_2D);
-
-        glDisable(GL_DEPTH_TEST);
-        if pitch <= -35.0 then
-          gld_DrawSky(gamemap) //true, false)
-        else if pitch >= 35.0 then
-          gld_DrawSky(gamemap) //false, true)
-        else
-          gld_DrawSky(gamemap); //true, true);
-
-        glEnable(GL_DEPTH_TEST);
-        glDisable(GL_STENCIL_TEST); // Turn off the stencil buffer test
-
-      end;
-    end;
-  end;*)
 
 {$IFDEF DEBUG}
   printf('rendered_visplanes := %d'#13#10'rendered_segs := %d'#13#10'rendered_vissprites := %d'#13#10#13#10,
