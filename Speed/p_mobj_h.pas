@@ -488,6 +488,7 @@ type
     rendervalidcount: integer;
     // Speed
     carid: integer;
+    carvelocity: fixed_t;
   end;
   Tmobj_tPArray = array[0..$FFFF] of Pmobj_t;
   Pmobj_tPArray = ^Tmobj_tPArray;
