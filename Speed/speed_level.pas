@@ -317,6 +317,11 @@ var
     l3 := AddLineToWAD(4096, 4096, 4096, 0);
     l4 := AddLineToWAD(4096, 0, 0, 0);
 
+    doomlinedefs[l1].flags := doomlinedefs[l1].flags or ML_AUTOMAPIGNOGE;
+    doomlinedefs[l2].flags := doomlinedefs[l1].flags or ML_AUTOMAPIGNOGE;
+    doomlinedefs[l3].flags := doomlinedefs[l1].flags or ML_AUTOMAPIGNOGE;
+    doomlinedefs[l4].flags := doomlinedefs[l1].flags or ML_AUTOMAPIGNOGE;
+
     doomlinedefs[l1].sidenum[0] := AddSidedefToWAD('', '', '', sec1);
     doomlinedefs[l2].sidenum[0] := AddSidedefToWAD('', '', '', sec1);
     doomlinedefs[l3].sidenum[0] := AddSidedefToWAD('', '', '', sec1);
@@ -343,10 +348,10 @@ var
     doomlinedefs[l3].sidenum[1] := AddSidedefToWAD('', '', '', secid);
     doomlinedefs[l4].sidenum[1] := AddSidedefToWAD('', '', '', secid);
 
-    doomlinedefs[l1].flags := ML_BLOCKING or ML_TWOSIDED;
-    doomlinedefs[l2].flags := ML_BLOCKING or ML_TWOSIDED;
-    doomlinedefs[l3].flags := ML_BLOCKING or ML_TWOSIDED;
-    doomlinedefs[l4].flags := ML_BLOCKING or ML_TWOSIDED;
+    doomlinedefs[l1].flags := ML_BLOCKING or ML_TWOSIDED or ML_AUTOMAPIGNOGE;
+    doomlinedefs[l2].flags := ML_BLOCKING or ML_TWOSIDED or ML_AUTOMAPIGNOGE;
+    doomlinedefs[l3].flags := ML_BLOCKING or ML_TWOSIDED or ML_AUTOMAPIGNOGE;
+    doomlinedefs[l4].flags := ML_BLOCKING or ML_TWOSIDED or ML_AUTOMAPIGNOGE;
 
     l5 := AddLineToWAD(-EXTRA_SECTOR_OFFSET, -EXTRA_SECTOR_OFFSET, -EXTRA_SECTOR_OFFSET, 4096 + EXTRA_SECTOR_OFFSET);
     l6 := AddLineToWAD(-EXTRA_SECTOR_OFFSET, 4096 + EXTRA_SECTOR_OFFSET, 4096 + EXTRA_SECTOR_OFFSET, 4096 + EXTRA_SECTOR_OFFSET);

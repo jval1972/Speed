@@ -1429,6 +1429,11 @@ begin
         inc(pl);
         continue;
       end;
+      if pl.flags and ML_AUTOMAPIGNOGE <> 0 then
+      begin
+        inc(pl);
+        continue;
+      end;
       if pl.backsector = nil then
       begin
         AM_drawMline(@l, WALLCOLORS + lightlev);
@@ -1608,7 +1613,6 @@ begin
         else
           color := WHITE;
         AM_drawLineCharacter(
-//          @thintriangle_guy, NUMTHINTRIANGLEGUYLINES,
           @quad_guy, NUMQUADGUYLINES,
           radius, t.angle, color, x, y);
       end;
