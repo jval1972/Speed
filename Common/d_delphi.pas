@@ -3087,6 +3087,7 @@ begin
   S := GetTextStr;
   for i := 1 to Length(S) do
     Strm.Write(S[i], 1);
+  Result := Length(S) > 0;
 end;
 
 procedure TDStrings.SetCapacity(NewCapacity: Integer);
