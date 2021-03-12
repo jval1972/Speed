@@ -4849,7 +4849,6 @@ procedure R_ShutDownOpenGL;
 begin
   if gl_initialized then
   begin
-//    gld_SkyDone;
     R_DynamicLightsDone;
     gld_DynamicShadowsDone;
     gld_ModelsDone;
