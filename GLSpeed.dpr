@@ -73,7 +73,6 @@ uses
   gl_main in 'OPENGL\gl_main.pas',
   gl_misc in 'OPENGL\gl_misc.pas',
   gl_render in 'OPENGL\gl_render.pas',
-  gl_sky in 'OPENGL\gl_sky.pas',
   gl_lights in 'OPENGL\gl_lights.pas',
   jpg_utils in 'JPEGLIB\jpg_utils.pas',
   jpg_comapi in 'JPEGLIB\jpg_comapi.pas',
