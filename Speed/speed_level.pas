@@ -325,7 +325,7 @@ var
 
   procedure _do_extra_sector;
   const
-    EXTRA_SECTOR_OFFSET = 1024;
+    EXTRA_SECTOR_OFFSET = 2048;
   var
     l1, l2, l3, l4: integer;
     l5, l6, l7, l8: integer;

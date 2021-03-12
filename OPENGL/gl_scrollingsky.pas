@@ -59,7 +59,7 @@ var
   lump: integer;
   texnubes: PGLTexture;
   texmount: PGLTexture;
-  x, y, z: float;
+  x, y, y1, y2, z: float;
   u, v: float;
 begin
   glColor4f(1.0, 1.0, 1.0, 1.0);
@@ -107,7 +107,8 @@ begin
     gld_BindPatch(texmount, Ord(CR_DEFAULT), False, True);
 
     x := 2 * SKYDIST * MAP_COEFF;
-    y := 2 * SKYDIST * texmount.realtexheight / texmount.realtexwidth * MAP_COEFF;
+    y1 := 2 * SKYDIST * texmount.realtexheight / texmount.realtexwidth * MAP_COEFF;
+    y2 := -0.2 * SKYDIST * texmount.realtexheight / texmount.realtexwidth * MAP_COEFF;
     z := SKYDIST * MAP_COEFF;
     u := 2 * camera.rotation[1] / 360;
     v := 1.0;
@@ -117,10 +118,10 @@ begin
     glRotatef(180.0 - camera.rotation[1], 0.0, 1.0, 0.0);
 
     glBegin(GL_QUADS);
-      glTexCoord2f(u, v);         glVertex3f( x, 0.0,  z);
-      glTexCoord2f(u, 0.0);       glVertex3f( x,   y,  z);
-      glTexCoord2f(u + 1.0, 0.0); glVertex3f(-x,   y,  z);
-      glTexCoord2f(u + 1.0, v);   glVertex3f(-x, 0.0,  z);
+      glTexCoord2f(u, v);         glVertex3f( x, y2, z);
+      glTexCoord2f(u, 0.0);       glVertex3f( x, y1, z);
+      glTexCoord2f(u + 1.0, 0.0); glVertex3f(-x, y1, z);
+      glTexCoord2f(u + 1.0, v);   glVertex3f(-x, y2, z);
     glEnd;
 
     glPopMatrix;
