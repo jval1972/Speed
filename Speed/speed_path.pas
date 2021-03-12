@@ -40,6 +40,7 @@ uses
 type
   rtlpath_t = record
     mo: Pmobj_t;
+    id: integer;
     speed: fixed_t;
     prev: integer;
     next: integer;
@@ -99,6 +100,7 @@ begin
         best := aheadpaths.Numbers[j];
       end;
     end;
+    rtlpaths[i].id := i;
     rtlpaths[i].next := best;
     rtlpaths[best].prev := i;
   end;

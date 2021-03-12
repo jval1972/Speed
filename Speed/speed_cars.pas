@@ -69,7 +69,7 @@ const
       tex2: '';
       number: 27;
       maxspeed: 315 * KMH_TO_FIXED;
-      baseaccel: 1 * 1024;
+      baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
       model3d: 'CAR0N0A.I3D';
@@ -82,7 +82,7 @@ const
       tex2: '';
       number: 3;
       maxspeed: 315 * KMH_TO_FIXED;
-      baseaccel: 1 * 1024;
+      baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
       model3d: 'CAR0N0A.I3D';
@@ -95,7 +95,7 @@ const
       tex2: '';
       number: 56;
       maxspeed: 315 * KMH_TO_FIXED;
-      baseaccel: 1 * 1024;
+      baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
       model3d: 'CAR0N0A.I3D';
@@ -108,7 +108,7 @@ const
       tex2: '';
       number: 30;
       maxspeed: 315 * KMH_TO_FIXED;
-      baseaccel: 1 * 1024;
+      baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
       model3d: 'CAR0N0A.I3D';
@@ -122,7 +122,7 @@ const
       tex2: '';
       number: 1;
       maxspeed: 315 * KMH_TO_FIXED;
-      baseaccel: 1 * 1024;
+      baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
       model3d: 'CAR0N1A.I3D';
@@ -135,7 +135,7 @@ const
       tex2: '';
       number: 33;
       maxspeed: 315 * KMH_TO_FIXED;
-      baseaccel: 1 * 1024;
+      baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
       model3d: 'CAR0N1A.I3D';
@@ -148,7 +148,7 @@ const
       tex2: '';
       number: 12;
       maxspeed: 315 * KMH_TO_FIXED;
-      baseaccel: 1 * 1024;
+      baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
       model3d: 'CAR0N1A.I3D';
@@ -162,7 +162,7 @@ const
       tex2: '';
       number: 4;
       maxspeed: 315 * KMH_TO_FIXED;
-      baseaccel: 1 * 1024;
+      baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
       model3d: 'CAR0N2A.I3D';
@@ -175,7 +175,7 @@ const
       tex2: '';
       number: 9;
       maxspeed: 315 * KMH_TO_FIXED;
-      baseaccel: 1 * 1024;
+      baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
       model3d: 'CAR0N2A.I3D';
@@ -188,7 +188,7 @@ const
       tex2: '';
       number: 22;
       maxspeed: 315 * KMH_TO_FIXED;
-      baseaccel: 1 * 1024;
+      baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
       model3d: 'CAR0N2A.I3D';
@@ -201,7 +201,7 @@ const
       tex2: '';
       number: 62;
       maxspeed: 315 * KMH_TO_FIXED;
-      baseaccel: 1 * 1024;
+      baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
       model3d: 'CAR0N2A.I3D';
@@ -215,7 +215,7 @@ const
       tex2: '';
       number: 7;
       maxspeed: 315 * KMH_TO_FIXED;
-      baseaccel: 1 * 1024;
+      baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
       model3d: 'CAR0N3A.I3D';
@@ -228,7 +228,7 @@ const
       tex2: '';
       number: 18;
       maxspeed: 315 * KMH_TO_FIXED;
-      baseaccel: 1 * 1024;
+      baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
       model3d: 'CAR0N3A.I3D';
@@ -241,7 +241,7 @@ const
       tex2: '';
       number: 54;
       maxspeed: 315 * KMH_TO_FIXED;
-      baseaccel: 1 * 1024;
+      baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
       model3d: 'CAR0N3A.I3D';
@@ -254,7 +254,7 @@ const
       tex2: '';
       number: 88;
       maxspeed: 315 * KMH_TO_FIXED;
-      baseaccel: 1 * 1024;
+      baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
       model3d: 'CAR0N3A.I3D';
@@ -268,7 +268,7 @@ const
       tex2: '';
       number: 6;
       maxspeed: 315 * KMH_TO_FIXED;
-      baseaccel: 1 * 1024;
+      baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
       model3d: 'CAR0N4A.I3D';
@@ -281,7 +281,7 @@ const
       tex2: '';
       number: 23;
       maxspeed: 315 * KMH_TO_FIXED;
-      baseaccel: 1 * 1024;
+      baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
       model3d: 'CAR0N4A.I3D';
@@ -294,7 +294,7 @@ const
       tex2: '';
       number: 45;
       maxspeed: 315 * KMH_TO_FIXED;
-      baseaccel: 1 * 1024;
+      baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
       model3d: 'CAR0N4A.I3D';
@@ -308,7 +308,7 @@ const
       tex2: '';
       number: 73;
       maxspeed: 315 * KMH_TO_FIXED;
-      baseaccel: 1 * 1024;
+      baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
       model3d: 'CAR0N5A.I3D';
@@ -321,7 +321,7 @@ const
       tex2: '';
       number: 99;
       maxspeed: 315 * KMH_TO_FIXED;
-      baseaccel: 1 * 1024;
+      baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
       model3d: 'CAR0N5A.I3D';
@@ -334,11 +334,8 @@ type
     mo: Pmobj_t;
     toAngle: angle_t;
     toSpeed: fixed_t;
-    toPath: Prtlpath_t;
-    gear: integer;
-    info: Pcarinfo_t;
-    maxspeed: integer;
-    damage: integer;
+    toPath: integer;
+    info: integer;
   end;
   Pcar_t = ^car_t;
   car_tArray = array[0..$FF] of car_t;
@@ -360,6 +357,7 @@ uses
   d_delphi,
   d_think,
   info_h,
+  info,
   p_tick,
   p_mobj,
   m_rnd,
@@ -401,10 +399,9 @@ begin
   for i := 0 to lst.Count - 1 do
   begin
     rtlcars[i].mo := lst.Pointers[i];
-    rtlcars[i].toPath := SH_GetNextPath(lst.Pointers[i]);
-    rtlcars[i].toAngle := rtlcars[i].toPath.mo.angle;
-    rtlcars[i].toSpeed := rtlcars[i].toPath.speed;
-    rtlcars[i].gear := 0;
+    rtlcars[i].toPath := SH_GetNextPath(lst.Pointers[i]).id;
+    rtlcars[i].toAngle := rtlpaths[rtlcars[i].toPath].mo.angle;
+    rtlcars[i].toSpeed := rtlpaths[rtlcars[i].toPath].speed;
     if carids.Count > 0 then
     begin
       idx := Sys_Random mod carids.Count;
@@ -414,12 +411,10 @@ begin
     else
       id := i mod NUMCARINFO_FORMULA;
 
-    rtlcars[i].info := @carinfo[id];
+    rtlcars[i].info := id;
     rtlcars[i].mo.carid := i;
     P_SetMobjState(rtlcars[i].mo, statenum_t(rtlcars[i].mo.info.spawnstate + id));
 
-    rtlcars[i].maxspeed := 0;
-    rtlcars[i].damage := 0;
   end;
 
   carids.Free;
@@ -430,48 +425,61 @@ procedure SH_MoveCar(const c: Pcar_t);
 var
   curspeed: fixed_t;
   curx, cury, destx, desty: integer;
+  dx, dy: fixed_t;
   an, destan: angle_t;
   destspeed: fixed_t;
 begin
-  curspeed := Trunc(FRACUNIT * Sqrt(FixedMul(c.mo.x - c.mo.oldx, c.mo.x - c.mo.oldx) + FixedMul(c.mo.y - c.mo.oldy, c.mo.y - c.mo.oldy)));
-  c.mo.carvelocity := curspeed;
-  if curspeed > c.info.maxspeed then
-    curspeed := c.info.maxspeed;
+  // Retrieve current speed
+  dx := c.mo.x - c.mo.oldx;
+  dy := c.mo.y - c.mo.oldy;
+  curspeed := FixedSqrt(FixedMul(dx, dx) + FixedMul(dy, dy));
 
-  c.toPath := SH_GetNextPath(c.mo);
+  // Clamp speed for further caclulations
+  if curspeed > carinfo[c.info].maxspeed then
+    curspeed := carinfo[c.info].maxspeed;
+
+  // Find next target (path)
+  c.toPath := SH_GetNextPath(c.mo).id;
   curx := c.mo.x;
   cury := c.mo.y;
-  destx := c.toPath.mo.x;
-  desty := c.toPath.mo.y;
-  destspeed := c.toPath.speed * KMH_TO_FIXED;
+  destx := rtlpaths[c.toPath].mo.x;
+  desty := rtlpaths[c.toPath].mo.y;
+  destspeed := rtlpaths[c.toPath].speed * KMH_TO_FIXED;
+  // If target is reached then select the next target in line
   if (destx = curx) and (desty = cury) then
   begin
-    destx := rtlpaths[c.toPath.next].mo.x;
-    desty := rtlpaths[c.toPath.next].mo.y;
+    destx := rtlpaths[rtlpaths[c.toPath].next].mo.x;
+    desty := rtlpaths[rtlpaths[c.toPath].next].mo.y;
   end;
 
+  // Destination angle
   destan := R_PointToAngle2(destx, desty, curx, cury) - c.mo.angle;
-  if destan < ANG180 then
-    c.mo.angle := c.mo.angle - c.info.turnspeed
-  else
-    c.mo.angle := c.mo.angle + c.info.turnspeed;
+  // Turn car to reach destination angle
+  if destan < ANG180 - carinfo[c.info].turnspeed then
+    c.mo.angle := c.mo.angle - carinfo[c.info].turnspeed
+  else if destan > ANG180 + carinfo[c.info].turnspeed then
+    c.mo.angle := c.mo.angle + carinfo[c.info].turnspeed;
 
-  if curspeed > destspeed then
+  // Adjust speed
+  if curspeed > destspeed then  // Breaking
   begin
-    curspeed := curspeed - c.info.basedeccel;
+    curspeed := curspeed - carinfo[c.info].basedeccel;
     if curspeed < destspeed then
       curspeed := destspeed;
   end
-  else if curspeed < destspeed then
+  else if curspeed < destspeed then // Accelerating
   begin
-    curspeed := curspeed + c.info.baseaccel;
+    curspeed := curspeed + carinfo[c.info].baseaccel;
     if curspeed > destspeed then
       curspeed := destspeed;
   end;
 
+  // Adjust momentum
   an := c.mo.angle shr ANGLETOFINESHIFT;
   c.mo.momx := FixedMul(curspeed, finecosine[an]);
   c.mo.momy := FixedMul(curspeed, finesine[an]);
+
+  c.mo.carvelocity := curspeed;
 end;
 
 procedure SH_MoveCars;
