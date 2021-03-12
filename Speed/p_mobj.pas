@@ -826,7 +826,7 @@ end;
 procedure P_MobjThinker(mobj: Pmobj_t);
 begin
   if mobj.info.doomednum = _SHTH_STARPOSITION then
-    SH_MoveCar(mobj);
+    SH_MoveCarAI(mobj);
   mobj.oldx := mobj.x;
   mobj.oldy := mobj.y;
   mobj.oldz := mobj.z;

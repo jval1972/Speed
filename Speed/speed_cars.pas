@@ -58,6 +58,13 @@ type
   carinfo_tArray = array[0..$FF] of carinfo_t;
   Pcarinfo_tArray = ^carinfo_tArray;
 
+  drivingcmd_t = record
+    turn: fixed_t;
+    accelerate: fixed_t;
+    brake: fixed_t;
+  end;
+  Pdrivingcmd_t = ^drivingcmd_t;
+
 const
   NUMCARINFO_FORMULA = 20;
 
@@ -331,7 +338,7 @@ const
 
 procedure SH_InitLevelCars;
 
-procedure SH_MoveCar(const mo: Pmobj_t);
+procedure SH_MoveCarAI(const mo: Pmobj_t);
 
 implementation
 
@@ -394,23 +401,25 @@ begin
     mo.carinfo := id;
     mo.carid := i;
     P_SetMobjState(mo, statenum_t(mo.info.spawnstate + id));
-
   end;
 
   carids.Free;
   lst.Free;
 end;
 
-procedure SH_MoveCar(const mo: Pmobj_t);
+procedure SH_BuildDrivingCmdAI(const mo: Pmobj_t; const cmd: Pdrivingcmd_t);
 var
-  curspeed: fixed_t;
+  actualspeed: fixed_t;
   curx, cury, destx, desty: integer;
   dx, dy: fixed_t;
-  an, destan: angle_t;
+  destan: angle_t;
   destspeed: fixed_t;
+  diff: fixed_t;
 begin
   // Retrieve current speed
-  curspeed := mo.carvelocity;
+  dx := mo.x - mo.oldx;
+  dy := mo.y - mo.oldy;
+  actualspeed := FixedSqrt(FixedMul(dx, dx) + FixedMul(dy, dy));
 
   // Find next target (path)
   mo.currPath := SH_GetNextPath(mo).id;
@@ -430,34 +439,78 @@ begin
   destan := R_PointToAngle2(destx, desty, curx, cury) - mo.angle;
   // Turn car to reach destination angle
   if destan < ANG180 - carinfo[mo.carinfo].turnspeed then
-    mo.angle := mo.angle - carinfo[mo.carinfo].turnspeed
+    cmd.turn := -carinfo[mo.carinfo].turnspeed
   else if destan > ANG180 + carinfo[mo.carinfo].turnspeed then
-    mo.angle := mo.angle + carinfo[mo.carinfo].turnspeed;
+    cmd.turn := carinfo[mo.carinfo].turnspeed
+  else
+    cmd.turn := 0;
 
   // Adjust speed
-  if curspeed > destspeed then  // Breaking
+  cmd.accelerate := 0;
+  cmd.brake := 0;
+  if actualspeed > destspeed then  // Breaking
   begin
-    curspeed := curspeed - carinfo[mo.carinfo].basedeccel;
-    if curspeed < destspeed then
-      curspeed := destspeed;
+    diff := actualspeed - destspeed;
+    if diff > carinfo[mo.carinfo].basedeccel then
+      cmd.brake := carinfo[mo.carinfo].basedeccel
+    else
+      cmd.brake := diff;
   end
-  else if curspeed < destspeed then // Accelerating
+  else if actualspeed < destspeed then // Accelerating
   begin
-    curspeed := curspeed + carinfo[mo.carinfo].baseaccel;
-    if curspeed > destspeed then
-      curspeed := destspeed;
+    diff := destspeed - actualspeed;
+    if diff > carinfo[mo.carinfo].baseaccel then
+      cmd.accelerate := carinfo[mo.carinfo].baseaccel
+    else
+      cmd.accelerate := diff;
   end;
+end;
 
-  // Clamp speed to maximum car speed
-  if curspeed > carinfo[mo.carinfo].maxspeed then
-    curspeed := carinfo[mo.carinfo].maxspeed;
+procedure SH_ExecuteDrivingCmd(const mo: Pmobj_t; const cmd: Pdrivingcmd_t);
+var
+  enginespeed: fixed_t;
+  actualspeed: fixed_t;
+  dx, dy: fixed_t;
+  an: angle_t;
+  turn64: int64;
+begin
+  // Calculate actual speed
+  dx := mo.x - mo.oldx;
+  dy := mo.y - mo.oldy;
+  actualspeed := FixedSqrt(FixedMul(dx, dx) + FixedMul(dy, dy));
+
+  // Retrieve current speed
+  enginespeed := mo.carvelocity;
+
+  enginespeed := GetIntegerInRange(enginespeed + cmd.accelerate - cmd.brake, 0, carinfo[mo.carinfo].maxspeed);
+
+  if enginespeed > 0 then
+  begin
+    if actualspeed < enginespeed then
+    begin
+      turn64 := cmd.turn;
+      turn64 := turn64 * actualspeed;
+      turn64 := turn64 div enginespeed;
+      mo.angle := mo.angle + (turn64 + cmd.turn) div 2;
+    end
+    else
+      mo.angle := mo.angle + cmd.turn;
+  end;
 
   // Adjust momentum
   an := mo.angle shr ANGLETOFINESHIFT;
-  mo.momx := FixedMul(curspeed, finecosine[an]);
-  mo.momy := FixedMul(curspeed, finesine[an]);
+  mo.momx := mo.momx div 2 + FixedMul(enginespeed, finecosine[an]) div 2;
+  mo.momy := mo.momy div 2 + FixedMul(enginespeed, finesine[an]) div 2;
 
-  mo.carvelocity := curspeed;
+  mo.carvelocity := enginespeed;
+end;
+
+procedure SH_MoveCarAI(const mo: Pmobj_t);
+var
+  cmd: drivingcmd_t;
+begin
+  SH_BuildDrivingCmdAI(mo, @cmd);
+  SH_ExecuteDrivingCmd(mo, @cmd);
 end;
 
 end.
