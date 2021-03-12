@@ -329,27 +329,9 @@ const
     )
   );
 
-type
-  car_t = record
-    mo: Pmobj_t;
-    toAngle: angle_t;
-    toSpeed: fixed_t;
-    toPath: integer;
-    info: integer;
-  end;
-  Pcar_t = ^car_t;
-  car_tArray = array[0..$FF] of car_t;
-  Pcar_tArray = ^car_tArray;
-
-var
-  numcars: integer;
-  rtlcars: Pcar_tArray;
-
 procedure SH_InitLevelCars;
 
-procedure SH_MoveCar(const c: Pcar_t);
-
-procedure SH_MoveCars;
+procedure SH_MoveCar(const mo: Pmobj_t);
 
 implementation
 
@@ -394,14 +376,12 @@ begin
   for i := 0 to NUMCARINFO_FORMULA - 1 do
     carids.Add(i);
 
-  numcars := lst.Count;
-  rtlcars := Z_Malloc(numcars * SizeOf(car_t), PU_LEVEL, nil);
   for i := 0 to lst.Count - 1 do
   begin
-    rtlcars[i].mo := lst.Pointers[i];
-    rtlcars[i].toPath := SH_GetNextPath(lst.Pointers[i]).id;
-    rtlcars[i].toAngle := rtlpaths[rtlcars[i].toPath].mo.angle;
-    rtlcars[i].toSpeed := rtlpaths[rtlcars[i].toPath].speed;
+    mo := lst.Pointers[i];
+    mo.currPath := SH_GetNextPath(lst.Pointers[i]).id;
+    mo.destAngle := rtlpaths[mo.currPath].mo.angle;
+    mo.destSpeed := rtlpaths[mo.currPath].speed;
     if carids.Count > 0 then
     begin
       idx := Sys_Random mod carids.Count;
@@ -411,9 +391,9 @@ begin
     else
       id := i mod NUMCARINFO_FORMULA;
 
-    rtlcars[i].info := id;
-    rtlcars[i].mo.carid := i;
-    P_SetMobjState(rtlcars[i].mo, statenum_t(rtlcars[i].mo.info.spawnstate + id));
+    mo.carinfo := id;
+    mo.carid := i;
+    P_SetMobjState(mo, statenum_t(mo.info.spawnstate + id));
 
   end;
 
@@ -421,7 +401,7 @@ begin
   lst.Free;
 end;
 
-procedure SH_MoveCar(const c: Pcar_t);
+procedure SH_MoveCar(const mo: Pmobj_t);
 var
   curspeed: fixed_t;
   curx, cury, destx, desty: integer;
@@ -430,64 +410,54 @@ var
   destspeed: fixed_t;
 begin
   // Retrieve current speed
-  dx := c.mo.x - c.mo.oldx;
-  dy := c.mo.y - c.mo.oldy;
-  curspeed := FixedSqrt(FixedMul(dx, dx) + FixedMul(dy, dy));
-
-  // Clamp speed for further caclulations
-  if curspeed > carinfo[c.info].maxspeed then
-    curspeed := carinfo[c.info].maxspeed;
+  curspeed := mo.carvelocity;
 
   // Find next target (path)
-  c.toPath := SH_GetNextPath(c.mo).id;
-  curx := c.mo.x;
-  cury := c.mo.y;
-  destx := rtlpaths[c.toPath].mo.x;
-  desty := rtlpaths[c.toPath].mo.y;
-  destspeed := rtlpaths[c.toPath].speed * KMH_TO_FIXED;
+  mo.currPath := SH_GetNextPath(mo).id;
+  curx := mo.x;
+  cury := mo.y;
+  destx := rtlpaths[mo.currPath].mo.x;
+  desty := rtlpaths[mo.currPath].mo.y;
+  destspeed := rtlpaths[mo.currPath].speed * KMH_TO_FIXED;
   // If target is reached then select the next target in line
   if (destx = curx) and (desty = cury) then
   begin
-    destx := rtlpaths[rtlpaths[c.toPath].next].mo.x;
-    desty := rtlpaths[rtlpaths[c.toPath].next].mo.y;
+    destx := rtlpaths[rtlpaths[mo.currPath].next].mo.x;
+    desty := rtlpaths[rtlpaths[mo.currPath].next].mo.y;
   end;
 
   // Destination angle
-  destan := R_PointToAngle2(destx, desty, curx, cury) - c.mo.angle;
+  destan := R_PointToAngle2(destx, desty, curx, cury) - mo.angle;
   // Turn car to reach destination angle
-  if destan < ANG180 - carinfo[c.info].turnspeed then
-    c.mo.angle := c.mo.angle - carinfo[c.info].turnspeed
-  else if destan > ANG180 + carinfo[c.info].turnspeed then
-    c.mo.angle := c.mo.angle + carinfo[c.info].turnspeed;
+  if destan < ANG180 - carinfo[mo.carinfo].turnspeed then
+    mo.angle := mo.angle - carinfo[mo.carinfo].turnspeed
+  else if destan > ANG180 + carinfo[mo.carinfo].turnspeed then
+    mo.angle := mo.angle + carinfo[mo.carinfo].turnspeed;
 
   // Adjust speed
   if curspeed > destspeed then  // Breaking
   begin
-    curspeed := curspeed - carinfo[c.info].basedeccel;
+    curspeed := curspeed - carinfo[mo.carinfo].basedeccel;
     if curspeed < destspeed then
       curspeed := destspeed;
   end
   else if curspeed < destspeed then // Accelerating
   begin
-    curspeed := curspeed + carinfo[c.info].baseaccel;
+    curspeed := curspeed + carinfo[mo.carinfo].baseaccel;
     if curspeed > destspeed then
       curspeed := destspeed;
   end;
 
+  // Clamp speed to maximum car speed
+  if curspeed > carinfo[mo.carinfo].maxspeed then
+    curspeed := carinfo[mo.carinfo].maxspeed;
+
   // Adjust momentum
-  an := c.mo.angle shr ANGLETOFINESHIFT;
-  c.mo.momx := FixedMul(curspeed, finecosine[an]);
-  c.mo.momy := FixedMul(curspeed, finesine[an]);
+  an := mo.angle shr ANGLETOFINESHIFT;
+  mo.momx := FixedMul(curspeed, finecosine[an]);
+  mo.momy := FixedMul(curspeed, finesine[an]);
 
-  c.mo.carvelocity := curspeed;
-end;
-
-procedure SH_MoveCars;
-var
-  i: integer;
-begin
-  for i := 0 to numcars - 1 do
-    SH_MoveCar(@rtlcars[i]);
+  mo.carvelocity := curspeed;
 end;
 
 end.

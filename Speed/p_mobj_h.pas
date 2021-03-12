@@ -489,6 +489,10 @@ type
     // Speed
     carid: integer;
     carvelocity: fixed_t;
+    destAngle: angle_t;
+    destSpeed: fixed_t;
+    currPath: integer;
+    carinfo: integer;
   end;
   Tmobj_tPArray = array[0..$FFFF] of Pmobj_t;
   Pmobj_tPArray = ^Tmobj_tPArray;

@@ -138,6 +138,8 @@ uses
   r_sky,
   r_main,
   r_data,
+  speed_things,
+  speed_cars,
   st_stuff,
   hu_stuff,
   s_sound,
@@ -823,6 +825,8 @@ end;
 
 procedure P_MobjThinker(mobj: Pmobj_t);
 begin
+  if mobj.info.doomednum = _SHTH_STARPOSITION then
+    SH_MoveCar(mobj);
   mobj.oldx := mobj.x;
   mobj.oldy := mobj.y;
   mobj.oldz := mobj.z;

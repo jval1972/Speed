@@ -78,7 +78,6 @@ uses
   p_mobj_h,
   p_mobjlist,
   ps_main,  // JVAL: Script Events
-  speed_cars,
   z_zone;
 
 procedure P_InitThinkers;
@@ -218,7 +217,6 @@ begin
   P_RunThinkers;
   if not isgamefreezed then
   begin
-    SH_MoveCars;
     P_UpdateSpecials;
     P_AnimateSurfaces;
     P_RespawnSpecials;
