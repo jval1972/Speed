@@ -70,6 +70,8 @@ uses
 
 procedure SH_InitRace;
 begin
+  race.groundlump := R_GetLumpForFlat(sectors[0].floorpic);
+  race.ground := W_CacheLumpNum(race.groundlump, PU_LEVEL);
 end;
 
 function SH_GroundTypeAtXY(const x, y: fixed_t): groundtype_t;
