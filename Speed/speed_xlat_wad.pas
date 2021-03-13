@@ -91,6 +91,7 @@ type
     function GeneratePalette: boolean;
     function GenerateTranslationTables: boolean;
     function GenerateTextures(const pnames, texture1: string): boolean;
+    function GenerateStubTexturesEntry(const textureX: string): boolean;
     function GenerateLevels(const scale: integer): boolean;
     function GenerateCSVs(const path: string): boolean;
     function GenerateFlats: boolean;
@@ -451,6 +452,16 @@ begin
   lst.Free;
 end;
 
+function TSpeedToWADConverter.GenerateStubTexturesEntry(const textureX: string): boolean;
+var
+  sz: LongWord;
+begin
+  sz := 0;
+  wadwriter.AddData(textureX, @sz, 4);
+  Result := True;
+end;
+
+
 //begin
 (*  i := FindLump(lumps, numlumps, 'WallBitmaps');
   if i < 0 then
@@ -706,14 +717,14 @@ function TSpeedToWADConverter.GenerateLevels(const scale: integer): boolean;
 begin
   result := true;
 
-  _makelevel('00', '00', 'MAP01', 'MAPSPR00', 'NUBES0', 'MOUNT0' ,extramapflats[0]);
-  _makelevel('01', '01', 'MAP02', 'MAPSPR01', 'NUBES1', 'MOUNT1' ,extramapflats[1]);
-  _makelevel('02', '02', 'MAP03', 'MAPSPR02', 'NUBES2', 'MOUNT2' ,extramapflats[2]);
-  _makelevel('03', '03', 'MAP04', 'MAPSPR03', 'NUBES3', 'MOUNT3' ,extramapflats[3]);
-  _makelevel('04', '04', 'MAP05', 'MAPSPR04', 'NUBES4', 'MOUNT4' ,extramapflats[4]);
-  _makelevel('05', '05', 'MAP06', 'MAPSPR05', 'NUBES5', 'MOUNT5' ,extramapflats[5]);
-  _makelevel('06', '06', 'MAP07', 'MAPSPR06', 'NUBES6', 'MOUNT6' ,extramapflats[6]);
-  _makelevel('07', '07', 'MAP08', 'MAPSPR07', 'NUBES7', 'MOUNT7' ,extramapflats[7]);
+  _makelevel('00', '00', 'E1M1', 'MAPSPR00', 'NUBES0', 'MOUNT0' ,extramapflats[0]);
+  _makelevel('01', '01', 'E1M2', 'MAPSPR01', 'NUBES1', 'MOUNT1' ,extramapflats[1]);
+  _makelevel('02', '02', 'E1M3', 'MAPSPR02', 'NUBES2', 'MOUNT2' ,extramapflats[2]);
+  _makelevel('03', '03', 'E1M4', 'MAPSPR03', 'NUBES3', 'MOUNT3' ,extramapflats[3]);
+  _makelevel('04', '04', 'E1M5', 'MAPSPR04', 'NUBES4', 'MOUNT4' ,extramapflats[4]);
+  _makelevel('05', '05', 'E1M6', 'MAPSPR05', 'NUBES5', 'MOUNT5' ,extramapflats[5]);
+  _makelevel('06', '06', 'E1M7', 'MAPSPR06', 'NUBES6', 'MOUNT6' ,extramapflats[6]);
+  _makelevel('07', '07', 'E1M8', 'MAPSPR07', 'NUBES7', 'MOUNT7' ,extramapflats[7]);
 end;
 
 function TSpeedToWADConverter.GenerateCSVs(const path: string): boolean;
@@ -1919,6 +1930,7 @@ begin
   GeneratePalette;
   GenerateTranslationTables;
   GenerateTextures('PNAMES', 'TEXTURE1');
+  GenerateStubTexturesEntry('TEXTURE2');
   GenerateFlats;
   GenerateMapFlats(false);
   GenerateLevels(SPEED_LEVEL_SCALE);
