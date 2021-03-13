@@ -62,6 +62,7 @@ const
 
 const
   slipperinessinfo: array[groundtype_t] of slipperinessinfo_t = (
+    (smin: 224; smax: 255), // Asphalt
     (smin: 150; smax: 220), // grass
     (smin: 100; smax: 180), // dirt
     (smin:  80; smax: 150), // sand
