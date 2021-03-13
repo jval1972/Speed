@@ -80,7 +80,7 @@ const
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
       model3d: 'CAR0N0A.I3D';
-      cartype: ct_formula
+      cartype: ct_formula;
     ),
     (
       tex1old: 'f_1_4';
@@ -93,7 +93,7 @@ const
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
       model3d: 'CAR0N0A.I3D';
-      cartype: ct_formula
+      cartype: ct_formula;
     ),
     (
       tex1old: 'f_1_4';
@@ -106,7 +106,7 @@ const
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
       model3d: 'CAR0N0A.I3D';
-      cartype: ct_formula
+      cartype: ct_formula;
     ),
     (
       tex1old: 'f_1_4';
@@ -119,7 +119,7 @@ const
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
       model3d: 'CAR0N0A.I3D';
-      cartype: ct_formula
+      cartype: ct_formula;
     ),
 
     (
@@ -133,7 +133,7 @@ const
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
       model3d: 'CAR0N1A.I3D';
-      cartype: ct_formula
+      cartype: ct_formula;
     ),
     (
       tex1old: 'f_2_4';
@@ -146,7 +146,7 @@ const
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
       model3d: 'CAR0N1A.I3D';
-      cartype: ct_formula
+      cartype: ct_formula;
     ),
     (
       tex1old: 'f_2_4';
@@ -159,7 +159,7 @@ const
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
       model3d: 'CAR0N1A.I3D';
-      cartype: ct_formula
+      cartype: ct_formula;
     ),
 
     (
@@ -173,7 +173,7 @@ const
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
       model3d: 'CAR0N2A.I3D';
-      cartype: ct_formula
+      cartype: ct_formula;
     ),
     (
       tex1old: 'f_3_4';
@@ -186,7 +186,7 @@ const
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
       model3d: 'CAR0N2A.I3D';
-      cartype: ct_formula
+      cartype: ct_formula;
     ),
     (
       tex1old: 'f_3_4';
@@ -199,7 +199,7 @@ const
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
       model3d: 'CAR0N2A.I3D';
-      cartype: ct_formula
+      cartype: ct_formula;
     ),
     (
       tex1old: 'f_3_4';
@@ -212,7 +212,7 @@ const
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
       model3d: 'CAR0N2A.I3D';
-      cartype: ct_formula
+      cartype: ct_formula;
     ),
 
     (
@@ -226,7 +226,7 @@ const
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
       model3d: 'CAR0N3A.I3D';
-      cartype: ct_formula
+      cartype: ct_formula;
     ),
     (
       tex1old: 'f_4_4';
@@ -239,7 +239,7 @@ const
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
       model3d: 'CAR0N3A.I3D';
-      cartype: ct_formula
+      cartype: ct_formula;
     ),
     (
       tex1old: 'f_4_4';
@@ -252,7 +252,7 @@ const
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
       model3d: 'CAR0N3A.I3D';
-      cartype: ct_formula
+      cartype: ct_formula;
     ),
     (
       tex1old: 'f_4_4';
@@ -265,7 +265,7 @@ const
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
       model3d: 'CAR0N3A.I3D';
-      cartype: ct_formula
+      cartype: ct_formula;
     ),
 
     (
@@ -279,7 +279,7 @@ const
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
       model3d: 'CAR0N4A.I3D';
-      cartype: ct_formula
+      cartype: ct_formula;
     ),
     (
       tex1old: 'f_5_4';
@@ -292,7 +292,7 @@ const
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
       model3d: 'CAR0N4A.I3D';
-      cartype: ct_formula
+      cartype: ct_formula;
     ),
     (
       tex1old: 'f_5_4';
@@ -305,7 +305,7 @@ const
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
       model3d: 'CAR0N4A.I3D';
-      cartype: ct_formula
+      cartype: ct_formula;
     ),
 
     (
@@ -319,7 +319,7 @@ const
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
       model3d: 'CAR0N5A.I3D';
-      cartype: ct_formula
+      cartype: ct_formula;
     ),
     (
       tex1old: 'f_6_4';
@@ -332,7 +332,7 @@ const
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
       model3d: 'CAR0N5A.I3D';
-      cartype: ct_formula
+      cartype: ct_formula;
     )
   );
 
