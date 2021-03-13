@@ -58,14 +58,8 @@ uses
   Windows,
   d_main,
   g_game,
-{$IFDEF OPENGL}
   gl_main,
-{$ELSE}
-  i_main,
-{$ENDIF}
-{$IFNDEF FPC}
   i_startup,
-{$ENDIF}
   m_argv;
 
 var
@@ -143,19 +137,11 @@ var
   sfilename: string;
 begin
   if M_CheckParm('-debugfile') <> 0 then
-{$IFDEF OPENGL}
     sprintf(dfilename, 'DATA\LOGS\GL%s32_debug%d.txt', [basename, consoleplayer])
   else
     sprintf(dfilename, 'DATA\LOGS\GL%s32_debug.txt', [basename]);
   sprintf(efilename, 'DATA\LOGS\GL%s32_stderr.txt', [basename]);
   sprintf(sfilename, 'DATA\LOGS\GL%s32_stdout.txt', [basename]);
-{$ELSE}
-    sprintf(dfilename, 'DATA\LOGS\%s32_debug%d.txt', [basename, consoleplayer])
-  else
-    sprintf(dfilename, 'DATA\LOGS\%s32_debug.txt', [basename]);
-  sprintf(efilename, 'DATA\LOGS\%s32_stderr.txt', [basename]);
-  sprintf(sfilename, 'DATA\LOGS\%s32_stdout.txt', [basename]);
-{$ENDIF}
 
   MkDir(M_SaveFileName('DATA'));
   MkDir(M_SaveFileName('DATA\LOGS'));

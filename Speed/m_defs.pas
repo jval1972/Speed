@@ -49,22 +49,12 @@ uses
   i_mp3,
   i_music,
   i_sound,
-{$IFDEF OPENGL}
   gl_main,
   gl_defs,
   gl_models,
   gl_voxels,
   gl_lightmaps,
   gl_shadows,
-{$ELSE}
-  i_video,
-  r_batchcolumn,
-  r_wall8,
-  r_wall32,
-  r_scale,
-  r_voxels,
-  r_softlights,
-{$ENDIF}
   e_endoom,
   m_menu,
   m_misc,
@@ -75,15 +65,8 @@ uses
   r_lights,
   r_intrpl,
   vx_base,
-{$IFNDEF OPENGL}
-  r_fake3d,
-  r_slopes, // JVAL: Slopes
-{$ENDIF}
   r_camera,
   r_draw,
-{$IFNDEF OPENGL}
-  r_segs,
-{$ENDIF}
   r_dynlights,
   s_sound,
   t_main,

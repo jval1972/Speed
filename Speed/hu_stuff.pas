@@ -70,9 +70,7 @@ procedure HU_Ticker;
 
 procedure HU_Drawer;
 
-{$IFDEF OPENGL}
 function HU_Height: integer;
-{$ENDIF}
 
 function HU_dequeueChatChar: char;
 
@@ -236,12 +234,12 @@ const
 
 function HU_TITLEY: integer;
 begin
-  result := {$IFDEF OPENGL}V_GetScreenHeight(SCN_FG) * 167 div 200{$ELSE}167{$ENDIF} - hu_font[0].height;
+  result := V_GetScreenHeight(SCN_FG) * 167 div 200 - hu_font[0].height;
 end;
 
 function HU_LEVELTIMEY: integer;
 begin
-  result := {$IFDEF OPENGL}V_GetScreenHeight(SCN_FG) * 167 div 200{$ELSE}167{$ENDIF} - 2 * hu_font[0].height;
+  result := V_GetScreenHeight(SCN_FG) * 167 div 200 - 2 * hu_font[0].height;
 end;
 
 const
@@ -471,7 +469,6 @@ begin
   headsupactive := true;
 end;
 
-{$IFDEF OPENGL}
 var
   hu_h: integer = 0;
 
@@ -479,7 +476,6 @@ function HU_Height: integer;
 begin
   result := hu_h;
 end;
-{$ENDIF}
 
 var
   m_fps: string = '';
@@ -491,7 +487,6 @@ var
   x, y: integer;
   c: integer;
 begin
-{$IFDEF OPENGL}
   x := V_GetScreenWidth(SCN_FG) - 9;
   y := 1;
   for i := length(m_fps) downto 1 do
@@ -506,29 +501,6 @@ begin
       x := x - 4;
   end;
   hu_h := hu_h + 9;
-{$ELSE}
-  if amstate = am_only then
-  begin
-    x := 311;
-    y := 1;
-  end
-  else
-  begin
-    x := (viewwindowx + viewwidth) * 320 div SCREENWIDTH - 9;
-    y := viewwindowy * 200 div SCREENHEIGHT + 1;
-  end;
-  for i := length(m_fps) downto 1 do
-  begin
-    if m_fps[i] <> ' ' then
-    begin
-      c := Ord(toupper(m_fps[i])) - Ord(HU_FONTSTART);
-      V_DrawPatch(x, y, SCN_FG, hu_font[c], true);
-      x := x - 8;
-    end
-    else
-      x := x - 4;
-  end;
-{$ENDIF}  
 end;
 
 // 19/9/2009 JVAL: For drawing demo progress
@@ -539,16 +511,12 @@ var
   x, y: integer;
 begin
   dp := W_CacheLumpName('DEMOTIME', PU_STATIC);
-  x := viewwindowx{$IFDEF OPENGL} * 320 div SCREENWIDTH{$ENDIF};
-  y := (viewwindowy + viewheight){$IFDEF OPENGL} * 200 div SCREENHEIGHT{$ENDIF};
-{$IFDEF OPENGL}
+  x := viewwindowx * 320 div SCREENWIDTH;
+  y := (viewwindowy + viewheight) * 200 div SCREENHEIGHT;
   i := round(G_DemoProgress * viewwidth / SCREENWIDTH * 320 / FRACUNIT);
-{$ELSE}
-  i := G_DemoProgress * viewwidth div FRACUNIT;
-{$ENDIF}  
   while i > 0 do
   begin
-    V_DrawPatchTransparent(x, y, SCN_FG, dp, {$IFDEF OPENGL}true{$ELSE}false{$ENDIF});
+    V_DrawPatchTransparent(x, y, SCN_FG, dp, true);
     i := i - dp.width;
     x := x + dp.width;
   end;
@@ -558,21 +526,16 @@ end;
 procedure HU_Drawer;
 var
   i, t: integer;
-{$IFDEF OPENGL}
   i2, idx, lines: integer;
-{$ENDIF}
   lt: string;
 begin
-{$IFDEF OPENGL}
   hu_h := 0;
-{$ENDIF}
   if drawfps then
     HU_DrawFPS;
   if demoplayback and showdemoplaybackprogress then
     HU_DrawDemoProgress;
 
   HUlib_drawSText(@w_message);
-  {$IFDEF OPENGL}
   if w_message._on^ then
     for i := 0 to w_message.height - 1 do
     begin
@@ -586,7 +549,6 @@ begin
       if lines * 10 > hu_h then
         hu_h := lines * 10;
     end;
-  {$ENDIF}
   HUlib_drawIText(@w_chat);
   if amstate = am_only then
   begin

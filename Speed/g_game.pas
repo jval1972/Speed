@@ -278,9 +278,6 @@ uses
   m_rnd,
   i_system,
   i_io,
-{$IFNDEF OPENGL}
-  r_draw,
-{$ENDIF}
   e_endoom,
   m_argv,
   m_misc,
@@ -2060,11 +2057,6 @@ begin
     R_ExecuteSetViewSize;
 
   P_LevelInfoChangeMusic;
-
-  // draw the pattern into the back screen
-{$IFNDEF OPENGL}
-  R_FillBackScreen;
-{$ENDIF}
 end;
 
 //
@@ -2191,11 +2183,6 @@ begin
   savedescription := '';
 
   players[consoleplayer]._message := GGSAVED;
-
-  // draw the pattern into the back screen
-{$IFNDEF OPENGL}
-  R_FillBackScreen;
-{$ENDIF}
 end;
 
 procedure G_DoSaveGame;

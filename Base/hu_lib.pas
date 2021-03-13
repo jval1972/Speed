@@ -257,21 +257,21 @@ begin
     else if c = ' ' then
     begin
       x := x + 4;
-      if x >= {$IFDEF OPENGL}V_GetScreenWidth(SCN_FG){$ELSE}320{$ENDIF} then
+      if x >= V_GetScreenWidth(SCN_FG) then
         break;
     end
     else if (Ord(c) >= l.sc) and (c {$IFDEF STRIFE}<{$ELSE}<={$ENDIF} '_') then
     begin
       w := l.font[Ord(c) - l.sc].width;
-      if x + w > {$IFDEF OPENGL}V_GetScreenWidth(SCN_FG){$ELSE}320{$ENDIF} then
+      if x + w > V_GetScreenWidth(SCN_FG) then
         break;
-      V_DrawPatch(x, y, SCN_FG, l.font[Ord(c) - l.sc], {$IFDEF OPENGL}false{$ELSE}true{$ENDIF});
+      V_DrawPatch(x, y, SCN_FG, l.font[Ord(c) - l.sc], false);
       x := x + w;
     end;
   end;
 
   // draw the cursor if requested
-  if drawcursor and (x + l.font[Ord('_') - l.sc].width <= {$IFDEF OPENGL}V_GetScreenWidth(SCN_FG){$ELSE}320{$ENDIF}) then
+  if drawcursor and (x + l.font[Ord('_') - l.sc].width <= V_GetScreenWidth(SCN_FG)) then
     V_DrawPatch(x, l.y, SCN_FG, l.font[Ord('_') - l.sc], true);
 end;
 
@@ -367,23 +367,13 @@ begin
     while y < V_PreserveY(l.y) + V_PreserveY(lh) + 1 do
     begin
       if (y < viewwindowy) or (y >= viewwindowy + viewheight) then
-        {$IFDEF OPENGL}
         R_VideoErase(V_PreserveGLY(yoffset), GLDRAWWIDTH) // erase entire line
-        {$ELSE}
-        R_VideoErase(yoffset, SCREENWIDTH) // erase entire line
-        {$ENDIF}
       else
       begin
         // erase left border
-        {$IFDEF OPENGL}
         R_VideoErase(V_PreserveGLY(yoffset), V_PreserveGLX(viewwindowx));
         // erase right border     asfa
         R_VideoErase(V_PreserveGLY(yoffset + viewwindowx + viewwidth), V_PreserveGLX(viewwindowx));
-        {$ELSE}
-        R_VideoErase(yoffset, viewwindowx);
-        // erase right border
-        R_VideoErase(yoffset + viewwindowx + viewwidth, viewwindowx);
-        {$ENDIF}
       end;
       inc(y);
       yoffset := yoffset + SCREENWIDTH;

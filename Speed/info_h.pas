@@ -427,13 +427,8 @@ type
     params: TCustomParamList;
     owners: TDNumberList;
     dlights: T2DNumberList;
-{$IFDEF OPENGL}
     models: TDNumberList;
-{$ENDIF}
     voxels: TDNumberList;
-{$IFNDEF OPENGL}
-    voxelradius: integer;
-{$ENDIF}
     flags_ex: integer;
   end;
   Pstate_t = ^state_t;

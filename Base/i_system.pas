@@ -193,15 +193,8 @@ uses
   i_io,
   i_net,
   i_tmp,
-{$IFNDEF FPC}
   i_startup,
-{$ENDIF}
-{$IFDEF OPENGL}
   gl_main,
-{$ELSE}
-  i_video,
-  i_main,
-{$ENDIF}
   d_main,
   d_net,
 {$IFDEF HEXEN}
@@ -400,7 +393,7 @@ end;
 procedure I_FlashCachedOutput;
 begin
   if stdoutbuffer <> nil then
-    stdoutbuffer.SaveToFile({$IFDEF OPENGL}'GL' + {$ENDIF}_GAME + '_stdout.cachedbuffer.txt');
+    stdoutbuffer.SaveToFile('GL' + _GAME + '_stdout.cachedbuffer.txt');
 end;
 
 //

@@ -50,18 +50,11 @@ uses
   Windows,
   DirectX,
   MMSystem, // For joystick support
-{$IFDEF FPC}
-  d_fpc,
-{$ENDIF}
   d_delphi,
   doomdef,
   d_event,
   d_main,
-{$IFDEF OPENGL}
   gl_main,
-{$ELSE}
-  i_main,
-{$ENDIF}
   i_system;
 
 function TranslateKey(keycode: integer): integer;

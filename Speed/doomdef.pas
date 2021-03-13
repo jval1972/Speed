@@ -61,9 +61,7 @@ const
   VERSION204 = 204;
   VERSION205 = 205;
   VERSION = VERSION205;
-{$IFDEF OPENGL}
   VERSIONSLOPES = VERSION122;
-{$ENDIF}
 
 var
   oldsharewareversion: boolean = false;
@@ -131,15 +129,10 @@ var
 // Rendering Engine Screen Dimentions
   SCREENWIDTH: integer;
   SCREENHEIGHT: integer;
-{$IFNDEF OPENGL}
-// Window Screen Dimentions
-  WINDOWWIDTH: integer;
-  WINDOWHEIGHT: integer;
-{$ENDIF}
 
   SCREENWIDTH32PITCH: integer;
 
-  fullscreen: {$IFDEF OPENGL}boolean{$ELSE}integer = 0{$ENDIF};
+  fullscreen: boolean;
   zaxisshift: boolean = true;
 
 const
