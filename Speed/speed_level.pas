@@ -534,7 +534,7 @@ var
         ll := AddLineToWAD(speedvertexes[v1].x, speedvertexes[v1].y, speedvertexes[v2].x, speedvertexes[v2].y);
         doomlinedefs[ll].sidenum[0] := AddSidedefToWAD('', '', SH_WALL_PREFIX + speedlines[ii].texture, sec1);
         doomlinedefs[ll].sidenum[1] := AddSidedefToWAD('', '', SH_WALL_PREFIX + speedlines[ii].texture, sec1);
-        doomlinedefs[ll].flags := ML_BLOCKING or ML_TWOSIDED or ML_DONTPEGBOTTOM;
+        doomlinedefs[ll].flags := ML_BLOCKING or ML_TWOSIDED or ML_DONTPEGBOTTOM or ML_MAPPED;
       end;
     end;
 
