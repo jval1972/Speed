@@ -163,9 +163,6 @@ uses
   z_zone;
 
 var
-// temp for screenblocks (0-9)
-  m_screensize: integer;
-
 // -1 = no quicksave slot picked!
   quickSaveSlot: integer;
 
@@ -588,8 +585,6 @@ type
   optionsgeneral_e = (
     endgame,
     messages,
-    scrnsize,
-    option_empty1,
     mousesens,
     option_empty2,
     optgen_end
@@ -799,7 +794,6 @@ type
     od_gl_drawshadows,
     od_gl_add_all_lines,
     od_gl_useglnodesifavailable,
-    od_gl_autoloadgwafiles,
     od_gl_screensync,
     optdispopengl_end
   );
@@ -2212,9 +2206,6 @@ begin
     msgNames[showMessages], false);
 
   M_DrawThermo(
-    OptionsGeneralDef.x, OptionsGeneralDef.y + OptionsGeneralDef.itemheight * (Ord(scrnsize) + 1), 9, m_screensize);
-
-  M_DrawThermo(
     OptionsGeneralDef.x, OptionsGeneralDef.y + OptionsGeneralDef.itemheight * (Ord(mousesens) + 1), 20, mouseSensitivity);
 end;
 
@@ -2774,30 +2765,6 @@ begin
   setsizeneeded := true;
 end;
 
-procedure M_SizeDisplay(choice: integer);
-begin
-  case choice of
-    0:
-      begin
-        if m_screensize > 0 then
-        begin
-          dec(screenblocks);
-          dec(m_screensize);
-        end;
-      end;
-    1:
-      begin
-        if m_screensize < 8 then
-        begin
-          inc(screenblocks);
-          inc(m_screensize);
-        end;
-      end;
-  end;
-
-  R_SetViewSize;
-end;
-
 //
 // CONTROL PANEL
 //
@@ -3018,30 +2985,6 @@ begin
   // F-Keys
   if not menuactive then
     case ch of
-      KEY_MINUS:    // Screen size down
-        begin
-          if (amstate = am_only) or chat_on then
-          begin
-            result := false;
-            exit;
-          end;
-          M_SizeDisplay(0);
-          M_StartSound(nil, Ord(sfx_stnmov));
-          result := true;
-          exit;
-        end;
-      KEY_EQUALS, Ord('+'):   // Screen size up
-        begin
-          if (amstate = am_only) or chat_on then
-          begin
-            result := false;
-            exit;
-          end;
-          M_SizeDisplay(1);
-          M_StartSound(nil, Ord(sfx_stnmov));
-          result := true;
-          exit;
-        end;
       KEY_F1:      // Help key
         begin
           M_StartControlPanel;
@@ -3667,7 +3610,6 @@ begin
   itemOn := currentMenu.lastOn;
   whichSkull := 0;
   skullAnimCounter := 10;
-  m_screensize := screenblocks - 4;
   messageToPrint := 0;
   messageString := '';
   messageLastMenuActive := menuactive;
@@ -4016,22 +3958,6 @@ begin
   pmi.routine := @M_ChangeMessages;
   pmi.pBoolVal := nil;
   pmi.alphaKey := 'm';
-
-  inc(pmi);
-  pmi.status := 2;
-  pmi.name := 'M_SCRNSZ';
-  pmi.cmd := '';
-  pmi.routine := @M_SizeDisplay;
-  pmi.pBoolVal := nil;
-  pmi.alphaKey := 's';
-
-  inc(pmi);
-  pmi.status := -1;
-  pmi.name := '';
-  pmi.cmd := '';
-  pmi.routine := nil;
-  pmi.pBoolVal := nil;
-  pmi.alphaKey := #0;
 
   inc(pmi);
   pmi.status := 2;
@@ -4871,14 +4797,6 @@ begin
   pmi.routine := @M_BoolCmd;
   pmi.pBoolVal := @useglnodesifavailable;
   pmi.alphaKey := 'u';
-
-  inc(pmi);
-  pmi.status := 1;
-  pmi.name := '!Automatically load GWA files';
-  pmi.cmd := 'autoloadgwafiles';
-  pmi.routine := @M_BoolCmd;
-  pmi.pBoolVal := @autoloadgwafiles;
-  pmi.alphaKey := 'g';
 
   inc(pmi);
   pmi.status := 1;

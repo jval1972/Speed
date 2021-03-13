@@ -83,7 +83,7 @@ uses
   r_draw,
 {$IFNDEF OPENGL}
   r_segs,
-{$ENDIF}  
+{$ENDIF}
   r_dynlights,
   s_sound,
   t_main,
@@ -111,7 +111,6 @@ var
   precisescalefromglobalangle: boolean;
   preciseslopedrawing: boolean; // JVAL: Slopes
   r_drawvoxels: boolean;
-  showfullhdlogo: boolean = false;
   soft_fullscreen: integer = 0;
   r_uselightmaps: boolean = true;
   r_lightmapfadeoutfunc: integer = 0;
@@ -159,7 +158,7 @@ type
   Pdefault_t = ^default_t;
 
 const
-  NUMDEFAULTS = 195;
+  NUMDEFAULTS = 192;
 
 // JVAL
 // Note: All setable defaults must be in lowercase, don't ask why. Just do it. :)
@@ -347,14 +346,6 @@ const
      defaultivalue: 0;
      defaultbvalue: true;
      _type: tBoolean),
-
-    (name: 'screenblocks';
-     location: @screenblocks;
-     setable: DFS_NEVER;
-     defaultsvalue: '';
-     defaultivalue: 9;
-     defaultbvalue: false;
-     _type: tInteger),
 
     (name: 'detaillevel';
      location: @detailLevel;
@@ -725,14 +716,6 @@ const
      defaultbvalue: true;
      _type: tBoolean),
 
-    (name: 'autoloadgwafiles';
-     location: @autoloadgwafiles;
-     setable: DFS_ALWAYS;
-     defaultsvalue: '';
-     defaultivalue: 0;
-     defaultbvalue: true;
-     _type: tBoolean),
-
     (name: 'Voxels';
      location: nil;
      setable: DFS_NEVER;
@@ -970,14 +953,6 @@ const
 
     (name: 'showmessageboxonmodified';
      location: @showmessageboxonmodified;
-     setable: DFS_ALWAYS;
-     defaultsvalue: '';
-     defaultivalue: 0;
-     defaultbvalue: false;
-     _type: tBoolean),
-
-    (name: 'showfullhdlogo';
-     location: @showfullhdlogo;
      setable: DFS_ALWAYS;
      defaultsvalue: '';
      defaultivalue: 0;

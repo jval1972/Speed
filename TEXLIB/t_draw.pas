@@ -140,8 +140,8 @@ begin
 
   dst := @dest[0];
 
-  fracrowstep := t.GetHeight * FRACUNIT div {$IFDEF OPENGL}V_GetScreenHeight(SCN_FG){$ELSE}SCREENHEIGHT{$ENDIF};
-  fraccolstep := twidth * FRACUNIT div {$IFDEF OPENGL}V_GetScreenWidth(SCN_FG){$ELSE}SCREENWIDTH{$ENDIF};
+  fracrowstep := t.GetHeight * FRACUNIT div V_GetScreenHeight(SCN_FG);
+  fraccolstep := twidth * FRACUNIT div V_GetScreenWidth(SCN_FG);
 
   if (pal_color = 0) and (usegamma = 0) then
     c := 0
@@ -155,7 +155,7 @@ begin
   end;
 
   fracrow := 0;
-  for i := 0 to {$IFDEF OPENGL}V_GetScreenHeight(SCN_FG){$ELSE}SCREENHEIGHT{$ENDIF} - 1 do
+  for i := 0 to V_GetScreenHeight(SCN_FG) - 1 do
   begin
     fraccol := 0;
 
@@ -174,9 +174,9 @@ begin
       end;
     end;
 
-    for j := 0 to {$IFDEF OPENGL}V_GetScreenWidth(SCN_FG){$ELSE}SCREENWIDTH{$ENDIF} - 1 do
+    for j := 0 to V_GetScreenWidth(SCN_FG) - 1 do
     begin
-      dst^ := src[fraccol shr FRACBITS]{$IFDEF OPENGL} or $FF000000{$ENDIF};
+      dst^ := src[fraccol shr FRACBITS] or $FF000000;
       inc(dst);
       inc(fraccol, fraccolstep);
     end;

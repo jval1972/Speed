@@ -672,8 +672,7 @@ begin
 
   f_mx := f_h;
   if amstate = am_overlay then
-    if screenblocks >= 10 then
-      f_mx := SCREENWIDTH;
+    f_mx := SCREENWIDTH;
 
   {$IFNDEF OPENGL}
   if usemultithread then

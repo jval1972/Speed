@@ -329,12 +329,7 @@ uses
   p_mobj_h,
   p_setup,
   r_data,
-{$IFNDEF OPENGL}
-  r_draw,
-  r_hires,
-{$ELSE}
   gl_automap,
-{$ENDIF}
   speed_things,
   v_data,
   v_video;
@@ -1003,24 +998,6 @@ begin
 end;
 
 //
-// Clear automap frame buffer.
-//
-{$IFNDEF OPENGL}
-procedure AM_clearFB(color: integer);
-var
-  c: LongWord;
-begin
-  if videomode = vm32bit then
-  begin
-    c := videopal[color];
-    MT_memseti(fb32, c, f_w * f_h);
-  end
-  else
-    MT_memset(fb, color, f_w * f_h);
-end;
-{$ENDIF}
-
-//
 // Automap clipping of lines.
 //
 // Based on Cohen-Sutherland clipping algorithm but with a slightly
@@ -1168,102 +1145,9 @@ end;
 // Classic Bresenham w/ whatever optimizations needed for speed
 //
 procedure AM_drawFline(fl: Pfline_t; color: integer);
-{$IFDEF OPENGL}
 begin
   gld_AddAutomapLine(fl.a.x, fl.a.y, fl.b.x, fl.b.y,  videopal[color]);
 end;
-{$ELSE}
-var
-  x, y,
-  dx, dy,
-  sx, sy,
-  ax, ay,
-  d: integer;
-
-  procedure PUTDOT(xx, yy, cc: integer);
-  begin
-  // JVAL Clip line if in overlay mode
-    if amstate = am_overlay then
-    begin
-      if yy <= viewwindowy then
-        exit;
-      if yy >= viewwindowy + viewheight then
-        exit;
-      if xx <= viewwindowx then
-        exit;
-      if xx >= viewwindowx + viewwidth then
-        exit;
-    end;
-    if videomode = vm32bit then
-      fb32[yy * f_w + xx] := videopal[cc]
-    else
-      fb[yy * f_w + xx] := cc;
-  end;
-
-begin
-  // For debugging only
-  {$IFDEF DEBUG}
-  if (fl.a.x < 0) or (fl.a.x >= f_w) or
-     (fl.a.y < 0) or (fl.a.y >= f_h) or
-     (fl.b.x < 0) or (fl.b.x >= f_w) or
-     (fl.b.y < 0) or (fl.b.y >= f_h) then
-  begin
-    I_Error('AM_drawFline(): fuck!');
-    exit;
-  end;
-  {$ENDIF}
-
-  dx := fl.b.x - fl.a.x;
-  ax := 2 * abs(dx);
-  if dx < 0 then
-    sx := -1
-  else
-    sx := 1;
-
-  dy := fl.b.y - fl.a.y;
-  ay := 2 * abs(dy);
-  if dy < 0 then
-    sy := -1
-  else
-    sy := 1;
-
-  x := fl.a.x;
-  y := fl.a.y;
-
-  if ax > ay then
-  begin
-    d := ay - ax div 2;
-    while true do
-    begin
-      PUTDOT(x, y, color);
-      if x = fl.b.x then exit;
-      if d >= 0 then
-      begin
-        y := y + sy;
-        d := d - ax;
-      end;
-      x := x + sx;
-      d := d + ay;
-    end;
-  end
-  else
-  begin
-    d := ax - ay div 2;
-    while true do
-    begin
-      PUTDOT(x, y, color);
-      if y = fl.b.y then exit;
-      if d >= 0 then
-      begin
-        x := x + sx;
-        d := d - ay;
-      end;
-      y := y + sy;
-      d := d + ax;
-    end;
-  end;
-end;
-{$ENDIF}
 
 //
 // Clip lines, draw visible parts of lines.
@@ -1641,11 +1525,7 @@ begin
       fy := CYMTOF(fy);
 
       if (fx >= f_x) and (fx <= f_w - w) and (fy >= f_y) and (fy <= f_h - h) then
-      {$IFDEF OPENGL}
         gld_AddAutomapPatch(fx, fy, marknumsid[i])
-      {$ELSE}
-        V_DrawPatchZoomed(fx, fy, SCN_FG, marknums[i], false, FRACUNIT * SCREENHEIGHT div 200);
-      {$ENDIF}
     end;
   end;
 end;
@@ -1665,11 +1545,7 @@ begin
 
   if amstate = am_only then
   begin
-    {$IFDEF OPENGL}
     gld_ClearAMBuffer(f_w, f_h, $080808);
-    {$ELSE}
-    AM_clearFB(aprox_black);
-    {$ENDIF}
     if texturedautomap then
     begin
       AM_setSubSectorDrawFuncs;
@@ -1685,9 +1561,7 @@ begin
   AM_drawPlayers;
   AM_drawThings;
 
-  {$IFDEF OPENGL}
   gld_DrawAutomap;
-  {$ENDIF}
 end;
 
 procedure AM_Init;

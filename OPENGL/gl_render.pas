@@ -1803,25 +1803,11 @@ begin
     didfirstscreensync := syncret;
   end;
 
-  if screenblocks > 10 then
-    height := SCREENHEIGHT
-  else if screenblocks = 10 then
-    height := SCREENHEIGHT
-  else
-    height := (screenblocks * SCREENHEIGHT div 10) and not 7;
+  height := SCREENHEIGHT;
 
   glViewport(viewwindowx, SCREENHEIGHT - (height + viewwindowy - ((height - viewheight) div 2)), viewwidth, height);
-  if screenblocks > 10 then
-  begin
-    glDisable(GL_SCISSOR_TEST);
-    scissoron := false;
-  end
-  else
-  begin
-    glScissor(viewwindowx, SCREENHEIGHT - (viewheight + viewwindowy), viewwidth, viewheight);
-    glEnable(GL_SCISSOR_TEST);
-    scissoron := true;
-  end;
+  glDisable(GL_SCISSOR_TEST);
+  scissoron := false;
 
   // Player coordinates
   xCamera := -viewx / MAP_SCALE;

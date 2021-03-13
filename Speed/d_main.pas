@@ -106,7 +106,6 @@ function D_VersionBuilt: string;
 procedure D_ShutDown;
 
 var
-  autoloadgwafiles: boolean = true;
   searchdoomwaddir: boolean = true;
   searchdoomwadpath: boolean = true;
   searchsteampaths: boolean = true;
@@ -121,9 +120,6 @@ function D_FileInDoomPath(const fn: string): string;
 
 var
   showmessageboxonmodified: boolean = false;
-{$IFNDEF OPENGL}
-  showfullhdlogo: boolean = false;
-{$ENDIF}
 
 implementation
 
@@ -141,9 +137,6 @@ uses
   c_cmds,
   d_check,
   e_endoom,
-{$IFNDEF OPENGL}
-  f_wipe,
-{$ENDIF}
   f_finale,
   m_argv,
   m_misc,
@@ -159,13 +152,7 @@ uses
   i_tmp,
   i_startup,
   i_steam,
-{$IFDEF OPENGL}
   gl_main,
-{$ELSE}
-  r_defs,
-  r_fake3d,
-  i_video,
-{$ENDIF}
   nd_main,
   g_game,
   hu_stuff,
@@ -267,10 +254,6 @@ var
   nodrawers: boolean = false; // for comparative timing purposes
   noblit: boolean = false;    // for comparative timing purposes
   norender: boolean = false;  // for comparative timing purposes
-{$IFNDEF OPENGL}
-  hom: boolean = false; // HOM detection
-  blancbeforerender: Boolean = false;
-{$ENDIF}
   autoscreenshot: boolean = false;
   shotnumber: integer = 0;
   lastshotnumber: integer = -1;
@@ -291,10 +274,6 @@ begin
 end;
 
 procedure D_RenderPlayerView(player: Pplayer_t);
-{$IFNDEF OPENGL}
-var
-  stime: extended;
-{$ENDIF}
 begin
   if norender then
   begin
@@ -302,288 +281,181 @@ begin
     exit;
   end;
 
-{$IFNDEF OPENGL}
-  if hom then
-  begin
-    stime := I_GetSysTime;
-    if round(stime) = Trunc(stime) then
-      R_PlayerViewBlanc(aprox_black)
-    else
-      R_PlayerViewBlanc(aprox_red);
-  end
-  else if blancbeforerender then
-    R_PlayerViewBlanc(aprox_black);
-{$ENDIF}
-
   if player <> nil then
     R_RenderPlayerView(player);
 end;
 
 var
   diskbusyend: integer = -1;
-  {$IFNDEF OPENGL}
-  oldusemultithread: boolean = false;
-  {$ENDIF}
 
 procedure D_Display;
-
-{$IFDEF OPENGL}
-procedure D_DisplayHU;
-{$ENDIF}
-var
-  y: integer;
-  redrawsbar: boolean;
-  redrawbkscn: boolean;
-  palette: PByteArray;
-  drawhu: boolean;
-  nowtime: integer;
-{$IFNDEF OPENGL}
-  tics: integer;
-  wipe: boolean;
-  wipestart: integer;
-  done: boolean;
-  oldvideomode: videomode_t;
-{$ENDIF}
-begin
-  if gamestate = GS_ENDOOM then
+  procedure D_DisplayHU;
+  var
+    y: integer;
+    redrawsbar: boolean;
+    redrawbkscn: boolean;
+    palette: PByteArray;
+    drawhu: boolean;
+    nowtime: integer;
   begin
-    E_Drawer;
-    {$IFNDEF OPENGL}
-    D_FinishUpdate; // page flip or blit buffer
-    {$ENDIF}
-    exit;
-  end;
+    if gamestate = GS_ENDOOM then
+    begin
+      E_Drawer;
+      Exit;
+    end;
 
-{$IFNDEF OPENGL}
-  HU_DoFPSStuff;
-{$ENDIF}
+    if nodrawers then
+      exit; // for comparative timing / profiling
 
-  if nodrawers then
-    exit; // for comparative timing / profiling
+    redrawsbar := false;
+    redrawbkscn := false;
+    drawhu := false;
 
-  redrawsbar := false;
-  redrawbkscn := false;
-  drawhu := false;
+    // change the view size if needed
+    if setsizeneeded then
+    begin
+      R_ExecuteSetViewSize;
+      oldgamestate := -1; // force background redraw
+      borderdrawcount := 3;
+    end;
 
-  // change the view size if needed
-  if setsizeneeded then
-  begin
-    R_ExecuteSetViewSize;
-    oldgamestate := -1; // force background redraw
-    borderdrawcount := 3;
-  end;
-{$IFNDEF OPENGL}
-  if oldusemultithread <> usemultithread then
-  begin
-    R_SetRenderingFunctions;
-    oldusemultithread := usemultithread;
-  end;
-{$ENDIF}
+    if (gamestate = GS_LEVEL) and (gametic <> 0) then
+      HU_Erase;
 
-{$IFNDEF OPENGL}
-  // save the current screen if about to wipe
-  if Ord(gamestate) <> wipegamestate then
-  begin
-    wipe := true;
-    wipe_StartScreen;
-  end
-  else
-    wipe := false;
-{$ENDIF}
-
-  if (gamestate = GS_LEVEL) and (gametic <> 0) then
-    HU_Erase;
-
-  // do buffered drawing
-  case gamestate of
-    GS_LEVEL:
-      begin
-        if gametic <> 0 then
+    // do buffered drawing
+    case gamestate of
+      GS_LEVEL:
         begin
-          if amstate = am_only then
-            AM_Drawer;
-          if {$IFNDEF OPENGL}wipe or {$ENDIF}((viewheight <> SCREENHEIGHT) and viewfullscreen) then
-            redrawsbar := true;
-          if inhelpscreensstate and (not inhelpscreens) then
-            redrawsbar := true; // just put away the help screen
-          viewfullscreen := viewheight = SCREENHEIGHT;
-          if viewfullscreen then
-            ST_Drawer(stdo_no, redrawsbar)
-          else
-            ST_Drawer(stdo_full, redrawsbar);
+          if gametic <> 0 then
+          begin
+            if amstate = am_only then
+              AM_Drawer;
+            if (viewheight <> SCREENHEIGHT) and viewfullscreen then
+              redrawsbar := true;
+            if inhelpscreensstate and (not inhelpscreens) then
+              redrawsbar := true; // just put away the help screen
+            viewfullscreen := viewheight = SCREENHEIGHT;
+            if viewfullscreen then
+              ST_Drawer(stdo_no, redrawsbar)
+            else
+              ST_Drawer(stdo_full, redrawsbar);
+          end;
         end;
+      GS_INTERMISSION:
+        WI_Drawer;
+      GS_FINALE:
+        F_Drawer;
+      GS_DEMOSCREEN:
+        D_PageDrawer;
+    end;
+
+    // draw the view directly
+    if gamestate = GS_LEVEL then
+    begin
+      if gametic <> 0 then
+        drawhu := true;
+    end
+    else if Ord(gamestate) <> oldgamestate then
+    begin
+    // clean up border stuff
+      palette := V_ReadPalette(PU_STATIC);
+      I_SetPalette(palette);
+      V_SetPalette(palette);
+      Z_ChangeTag(palette, PU_CACHE);
+    end;
+
+    // see if the border needs to be initially drawn
+    if gamestate = GS_LEVEL then
+    begin
+    // see if the border needs to be updated to the screen
+      if amstate <> am_only then
+      begin
+        if scaledviewwidth <> SCREENWIDTH then
+        begin
+          if menuactive or menuactivestate or (not viewactivestate) or C_IsConsoleActive then
+            borderdrawcount := 3;
+          if borderdrawcount > 0 then
+          begin
+            R_DrawViewBorder; // erase old menu stuff
+            redrawbkscn := true;
+            dec(borderdrawcount);
+          end;
+        end
+        else if gametic <> 0 then
+          ST_Drawer(stdo_small, redrawsbar);
       end;
-    GS_INTERMISSION:
-      WI_Drawer;
-    GS_FINALE:
-      F_Drawer;
-    GS_DEMOSCREEN:
-      D_PageDrawer;
-  end;
-
-  // draw the view directly
-  if gamestate = GS_LEVEL then
-  begin
-  {$IFNDEF OPENGL}
-    if (amstate <> am_only) and (gametic <> 0) then
-    begin
-      D_RenderPlayerView(@players[displayplayer]);
-      if amstate = am_overlay then
-        AM_Drawer;
     end;
-  {$ENDIF}
-    if gametic <> 0 then
-      drawhu := true;
-  end
-  else if Ord(gamestate) <> oldgamestate then
-  begin
-  // clean up border stuff
-    palette := V_ReadPalette(PU_STATIC);
-    {$IFDEF OPENGL}
-    I_SetPalette(palette);
-    V_SetPalette(palette);
-    {$ELSE}
-    IV_SetPalette(palette);
-    {$ENDIF}
-    Z_ChangeTag(palette, PU_CACHE);
-  end;
 
-  // see if the border needs to be initially drawn
-  if gamestate = GS_LEVEL then
-  begin
-{$IFNDEF OPENGL}
-    if needsbackscreen or (oldgamestate <> Ord(GS_LEVEL)) then
+    menuactivestate := menuactive;
+    viewactivestate := viewactive;
+    inhelpscreensstate := inhelpscreens;
+    oldgamestate := Ord(gamestate);
+
+    // draw pause pic
+    if paused then
     begin
-      viewactivestate := false; // view was not active
-      R_FillBackScreen;         // draw the pattern into the back screen
+      if amstate = am_only then
+        y := 20
+      else
+        y := (viewwindowy * 200) div SCREENHEIGHT + 20;
+      V_DrawPatch(160, y, SCN_FG,
+        'PAUSE', true);
     end;
-{$ENDIF}
-  // see if the border needs to be updated to the screen
-    if amstate <> am_only then
+
+    if drawhu then
+      HU_Drawer;
+
+    nowtime := I_GetTime;
+
+    if isdiskbusy then
     begin
-      if scaledviewwidth <> SCREENWIDTH then
+      diskbusyend := nowtime + 4; // Display busy disk for a little...
+      isdiskbusy := false;
+    end;
+
+    if diskbusyend > nowtime then
+    begin
+      // JVAL: Overlay Drawer before menus
+      OVR_Drawer;
+
+      // Menus go directly to the screen
+      M_Drawer; // Menu is drawn even on top of everything
+
+      // Console goes directly to the screen
+      C_Drawer;   // Console is drawn even on top of menus
+
+      // Draw disk busy patch
+      R_DrawDiskBusy; // Draw disk busy on top of console
+    end
+    else if (diskbusyend <= nowtime) and (diskbusyend <> -1) then
+    begin
+      if not redrawbkscn then
       begin
-        if menuactive or menuactivestate or (not viewactivestate) or C_IsConsoleActive then
-          borderdrawcount := 3;
-        if borderdrawcount > 0 then
-        begin
-          R_DrawViewBorder; // erase old menu stuff
-          redrawbkscn := true;
-          dec(borderdrawcount);
-        end;
-      end
-      else if R_FullStOn and (gametic <> 0) then
-        ST_Drawer(stdo_small, redrawsbar);
-    end;
-  end;
+        R_DrawViewBorder;
+        if drawhu then
+          HU_Drawer;
+      end;
 
-  menuactivestate := menuactive;
-  viewactivestate := viewactive;
-  inhelpscreensstate := inhelpscreens;
-  oldgamestate := Ord(gamestate);
-{$IFNDEF OPENGL}
-  wipegamestate := Ord(gamestate);
-{$ENDIF}
+      // JVAL: Overlay Drawer before menus
+      OVR_Drawer;
 
-  // draw pause pic
-  if paused then
-  begin
-    if amstate = am_only then
-      y := 20
-    else
-      y := (viewwindowy * 200) div SCREENHEIGHT + 20;
-    V_DrawPatch(160, y, SCN_FG,
-      'PAUSE', true);
-  end;
-
-  if drawhu then
-    HU_Drawer;
-
-  nowtime := I_GetTime;
-
-  if isdiskbusy then
-  begin
-    diskbusyend := nowtime + 4; // Display busy disk for a little...
-    isdiskbusy := false;
-  end;
-
-  if diskbusyend > nowtime then
-  begin
-    // JVAL: Overlay Drawer before menus
-    OVR_Drawer;
-
-    // Menus go directly to the screen
-    M_Drawer; // Menu is drawn even on top of everything
-
-    // Console goes directly to the screen
-    C_Drawer;   // Console is drawn even on top of menus
-
-    // Draw disk busy patch
-    R_DrawDiskBusy; // Draw disk busy on top of console
-  end
-  else if (diskbusyend <= nowtime) and (diskbusyend <> -1) then
-  begin
-    if not redrawbkscn then
-    begin
-      R_DrawViewBorder;
-      if drawhu then
-        HU_Drawer;
-    end;
-
-    // JVAL: Overlay Drawer before menus
-    OVR_Drawer;
-
-    M_Drawer;
+      M_Drawer;
     C_Drawer;
     diskbusyend := -1;
-  end
-  else
-  begin
-    {$IFDEF OPENGL}
-    diskbusy_height := 0;
-    {$ENDIF}
-    // JVAL: Overlay Drawer before menus
-    OVR_Drawer;
+    end
+    else
+    begin
+      diskbusy_height := 0;
+      // JVAL: Overlay Drawer before menus
+      OVR_Drawer;
 
-    M_Drawer;
-    C_Drawer;
+      M_Drawer;
+      C_Drawer;
+    end;
+
+    NetUpdate; // send out any new accumulation
   end;
 
-  NetUpdate; // send out any new accumulation
-
-  {$IFNDEF OPENGL}
-  // normal update
-  if not wipe then
-  begin
-    D_FinishUpdate; // page flip or blit buffer
-    exit;
-  end;
-
-  // wipe update
-  wipe_EndScreen;
-
-  wipedisplay := true;
-  wipestart := I_GetTime - 1;
-
-  oldvideomode := videomode;
-  videomode := vm32bit;
-  repeat
-    repeat
-      nowtime := I_GetTime;
-      tics := nowtime - wipestart;
-    until tics <> 0;
-    wipestart := nowtime;
-    done := wipe_Ticker(tics);
-    M_Drawer;         // Menu is drawn even on top of wipes
-    C_Drawer;         // Console draw on top of wipes and menus
-    D_FinishUpdate;   // page flip or blit buffer
-    HU_DoFPSStuff;
-  until done;
-  videomode := oldvideomode;
-  wipedisplay := false;
-  {$ENDIF}
-end;
-{$IFDEF OPENGL}
 begin
   I_StartUpdate;
   HU_DoFPSStuff;
@@ -603,7 +475,6 @@ begin
   D_DisplayHU;
   D_FinishUpdate; // page flip or blit buffer
 end;
-{$ENDIF}
 
 //
 //  D_DoomLoop
@@ -683,32 +554,9 @@ end;
 //
 // D_PageDrawer
 //
-{$IFNDEF OPENGL}
-var
-  fullhdpatch: integer = -2;
-{$ENDIF}
 procedure D_PageDrawer;
-{$IFNDEF OPENGL}
-var
-  pt: Ppatch_t;
-{$ENDIF}
 begin
   V_PageDrawer(pagename);
-  {$IFNDEF OPENGL}
-  if showfullhdlogo then
-    if demosequence = 0 then
-      if (SCREENWIDTH = 1920) and (SCREENHEIGHT = 1080) then
-      begin
-        if fullhdpatch = -2 then
-          fullhdpatch := W_CheckNumForName('FULLHD');
-        if fullhdpatch > 0 then
-        begin
-          pt := W_CacheLumpNum(fullhdpatch, PU_STATIC);
-          V_DrawPatch(120, 1020, SCN_FG, pt, false);
-          Z_ChangeTag(pt, PU_CACHE);
-        end;
-      end;
-  {$ENDIF}
 end;
 
 //
@@ -797,6 +645,8 @@ begin
 end;
 
 //
+// D_AddFile
+//
 // D_StartTitle
 //
 procedure D_StartTitle;
@@ -810,15 +660,7 @@ var
   wadfiles: TDStringList;
 
 //
-// D_AddFile
-//
 procedure D_AddFile(const fname: string);
-{$IFDEF OPENGL}
-var
-  ext: string;
-  len: integer;
-  gwafname: string;
-{$ENDIF}
 begin
   if fname <> '' then
   begin
@@ -828,33 +670,6 @@ begin
       wadfiles.Add(fname);
       PAK_AddFile(fname);
       D_CheckCustomWad(fname);
-    {$IFDEF OPENGL}
-    // JVAL: If exists automatically loads GWA file
-    // GL_xxxx lumps has lower priority from GWA files, that's for we
-    // first add the *.GWA file.
-      if autoloadgwafiles then
-      begin
-        ext := strupper(fext(fname));
-        if ext = '.WAD' then
-        begin
-          gwafname := fname;
-          len := Length(gwafname);
-          gwafname[len - 2] := 'G';
-          gwafname[len - 1] := 'W';
-          gwafname[len] := 'A';
-          if fexists(gwafname) then
-            wadfiles.Add(gwafname)
-          else
-          begin
-            gwafname := M_SaveFileName(gwafname);
-            if fexists(gwafname) then
-              wadfiles.Add(gwafname)
-            else if gld_BuildNodes(fname, gwafname) then
-              wadfiles.Add(gwafname);
-          end;
-        end;
-      end;
-    {$ENDIF}
     except
       printf('D_AddFile(): Can not add %s'#13#10, [fname]);
     end;
@@ -1168,17 +983,6 @@ begin
   end;
 end;
 
-{$IFNDEF OPENGL}
-procedure D_CmdHOM;
-begin
-  hom := not hom;
-  if hom then
-    printf('HOM detection enabled'#13#10)
-  else
-    printf('HOM detection disabled'#13#10);
-end;
-{$ENDIF}
-
 function D_Version: string;
 begin
   sprintf(result, Apptitle + ' version %d.%.*d', [VERSION div 100, 2, VERSION mod 100]);
@@ -1366,9 +1170,6 @@ begin
   wadfiles := TDSTringList.Create;
 
   printf('Starting %s, %s'#13#10, [D_Version, D_VersionBuilt]);
-{$IFNDEF OPENGL}
-  C_AddCmd('tnthom, hom', @D_CmdHOM);
-{$ENDIF}
   C_AddCmd('ver, version', @D_CmdVersion);
   C_AddCmd('addpakfile, loadpakfile, addpak, loadpak', @D_CmdAddPakFile);
   C_AddCmd('startthinkers', @D_StartThinkers);
@@ -1613,13 +1414,13 @@ begin
 
   p := M_CheckParm('-fullscreen');
   if (p <> 0) and (p <= myargc - 1) then
-    fullscreen := {$IFDEF OPENGL}true{$ELSE}FULLSCREEN_SHARED{$ENDIF};
+    fullscreen := true;
 
   p := M_CheckParm('-nofullscreen');
   if p = 0 then
     p := M_CheckParm('-windowed');
   if (p <> 0) and (p <= myargc - 1) then
-    fullscreen := {$IFDEF OPENGL}false{$ELSE}FULLSCREEN_OFF{$ENDIF};
+    fullscreen := false;
 
   p := M_CheckParm('-zaxisshift');
   if (p <> 0) and (p <= myargc - 1) then
@@ -1628,16 +1429,6 @@ begin
   p := M_CheckParm('-nozaxisshift');
   if (p <> 0) and (p <= myargc - 1) then
     zaxisshift := false;
-
-{$IFNDEF OPENGL}
-  p := M_CheckParm('-fake3d');
-  if (p <> 0) and (p <= myargc - 1) then
-    usefake3d := true;
-
-  p := M_CheckParm('-nofake3d');
-  if (p <> 0) and (p <= myargc - 1) then
-    usefake3d := false;
-{$ENDIF}
 
   if M_Checkparm('-ultrares') <> 0 then
     detailLevel := DL_ULTRARES;
@@ -1830,11 +1621,6 @@ begin
   else if SCREENWIDTH < MINWIDTH then
     SCREENWIDTH := MINWIDTH;
 
-  {$IFNDEF OPENGL}
-  WINDOWWIDTH := SCREENWIDTH;
-  WINDOWHEIGHT := SCREENHEIGHT;
-  {$ENDIF}
-
   singletics := M_CheckParm('-singletics') > 0;
 
   p := M_CheckParm('-autoscreenshot');
@@ -1845,9 +1631,6 @@ begin
   nodrawers := M_CheckParm('-nodraw') <> 0;
   noblit := M_CheckParm('-noblit') <> 0;
   norender := M_CheckParm('-norender') <> 0;
-{$IFNDEF OPENGL}
-  blancbeforerender := M_CheckParm('-blancbeforerender') <> 0;
-{$ENDIF}
 
   if M_CheckParm('-usetransparentsprites') <> 0 then
     usetransparentsprites := true;
@@ -2336,11 +2119,7 @@ begin
     autostart := true;
   end;
 
-{$IFDEF OPENGL}
   GL_InitGraphics;
-{$ELSE}
-  I_InitGraphics;
-{$ENDIF}
 
   SUC_Progress(95);
 

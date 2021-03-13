@@ -130,8 +130,6 @@ procedure R_ExecuteSetViewSize;
 
 procedure R_SetViewAngleOffset(const angle: angle_t);
 
-function R_FullStOn: boolean;
-
 var
   {$IFNDEF OPENGL}
   basebatchcolfunc: PProcedure;
@@ -292,9 +290,6 @@ var
 
   setsizeneeded: boolean;
 
-// Blocky mode, has default, 0 = high, 1 = normal
-  screenblocks: integer;  // has default
-
 function R_GetColormapLightLevel(const cmap: PByteArray): fixed_t;
 
 function R_GetColormap32(const cmap: PByteArray): PLongWordArray;
@@ -310,9 +305,6 @@ var
 var
   monitor_relative_aspect: Double = 1.0;
   fov: fixed_t; // JVAL: 3d Floors (Made global - moved from R_InitTextureMapping)
-{$IFNDEF OPENGL}
-  xfocallen: float; // JVAL: Slopes
-{$ENDIF}
 
 {$IFNDEF OPENGL}
 procedure R_SetRenderingFunctions;
@@ -871,7 +863,6 @@ end;
 // The change will take effect next refresh.
 //
 var
-  setblocks: integer = -1;
   olddetail: integer = -1;
 
 procedure R_SetViewSize;
@@ -888,14 +879,13 @@ begin
         detailLevel := DL_MEDIUM;
     end;
 
-  if (setblocks <> screenblocks) or (setdetail <> detailLevel) then
+  if setdetail <> detailLevel then
   begin
     if setdetail <> detailLevel then
     begin
       recalctables32needed := true;
     end;
     setsizeneeded := true;
-    setblocks := screenblocks;
     setdetail := detailLevel;
   end;
 end;
@@ -1545,37 +1535,12 @@ var
 begin
   setsizeneeded := false;
 
-  if setblocks > 10 then
-  begin
-    scaledviewwidth := SCREENWIDTH;
-    viewheight := SCREENHEIGHT;
-  end
-  else
-  begin
-    if setblocks = 10 then
-      scaledviewwidth := SCREENWIDTH
-    else
-      scaledviewwidth := (setblocks * SCREENWIDTH div 10) and (not 7);
-    if setblocks = 10 then
-    {$IFDEF OPENGL}
-      viewheight := trunc(ST_Y * SCREENHEIGHT / 200)
-    {$ELSE}
-      viewheight := V_PreserveY(ST_Y)
-    {$ENDIF}
-    else
-    {$IFDEF OPENGL}
-      viewheight := (setblocks * trunc(ST_Y * SCREENHEIGHT / 2000)) and (not 7);
-    {$ELSE}
-      viewheight := (setblocks * V_PreserveY(ST_Y) div 10) and (not 7);
-    {$ENDIF}
-  end;
+  scaledviewwidth := SCREENWIDTH;
+  viewheight := SCREENHEIGHT;
 
   viewwidth := scaledviewwidth;
   centery := viewheight div 2;
   centerx := viewwidth div 2;
-  {$IFNDEF OPENGL}
-  xfocallen := centerx / tan(fov * ANGLE_T_TO_RAD / 2); // JVAL: Slopes
-  {$ENDIF}
 
   centerxfrac := centerx * FRACUNIT;
   centeryfrac := centery * FRACUNIT;
@@ -2022,39 +1987,16 @@ begin
 // JVAL Enabled z axis shift
   if zaxisshift and ((player.lookdir16 <> 0) or p_justspawned) and (viewangleoffset = 0) then
   begin
-    sblocks := screenblocks;
-    if sblocks > 11 then
-      sblocks := 11;
+    sblocks := 11;
     cy := Round((viewheight + ((player.lookdir16 * sblocks) / 16) * SCREENHEIGHT / 1000) / 2);   // JVAL Smooth Look Up/Down
     if centery <> cy then
     begin
       centery := cy;
       centeryfrac := centery * FRACUNIT;
-      {$IFNDEF OPENGL}
-      dy := -centeryfrac - FRACUNIT div 2;
-      for i := 0 to viewheight - 1 do
-      begin
-        dy := dy + FRACUNIT;
-        dy1 := abs(dy);
-        yslope[i] := FixedDiv(projectiony, dy1);
-
-        // JVAL: 20200430 - For slope lightmap
-        if dy1 < 4 * FRACUNIT then
-          slyslope[i] := FixedDiv(projectiony, 4 * FRACUNIT)
-        else
-          slyslope[i] := yslope[i];
-      end;
-      {$ENDIF}
-
     end;
 
-{$IFDEF OPENGL}
     viewpitch := player.lookdir;
     absviewpitch := abs(viewpitch);
-{$ELSE}
-    if usefake3d then
-      R_Set3DLookup(player);
-{$ENDIF}
   end
   else
     p_justspawned := false;
@@ -2063,12 +2005,6 @@ begin
   vangle := viewangle div FRACUNIT;
   viewsin := fixedsine[vangle];
   viewcos := fixedcosine[vangle];
-{$IFNDEF OPENGL}
-  dviewsin := Sin(viewangle / $FFFFFFFF * 2 * pi);
-  dviewcos := Cos(viewangle / $FFFFFFFF * 2 * pi);
-// JVAL: Widescreen support
-  planerelativeaspect := 320 / 200 * SCREENHEIGHT / SCREENWIDTH * monitor_relative_aspect;
-{$ENDIF}
 
   cm := -1;
   if Psubsector_t(player.mo.subsector).sector.heightsec > -1 then
@@ -2143,11 +2079,6 @@ end;
 procedure R_SetViewAngleOffset(const angle: angle_t);
 begin
   viewangleoffset := angle;
-end;
-
-function R_FullStOn: boolean;
-begin
-  result := setblocks = 11;
 end;
 
 function R_GetColormapLightLevel(const cmap: PByteArray): fixed_t;

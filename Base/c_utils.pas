@@ -39,11 +39,7 @@ uses
   d_delphi,
   c_cmds,
   doomdef,
-{$IFDEF OPENGL}
   gl_main,
-{$ELSE}
-  i_video,
-{$ENDIF}
   i_displaymodes,
   i_system;
 
@@ -125,12 +121,8 @@ end;
 
 procedure C_CmdGoToWebPage(const parm: string);
 begin
-  if fullscreen {$IFNDEF OPENGL}= FULLSCREEN_EXCLUSIVE {$ENDIF} then
-  {$IFDEF OPENGL}
+  if fullscreen then
     GL_ChangeFullScreen(false);
-  {$ELSE}
-    I_ChangeFullScreen(FULLSCREEN_SHARED);
-  {$ENDIF}
   I_GoToWebPage(parm);
 end;
 
