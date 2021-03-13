@@ -139,14 +139,14 @@ var
   lname: string;
 begin
   lname := strupper(aname);
-  if lname = 'MAP01' then Result := '46fc71d9'
-  else if lname = 'MAP02' then Result := '94f91b53'
-  else if lname = 'MAP03' then Result := '75100e6e'
-  else if lname = 'MAP04' then Result := '30e731a9'
-  else if lname = 'MAP05' then Result := '876cc30c'
-  else if lname = 'MAP06' then Result := 'af4b978f'
-  else if lname = 'MAP07' then Result := '9308dfe6'
-  else if lname = 'MAP08' then Result := 'ee9e2aa1'
+  if lname = 'E1M1' then Result := '46fc71d9'
+  else if lname = 'E1M2' then Result := '94f91b53'
+  else if lname = 'E1M3' then Result := '75100e6e'
+  else if lname = 'E1M4' then Result := '30e731a9'
+  else if lname = 'E1M5' then Result := '876cc30c'
+  else if lname = 'E1M6' then Result := 'af4b978f'
+  else if lname = 'E1M7' then Result := '9308dfe6'
+  else if lname = 'E1M8' then Result := 'ee9e2aa1'
   else Result := '';
   Result := strupper(Result);
 end;
