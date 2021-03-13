@@ -1,2 +1,0 @@
-      hrtp^ := vplc;
-      inc(hrtp);
