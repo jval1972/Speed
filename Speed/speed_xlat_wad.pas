@@ -45,11 +45,13 @@ const
 implementation
 
 uses
+  Math,
   speed_defs,
   speed_flatsize,
   speed_palette,
   speed_patch,
   speed_bitmap,
+  speed_font,
   speed_is2,
   speed_sounds,
   speed_level,
@@ -98,7 +100,7 @@ type
     function GenerateIS2(const rname, wname: string; const solid: boolean; const rightcrop: boolean; var aw, ah: integer): boolean;
     function GeneratePIX(const rname, wname: string; const solid: boolean): boolean;
     function GenerateGraphics: boolean;
-    function GenerateSmallFont: boolean;
+    function GenerateFonts: boolean;
     function GenerateSprites: boolean;
     function GenerateSounds: boolean;
     function GeneratePK3ModelEntries: boolean;
@@ -1223,76 +1225,143 @@ begin
 
 end;
 
-function TSpeedToWADConverter.GenerateSmallFont: boolean;
-{var
-  lump: integer;
-  buf: pointer;
-  bufsize: integer;
-  imginp: PByteArray;
+function TSpeedToWADConverter.GenerateFonts: boolean;
+const
+  NUM_SMALL_FONT_COLORS = 3;
+var
+  COLORS: array[0..NUM_SMALL_FONT_COLORS - 1] of LongWord;
+  buf: PByteArray;
+  cidx: integer;
+  r1, g1, b1: LongWord;
+  r, g, b: integer;
+  c: LongWord;
+  ch: integer;
   imgout: PByteArray;
+  pnoise: double;
   p: pointer;
   size: integer;
-  fnt: string;
-  idx: integer;
-  ch: char;}
+  i, j, x, y, fpos: integer;
+
+  function Interpolate(const a, b, frac: double): double;
+  begin
+    result := (1.0 - cos(pi * frac)) * 0.5;
+    result:= a * (1 - result) + b * result;
+  end;
+
+  function Noise(const x,y: double): double;
+  var
+    n: integer;
+  begin
+    n := trunc(x + y * 57);
+    n := (n shl 13) xor n;
+    result := (1.0 - ( (n * (n * n * $EC4D + $131071F) + $5208DD0D) and $7FFFFFFF) / $40000000);
+  end;
+
+  function SmoothedNoise(const x, y: double): double;
+  var
+    corners: double;
+    sides: double;
+    center: double;
+  begin
+    corners := (Noise(x - 1, y - 1) + Noise(x + 1, y - 1) + Noise(x - 1, y + 1) + Noise(x + 1, y + 1) ) / 16;
+    sides := (Noise(x - 1, y) + Noise(x + 1, y) + Noise(x, y - 1) + Noise(x, y + 1)) / 8;
+    center := Noise(x, y) / 4;
+    result := corners + sides + center
+  end;
+
+  function InterpolatedNoise(const x, y: double): double;
+  var
+    i1, i2: double;
+    v1, v2, v3, v4: double;
+    xInt: double;
+    yInt: double;
+    xFrac: double;
+    yFrac: double;
+  begin
+    xInt := Int(x);
+    xFrac := Frac(x);
+
+    yInt := Int(y);
+    yFrac := Frac(y);
+
+    v1 := SmoothedNoise(xInt, yInt);
+    v2 := SmoothedNoise(xInt + 1, yInt);
+    v3 := SmoothedNoise(xInt, yInt + 1);
+    v4 := SmoothedNoise(xInt + 1, yInt + 1);
+
+    i1 := Interpolate(v1, v2, xFrac);
+    i2 := Interpolate(v3, v4, xFrac);
+
+    result := Interpolate(i1, i2, yFrac);
+  end;
+
+  function PerlinNoise(const x, y: integer): double;
+  const
+    PERSISTENCE = 0.50;
+    LOOPCOUNT = 3;
+    VARIATION = 16;
+  var
+    amp: double;
+    ii: integer;
+    freq: integer;
+  begin
+    freq := 1;
+    result := 0.0;
+    for ii := 0 to LOOPCOUNT - 1 do
+    begin
+      amp := Power(PERSISTENCE, ii);
+      result := result + InterpolatedNoise(x * freq, y * freq) * amp;
+      freq := freq shl 1;
+    end;
+    result := result * VARIATION;
+  end;
+
 begin
-(*  lump := FindLump(lumps, numlumps, 'SmallFont');
-  if lump < 0 then
+  Result := True;
+
+  COLORS[0] := $F00000;
+  COLORS[1] := $F0F0F0;
+  COLORS[2] := $0F0F0F;
+
+  buf := @SMALL_FONT_DATA[0];
+
+  imgout := malloc(8 * 8);
+  for cidx := 0 to NUM_SMALL_FONT_COLORS - 1 do
   begin
-    result := false;
-    exit;
-  end;
-  if lumps[lump].length <> 2222 then
-  begin
-    result := false;
-    exit;
-  end;
-  result := true;
-
-  bufsize := lumps[lump].length;
-  buf := malloc(lumps[lump].length);
-  f.Seek(lumps[lump].position, sFromBeginning);
-  f.Read(buf^, bufsize);
-
-  imginp := @PByteArray(buf)[8];
-  SH_ColorReplace(imginp, 368, 6, 0, 254);
-  SH_ColorReplace(imginp, 368, 6, 1, 254);
-  SH_ColorReplace(imginp, 368, 6, 6, 254);
-  SH_ColorReplace(imginp, 368, 6, 28, 254);
-
-  SH_CreateDoomPatch(imginp, 368, 6, false, p, size, 0, 0);
-
-  wadwriter.AddData('SMALLFNT', p, size);
-  memfree(p, size);
-
-  imgout := malloc(4 * 6);
-  fnt := 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz.?[]!:;"`,-0123456789_';
-
-  for ch := Chr(33) to Chr(128) do
-    for idx := 1 to length(fnt) do
-      if fnt[idx] <> ' ' then
-        if fnt[idx] = ch then
+    r1 := (COLORS[cidx] shr 16) and $FF;
+    g1 := (COLORS[cidx] shr 8) and $FF;
+    b1 := COLORS[cidx] and $FF;
+    for ch := 33 to 127 do
+    begin
+      x := (Ord(ch - 31) - 1) mod 16;
+      y := (Ord(ch - 31) - 1) div 16;
+      for j := 0 to 7 do
+      begin
+        fpos := x * 8 + (y * 8 + j) * 128;
+        for i := 0 to 7 do
         begin
-          SH_BltImageBuffer(imginp, 368, 6, imgout, (idx - 1) * 5, idx * 5 - 2, 0, 5);
-          SH_CreateDoomPatch(imgout, 4, 6, false, p, size, 0, 0);
-
-          wadwriter.AddData('FNT_' + IntToStrzFill(3, Ord(fnt[idx])), p, size);
-          memfree(p, size);
-          fnt[idx] := ' ';
+          imgout[i * 8 + j] := buf[fpos];
+          inc(fpos);
         end;
-
-{  for i := 1 to length(fnt) do
-  begin  // Not working!
-    SH_BltImageBuffer(imginp, 368, 6, imgout, (i - 1) * 5, i * 5 - 2, 0, 5);
-    SH_CreateDoomPatch(imgout, 4, 6, false, p, size, 0, 0);
-
-    wadwriter.AddData('FNT_' + IntToStrzFill(3, Ord(fnt[i])), p, size);
-    memfree(p, size);
-  end;}
-
-  memfree(pointer(imgout), 4 * 6);
-  memfree(buf, bufsize);
-*)
+      end;
+      for i := 0 to 63 do
+        if imgout[i] <> 0 then
+        begin
+          pnoise := PerlinNoise((i + x * 8) mod 128, (i * y + x * 8) div 128);
+          r := GetIntegerInRange(round(r1 * imgout[i] / 256 + pnoise), 0, 255);
+          g := GetIntegerInRange(round(g1 * imgout[i] / 256 + pnoise), 0, 255);
+          b := GetIntegerInRange(round(b1 * imgout[i] / 256 + pnoise), 0, 255);
+          c := r shl 16 + g shl 8 + b;
+          imgout[i] := V_FindAproxColorIndex(@def_palL, c, 16, 239);
+        end
+        else
+          imgout[i] := 255;
+      SH_CreateDoomPatch(imgout, 8, 8, false, p, size, 0, 0);
+      wadwriter.AddData('SFNT' + Chr(Ord('A') + cidx) + IntToStrzFill(3, Ord(ch)), p, size);
+      memfree(p, size);
+    end;
+  end;
+  MemFree(pointer(imgout), 8 * 8);
 end;
 
 type
@@ -1854,7 +1923,7 @@ begin
   GenerateMapFlats(false);
   GenerateLevels(SPEED_LEVEL_SCALE);
   GenerateGraphics;
-  GenerateSmallFont;
+  GenerateFonts;
   GenerateSprites;
   GenerateSounds;
   GeneratePK3ModelEntries;
