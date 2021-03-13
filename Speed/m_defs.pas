@@ -133,7 +133,6 @@ var
   gl_reflectsky: boolean;
   gl_SCREENWIDTH,
   gl_SCREENHEIGHT: integer;
-  gl_drawmodels: boolean;
   gl_drawvoxels: boolean;
   gl_smoothmodelmovement: boolean;
   gl_precachemodeltextures: boolean;
@@ -160,7 +159,7 @@ type
   Pdefault_t = ^default_t;
 
 const
-  NUMDEFAULTS = {$IFDEF FPC}194{$ELSE}196{$ENDIF};
+  NUMDEFAULTS = 195;
 
 // JVAL
 // Note: All setable defaults must be in lowercase, don't ask why. Just do it. :)
@@ -656,14 +655,6 @@ const
 
     (name: 'gl_stencilsky';
      location: @gl_stencilsky;
-     setable: DFS_ALWAYS;
-     defaultsvalue: '';
-     defaultivalue: 1;
-     defaultbvalue: true;
-     _type: tBoolean),
-
-    (name: 'gl_drawmodels';
-     location: @gl_drawmodels;
      setable: DFS_ALWAYS;
      defaultsvalue: '';
      defaultivalue: 1;

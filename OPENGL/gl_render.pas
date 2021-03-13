@@ -4139,7 +4139,7 @@ end;
 
 procedure gld_DrawSprite(sprite: PGLSprite);
 begin
-  if gl_drawmodels and (sprite.models <> nil) then
+  if sprite.models <> nil then
   begin
     gld_DrawModels(sprite);
     exit;
@@ -4682,8 +4682,6 @@ var
   max_scale: fixed_t;
   wallrange: integer;
   pglitem: PGLDrawItem;
-  wall: PGLWall;
-  seg: PGLSeg;
 begin
   wallrange := GLDWF_BOTFLUD;
 

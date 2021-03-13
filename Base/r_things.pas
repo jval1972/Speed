@@ -1363,7 +1363,7 @@ begin
 
   // thing is behind view plane?
 {$IFDEF OPENGL}
-  if ((thing.state.voxels <> nil) and gl_drawvoxels) or ((thing.state.models <> nil) and gl_drawmodels) then
+  if ((thing.state.voxels <> nil) and gl_drawvoxels) or (thing.state.models <> nil) then
     modelflag := 1
   else
     modelflag := 0;

@@ -637,7 +637,6 @@ begin
   doomsectors := nil;
   numdoomsectors := 0;
 
-
   originalspeedlevel := Speed_levelCRC(levelname) = strupper(GetBufCRC32(bufmap, bufmapsize));
 
   _do_main_sector;

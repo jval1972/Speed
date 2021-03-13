@@ -811,7 +811,6 @@ var
 // OpenGL Models
 type
   optionsopenglmodels_e = (
-    od_glm_drawmodels,
     od_glm_smoothmodelmovement,
     od_glm_precachemodeltextures,
     optglmodels_end
@@ -4906,14 +4905,6 @@ begin
 ////////////////////////////////////////////////////////////////////////////////
 //OptionsDisplayOpenGLModelsMenu
   pmi := @OptionsDisplayOpenGLModelsMenu[0];
-  pmi.status := 1;
-  pmi.name := '!Draw models instead of sprites';
-  pmi.cmd := 'gl_drawmodels';
-  pmi.routine := @M_BoolCmd;
-  pmi.pBoolVal := @gl_drawmodels;
-  pmi.alphaKey := 'd';
-
-  inc(pmi);
   pmi.status := 1;
   pmi.name := '!Smooth md2 model movement';
   pmi.cmd := 'gl_smoothmodelmovement';

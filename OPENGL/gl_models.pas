@@ -44,7 +44,6 @@ uses
   mdl_base;
 
 var
-  gl_drawmodels: boolean = true;
   gl_smoothmodelmovement: boolean = true;
   gl_precachemodeltextures: boolean = true;
 
