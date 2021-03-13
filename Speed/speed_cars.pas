@@ -486,7 +486,7 @@ begin
 
   slipf := SH_SlipperFactorAtXY(mo.x, mo.y);
 
-  enginespeed := GetIntegerInRange(enginespeed + SH_SlipCaclulation(cmd.accelerate - cmd.brake, slipf), 0, carinfo[mo.carinfo].maxspeed);
+  enginespeed := GetIntegerInRange(enginespeed + SH_SlipCalculation(cmd.accelerate - cmd.brake, slipf), 0, carinfo[mo.carinfo].maxspeed);
 
   if enginespeed > 0 then
   begin

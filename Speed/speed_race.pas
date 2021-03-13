@@ -62,7 +62,6 @@ const
 
 const
   slipperinessinfo: array[groundtype_t] of slipperinessinfo_t = (
-    (smin: 250; smax: 255), // Asphalt
     (smin: 150; smax: 220), // grass
     (smin: 100; smax: 180), // dirt
     (smin:  80; smax: 150), // sand
@@ -78,7 +77,7 @@ function SH_GroundTypeAtXY(const x, y: fixed_t): groundtype_t;
 
 function SH_SlipperFactorAtXY(const x, y: fixed_t): byte;
 
-function SH_SlipCaclulation(const x: fixed_t; const slip: byte): fixed_t;
+function SH_SlipCalculation(const x: fixed_t; const slip: byte): fixed_t;
 
 implementation
 
@@ -125,7 +124,7 @@ begin
   Result := sinfo.smin + Sys_Random mod (sinfo.smax - sinfo.smin + 1);
 end;
 
-function SH_SlipCaclulation(const x: fixed_t; const slip: byte): fixed_t;
+function SH_SlipCalculation(const x: fixed_t; const slip: byte): fixed_t;
 var
   x64: int64;
 begin
