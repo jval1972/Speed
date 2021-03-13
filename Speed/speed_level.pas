@@ -573,7 +573,7 @@ var
 
   procedure _do_fixes;
   begin
-    if levelname = 'MAP01' then
+    if levelname = 'E1M1' then
     begin
       // Spectators (Start)
       _move_thing(3656, 716, 3604, 716);
