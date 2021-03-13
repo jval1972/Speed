@@ -52,6 +52,23 @@ type
     groundlump: integer;
   end;
 
+  slipperinessinfo_t = record
+    smin, smax: byte;
+  end;
+  Pslipperinessinfo_t = ^slipperinessinfo_t;
+
+const
+  MAXSLIPFACTOR = 255;
+
+const
+  slipperinessinfo: array[groundtype_t] of slipperinessinfo_t = (
+    (smin: 250; smax: 255), // Asphalt
+    (smin: 150; smax: 220), // grass
+    (smin: 100; smax: 180), // dirt
+    (smin:  80; smax: 150), // sand
+    (smin: 100; smax: 200)  // unknown
+  );
+
 var
   race: race_t;
 
@@ -59,9 +76,14 @@ procedure SH_InitRace;
 
 function SH_GroundTypeAtXY(const x, y: fixed_t): groundtype_t;
 
+function SH_SlipperFactorAtXY(const x, y: fixed_t): byte;
+
+function SH_SlipCaclulation(const x: fixed_t; const slip: byte): fixed_t;
+
 implementation
 
 uses
+  m_rnd,
   p_setup,
   r_data,
   speed_xlat_wad,
@@ -93,6 +115,23 @@ begin
     Result := gt_dirt
   else
     Result := gt_unknown;
+end;
+
+function SH_SlipperFactorAtXY(const x, y: fixed_t): byte;
+var
+  sinfo: Pslipperinessinfo_t;
+begin
+  sinfo := @slipperinessinfo[SH_GroundTypeAtXY(x, y)];
+  Result := sinfo.smin + Sys_Random mod (sinfo.smax - sinfo.smin + 1);
+end;
+
+function SH_SlipCaclulation(const x: fixed_t; const slip: byte): fixed_t;
+var
+  x64: int64;
+begin
+  x64 := x * slip;
+  x64 := x64 div MAXSLIPFACTOR;
+  Result := x64;
 end;
 
 end.

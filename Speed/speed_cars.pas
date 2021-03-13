@@ -352,6 +352,7 @@ uses
   m_rnd,
   r_main,
   speed_things,
+  speed_race,
   z_zone;
 
 procedure SH_InitLevelCars;
@@ -473,6 +474,7 @@ var
   dx, dy: fixed_t;
   an: angle_t;
   turn64: int64;
+  slipf: integer;
 begin
   // Calculate actual speed
   dx := mo.x - mo.oldx;
@@ -482,7 +484,9 @@ begin
   // Retrieve current speed
   enginespeed := mo.carvelocity;
 
-  enginespeed := GetIntegerInRange(enginespeed + cmd.accelerate - cmd.brake, 0, carinfo[mo.carinfo].maxspeed);
+  slipf := SH_SlipperFactorAtXY(mo.x, mo.y);
+
+  enginespeed := GetIntegerInRange(enginespeed + SH_SlipCaclulation(cmd.accelerate - cmd.brake, slipf), 0, carinfo[mo.carinfo].maxspeed);
 
   if enginespeed > 0 then
   begin
