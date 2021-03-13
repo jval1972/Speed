@@ -387,7 +387,9 @@ begin
   j := Ord(HU_FONTSTART);
   for i := 0 to HU_FONTSIZE - 1 do
   begin
-    buffer := 'STCFN' + IntToStrZfill(3, j);
+//    buffer := 'STCFN' + IntToStrZfill(3, j);
+    buffer := 'SFNTA' + IntToStrZfill(3, j);
+
     inc(j);
     hu_font[i] := Ppatch_t(W_CacheLumpName(buffer, PU_STATIC));
   end;
