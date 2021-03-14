@@ -493,6 +493,7 @@ type
     destSpeed: fixed_t;
     currPath: integer;
     carinfo: integer;
+    nextparticle: integer;  // Next tic that allows particle
   end;
   Tmobj_tPArray = array[0..$FFFF] of Pmobj_t;
   Pmobj_tPArray = ^Tmobj_tPArray;

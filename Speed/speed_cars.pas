@@ -353,6 +353,7 @@ uses
   r_main,
   speed_things,
   speed_race,
+  speed_particles,
   z_zone;
 
 procedure SH_InitLevelCars;
@@ -483,6 +484,8 @@ begin
 
   // Retrieve current speed
   enginespeed := mo.carvelocity;
+
+  SH_SpawnParticleCheck(mo, actualspeed, enginespeed);
 
   slipf := SH_SlipperFactorAtXY(mo.x, mo.y);
 
