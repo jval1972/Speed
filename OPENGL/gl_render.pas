@@ -97,6 +97,7 @@ uses
   tables,
   doomtype,
   doomdef,
+  d_main,
   am_map,
   {$IFDEF DOOM}
   r_plane,
@@ -501,26 +502,30 @@ begin
   printf('GL_VENDOR: %s'#13#10 , [glGetString(GL_VENDOR)]);
   printf('GL_RENDERER: %s'#13#10, [glGetString(GL_RENDERER)]);
   printf('GL_VERSION: %s'#13#10, [glGetString(GL_VERSION)]);
-  printf('GL_EXTENSIONS:'#13#10);
 
-  extensions := StringVal(glGetString(GL_EXTENSIONS));
-  extensions_l := '';
-  for i := 1 to Length(extensions) do
+  if devparm then
   begin
-    if extensions[i] = ' ' then
-      extensions_l := extensions_l + #13#10
-    else
-      extensions_l := extensions_l + toupper(extensions[i]);
-  end;
+    printf('GL_EXTENSIONS:'#13#10);
 
-  ext_lst := TDStringList.Create;
-  try
-    ext_lst.Text := extensions_l;
-    for i := 0 to ext_lst.count - 1 do
-      printf('  %s'#13#10, [ext_lst.strings[i]]);
-    gld_InitExtensions(ext_lst);
-  finally
-    ext_lst.Free;
+    extensions := StringVal(glGetString(GL_EXTENSIONS));
+    extensions_l := '';
+    for i := 1 to Length(extensions) do
+    begin
+      if extensions[i] = ' ' then
+        extensions_l := extensions_l + #13#10
+      else
+        extensions_l := extensions_l + toupper(extensions[i]);
+    end;
+
+    ext_lst := TDStringList.Create;
+    try
+      ext_lst.Text := extensions_l;
+      for i := 0 to ext_lst.count - 1 do
+        printf('  %s'#13#10, [ext_lst.strings[i]]);
+      gld_InitExtensions(ext_lst);
+    finally
+      ext_lst.Free;
+    end;
   end;
 
   gld_InitPalettedTextures;
