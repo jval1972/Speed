@@ -1172,7 +1172,7 @@ end;
 
 function TSpeedToWADConverter.GenerateFonts: boolean;
 const
-  NUM_SMALL_FONT_COLORS = 3;
+  NUM_SMALL_FONT_COLORS = 4;
   NUM_BIG_FONT_COLORS = 3;
 var
   SMALL_FONT_COLORS: array[0..NUM_SMALL_FONT_COLORS - 1] of LongWord;
@@ -1270,9 +1270,10 @@ var
 begin
   Result := True;
 
-  SMALL_FONT_COLORS[0] := $F00000;
+  SMALL_FONT_COLORS[0] := $E2CE4A;
   SMALL_FONT_COLORS[1] := $F0F0F0;
   SMALL_FONT_COLORS[2] := $0F0F0F;
+  SMALL_FONT_COLORS[3] := $F00000;
 
   buf := @SMALL_FONT_DATA[0];
 
