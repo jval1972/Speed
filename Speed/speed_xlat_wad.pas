@@ -1174,7 +1174,7 @@ function TSpeedToWADConverter.GenerateFonts: boolean;
 const
   NUM_SMALL_FONT_COLORS = 3;
 var
-  COLORS: array[0..NUM_SMALL_FONT_COLORS - 1] of LongWord;
+  SMALL_FONT_COLORS: array[0..NUM_SMALL_FONT_COLORS - 1] of LongWord;
   buf: PByteArray;
   cidx: integer;
   r1, g1, b1: LongWord;
@@ -1264,18 +1264,18 @@ var
 begin
   Result := True;
 
-  COLORS[0] := $F00000;
-  COLORS[1] := $F0F0F0;
-  COLORS[2] := $0F0F0F;
+  SMALL_FONT_COLORS[0] := $F00000;
+  SMALL_FONT_COLORS[1] := $F0F0F0;
+  SMALL_FONT_COLORS[2] := $0F0F0F;
 
   buf := @SMALL_FONT_DATA[0];
 
   imgout := malloc(8 * 8);
   for cidx := 0 to NUM_SMALL_FONT_COLORS - 1 do
   begin
-    r1 := (COLORS[cidx] shr 16) and $FF;
-    g1 := (COLORS[cidx] shr 8) and $FF;
-    b1 := COLORS[cidx] and $FF;
+    r1 := (SMALL_FONT_COLORS[cidx] shr 16) and $FF;
+    g1 := (SMALL_FONT_COLORS[cidx] shr 8) and $FF;
+    b1 := SMALL_FONT_COLORS[cidx] and $FF;
     for ch := 33 to 127 do
     begin
       x := (Ord(ch - 31) - 1) mod 16;
