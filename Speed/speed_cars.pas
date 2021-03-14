@@ -75,7 +75,7 @@ const
       tex2old: 'f_1_5';
       tex2: '';
       number: 27;
-      maxspeed: 315 * KMH_TO_FIXED;
+      maxspeed: 305 * KMH_TO_FIXED;
       baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
@@ -88,7 +88,7 @@ const
       tex2old: 'f_1_5';
       tex2: '';
       number: 3;
-      maxspeed: 315 * KMH_TO_FIXED;
+      maxspeed: 310 * KMH_TO_FIXED;
       baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
@@ -114,7 +114,7 @@ const
       tex2old: 'f_1_5';
       tex2: '';
       number: 30;
-      maxspeed: 315 * KMH_TO_FIXED;
+      maxspeed: 320 * KMH_TO_FIXED;
       baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
@@ -128,7 +128,7 @@ const
       tex2old: 'f_2_5';
       tex2: '';
       number: 1;
-      maxspeed: 315 * KMH_TO_FIXED;
+      maxspeed: 325 * KMH_TO_FIXED;
       baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
@@ -141,7 +141,7 @@ const
       tex2old: 'f_2_5';
       tex2: '';
       number: 33;
-      maxspeed: 315 * KMH_TO_FIXED;
+      maxspeed: 330 * KMH_TO_FIXED;
       baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
@@ -154,7 +154,7 @@ const
       tex2old: 'f_2_5';
       tex2: '';
       number: 12;
-      maxspeed: 315 * KMH_TO_FIXED;
+      maxspeed: 305 * KMH_TO_FIXED;
       baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
@@ -168,7 +168,7 @@ const
       tex2old: 'f_3_5';
       tex2: '';
       number: 4;
-      maxspeed: 315 * KMH_TO_FIXED;
+      maxspeed: 310 * KMH_TO_FIXED;
       baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
@@ -194,7 +194,7 @@ const
       tex2old: 'f_3_5';
       tex2: '';
       number: 22;
-      maxspeed: 315 * KMH_TO_FIXED;
+      maxspeed: 320 * KMH_TO_FIXED;
       baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
@@ -207,7 +207,7 @@ const
       tex2old: 'f_3_5';
       tex2: '';
       number: 62;
-      maxspeed: 315 * KMH_TO_FIXED;
+      maxspeed: 325 * KMH_TO_FIXED;
       baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
@@ -221,7 +221,7 @@ const
       tex2old: 'f_4_5';
       tex2: '';
       number: 7;
-      maxspeed: 315 * KMH_TO_FIXED;
+      maxspeed: 330 * KMH_TO_FIXED;
       baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
@@ -234,7 +234,7 @@ const
       tex2old: 'f_4_5';
       tex2: '';
       number: 18;
-      maxspeed: 315 * KMH_TO_FIXED;
+      maxspeed: 305 * KMH_TO_FIXED;
       baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
@@ -247,7 +247,7 @@ const
       tex2old: 'f_4_5';
       tex2: '';
       number: 54;
-      maxspeed: 315 * KMH_TO_FIXED;
+      maxspeed: 310 * KMH_TO_FIXED;
       baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
@@ -274,7 +274,7 @@ const
       tex2old: 'f_5_5';
       tex2: '';
       number: 6;
-      maxspeed: 315 * KMH_TO_FIXED;
+      maxspeed: 320 * KMH_TO_FIXED;
       baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
@@ -287,7 +287,7 @@ const
       tex2old: 'f_5_5';
       tex2: '';
       number: 23;
-      maxspeed: 315 * KMH_TO_FIXED;
+      maxspeed: 325 * KMH_TO_FIXED;
       baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
@@ -300,7 +300,7 @@ const
       tex2old: 'f_5_5';
       tex2: '';
       number: 45;
-      maxspeed: 315 * KMH_TO_FIXED;
+      maxspeed: 330 * KMH_TO_FIXED;
       baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
@@ -314,7 +314,7 @@ const
       tex2old: 'f_6_5';
       tex2: '';
       number: 73;
-      maxspeed: 315 * KMH_TO_FIXED;
+      maxspeed: 305 * KMH_TO_FIXED;
       baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
@@ -327,7 +327,7 @@ const
       tex2old: 'f_6_5';
       tex2: '';
       number: 99;
-      maxspeed: 315 * KMH_TO_FIXED;
+      maxspeed: 310 * KMH_TO_FIXED;
       baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
