@@ -44,7 +44,7 @@ const
 // Globally visible constants.
 //
   HU_FONTSTART = '!'; // the first font characters
-  HU_FONTEND = '_'; // the last font characters
+  HU_FONTEND = #127; // the last font characters
 
 // Calculate # of glyphs in font.
   HU_FONTSIZE = (Ord(HU_FONTEND) - Ord(HU_FONTSTART)) + 1;
@@ -385,7 +385,6 @@ begin
   j := Ord(HU_FONTSTART);
   for i := 0 to HU_FONTSIZE - 1 do
   begin
-//    buffer := 'STCFN' + IntToStrZfill(3, j);
     buffer := 'SFNTA' + IntToStrZfill(3, j);
 
     inc(j);
