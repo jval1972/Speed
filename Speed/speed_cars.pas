@@ -67,8 +67,10 @@ type
 
 const
   NUMCARINFO_FORMULA = 20;
+  NUMCARINFO_STOCK = 20;
+  NUMCARINFO = NUMCARINFO_FORMULA + NUMCARINFO_STOCK;
 
-  carinfo: array[0..NUMCARINFO_FORMULA - 1] of carinfo_t = (
+  carinfo: array[0..NUMCARINFO - 1] of carinfo_t = (
     (
       tex1old: 'f_1_4';
       tex1: '';
@@ -267,7 +269,6 @@ const
       model3d: 'CAR0N3A.I3D';
       cartype: ct_formula;
     ),
-
     (
       tex1old: 'f_5_4';
       tex1: '';
@@ -333,6 +334,268 @@ const
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
       model3d: 'CAR0N5A.I3D';
       cartype: ct_formula;
+    ),
+
+
+    (
+      tex1old: 'd_1_5';
+      tex1: '';
+      tex2old: '';
+      tex2: '';
+      number: 15;
+      maxspeed: 245 * KMH_TO_FIXED;
+      baseaccel: 12 * 1024;
+      basedeccel: 48 * 1024;
+      turnspeed: 348 * FRACUNIT; // ~2 * ANG1
+      model3d: 'CAR1N0A.I3D';
+      cartype: ct_stock;
+    ),
+    (
+      tex1old: 'd_1_5';
+      tex1: 'd_1_5_01_17.png';
+      tex2old: '';
+      tex2: '';
+      number: 17;
+      maxspeed: 245 * KMH_TO_FIXED;
+      baseaccel: 12 * 1024;
+      basedeccel: 48 * 1024;
+      turnspeed: 348 * FRACUNIT; // ~2 * ANG1
+      model3d: 'CAR1N0A.I3D';
+      cartype: ct_stock;
+    ),
+    (
+      tex1old: 'd_1_5';
+      tex1: 'd_1_5_02_19.png';
+      tex2old: '';
+      tex2: '';
+      number: 19;
+      maxspeed: 245 * KMH_TO_FIXED;
+      baseaccel: 12 * 1024;
+      basedeccel: 48 * 1024;
+      turnspeed: 348 * FRACUNIT; // ~2 * ANG1
+      model3d: 'CAR1N0A.I3D';
+      cartype: ct_stock;
+    ),
+    (
+      tex1old: 'd_1_5';
+      tex1: 'd_1_5_03_04.png';
+      tex2old: '';
+      tex2: '';
+      number: 4;
+      maxspeed: 245 * KMH_TO_FIXED;
+      baseaccel: 12 * 1024;
+      basedeccel: 48 * 1024;
+      turnspeed: 348 * FRACUNIT; // ~2 * ANG1
+      model3d: 'CAR1N0A.I3D';
+      cartype: ct_stock;
+    ),
+    (
+      tex1old: 'd_2_5';
+      tex1: '';
+      tex2old: '';
+      tex2: '';
+      number: 77;
+      maxspeed: 245 * KMH_TO_FIXED;
+      baseaccel: 12 * 1024;
+      basedeccel: 48 * 1024;
+      turnspeed: 348 * FRACUNIT; // ~2 * ANG1
+      model3d: 'CAR1N1A.I3D';
+      cartype: ct_stock;
+    ),
+    (
+      tex1old: 'd_2_5';
+      tex1: 'd_2_5_01_94.png';
+      tex2old: '';
+      tex2: '';
+      number: 94;
+      maxspeed: 245 * KMH_TO_FIXED;
+      baseaccel: 12 * 1024;
+      basedeccel: 48 * 1024;
+      turnspeed: 348 * FRACUNIT; // ~2 * ANG1
+      model3d: 'CAR1N1A.I3D';
+      cartype: ct_stock;
+    ),
+    (
+      tex1old: 'd_2_5';
+      tex1: 'd_2_5_02_87.png';
+      tex2old: '';
+      tex2: '';
+      number: 87;
+      maxspeed: 245 * KMH_TO_FIXED;
+      baseaccel: 12 * 1024;
+      basedeccel: 48 * 1024;
+      turnspeed: 348 * FRACUNIT; // ~2 * ANG1
+      model3d: 'CAR1N1A.I3D';
+      cartype: ct_stock;
+    ),
+    (
+      tex1old: 'd_3_5';
+      tex1: '';
+      tex2old: '';
+      tex2: '';
+      number: 6;
+      maxspeed: 245 * KMH_TO_FIXED;
+      baseaccel: 12 * 1024;
+      basedeccel: 48 * 1024;
+      turnspeed: 348 * FRACUNIT; // ~2 * ANG1
+      model3d: 'CAR1N2A.I3D';
+      cartype: ct_stock;
+    ),
+    (
+      tex1old: 'd_3_5';
+      tex1: 'd_3_5_01_83.png';
+      tex2old: '';
+      tex2: '';
+      number: 83;
+      maxspeed: 245 * KMH_TO_FIXED;
+      baseaccel: 12 * 1024;
+      basedeccel: 48 * 1024;
+      turnspeed: 348 * FRACUNIT; // ~2 * ANG1
+      model3d: 'CAR1N2A.I3D';
+      cartype: ct_stock;
+    ),
+    (
+      tex1old: 'd_3_5';
+      tex1: 'd_3_5_02_07.png';
+      tex2old: '';
+      tex2: '';
+      number: 7;
+      maxspeed: 245 * KMH_TO_FIXED;
+      baseaccel: 12 * 1024;
+      basedeccel: 48 * 1024;
+      turnspeed: 348 * FRACUNIT; // ~2 * ANG1
+      model3d: 'CAR1N2A.I3D';
+      cartype: ct_stock;
+    ),
+    (
+      tex1old: 'd_3_5';
+      tex1: 'd_3_5_03_32.png';
+      tex2old: '';
+      tex2: '';
+      number: 32;
+      maxspeed: 245 * KMH_TO_FIXED;
+      baseaccel: 12 * 1024;
+      basedeccel: 48 * 1024;
+      turnspeed: 348 * FRACUNIT; // ~2 * ANG1
+      model3d: 'CAR1N2A.I3D';
+      cartype: ct_stock;
+    ),
+    (
+      tex1old: 'd_4_5';
+      tex1: '';
+      tex2old: '';
+      tex2: '';
+      number: 43;
+      maxspeed: 245 * KMH_TO_FIXED;
+      baseaccel: 12 * 1024;
+      basedeccel: 48 * 1024;
+      turnspeed: 348 * FRACUNIT; // ~2 * ANG1
+      model3d: 'CAR1N3A.I3D';
+      cartype: ct_stock;
+    ),
+    (
+      tex1old: 'd_4_5';
+      tex1: 'd_4_5_01_48.png';
+      tex2old: '';
+      tex2: '';
+      number: 48;
+      maxspeed: 245 * KMH_TO_FIXED;
+      baseaccel: 12 * 1024;
+      basedeccel: 48 * 1024;
+      turnspeed: 348 * FRACUNIT; // ~2 * ANG1
+      model3d: 'CAR1N3A.I3D';
+      cartype: ct_stock;
+    ),
+    (
+      tex1old: 'd_4_5';
+      tex1: 'd_4_5_02_78.png';
+      tex2old: '';
+      tex2: '';
+      number: 78;
+      maxspeed: 245 * KMH_TO_FIXED;
+      baseaccel: 12 * 1024;
+      basedeccel: 48 * 1024;
+      turnspeed: 348 * FRACUNIT; // ~2 * ANG1
+      model3d: 'CAR1N3A.I3D';
+      cartype: ct_stock;
+    ),
+    (
+      tex1old: 'd_5_5';
+      tex1: '';
+      tex2old: '';
+      tex2: '';
+      number: 18;
+      maxspeed: 245 * KMH_TO_FIXED;
+      baseaccel: 12 * 1024;
+      basedeccel: 48 * 1024;
+      turnspeed: 348 * FRACUNIT; // ~2 * ANG1
+      model3d: 'CAR1N4A.I3D';
+      cartype: ct_stock;
+    ),
+    (
+      tex1old: 'd_5_5';
+      tex1: 'd_5_5_01_09.png';
+      tex2old: '';
+      tex2: '';
+      number: 9;
+      maxspeed: 245 * KMH_TO_FIXED;
+      baseaccel: 12 * 1024;
+      basedeccel: 48 * 1024;
+      turnspeed: 348 * FRACUNIT; // ~2 * ANG1
+      model3d: 'CAR1N4A.I3D';
+      cartype: ct_stock;
+    ),
+    (
+      tex1old: 'd_5_5';
+      tex1: 'd_5_5_02_11.png';
+      tex2old: '';
+      tex2: '';
+      number: 11;
+      maxspeed: 245 * KMH_TO_FIXED;
+      baseaccel: 12 * 1024;
+      basedeccel: 48 * 1024;
+      turnspeed: 348 * FRACUNIT; // ~2 * ANG1
+      model3d: 'CAR1N4A.I3D';
+      cartype: ct_stock;
+    ),
+    (
+      tex1old: 'd_6_5';
+      tex1: '';
+      tex2old: '';
+      tex2: '';
+      number: 23;
+      maxspeed: 245 * KMH_TO_FIXED;
+      baseaccel: 12 * 1024;
+      basedeccel: 48 * 1024;
+      turnspeed: 348 * FRACUNIT; // ~2 * ANG1
+      model3d: 'CAR1N5A.I3D';
+      cartype: ct_stock;
+    ),
+    (
+      tex1old: 'd_6_5';
+      tex1: 'd_6_5_01_54.png';
+      tex2old: '';
+      tex2: '';
+      number: 54;
+      maxspeed: 245 * KMH_TO_FIXED;
+      baseaccel: 12 * 1024;
+      basedeccel: 48 * 1024;
+      turnspeed: 348 * FRACUNIT; // ~2 * ANG1
+      model3d: 'CAR1N5A.I3D';
+      cartype: ct_stock;
+    ),
+    (
+      tex1old: 'd_6_5';
+      tex1: 'd_6_5_02_92.png';
+      tex2old: '';
+      tex2: '';
+      number: 92;
+      maxspeed: 245 * KMH_TO_FIXED;
+      baseaccel: 12 * 1024;
+      basedeccel: 48 * 1024;
+      turnspeed: 348 * FRACUNIT; // ~2 * ANG1
+      model3d: 'CAR1N5A.I3D';
+      cartype: ct_stock;
     )
   );
 
@@ -382,7 +645,7 @@ begin
   end;
 
   carids := TDNumberList.Create;
-  for i := 0 to NUMCARINFO_FORMULA - 1 do
+  for i := 0 to NUMCARINFO - 1 do
     carids.Add(i);
 
   for i := 0 to lst.Count - 1 do
@@ -398,7 +661,7 @@ begin
       carids.Delete(idx);
     end
     else
-      id := i mod NUMCARINFO_FORMULA;
+      id := i mod NUMCARINFO;
 
     mo.carinfo := id;
     mo.carid := i;
