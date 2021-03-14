@@ -267,7 +267,7 @@ begin
     b := img[32 + 3 * img[800 + i] + 2] * 4;
     if b > 255 then b := 255;
     c := r shl 16 + g shl 8 + b;
-    newimg[i + 4] := V_FindAproxColorIndex(defpal, c, 0, 255);
+    newimg[i + 4] := V_FindAproxColorIndex(defpal, c, 16, 239);
   end;
   SH_CreateDoomPatchFromLumpData(newimg, solid, p, size);
   memfree(pointer(newimg), newsize);
