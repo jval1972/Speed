@@ -140,10 +140,6 @@ uses
   r_hires,
   r_lights,
   r_intrpl,
-{$IFNDEF OPENGL}
-  r_fake3d,
-  r_softlights,
-{$ENDIF}
   r_camera,
   r_draw,
   t_main,
@@ -464,11 +460,7 @@ var
 // DISPLAY MENU
 type
   optionsdisplay_e = (
-{$IFDEF OPENGL}
     od_opengl,
-{$ELSE}
-    od_detail,
-{$ENDIF}
     od_automap,
     od_appearance,
     od_advanced,
@@ -542,29 +534,11 @@ type
   optionsdisplayadvanced_e = (
     od_aspect,
     od_camera,
-{$IFNDEF OPENGL}
-    od_lightmap,
-{$ENDIF}
-{$IFNDEF OPENGL}
-    od_bltasync,
-{$ENDIF}
     od_usetransparentsprites,
-{$IFNDEF OPENGL}
-    od_diher8bittransparency,
-{$ENDIF}
     od_interpolate,
     od_interpolateoncapped,
-{$IFNDEF OPENGL}
-    od_usefake3d,
-{$ENDIF}
     od_fixstallhack,
     od_autoadjustmissingtextures,
-{$IFNDEF OPENGL}
-    od_optimizedcolumnrendering,
-    od_optimizedthingsrendering,
-    od_precisescalefromglobalangle,
-    od_preciseslopedrawing, // JVAL: Slopes
-{$ENDIF}
     optdispadvanced_end
   );
 
@@ -605,26 +579,6 @@ var
   OptionsDisplayCameraMenu: array[0..Ord(optdispcamera_end) - 1] of menuitem_t;
   OptionsDisplayCameraDef: menu_t;
 
-{$IFNDEF OPENGL}
-type
-  optionslightmap_e = (
-    ol_uselightmaps,
-    ol_lightmapfunc,
-    ol_colorintensity,
-    ol_filler1,
-    ol_filler2,
-    ol_lightwidthfactor,
-    ol_filler3,
-    ol_filler4,
-    od_resettodefaults,
-    ol_lightmap_end
-  );
-
-var
-  OptionsLightmapMenu: array[0..Ord(ol_lightmap_end) - 1] of menuitem_t;
-  OptionsLightmapDef: menu_t;
-{$ENDIF}
-
 // DISPLAY 32 BIT RENDERING MENU
 type
   optionsdisplay32bit_e = (
@@ -642,7 +596,6 @@ var
   OptionsDisplay32bitMenu: array[0..Ord(optdisp32bit_end) - 1] of menuitem_t;
   OptionsDisplay32bitDef: menu_t;
 
-{$IFDEF OPENGL}
 // DISPLAY OPENGL RENDERING MENU
 type
   optionsdisplayopengl_e = (
@@ -707,8 +660,6 @@ type
 var
   OptionsDisplayOpenGLFilterMenu: array[0..Ord(optglfilter_end) - 1] of menuitem_t;
   OptionsDisplayOpenGLFilterDef: menu_t;
-{$ENDIF}
-
 
 type
 //
@@ -1782,13 +1733,6 @@ begin
   M_SetupNextMenu(@OptionsDisplayCameraDef);
 end;
 
-{$IFNDEF OPENGL}
-procedure M_OptionsDisplayLightmap(choice: integer);
-begin
-  M_SetupNextMenu(@OptionsLightmapDef);
-end;
-{$ENDIF}
-
 procedure M_ChangeCameraXY(choice: integer);
 begin
   case choice of
@@ -1874,7 +1818,6 @@ begin
   M_SetupNextMenu(@OptionsDisplay32bitDef);
 end;
 
-{$IFDEF OPENGL}
 procedure M_OptionsDisplayOpenGL(choice: integer);
 begin
   M_SetupNextMenu(@OptionsDisplayOpenGLDef);
@@ -1894,7 +1837,6 @@ procedure M_OptionsDisplayOpenGLFilter(choice: integer);
 begin
   M_SetupNextMenu(@OptionsDisplayOpenGLFilterDef);
 end;
-{$ENDIF}
 
 procedure M_SfxVol(choice: integer);
 begin
@@ -2801,12 +2743,8 @@ begin
             usegamma := 0;
           players[consoleplayer]._message := gammamsg[usegamma];
           palette := V_ReadPalette(PU_STATIC);
-          {$IFDEF OPENGL}
           I_SetPalette(palette);
           V_SetPalette(palette);
-          {$ELSE}
-          IV_SetPalette(palette);
-          {$ENDIF}
           Z_ChangeTag(palette, PU_CACHE);
           result := true;
           exit;
@@ -2815,11 +2753,7 @@ begin
         begin
           if m_altdown then
           begin
-          {$IFDEF OPENGL}
             GL_ChangeFullScreen(not fullscreen);
-          {$ELSE}
-            I_ChangeFullScreen((fullscreen + 1) mod NUMFULLSCREEN_MODES);
-          {$ENDIF}
             result := true;
             exit;
           end;
@@ -3016,13 +2950,8 @@ function M_Thr_ShadeScreen(p: pointer): integer; stdcall;
 var
   half: integer;
 begin
-{$IFDEF OPENGL}
   half := V_GetScreenWidth(SCN_FG) * V_GetScreenHeight(SCN_FG) div 2;
   V_ShadeBackground(half, V_GetScreenWidth(SCN_FG) * V_GetScreenHeight(SCN_FG) - half);
-{$ELSE}
-  half := SCREENWIDTH * SCREENHEIGHT div 2;
-  V_ShadeScreen(SCN_FG, half, SCREENWIDTH * SCREENHEIGHT - half);
-{$ENDIF}
   result := 0;
 end;
 
@@ -3038,20 +2967,12 @@ begin
     begin
     // JVAL
       threadmenushader.Activate(nil);
-      {$IFDEF OPENGL}
       V_ShadeBackground(0, V_GetScreenWidth(SCN_FG) * V_GetScreenHeight(SCN_FG) div 2);
-      {$ELSE}
-      V_ShadeScreen(SCN_FG, 0, SCREENWIDTH * SCREENHEIGHT div 2);
-      {$ENDIF}
       // Wait for extra thread to terminate.
       threadmenushader.Wait;
     end
     else
-      {$IFDEF OPENGL}
       V_ShadeBackground;
-      {$ELSE}
-      V_ShadeScreen(SCN_FG);
-      {$ENDIF}
   end;
 end;
 
@@ -3282,12 +3203,10 @@ begin
   M_CmdSetupNextMenu(@OptionsDisplay32bitDef);
 end;
 
-{$IFDEF OPENGL}
 procedure M_CmdOptionsDisplayOpenGL;
 begin
   M_CmdSetupNextMenu(@OptionsDisplayOpenGLDef);
 end;
-{$ENDIF}
 
 procedure M_CmdMenuSoundDef;
 begin
@@ -3386,11 +3305,7 @@ begin
   C_AddCmd('menu_options', @M_CmdMenuOptionsDef);
   C_AddCmd('menu_optionsgeneral, menu_generaloptions', @M_CmdMenuOptionsGeneralDef);
   C_AddCmd('menu_optionsdisplay, menu_displayoptions, menu_display', @M_CmdMenuOptionsDisplayDef);
-{$IFDEF OPENGL}
   C_AddCmd('menu_optionsdisplayopengl, menu_optionsopengl, menu_opengl', @M_CmdOptionsDisplayOpenGL);
-{$ELSE}
-  C_AddCmd('menu_optionsdisplaydetail, menu_displaydetailoptions', @M_CmdMenuOptionsDisplayDetailDef);
-{$ENDIF}
   C_AddCmd('menu_optionsdisplayappearence, menu_displayappearenceoptions, menu_displayappearence', @M_CmdMenuOptionsDisplayAppearanceDef);
   C_AddCmd('menu_optionsdisplayadvanced, menu_displayadvancedoptions, menu_displayadvanced', @M_CmdMenuOptionsDisplayAdvancedDef);
   C_AddCmd('menu_optionsdisplay32bit, menu_display32bitoptions, menu_display32bit', @M_CmdMenuOptionsDisplay32bitDef);
@@ -3704,19 +3619,11 @@ begin
 //OptionsDisplayMenu
   pmi := @OptionsDisplayMenu[0];
   pmi.status := 1;
-{$IFDEF OPENGL}
   pmi.name := 'MENU_OPE';
   pmi.cmd := '';
   pmi.routine := @M_OptionsDisplayOpenGL;
   pmi.pBoolVal := nil;
   pmi.alphaKey := 'o';
-{$ELSE}
-  pmi.name := 'MENU_DET';
-  pmi.cmd := '';
-  pmi.routine := @M_OptionsDisplayDetail;
-  pmi.pBoolVal := nil;
-  pmi.alphaKey := 'd';
-{$ENDIF}
 
   inc(pmi);
   pmi.status := 1;
@@ -3855,8 +3762,8 @@ begin
 ////////////////////////////////////////////////////////////////////////////////
 //OptionsDisplayVideoModeDef
   OptionsDisplayVideoModeDef.numitems := Ord(optdispvideomode_end); // # of menu items
-  OptionsDisplayVideoModeDef.prevMenu := {$IFDEF OPENGL}@OptionsDisplayOpenGLDef{$ELSE}@OptionsDisplayDetailDef{$ENDIF}; // previous menu
-  OptionsDisplayVideoModeDef.leftMenu := {$IFDEF OPENGL}@OptionsDisplayOpenGLDef{$ELSE}@OptionsDisplayDetailDef{$ENDIF}; // left menu
+  OptionsDisplayVideoModeDef.prevMenu := @OptionsDisplayOpenGLDef; // previous menu
+  OptionsDisplayVideoModeDef.leftMenu := @OptionsDisplayOpenGLDef; // left menu
   OptionsDisplayVideoModeDef.menuitems := Pmenuitem_tArray(@OptionsDisplayVideoModeMenu);  // menu items
   OptionsDisplayVideoModeDef.drawproc := @M_DrawDisplaySetVideoMode;  // draw routine
   OptionsDisplayVideoModeDef.x := 30;
@@ -3903,7 +3810,7 @@ begin
 //OptionsDisplayAutomapDef
   OptionsDisplayAutomapDef.numitems := Ord(optdispautomap_end); // # of menu items
   OptionsDisplayAutomapDef.prevMenu := @OptionsDisplayDef; // previous menu
-  OptionsDisplayAutomapDef.leftMenu := {$IFDEF OPENGL}@OptionsDisplayOpenGLDef{$ELSE}@OptionsDisplayDetailDef{$ENDIF}; // left menu
+  OptionsDisplayAutomapDef.leftMenu := @OptionsDisplayOpenGLDef; // left menu
   OptionsDisplayAutomapDef.rightMenu := @OptionsDisplayAppearanceDef; // right menu
   OptionsDisplayAutomapDef.menuitems := Pmenuitem_tArray(@OptionsDisplayAutomapMenu);  // menu items
   OptionsDisplayAutomapDef.drawproc := @M_DrawDisplayAutomapOptions;  // draw routine
@@ -3987,26 +3894,6 @@ begin
   pmi.pBoolVal := nil;
   pmi.alphaKey := 'c';
 
-  {$IFNDEF OPENGL}
-  inc(pmi);
-  pmi.status := 1;
-  pmi.name := '!Lightmap...';
-  pmi.cmd := '';
-  pmi.routine := @M_OptionsDisplayLightmap;
-  pmi.pBoolVal := nil;
-  pmi.alphaKey := 'l';
-  {$ENDIF}
-
-  {$IFNDEF OPENGL}
-  inc(pmi);
-  pmi.status := 1;
-  pmi.name := '!Asynchronous DirectX blit';
-  pmi.cmd := 'r_bltasync';
-  pmi.routine := @M_BoolCmd;
-  pmi.pBoolVal := @r_bltasync;
-  pmi.alphaKey := 'a';
-  {$ENDIF}
-
   inc(pmi);
   pmi.status := 1;
   pmi.name := '!Transparent sprites';
@@ -4014,16 +3901,6 @@ begin
   pmi.routine := @M_BoolCmd;
   pmi.pBoolVal := @usetransparentsprites;
   pmi.alphaKey := 's';
-
-{$IFNDEF OPENGL}
-  inc(pmi);
-  pmi.status := 1;
-  pmi.name := '!Diher 8 bit transparency';
-  pmi.cmd := 'diher8bittransparency';
-  pmi.routine := @M_BoolCmd;
-  pmi.pBoolVal := @diher8bittransparency;
-  pmi.alphaKey := 'd';
-{$ENDIF}
 
   inc(pmi);
   pmi.status := 1;
@@ -4041,16 +3918,6 @@ begin
   pmi.pBoolVal := @interpolateoncapped;
   pmi.alphaKey := 'i';
 
-{$IFNDEF OPENGL}
-  inc(pmi);
-  pmi.status := 1;
-  pmi.name := '!True 3d emulation';
-  pmi.cmd := 'usefake3d';
-  pmi.routine := @M_BoolCmd;
-  pmi.pBoolVal := @usefake3d;
-  pmi.alphaKey := 'f';
-{$ENDIF}
-
   inc(pmi);
   pmi.status := 1;
   pmi.name := '!Auto fix memory stall';
@@ -4066,42 +3933,6 @@ begin
   pmi.routine := @M_BoolCmd;
   pmi.pBoolVal := @autoadjustmissingtextures;
   pmi.alphaKey := 'a';
-
-{$IFNDEF OPENGL}
-  inc(pmi);
-  pmi.status := 1;
-  pmi.name := '!Optimized column rendering';
-  pmi.cmd := 'optimizedcolumnrendering';
-  pmi.routine := @M_BoolCmd;
-  pmi.pBoolVal := @optimizedcolumnrendering;
-  pmi.alphaKey := 'c';
-
-  inc(pmi);
-  pmi.status := 1;
-  pmi.name := '!Optimized things rendering';
-  pmi.cmd := 'optimizedthingsrendering';
-  pmi.routine := @M_BoolCmd;
-  pmi.pBoolVal := @optimizedthingsrendering;
-  pmi.alphaKey := 't';
-
-  inc(pmi);
-  pmi.status := 1;
-  pmi.name := '!Precise R_ScaleFromGlobalAngle';
-  pmi.cmd := 'precisescalefromglobalangle';
-  pmi.routine := @M_BoolCmd;
-  pmi.pBoolVal := @precisescalefromglobalangle;
-  pmi.alphaKey := 'p';
-
-  // JVAL: Slopes
-  inc(pmi);
-  pmi.status := 1;
-  pmi.name := '!Precise but slow slope drawing';
-  pmi.cmd := 'preciseslopedrawing';
-  pmi.routine := @M_BoolCmd;
-  pmi.pBoolVal := @preciseslopedrawing;
-  pmi.alphaKey := 's';
-
-{$ENDIF}
 
 ////////////////////////////////////////////////////////////////////////////////
 //OptionsDisplayAdvancedDef
@@ -4242,94 +4073,6 @@ begin
   OptionsDisplayCameraDef.itemheight := LINEHEIGHT2;
   OptionsDisplayCameraDef.texturebk := true;
 
-{$IFNDEF OPENGL}
-////////////////////////////////////////////////////////////////////////////////
-//OptionsLightmapMenu
-  pmi := @OptionsLightmapMenu[0];
-
-  pmi.status := 1;
-  pmi.name := '!Light effects';
-  pmi.cmd := 'r_uselightmaps';
-  pmi.routine := @M_BoolCmd;
-  pmi.pBoolVal := @r_uselightmaps;
-  pmi.alphaKey := 'l';
-
-  inc(pmi);
-  pmi.status := 1;
-  pmi.name := '!Fadeout function';
-  pmi.cmd := '';
-  pmi.routine := @M_ChangeLightmapFadeoutFunc;
-  pmi.pBoolVal := nil;
-  pmi.alphaKey := 'f';
-
-  inc(pmi);
-  pmi.status := 2;
-  pmi.name := '!Color intensity';
-  pmi.cmd := '';
-  pmi.routine := @M_ChangeLightmapColorIntensity;
-  pmi.pBoolVal := nil;
-  pmi.alphaKey := 'c';
-
-  inc(pmi);
-  pmi.status := -1;
-  pmi.name := '';
-  pmi.cmd := '';
-  pmi.routine := nil;
-  pmi.pBoolVal := nil;
-  pmi.alphaKey := #0;
-
-  inc(pmi);
-  pmi.status := -1;
-  pmi.name := '';
-  pmi.cmd := '';
-  pmi.routine := nil;
-  pmi.pBoolVal := nil;
-  pmi.alphaKey := #0;
-
-  inc(pmi);
-  pmi.status := 2;
-  pmi.name := '!Distance from source';
-  pmi.cmd := '';
-  pmi.routine := @M_ChangeLightmapLightWidthFactor;
-  pmi.pBoolVal := nil;
-  pmi.alphaKey := 'd';
-
-  inc(pmi);
-  pmi.status := -1;
-  pmi.name := '';
-  pmi.cmd := '';
-  pmi.routine := nil;
-  pmi.pBoolVal := nil;
-  pmi.alphaKey := #0;
-
-  inc(pmi);
-  pmi.status := -1;
-  pmi.name := '';
-  pmi.cmd := '';
-  pmi.routine := nil;
-  pmi.pBoolVal := nil;
-  pmi.alphaKey := #0;
-
-  inc(pmi);
-  pmi.status := 1;
-  pmi.name := '!Reset to default...';
-  pmi.cmd := '';
-  pmi.routine := @M_LightmapDefaults;
-  pmi.pBoolVal := nil;
-  pmi.alphaKey := 'r';
-
-////////////////////////////////////////////////////////////////////////////////
-//OptionsLightmapDef
-  OptionsLightmapDef.numitems := Ord(ol_lightmap_end); // # of menu items
-  OptionsLightmapDef.prevMenu := @OptionsDisplayAdvancedDef; // previous menu
-  OptionsLightmapDef.menuitems := Pmenuitem_tArray(@OptionsLightmapMenu);  // menu items
-  OptionsLightmapDef.drawproc := @M_DrawOptionsLightmap;  // draw routine
-  OptionsLightmapDef.x := 32;
-  OptionsLightmapDef.y := 68; // x,y of menu
-  OptionsLightmapDef.lastOn := 0; // last item user was on in menu
-  OptionsLightmapDef.itemheight := LINEHEIGHT2;
-  OptionsLightmapDef.texturebk := true;
-{$ENDIF}
 ////////////////////////////////////////////////////////////////////////////////
 //OptionsDisplay32bitMenu
   pmi := @OptionsDisplay32bitMenu[0];
@@ -4393,7 +4136,7 @@ begin
   OptionsDisplay32bitDef.numitems := Ord(optdisp32bit_end); // # of menu items
   OptionsDisplay32bitDef.prevMenu := @OptionsDisplayDef; // previous menu
   OptionsDisplay32bitDef.leftMenu := @OptionsDisplayAdvancedDef; // left menu
-  OptionsDisplay32bitDef.rightMenu := {$IFDEF OPENGL}@OptionsDisplayOpenGLDef{$ELSE}@OptionsDisplayDetailDef{$ENDIF}; // right menu
+  OptionsDisplay32bitDef.rightMenu := @OptionsDisplayOpenGLDef; // right menu
   OptionsDisplay32bitDef.menuitems := Pmenuitem_tArray(@OptionsDisplay32bitMenu);  // menu items
   OptionsDisplay32bitDef.drawproc := @M_DrawOptionsDisplay32bit;  // draw routine
   OptionsDisplay32bitDef.x := 30;
@@ -4402,7 +4145,6 @@ begin
   OptionsDisplay32bitDef.itemheight := LINEHEIGHT2;
   OptionsDisplay32bitDef.texturebk := true;
 
-{$IFDEF OPENGL}
 ////////////////////////////////////////////////////////////////////////////////
 //OptionsDisplayOpenGLMenu
   pmi := @OptionsDisplayOpenGLMenu[0];
@@ -4622,7 +4364,7 @@ begin
   pmi.routine := @M_BoolCmd;
   pmi.pBoolVal := @gl_linear_hud;
   pmi.alphaKey := 'l';
-  
+
 ////////////////////////////////////////////////////////////////////////////////
 //OptionsDisplayOpenGLFilterDef
   OptionsDisplayOpenGLFilterDef.numitems := Ord(optglfilter_end); // # of menu items
@@ -4635,7 +4377,6 @@ begin
   OptionsDisplayOpenGLFilterDef.lastOn := 0; // last item user was on in menu
   OptionsDisplayOpenGLFilterDef.itemheight := LINEHEIGHT2;
   OptionsDisplayOpenGLFilterDef.texturebk := true;
-{$ENDIF}
 
 ////////////////////////////////////////////////////////////////////////////////
 //ReadMenu1
