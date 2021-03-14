@@ -104,7 +104,7 @@ var
   pg_HELP2: string = 'HELP2';
   pg_VICTORY2: string = 'VICTORY2';
   pg_ENDPIC: string = 'ENDPIC';
-  pg_TITLE: string = 'TITLEPIC';
+  pg_TITLE: string = 'MBG_PRIN';
   pg_DMENUPIC: string = 'DMENUPIC';
 
 implementation
