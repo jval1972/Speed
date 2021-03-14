@@ -99,7 +99,6 @@ type
     function GenerateTextures(const pnames, texture1: string): boolean;
     function GenerateStubTexturesEntry(const textureX: string): boolean;
     function GenerateLevels(const scale: integer): boolean;
-    function GenerateCSVs(const path: string): boolean;
     function GenerateFlats: boolean;
     function GenerateMapFlats(const doublesize: boolean): boolean;
     function GenerateGraphicWithOutPalette(const rname, wname: string; const solid: boolean): boolean;
@@ -732,83 +731,6 @@ begin
   _makelevel('06', '06', 'E1M7', 'MAPSPR06', 'NUBES6', 'MOUNT6' ,extramapflats[6]);
   _makelevel('07', '07', 'E1M8', 'MAPSPR07', 'NUBES7', 'MOUNT7' ,extramapflats[7]);
 end;
-
-function TSpeedToWADConverter.GenerateCSVs(const path: string): boolean;
-(*var
-  i, j: integer;
-  rlevel: pointer;
-  rsize: integer;
-  ret: boolean;
-
-  procedure CreateAll(const prefix: string);
-  var
-    ii, jj, kk: integer;
-    lsts: array[1..3,1..9] of TDStringList;
-    l: TDStringList;
-    finp: string;
-    apath: string;
-    header: string;
-  begin
-    apath := path;
-    if apath <> '' then
-      if apath[length(apath)] <> '\' then
-        apath := apath + '\';
-    header := '';
-    for ii := 1 to 3 do
-      for jj := 1 to 9 do
-      begin
-        lsts[ii, jj] := TDStringList.Create;
-        finp := apath + '\' + 'E' + itoa(ii) + 'M' + itoa(jj) + '_' + prefix + '.txt';
-        if fexists(finp) then
-        begin
-          lsts[ii, jj].LoadFromFile(finp);
-          if lsts[ii, jj].Count > 0 then
-          begin
-            header := 'level' + ',' + lsts[ii, jj].Strings[0];
-            lsts[ii, jj].Delete(0);
-          end;
-        end;
-      end;
-    l := TDStringList.Create;
-    l.Add(header);
-    for ii := 1 to 3 do
-      for jj := 1 to 9 do
-      begin
-        for kk := 0 to lsts[ii, jj].Count - 1 do
-          l.Add('E' + itoa(ii) + 'M' + itoa(jj) + ',' + lsts[ii, jj].Strings[kk]);
-        lsts[ii, jj].Free;
-      end;
-    l.SaveToFile(apath + '\' + 'ALL' + '_' + prefix + '.txt');
-    l.Free;
-  end;
-*)
-begin
-  result := true;
-(*
-  for i := 1 to 3 do
-    for j := 1 to 9 do
-    begin
-      if ReadLump(lumps, numlumps, 'WorldData[' + itoa(i) +'][' + itoa(j) + ']', rlevel, rsize) then
-      begin
-        ret := SH_CreateRadixMapCSV('E' + itoa(i) + 'M' + itoa(j), path, rlevel, rsize);
-        result := result or ret;
-        memfree(rlevel, rsize);
-      end;
-    end;
-
-  CreateAll('sectors');
-  CreateAll('sprites');
-  CreateAll('sprites2');
-  CreateAll('sprites_movingsurface');
-  CreateAll('sprites_newmovingsurface');
-  CreateAll('things');
-  CreateAll('walls');
-  CreateAll('triggers');
-  CreateAll('gridtable1');
-  CreateAll('gridtable2');
-*)
-end;
-
 
 function TSpeedToWADConverter.GenerateFlats: boolean;
 var
