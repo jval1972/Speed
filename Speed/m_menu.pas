@@ -237,12 +237,6 @@ type
 
 var
   itemOn: smallint;             // menu item skull is on
-  skullAnimCounter: smallint;   // skull animation counter
-  whichSkull: smallint;         // which skull to draw
-
-// graphic name of skulls
-// warning: initializer-string for array of chars is too long
-  skullName: array[0..1] of string;
 
 // current menudef
   currentMenu: Pmenu_t;
@@ -282,37 +276,41 @@ procedure M_DrawHeadLine(const y: integer; const str: string);
 var
   i: integer;
 begin
-  M_HorzLine(0, 319, y, 64);
-  M_HorzLine(0, 319, y + 15, 80);
+  M_HorzLine(0, 319, y, 121);
+  M_HorzLine(0, 319, y + 15, 123);
   for i := y + 1 to y + 14 do
-    M_HorzLine(0, 319, i, 63);
+    M_HorzLine(0, 319, i, 118);
 
-  M_WriteText(160, y, str, ma_center, @big_fontR, @big_fontB);
+  M_WriteText(160, y + 3, str, ma_center, @big_fontR, @big_fontB);
 end;
 
 procedure M_DrawSubHeadLine(const y: integer; const str: string);
 var
   i: integer;
 begin
-  M_HorzLine(0, 319, y, 64);
-  M_HorzLine(0, 319, y + 15, 80);
+  M_HorzLine(0, 319, y, 121);
+  M_HorzLine(0, 319, y + 15, 123);
   for i := y + 1 to y + 14 do
-    M_HorzLine(0, 319, i, 63);
+    M_HorzLine(0, 319, i, 118);
 
-  M_WriteText(25, y, str, ma_left, @big_fontW, @big_fontB);
+  M_WriteText(25, y + 3, str, ma_left, @big_fontW, @big_fontB);
 end;
 
 procedure M_DrawSmallLine(const y: integer; const str: string);
 var
   i: integer;
 begin
-  M_HorzLine(0, 319, y, 64);
-  M_HorzLine(0, 319, y + 9, 80);
+  M_HorzLine(0, 319, y, 121);
+  M_HorzLine(0, 319, y + 9, 123);
   for i := y + 1 to y + 8 do
-    M_HorzLine(0, 319, i, 63);
+    M_HorzLine(0, 319, i, 118);
 
   M_WriteText(160, y + 2, str, ma_center, @hu_fontW, @big_fontB);
 end;
+
+const
+  DEF_MENU_ITEMS_START_X = 32;
+  DEF_MENU_ITEMS_START_Y = 65;
 
 procedure M_DrawThermo(x, y, thermWidth, thermDot: integer; numdots: integer = -1);
 var
@@ -384,7 +382,7 @@ type
     mm_loadgame,
     mm_savegame,
     mm_readthis,
-    mm_quitdoom,
+    mm_quitspeed,
     main_end
   );
 
@@ -725,8 +723,10 @@ type
   soundvol_e = (
     sfx_vol,
     sfx_empty1,
+    sfx_empty1b,
     music_vol,
     sfx_empty2,
+    sfx_empty2b,
     soundvol_end
   );
 
@@ -981,7 +981,9 @@ var
   s: string;
   drawkey: boolean;
 begin
-  V_DrawPatch(81, 15, SCN_TMP, 'MENU_KEY', false);
+  M_DrawHeadLine(15, 'Controls');
+  M_DrawSubHeadLine(40, 'Key Bindings');
+
   for i := 0 to stop - start - 1 do
   begin
     s := KeyBindingsInfo[start + i].text + ': ';
@@ -1102,7 +1104,8 @@ procedure M_DrawLoad;
 var
   i: integer;
 begin
-  V_DrawPatch(72, LoadDef.y - 26, SCN_TMP, 'M_LOADG', false);
+  M_DrawHeadLine(15, 'Load Game');
+
   for i := 0 to Ord(load_end) - 1 do
   begin
     M_DrawSaveLoadBorder(LoadDef.x, LoadDef.y + LoadDef.itemheight * i);
@@ -1144,7 +1147,8 @@ procedure M_DrawSave;
 var
   i: integer;
 begin
-  V_DrawPatch(72, LoadDef.y - 28, SCN_TMP, 'M_SAVEG', false);
+  M_DrawHeadLine(15, 'Save Game');
+
   for i := 0 to Ord(load_end) - 1 do
   begin
     M_DrawSaveLoadBorder(LoadDef.x, LoadDef.y + LoadDef.itemheight * i);
@@ -1342,7 +1346,8 @@ end;
 //
 procedure M_DrawSoundVol;
 begin
-  V_DrawPatch(60, 38, SCN_TMP, 'M_SVOL', false);
+  M_DrawHeadLine(15, 'Options');
+  M_DrawSubHeadLine(40, 'Volume Control');
 
   M_DrawThermo(
     SoundVolDef.x, SoundVolDef.y + SoundVolDef.itemheight * (Ord(sfx_vol) + 1), 16, snd_SfxVolume);
@@ -1363,15 +1368,15 @@ procedure M_DrawCompatibility;
 var
   ppos: menupos_t;
 begin
-  V_DrawPatch(108, 15, SCN_TMP, 'M_OPTTTL', false);
-  V_DrawPatch(20, 48, SCN_TMP, 'MENU_COM', false);
+  M_DrawHeadLine(15, 'Options');
+  M_DrawSubHeadLine(40, 'Compatibility');
 
   dogs := GetIntegerInRange(dogs, 0, MAXPLAYERS - 1);
   ppos.x := CompatibilityDef.x;
   ppos.y := CompatibilityDef.y + CompatibilityDef.itemheight * Ord(cmp_dogs);
   ppos := M_WriteText(ppos.x, ppos.y, 'Dogs (Marine Best Friend): ', ma_left, @hu_fontY, @hu_fontB);
   M_WriteText(ppos.x, ppos.y, itoa(dogs), ma_left, @hu_fontW, @hu_fontB);
-end; 
+end;
 
 const
   mkeyboardmodes: array[0..3] of string = ('ARROWS', 'WASD', 'ESDF', 'CUSTOM');
@@ -1624,8 +1629,8 @@ procedure M_DrawControls;
 var
   ppos: menupos_t;
 begin
-  V_DrawPatch(108, 15, SCN_TMP, 'M_OPTTTL', false);
-  V_DrawPatch(20, 48, SCN_TMP, 'MENU_CON', false);
+  M_DrawHeadLine(15, 'Options');
+  M_DrawSubHeadLine(40, 'Controls');
 
   ppos.x := ControlsDef.x;
   ppos.y := ControlsDef.y + ControlsDef.itemheight * Ord(ctrl_keyboardmode);
@@ -1635,16 +1640,16 @@ end;
 
 procedure M_DrawSound;
 begin
-  V_DrawPatch(108, 15, SCN_TMP, 'M_OPTTTL', false);
-  V_DrawPatch(20, 48, SCN_TMP, 'MENU_SOU', false);
+  M_DrawHeadLine(15, 'Options');
+  M_DrawSubHeadLine(40, 'Sound');
 end;
 
 procedure M_DrawSystem;
 var
   ppos: menupos_t;
 begin
-  V_DrawPatch(108, 15, SCN_TMP, 'M_OPTTTL', false);
-  V_DrawPatch(20, 48, SCN_TMP, 'MENU_SYS', false);
+  M_DrawHeadLine(15, 'Options');
+  M_DrawSubHeadLine(40, 'System');
 
   M_FixScreenshotFormat;
   ppos.x := SystemDef.x;
@@ -1860,22 +1865,46 @@ end;
 // M_DrawMainMenu
 //
 procedure M_DrawMainMenu;
+var
+  i, y: integer;
 begin
   V_DrawPatch(160, 40, SCN_TMP, 'DEMOLOGO', false);
+
+  y := DEF_MENU_ITEMS_START_Y;
+  for i := Ord(mm_newgame) to Ord(mm_quitspeed) do
+  begin
+    if itemOn = i then
+      M_WriteText(160, y, MainMenu[i].name, ma_center, @big_fontY, @big_fontB)
+    else
+      M_WriteText(160, y, MainMenu[i].name, ma_center, @big_fontW, @big_fontB);
+    y := y + 14;
+  end;
 end;
 
 //
 // M_NewGame
 //
 procedure M_DrawNewGame;
+var
+  i, y: integer;
 begin
-  V_DrawPatch(96, 14, SCN_TMP, 'M_NEWG', false);
-  V_DrawPatch(54, 38, SCN_TMP, 'M_SKILL', false);
+  M_DrawHeadLine(15, 'New Game');
+  M_DrawSubHeadLine(40, 'Select Skill Level');
+
+  y := DEF_MENU_ITEMS_START_Y;
+  for i := Ord(newg_killthings) to Ord(newg_nightmare) do
+  begin
+    if itemOn = i then
+      M_WriteText(160, y, NewGameMenu[i].name, ma_center, @big_fontY, @big_fontB)
+    else
+      M_WriteText(160, y, NewGameMenu[i].name, ma_center, @big_fontW, @big_fontB);
+    y := y + 14;
+  end;
 end;
 
 procedure M_NewGame(choice: integer);
 begin
-  if netgame and (not demoplayback) then
+  if netgame and not demoplayback then
   begin
     M_StartMessage(SNEWGAME + #13#10 + PRESSKEY, nil, false);
     exit;
@@ -1891,8 +1920,20 @@ var
   epi: integer;
 
 procedure M_DrawEpisode;
+var
+  i, y: integer;
 begin
-  V_DrawPatch(54, 38, SCN_TMP, 'M_EPISOD', false);
+  M_DrawHeadLine(15, 'Select Course');
+
+  y := DEF_MENU_ITEMS_START_Y;
+  for i := Ord(ep1) to Ord(ep_end) do
+  begin
+    if itemOn = i then
+      M_WriteText(160, y, EpisodeMenu[i].name, ma_center, @big_fontY, @big_fontB)
+    else
+      M_WriteText(160, y, EpisodeMenu[i].name, ma_center, @big_fontW, @big_fontB);
+    y := y + 14;
+  end;
 end;
 
 procedure M_VerifyNightmare(ch: integer);
@@ -1940,29 +1981,55 @@ end;
 //
 // M_Options
 //
-var
-  msgNames: array[0..1] of string = ('M_MSGOFF', 'M_MSGON');
-
 procedure M_DrawOptions;
+var
+  i, y: integer;
 begin
-  V_DrawPatch(108, 15, SCN_TMP, 'M_OPTTTL', false);
+  M_DrawHeadLine(15, 'Options');
+
+  y := DEF_MENU_ITEMS_START_Y;
+  for i := 0 to Ord(opt_end) - 1 do
+  begin
+    if itemOn = i then
+      M_WriteText(160, y, OptionsMenu[i].name, ma_center, @big_fontY, @big_fontB)
+    else
+      M_WriteText(160, y, OptionsMenu[i].name, ma_center, @big_fontW, @big_fontB);
+    y := y + 14;
+  end;
 end;
 
 procedure M_DrawGeneralOptions;
+var
+  i, y: integer;
+  str: string;
 begin
-  V_DrawPatch(108, 15, SCN_TMP, 'M_OPTTTL', false);
+  M_DrawHeadLine(15, 'Options');
+  M_DrawSubHeadLine(40, 'General');
 
-  V_DrawPatch(OptionsGeneralDef.x + 120, OptionsGeneralDef.y + OptionsGeneralDef.itemheight * Ord(messages), SCN_TMP,
-    msgNames[showMessages], false);
+  y := DEF_MENU_ITEMS_START_Y;
+  for i := Ord(endgame) to Ord(mousesens) do
+  begin
+    str := OptionsGeneralMenu[i].name;
+    if i = Ord(messages) then
+      if showMessages = 1 then
+        str := str + ': ON'
+      else
+        str := str + ': OFF';
+    if itemOn = i then
+      M_WriteText(160, y, str, ma_center, @big_fontY, @big_fontB)
+    else
+      M_WriteText(160, y, str, ma_center, @big_fontW, @big_fontB);
+    y := y + 14;
+  end;
 
   M_DrawThermo(
-    OptionsGeneralDef.x, OptionsGeneralDef.y + OptionsGeneralDef.itemheight * (Ord(mousesens) + 1), 20, mouseSensitivity);
+    50, OptionsGeneralDef.y + OptionsGeneralDef.itemheight * (Ord(mousesens) + 1), 20, mouseSensitivity);
 end;
 
 procedure M_DrawSensitivity;
 begin
-  V_DrawPatch(108, 15, SCN_TMP, 'M_OPTTTL', false);
-  V_DrawPatch(20, 48, SCN_TMP, 'M_MSENS', false);
+  M_DrawHeadLine(15, 'Options');
+  M_DrawSubHeadLine(40, 'Mouse Sensitivity');
 
   M_DrawThermo(
     SensitivityDef.x, SensitivityDef.y + SensitivityDef.itemheight * (Ord(sens_mousesensitivity) + 1), 20, mouseSensitivity);
@@ -1976,13 +2043,20 @@ end;
 
 procedure M_DrawDisplayOptions;
 var
-  lump: integer;
+  i, y: integer;
 begin
-  lump := W_CheckNumForName('M_DISOPT');
-  if lump >= 0 then
-    V_DrawPatch(52, 15, SCN_TMP, lump, false)
-  else
-    V_DrawPatch(108, 15, SCN_TMP, 'M_OPTTTL', false);
+  M_DrawHeadLine(15, 'Options');
+  M_DrawSubHeadLine(40, 'Display Options');
+
+  y := DEF_MENU_ITEMS_START_Y;
+  for i := 0 to Ord(optdisp_end) - 1 do
+  begin
+    if itemOn = i then
+      M_WriteText(160, y, OptionsDisplayMenu[i].name, ma_center, @big_fontY, @big_fontB)
+    else
+      M_WriteText(160, y, OptionsDisplayMenu[i].name, ma_center, @big_fontW, @big_fontB);
+    y := y + 14;
+  end;
 end;
 
 var
@@ -1993,7 +2067,9 @@ var
   stmp: string;
   ppos: menupos_t;
 begin
-  M_DrawDisplayOptions;
+  M_DrawHeadLine(15, 'Display Options');
+
+  M_DrawSubHeadLine(40, 'Detail');
 
   ppos.x := OptionsDisplayDetailDef.x;
   ppos.y := OptionsDisplayDetailDef.y + OptionsDisplayDetailDef.itemheight * Ord(od_detaillevel);
@@ -2012,7 +2088,10 @@ var
   stmp: string;
   ppos: menupos_t;
 begin
-  M_DrawDisplayOptions;
+  M_DrawHeadLine(15, 'Display Options');
+
+  M_DrawSubHeadLine(40, 'Set Video Mode');
+
 
   ppos.x := OptionsDisplayVideoModeDef.x;
   ppos.y := OptionsDisplayVideoModeDef.y + OptionsDisplayVideoModeDef.itemheight * Ord(odm_fullscreen);
@@ -2052,7 +2131,9 @@ procedure M_DrawDisplayAppearanceOptions;
 var
   ppos: menupos_t;
 begin
-  M_DrawDisplayOptions;
+  M_DrawHeadLine(15, 'Display Options');
+
+  M_DrawSubHeadLine(40, 'Appearence');
 
   ppos.x := OptionsDisplayAppearanceDef.x;
   ppos.y := OptionsDisplayAppearanceDef.y + OptionsDisplayAppearanceDef.itemheight * Ord(od_shademenubackground);
@@ -2062,20 +2143,22 @@ end;
 
 procedure M_DrawDisplayAutomapOptions;
 begin
-  M_DrawDisplayOptions;
+  M_DrawHeadLine(15, 'Display Options');
+  M_DrawSubHeadLine(40, 'Automap');
 end;
 
 procedure M_DrawOptionsDisplayAdvanced;
 begin
-  M_DrawDisplayOptions;
+  M_DrawHeadLine(15, 'Display Options');
+  M_DrawSubHeadLine(40, 'Advanced');
 end;
 
 procedure M_DrawOptionsDisplayAspectRatio;
 var
   ppos: menupos_t;
 begin
-  M_DrawDisplayOptions;
-  V_DrawPatch(20, 48, SCN_TMP, 'MENU_ASP', false);
+  M_DrawHeadLine(15, 'Display Options');
+  M_DrawSubHeadLine(40, 'Aspect Ratio');
 
   aspectratioidx := _nearest_aspect_index;
   ppos.x := OptionsDisplayAspectRatioDef.x;
@@ -2088,8 +2171,8 @@ procedure M_DrawOptionsDisplayCamera;
 var
   ppos: menupos_t;
 begin
-  M_DrawDisplayOptions;
-  V_DrawPatch(20, 48, SCN_TMP, 'MENU_CAM', false);
+  M_DrawHeadLine(15, 'Display Options');
+  M_DrawSubHeadLine(40, 'Camera');
 
   chasecamera_viewxy := ibetween(chasecamera_viewxy, CHASECAMERA_XY_MIN, CHASECAMERA_XY_MAX);
   ppos.x := OptionsDisplayCameraDef.x;
@@ -2114,7 +2197,8 @@ procedure M_DrawOptionsDisplay32bit;
 var
   ppos: menupos_t;
 begin
-  M_DrawDisplayOptions;
+  M_DrawHeadLine(15, 'Display Options');
+  M_DrawSubHeadLine(40, 'True Color Options');
 
   ppos.x := OptionsDisplay32bitDef.x;
   ppos.y := OptionsDisplay32bitDef.y + OptionsDisplay32bitDef.itemheight * Ord(od_flatfiltering);
@@ -2124,12 +2208,14 @@ end;
 
 procedure M_DrawOptionsDisplayOpenGL;
 begin
-  M_DrawDisplayOptions;
+  M_DrawHeadLine(15, 'Display Options');
+  M_DrawSubHeadLine(40, 'OpenGL');
 end;
 
 procedure M_DrawOptionsDisplayOpenGLModels;
 begin
-  M_DrawDisplayOptions;
+  M_DrawHeadLine(15, 'Display Options');
+  M_DrawSubHeadLine(40, 'Models');
 end;
 
 procedure M_ChangeVoxelOptimization(choice: integer);
@@ -2150,7 +2236,8 @@ procedure M_DrawOptionsDisplayOpenGLVoxels;
 var
   ppos: menupos_t;
 begin
-  M_DrawDisplayOptions;
+  M_DrawHeadLine(15, 'Display Options');
+  M_DrawSubHeadLine(40, 'Voxels');
 
   vx_maxoptimizerpasscount := GetIntegerInRange(vx_maxoptimizerpasscount, 0, MAX_VX_OPTIMIZE);
   ppos.x := OptionsDisplayOpenGLVoxelsDef.x;
@@ -2169,7 +2256,8 @@ procedure M_DrawOptionsDisplayOpenGLFilter;
 var
   ppos: menupos_t;
 begin
-  M_DrawDisplayOptions;
+  M_DrawHeadLine(15, 'Display Options');
+  M_DrawSubHeadLine(40, 'Texture Filtering');
 
   ppos.x := OptionsDisplayOpenGLFilterDef.x;
   ppos.y := OptionsDisplayOpenGLFilterDef.y + OptionsDisplayOpenGLFilterDef.itemheight * Ord(od_glf_texture_filter);
@@ -3108,29 +3196,22 @@ begin
         end
         else
           M_WriteText(x, y, str, ma_left, @hu_fontY, @hu_fontB);
-      end
-      else
-        V_DrawPatch(x, y, SCN_TMP,
-          currentMenu.menuitems[i].name, false);
+      end;
     end;
     y := y + currentMenu.itemheight;
   end;
 
   if currentMenu.leftMenu <> nil then
-    M_WriteText(5, 158, '<<', ma_left, @hu_fontW, @hu_fontB);
+    M_WriteText(5, 44, '<<', ma_left, @hu_fontW, @hu_fontB);
 
   if currentMenu.rightMenu <> nil then
   begin
     rstr := '>>';
     rlen := M_StringWidth(rstr, @hu_fontY);
-    M_WriteText(315 - rlen, 158, rstr, ma_left, @hu_fontW, @hu_fontB);
+    M_WriteText(315 - rlen, 44, rstr, ma_left, @hu_fontW, @hu_fontB);
   end;
 
-  if currentMenu.itemheight > LINEHEIGHT2 then
-    // DRAW SKULL
-    V_DrawPatch(x + SKULLXOFF, currentMenu.y + SKULLYOFF + itemOn * currentMenu.itemheight, SCN_TMP,
-      skullName[whichSkull], false)
-  else
+  if currentMenu.itemheight <= LINEHEIGHT2 then
     M_WriteText(x + ARROWXOFF, currentMenu.y + itemOn * currentMenu.itemheight, '-', ma_left, @hu_fontW, @hu_fontB);
 
   M_FinishUpdate(200);
@@ -3141,12 +3222,6 @@ end;
 //
 procedure M_Ticker;
 begin
-  dec(skullAnimCounter);
-  if skullAnimCounter <= 0 then
-  begin
-    whichSkull := whichSkull xor 1;
-    skullAnimCounter := 8;
-  end;
 end;
 
 procedure M_CmdSetupNextMenu(menudef: Pmenu_t);
@@ -3254,8 +3329,6 @@ begin
   currentMenu := @MainDef;
   menuactive := false;
   itemOn := currentMenu.lastOn;
-  whichSkull := 0;
-  skullAnimCounter := 10;
   messageToPrint := 0;
   messageString := '';
   messageLastMenuActive := menuactive;
@@ -3340,15 +3413,10 @@ begin
   gammamsg[4] := GAMMALVL4;
 
 ////////////////////////////////////////////////////////////////////////////////
-//skullName
-  skullName[0] := 'M_SKULL1';
-  skullName[1] := 'M_SKULL2';
-
-////////////////////////////////////////////////////////////////////////////////
 // MainMenu
   pmi := @MainMenu[0];
   pmi.status := 1;
-  pmi.name := 'M_NGAME';
+  pmi.name := 'New Game';
   pmi.cmd := '';
   pmi.routine := @M_NewGame;
   pmi.pBoolVal := nil;
@@ -3356,7 +3424,7 @@ begin
 
   inc(pmi);
   pmi.status := 1;
-  pmi.name := 'M_OPTION';
+  pmi.name := 'Options';
   pmi.cmd := '';
   pmi.routine := @M_Options;
   pmi.pBoolVal := nil;
@@ -3364,7 +3432,7 @@ begin
 
   inc(pmi);
   pmi.status := 1;
-  pmi.name := 'M_LOADG';
+  pmi.name := 'Load Game';
   pmi.cmd := '';
   pmi.routine := @M_LoadGame;
   pmi.pBoolVal := nil;
@@ -3372,7 +3440,7 @@ begin
 
   inc(pmi);
   pmi.status := 1;
-  pmi.name := 'M_SAVEG';
+  pmi.name := 'Save Game';
   pmi.cmd := '';
   pmi.routine := @M_SaveGame;
   pmi.pBoolVal := nil;
@@ -3381,7 +3449,7 @@ begin
   // Another hickup with Special edition.
   inc(pmi);
   pmi.status := 1;
-  pmi.name := 'M_RDTHIS';
+  pmi.name := 'Ordering Info';
   pmi.cmd := '';
   pmi.routine := @M_ReadThis;
   pmi.pBoolVal := nil;
@@ -3389,7 +3457,7 @@ begin
 
   inc(pmi);
   pmi.status := 1;
-  pmi.name := 'M_QUITG';
+  pmi.name := 'Quit';
   pmi.cmd := '';
   pmi.routine := @M_QuitDOOM;
   pmi.pBoolVal := nil;
@@ -3401,8 +3469,8 @@ begin
   MainDef.prevMenu := nil;
   MainDef.menuitems := Pmenuitem_tArray(@MainMenu);
   MainDef.drawproc := @M_DrawMainMenu;  // draw routine
-  MainDef.x := 97;
-  MainDef.y := 64;
+  MainDef.x := DEF_MENU_ITEMS_START_X;
+  MainDef.y := DEF_MENU_ITEMS_START_Y;
   MainDef.lastOn := 0;
   MainDef.itemheight := LINEHEIGHT;
   MainDef.texturebk := false;
@@ -3411,35 +3479,35 @@ begin
 //EpisodeMenu
   pmi := @EpisodeMenu[0];
   pmi.status := 1;
-  pmi.name := 'M_EPI1';
+  pmi.name := 'Course #1';
   pmi.cmd := '';
   pmi.routine := @M_Episode;
   pmi.pBoolVal := nil;
-  pmi.alphaKey := 'k';
+  pmi.alphaKey := '1';
 
   inc(pmi);
   pmi.status := 1;
-  pmi.name := 'M_EPI2';
+  pmi.name := 'Course #2';
   pmi.cmd := '';
   pmi.routine := @M_Episode;
   pmi.pBoolVal := nil;
-  pmi.alphaKey := 't';
+  pmi.alphaKey := '2';
 
   inc(pmi);
   pmi.status := 1;
-  pmi.name := 'M_EPI3';
+  pmi.name := 'Course #3';
   pmi.cmd := '';
   pmi.routine := @M_Episode;
   pmi.pBoolVal := nil;
-  pmi.alphaKey := 'i';
+  pmi.alphaKey := '3';
 
   inc(pmi);
   pmi.status := 1;
-  pmi.name := 'M_EPI4';
+  pmi.name := 'Course #4';
   pmi.cmd := '';
   pmi.routine := @M_Episode;
   pmi.pBoolVal := nil;
-  pmi.alphaKey := 't';
+  pmi.alphaKey := '4';
 
 ////////////////////////////////////////////////////////////////////////////////
 //EpiDef
@@ -3447,8 +3515,8 @@ begin
   EpiDef.prevMenu := @MainDef; // previous menu
   EpiDef.menuitems := Pmenuitem_tArray(@EpisodeMenu);  // menu items
   EpiDef.drawproc := @M_DrawEpisode;  // draw routine
-  EpiDef.x := 48;
-  EpiDef.y := 63; // x,y of menu
+  EpiDef.x := DEF_MENU_ITEMS_START_X;
+  EpiDef.y := DEF_MENU_ITEMS_START_Y;
   EpiDef.lastOn := Ord(ep1); // last item user was on in menu
   EpiDef.itemheight := LINEHEIGHT;
   EpiDef.texturebk := false;
@@ -3457,7 +3525,7 @@ begin
 //NewGameMenu
   pmi := @NewGameMenu[0];
   pmi.status := 1;
-  pmi.name := 'M_JKILL';
+  pmi.name := 'Begginer';
   pmi.cmd := '';
   pmi.routine := @M_ChooseSkill;
   pmi.pBoolVal := nil;
@@ -3465,7 +3533,7 @@ begin
 
   inc(pmi);
   pmi.status := 1;
-  pmi.name := 'M_ROUGH';
+  pmi.name := 'Easy';
   pmi.cmd := '';
   pmi.routine := @M_ChooseSkill;
   pmi.pBoolVal := nil;
@@ -3473,7 +3541,7 @@ begin
 
   inc(pmi);
   pmi.status := 1;
-  pmi.name := 'M_HURT';
+  pmi.name := 'Medium';
   pmi.cmd := '';
   pmi.routine := @M_ChooseSkill;
   pmi.pBoolVal := nil;
@@ -3481,7 +3549,7 @@ begin
 
   inc(pmi);
   pmi.status := 1;
-  pmi.name := 'M_ULTRA';
+  pmi.name := 'Hard';
   pmi.cmd := '';
   pmi.routine := @M_ChooseSkill;
   pmi.pBoolVal := nil;
@@ -3489,7 +3557,7 @@ begin
 
   inc(pmi);
   pmi.status := 1;
-  pmi.name := 'M_NMARE';
+  pmi.name := 'Very hard';
   pmi.cmd := '';
   pmi.routine := @M_ChooseSkill;
   pmi.pBoolVal := nil;
@@ -3501,8 +3569,8 @@ begin
   NewDef.prevMenu := @EpiDef; // previous menu
   NewDef.menuitems := Pmenuitem_tArray(@NewGameMenu);  // menu items
   NewDef.drawproc := @M_DrawNewGame;  // draw routine
-  NewDef.x := 48;
-  NewDef.y := 63; // x,y of menu
+  NewDef.x := DEF_MENU_ITEMS_START_X;
+  NewDef.y := DEF_MENU_ITEMS_START_Y;
   NewDef.lastOn := Ord(newg_hurtme); // last item user was on in menu
   NewDef.itemheight := LINEHEIGHT;
   NewDef.texturebk := false;
@@ -3511,7 +3579,7 @@ begin
 //OptionsMenu
   pmi := @OptionsMenu[0];
   pmi.status := 1;
-  pmi.name := 'MENU_GEN';
+  pmi.name := 'General';
   pmi.cmd := '';
   pmi.routine := @M_OptionsGeneral;
   pmi.pBoolVal := nil;
@@ -3519,7 +3587,7 @@ begin
 
   inc(pmi);
   pmi.status := 1;
-  pmi.name := 'MENU_DIS';
+  pmi.name := 'Display';
   pmi.cmd := '';
   pmi.routine := @M_OptionsDisplay;
   pmi.pBoolVal := nil;
@@ -3527,7 +3595,7 @@ begin
 
   inc(pmi);
   pmi.status := 1;
-  pmi.name := 'MENU_SOU';
+  pmi.name := 'Sound';
   pmi.cmd := '';
   pmi.routine := @M_OptionsSound;
   pmi.pBoolVal := nil;
@@ -3535,7 +3603,7 @@ begin
 
   inc(pmi);
   pmi.status := 1;
-  pmi.name := 'MENU_COM';
+  pmi.name := 'Compatibility';
   pmi.cmd := '';
   pmi.routine := @M_OptionsCompatibility;
   pmi.pBoolVal := nil;
@@ -3543,7 +3611,7 @@ begin
 
   inc(pmi);
   pmi.status := 1;
-  pmi.name := 'MENU_CON';
+  pmi.name := 'Controls';
   pmi.cmd := '';
   pmi.routine := @M_OptionsConrols;
   pmi.pBoolVal := nil;
@@ -3551,7 +3619,7 @@ begin
 
   inc(pmi);
   pmi.status := 1;
-  pmi.name := 'MENU_SYS';
+  pmi.name := 'System';
   pmi.cmd := '';
   pmi.routine := @M_OptionsSystem;
   pmi.pBoolVal := nil;
@@ -3563,8 +3631,8 @@ begin
   OptionsDef.prevMenu := @MainDef; // previous menu
   OptionsDef.menuitems := Pmenuitem_tArray(@OptionsMenu);  // menu items
   OptionsDef.drawproc := @M_DrawOptions;  // draw routine
-  OptionsDef.x := 97;
-  OptionsDef.y := 64; // x,y of menu
+  OptionsDef.x := DEF_MENU_ITEMS_START_X;
+  OptionsDef.y := DEF_MENU_ITEMS_START_Y;
   OptionsDef.lastOn := 0; // last item user was on in menu
   OptionsDef.itemheight := LINEHEIGHT;
   OptionsDef.texturebk := false;
@@ -3573,7 +3641,7 @@ begin
 //OptionsGeneralMenu
   pmi := @OptionsGeneralMenu[0];
   pmi.status := 1;
-  pmi.name := 'M_ENDGAM';
+  pmi.name := 'End Game';
   pmi.cmd := '';
   pmi.routine := @M_EndGame;
   pmi.pBoolVal := nil;
@@ -3581,7 +3649,7 @@ begin
 
   inc(pmi);
   pmi.status := 1;
-  pmi.name := 'M_MESSG';
+  pmi.name := 'Messages';
   pmi.cmd := '';
   pmi.routine := @M_ChangeMessages;
   pmi.pBoolVal := nil;
@@ -3589,7 +3657,7 @@ begin
 
   inc(pmi);
   pmi.status := 2;
-  pmi.name := 'M_MSENS';
+  pmi.name := 'Mouse Sensitivity';
   pmi.cmd := '';
   pmi.routine := @M_ChangeSensitivity;
   pmi.pBoolVal := nil;
@@ -3607,10 +3675,12 @@ begin
 //OptionsGeneralDef
   OptionsGeneralDef.numitems := Ord(optgen_end); // # of menu items
   OptionsGeneralDef.prevMenu := @OptionsDef; // previous menu
+  OptionsGeneralDef.leftMenu := @SystemDef;
+  OptionsGeneralDef.rightMenu := @OptionsDisplayDef;
   OptionsGeneralDef.menuitems := Pmenuitem_tArray(@OptionsGeneralMenu);  // menu items
   OptionsGeneralDef.drawproc := @M_DrawGeneralOptions;  // draw routine
-  OptionsGeneralDef.x := 80;
-  OptionsGeneralDef.y := 48; // x,y of menu
+  OptionsGeneralDef.x := DEF_MENU_ITEMS_START_X;
+  OptionsGeneralDef.y := DEF_MENU_ITEMS_START_Y;
   OptionsGeneralDef.lastOn := 0; // last item user was on in menu
   OptionsGeneralDef.itemheight := LINEHEIGHT;
   OptionsGeneralDef.texturebk := false;
@@ -3619,7 +3689,7 @@ begin
 //OptionsDisplayMenu
   pmi := @OptionsDisplayMenu[0];
   pmi.status := 1;
-  pmi.name := 'MENU_OPE';
+  pmi.name := 'OpenGL';
   pmi.cmd := '';
   pmi.routine := @M_OptionsDisplayOpenGL;
   pmi.pBoolVal := nil;
@@ -3627,7 +3697,7 @@ begin
 
   inc(pmi);
   pmi.status := 1;
-  pmi.name := 'MENU_MAP';
+  pmi.name := 'Automap';
   pmi.cmd := '';
   pmi.routine := @M_OptionsDisplayAutomap;
   pmi.pBoolVal := nil;
@@ -3635,7 +3705,7 @@ begin
 
   inc(pmi);
   pmi.status := 1;
-  pmi.name := 'MENU_APP';
+  pmi.name := 'Appearence';
   pmi.cmd := '';
   pmi.routine := @M_OptionsDisplayAppearance;
   pmi.pBoolVal := nil;
@@ -3643,7 +3713,7 @@ begin
 
   inc(pmi);
   pmi.status := 1;
-  pmi.name := 'MENU_ADV';
+  pmi.name := 'Advanced';
   pmi.cmd := '';
   pmi.routine := @M_OptionsDisplayAdvanced;
   pmi.pBoolVal := nil;
@@ -3651,7 +3721,7 @@ begin
 
   inc(pmi);
   pmi.status := 1;
-  pmi.name := 'MENU_32B';
+  pmi.name := 'True Color Options';
   pmi.cmd := '';
   pmi.routine := @M_OptionsDisplay32bit;
   pmi.pBoolVal := nil;
@@ -3661,10 +3731,12 @@ begin
 //OptionsDisplayDef
   OptionsDisplayDef.numitems := Ord(optdisp_end); // # of menu items
   OptionsDisplayDef.prevMenu := @OptionsDef; // previous menu
+  OptionsDisplayDef.leftMenu := @OptionsGeneralDef; // previous menu
+  OptionsDisplayDef.rightMenu := @SoundDef; // previous menu
   OptionsDisplayDef.menuitems := Pmenuitem_tArray(@OptionsDisplayMenu);  // menu items
   OptionsDisplayDef.drawproc := @M_DrawDisplayOptions;  // draw routine
-  OptionsDisplayDef.x := 50;
-  OptionsDisplayDef.y := 64; // x,y of menu
+  OptionsDisplayDef.x := DEF_MENU_ITEMS_START_X;
+  OptionsDisplayDef.y := DEF_MENU_ITEMS_START_Y;
   OptionsDisplayDef.lastOn := 0; // last item user was on in menu
   OptionsDisplayDef.itemheight := LINEHEIGHT;
   OptionsDisplayDef.texturebk := false;
@@ -3711,8 +3783,8 @@ begin
   OptionsDisplayDetailDef.rightMenu := @OptionsDisplayAutomapDef; // right menu
   OptionsDisplayDetailDef.menuitems := Pmenuitem_tArray(@OptionsDisplayDetailMenu);  // menu items
   OptionsDisplayDetailDef.drawproc := @M_DrawDisplayDetailOptions;  // draw routine
-  OptionsDisplayDetailDef.x := 30;
-  OptionsDisplayDetailDef.y := 40; // x,y of menu
+  OptionsDisplayDetailDef.x := DEF_MENU_ITEMS_START_X;
+  OptionsDisplayDetailDef.y := DEF_MENU_ITEMS_START_Y;
   OptionsDisplayDetailDef.lastOn := 0; // last item user was on in menu
   OptionsDisplayDetailDef.itemheight := LINEHEIGHT2;
   OptionsDisplayDetailDef.texturebk := true;
@@ -3766,8 +3838,8 @@ begin
   OptionsDisplayVideoModeDef.leftMenu := @OptionsDisplayOpenGLDef; // left menu
   OptionsDisplayVideoModeDef.menuitems := Pmenuitem_tArray(@OptionsDisplayVideoModeMenu);  // menu items
   OptionsDisplayVideoModeDef.drawproc := @M_DrawDisplaySetVideoMode;  // draw routine
-  OptionsDisplayVideoModeDef.x := 30;
-  OptionsDisplayVideoModeDef.y := 40; // x,y of menu
+  OptionsDisplayVideoModeDef.x := DEF_MENU_ITEMS_START_X;
+  OptionsDisplayVideoModeDef.y := DEF_MENU_ITEMS_START_Y;
   OptionsDisplayVideoModeDef.lastOn := 0; // last item user was on in menu
   OptionsDisplayVideoModeDef.itemheight := LINEHEIGHT2;
   OptionsDisplayVideoModeDef.texturebk := true;
@@ -3814,8 +3886,8 @@ begin
   OptionsDisplayAutomapDef.rightMenu := @OptionsDisplayAppearanceDef; // right menu
   OptionsDisplayAutomapDef.menuitems := Pmenuitem_tArray(@OptionsDisplayAutomapMenu);  // menu items
   OptionsDisplayAutomapDef.drawproc := @M_DrawDisplayAutomapOptions;  // draw routine
-  OptionsDisplayAutomapDef.x := 30;
-  OptionsDisplayAutomapDef.y := 40; // x,y of menu
+  OptionsDisplayAutomapDef.x := DEF_MENU_ITEMS_START_X;
+  OptionsDisplayAutomapDef.y := DEF_MENU_ITEMS_START_Y;
   OptionsDisplayAutomapDef.lastOn := 0; // last item user was on in menu
   OptionsDisplayAutomapDef.itemheight := LINEHEIGHT2;
   OptionsDisplayAutomapDef.texturebk := true;
@@ -3870,8 +3942,8 @@ begin
   OptionsDisplayAppearanceDef.rightMenu := @OptionsDisplayAdvancedDef; // rightmenu
   OptionsDisplayAppearanceDef.menuitems := Pmenuitem_tArray(@OptionsDisplayAppearanceMenu);  // menu items
   OptionsDisplayAppearanceDef.drawproc := @M_DrawDisplayAppearanceOptions;  // draw routine
-  OptionsDisplayAppearanceDef.x := 30;
-  OptionsDisplayAppearanceDef.y := 40; // x,y of menu
+  OptionsDisplayAppearanceDef.x := DEF_MENU_ITEMS_START_X;
+  OptionsDisplayAppearanceDef.y := DEF_MENU_ITEMS_START_Y;
   OptionsDisplayAppearanceDef.lastOn := 0; // last item user was on in menu
   OptionsDisplayAppearanceDef.itemheight := LINEHEIGHT2;
   OptionsDisplayAppearanceDef.texturebk := true;
@@ -3942,8 +4014,8 @@ begin
   OptionsDisplayAdvancedDef.rightMenu := @OptionsDisplay32bitDef; // right menu
   OptionsDisplayAdvancedDef.menuitems := Pmenuitem_tArray(@OptionsDisplayAdvancedMenu);  // menu items
   OptionsDisplayAdvancedDef.drawproc := @M_DrawOptionsDisplayAdvanced;  // draw routine
-  OptionsDisplayAdvancedDef.x := 30;
-  OptionsDisplayAdvancedDef.y := 40; // x,y of menu
+  OptionsDisplayAdvancedDef.x := DEF_MENU_ITEMS_START_X;
+  OptionsDisplayAdvancedDef.y := DEF_MENU_ITEMS_START_Y;
   OptionsDisplayAdvancedDef.lastOn := 0; // last item user was on in menu
   OptionsDisplayAdvancedDef.itemheight := LINEHEIGHT2;
   OptionsDisplayAdvancedDef.texturebk := true;
@@ -3986,10 +4058,11 @@ begin
 //OptionsDisplayAspectRatioDef
   OptionsDisplayAspectRatioDef.numitems := Ord(optdispaspect_end); // # of menu items
   OptionsDisplayAspectRatioDef.prevMenu := @OptionsDisplayAdvancedDef; // previous menu
+  OptionsDisplayAspectRatioDef.leftMenu := @OptionsDisplayAdvancedDef; // left menu
   OptionsDisplayAspectRatioDef.menuitems := Pmenuitem_tArray(@OptionsDisplayAspectRatioMenu);  // menu items
   OptionsDisplayAspectRatioDef.drawproc := @M_DrawOptionsDisplayAspectRatio;  // draw routine
-  OptionsDisplayAspectRatioDef.x := 32;
-  OptionsDisplayAspectRatioDef.y := 68; // x,y of menu
+  OptionsDisplayAspectRatioDef.x := DEF_MENU_ITEMS_START_X;
+  OptionsDisplayAspectRatioDef.y := DEF_MENU_ITEMS_START_Y;
   OptionsDisplayAspectRatioDef.lastOn := 0; // last item user was on in menu
   OptionsDisplayAspectRatioDef.itemheight := LINEHEIGHT2;
   OptionsDisplayAspectRatioDef.texturebk := true;
@@ -4065,10 +4138,11 @@ begin
 //OptionsDisplayCameraDef
   OptionsDisplayCameraDef.numitems := Ord(optdispcamera_end); // # of menu items
   OptionsDisplayCameraDef.prevMenu := @OptionsDisplayAdvancedDef; // previous menu
+  OptionsDisplayCameraDef.leftMenu := @OptionsDisplayAdvancedDef; // left menu
   OptionsDisplayCameraDef.menuitems := Pmenuitem_tArray(@OptionsDisplayCameraMenu);  // menu items
   OptionsDisplayCameraDef.drawproc := @M_DrawOptionsDisplayCamera;  // draw routine
-  OptionsDisplayCameraDef.x := 32;
-  OptionsDisplayCameraDef.y := 68; // x,y of menu
+  OptionsDisplayCameraDef.x := DEF_MENU_ITEMS_START_X;
+  OptionsDisplayCameraDef.y := DEF_MENU_ITEMS_START_Y;
   OptionsDisplayCameraDef.lastOn := 0; // last item user was on in menu
   OptionsDisplayCameraDef.itemheight := LINEHEIGHT2;
   OptionsDisplayCameraDef.texturebk := true;
@@ -4139,8 +4213,8 @@ begin
   OptionsDisplay32bitDef.rightMenu := @OptionsDisplayOpenGLDef; // right menu
   OptionsDisplay32bitDef.menuitems := Pmenuitem_tArray(@OptionsDisplay32bitMenu);  // menu items
   OptionsDisplay32bitDef.drawproc := @M_DrawOptionsDisplay32bit;  // draw routine
-  OptionsDisplay32bitDef.x := 30;
-  OptionsDisplay32bitDef.y := 40; // x,y of menu
+  OptionsDisplay32bitDef.x := DEF_MENU_ITEMS_START_X;
+  OptionsDisplay32bitDef.y := DEF_MENU_ITEMS_START_Y;
   OptionsDisplay32bitDef.lastOn := 0; // last item user was on in menu
   OptionsDisplay32bitDef.itemheight := LINEHEIGHT2;
   OptionsDisplay32bitDef.texturebk := true;
@@ -4261,8 +4335,8 @@ begin
   OptionsDisplayOpenGLDef.rightMenu := @OptionsDisplayAutomapDef; // right menu
   OptionsDisplayOpenGLDef.menuitems := Pmenuitem_tArray(@OptionsDisplayOpenGLMenu);  // menu items
   OptionsDisplayOpenGLDef.drawproc := @M_DrawOptionsDisplayOpenGL;  // draw routine
-  OptionsDisplayOpenGLDef.x := 30;
-  OptionsDisplayOpenGLDef.y := 40; // x,y of menu
+  OptionsDisplayOpenGLDef.x := DEF_MENU_ITEMS_START_X;
+  OptionsDisplayOpenGLDef.y := DEF_MENU_ITEMS_START_Y;
   OptionsDisplayOpenGLDef.lastOn := 0; // last item user was on in menu
   OptionsDisplayOpenGLDef.itemheight := LINEHEIGHT2;
   OptionsDisplayOpenGLDef.texturebk := true;
@@ -4292,8 +4366,8 @@ begin
   OptionsDisplayOpenGLModelsDef.leftMenu := @OptionsDisplayOpenGLDef; // left menu
   OptionsDisplayOpenGLModelsDef.menuitems := Pmenuitem_tArray(@OptionsDisplayOpenGLModelsMenu);  // menu items
   OptionsDisplayOpenGLModelsDef.drawproc := @M_DrawOptionsDisplayOpenGLModels;  // draw routine
-  OptionsDisplayOpenGLModelsDef.x := 30;
-  OptionsDisplayOpenGLModelsDef.y := 40; // x,y of menu
+  OptionsDisplayOpenGLModelsDef.x := DEF_MENU_ITEMS_START_X;
+  OptionsDisplayOpenGLModelsDef.y := DEF_MENU_ITEMS_START_Y;
   OptionsDisplayOpenGLModelsDef.lastOn := 0; // last item user was on in menu
   OptionsDisplayOpenGLModelsDef.itemheight := LINEHEIGHT2;
   OptionsDisplayOpenGLModelsDef.texturebk := true;
@@ -4333,8 +4407,8 @@ begin
   OptionsDisplayOpenGLVoxelsDef.leftMenu := @OptionsDisplayOpenGLDef; // left menu
   OptionsDisplayOpenGLVoxelsDef.menuitems := Pmenuitem_tArray(@OptionsDisplayOpenGLVoxelsMenu);  // menu items
   OptionsDisplayOpenGLVoxelsDef.drawproc := @M_DrawOptionsDisplayOpenGLVoxels;  // draw routine
-  OptionsDisplayOpenGLVoxelsDef.x := 30;
-  OptionsDisplayOpenGLVoxelsDef.y := 40; // x,y of menu
+  OptionsDisplayOpenGLVoxelsDef.x := DEF_MENU_ITEMS_START_X;
+  OptionsDisplayOpenGLVoxelsDef.y := DEF_MENU_ITEMS_START_Y;
   OptionsDisplayOpenGLVoxelsDef.lastOn := 0; // last item user was on in menu
   OptionsDisplayOpenGLVoxelsDef.itemheight := LINEHEIGHT2;
   OptionsDisplayOpenGLVoxelsDef.texturebk := true;
@@ -4372,8 +4446,8 @@ begin
   OptionsDisplayOpenGLFilterDef.leftMenu := @OptionsDisplayOpenGLDef; // left menu
   OptionsDisplayOpenGLFilterDef.menuitems := Pmenuitem_tArray(@OptionsDisplayOpenGLFilterMenu);  // menu items
   OptionsDisplayOpenGLFilterDef.drawproc := @M_DrawOptionsDisplayOpenGLFilter;  // draw routine
-  OptionsDisplayOpenGLFilterDef.x := 30;
-  OptionsDisplayOpenGLFilterDef.y := 40; // x,y of menu
+  OptionsDisplayOpenGLFilterDef.x := DEF_MENU_ITEMS_START_X;
+  OptionsDisplayOpenGLFilterDef.y := DEF_MENU_ITEMS_START_Y;
   OptionsDisplayOpenGLFilterDef.lastOn := 0; // last item user was on in menu
   OptionsDisplayOpenGLFilterDef.itemheight := LINEHEIGHT2;
   OptionsDisplayOpenGLFilterDef.texturebk := true;
@@ -4491,12 +4565,12 @@ begin
 //SoundDef
   SoundDef.numitems := Ord(sound_end); // # of menu items
   SoundDef.prevMenu := @OptionsDef; // previous menu
-  SoundDef.leftMenu := @SystemDef; // left menu
+  SoundDef.leftMenu := @OptionsDisplayDef; // left menu
   SoundDef.rightMenu := @CompatibilityDef; // left menu
   SoundDef.menuitems := Pmenuitem_tArray(@SoundMenu);  // menu items
   SoundDef.drawproc := @M_DrawSound;  // draw routine
-  SoundDef.x := 32;
-  SoundDef.y := 68; // x,y of menu
+  SoundDef.x := DEF_MENU_ITEMS_START_X;
+  SoundDef.y := DEF_MENU_ITEMS_START_Y;
   SoundDef.lastOn := 0; // last item user was on in menu
   SoundDef.itemheight := LINEHEIGHT2;
   SoundDef.texturebk := true;
@@ -4505,7 +4579,7 @@ begin
 //SoundVolMenu
   pmi := @SoundVolMenu[0];
   pmi.status := 2;
-  pmi.name := 'M_SFXVOL';
+  pmi.name := '!Sound FX Volume';
   pmi.cmd := '';
   pmi.routine := @M_SfxVol;
   pmi.pBoolVal := nil;
@@ -4520,8 +4594,16 @@ begin
   pmi.alphaKey := #0;
 
   inc(pmi);
+  pmi.status := -1;
+  pmi.name := '';
+  pmi.cmd := '';
+  pmi.routine := nil;
+  pmi.pBoolVal := nil;
+  pmi.alphaKey := #0;
+
+  inc(pmi);
   pmi.status := 2;
-  pmi.name := 'M_MUSVOL';
+  pmi.name := '!Music Volume';
   pmi.cmd := '';
   pmi.routine := @M_MusicVol;
   pmi.pBoolVal := nil;
@@ -4535,16 +4617,25 @@ begin
   pmi.pBoolVal := nil;
   pmi.alphaKey := #0;
 
+  inc(pmi);
+  pmi.status := -1;
+  pmi.name := '';
+  pmi.cmd := '';
+  pmi.routine := nil;
+  pmi.pBoolVal := nil;
+  pmi.alphaKey := #0;
+
 ////////////////////////////////////////////////////////////////////////////////
 //SoundVolDef
   SoundVolDef.numitems := Ord(soundvol_end); // # of menu items
   SoundVolDef.prevMenu := @SoundDef; // previous menu
+  SoundVolDef.leftMenu := @SoundDef; // previous menu
   SoundVolDef.menuitems := Pmenuitem_tArray(@SoundVolMenu);  // menu items
   SoundVolDef.drawproc := @M_DrawSoundVol;  // draw routine
-  SoundVolDef.x := 80;
-  SoundVolDef.y := 64; // x,y of menu
+  SoundVolDef.x := DEF_MENU_ITEMS_START_X;
+  SoundVolDef.y := DEF_MENU_ITEMS_START_Y;
   SoundVolDef.lastOn := 0; // last item user was on in menu
-  SoundVolDef.itemheight := LINEHEIGHT;
+  SoundVolDef.itemheight := LINEHEIGHT2;
   SoundVolDef.texturebk := false;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -4622,8 +4713,8 @@ begin
   CompatibilityDef.rightMenu := @ControlsDef; // right menu
   CompatibilityDef.menuitems := Pmenuitem_tArray(@CompatibilityMenu);  // menu items
   CompatibilityDef.drawproc := @M_DrawCompatibility;  // draw routine
-  CompatibilityDef.x := 32;
-  CompatibilityDef.y := 68; // x,y of menu
+  CompatibilityDef.x := DEF_MENU_ITEMS_START_X;
+  CompatibilityDef.y := DEF_MENU_ITEMS_START_Y;
   CompatibilityDef.lastOn := 0; // last item user was on in menu
   CompatibilityDef.itemheight := LINEHEIGHT2;
   CompatibilityDef.texturebk := true;
@@ -4702,8 +4793,8 @@ begin
   ControlsDef.rightMenu := @SystemDef; // left menu
   ControlsDef.menuitems := Pmenuitem_tArray(@ControlsMenu);  // menu items
   ControlsDef.drawproc := @M_DrawControls;  // draw routine
-  ControlsDef.x := 32;
-  ControlsDef.y := 68; // x,y of menu
+  ControlsDef.x := DEF_MENU_ITEMS_START_X;
+  ControlsDef.y := DEF_MENU_ITEMS_START_Y;
   ControlsDef.lastOn := 0; // last item user was on in menu
   ControlsDef.itemheight := LINEHEIGHT2;
   ControlsDef.texturebk := true;
@@ -4788,8 +4879,8 @@ begin
   SensitivityDef.prevMenu := @ControlsDef; // previous menu
   SensitivityDef.menuitems := Pmenuitem_tArray(@SensitivityMenu);  // menu items
   SensitivityDef.drawproc := @M_DrawSensitivity;  // draw routine
-  SensitivityDef.x := 32;
-  SensitivityDef.y := 68; // x,y of menu
+  SensitivityDef.x := DEF_MENU_ITEMS_START_X;
+  SensitivityDef.y := DEF_MENU_ITEMS_START_Y;
   SensitivityDef.lastOn := 0; // last item user was on in menu
   SensitivityDef.itemheight := LINEHEIGHT2;
   SensitivityDef.texturebk := true;
@@ -4841,11 +4932,11 @@ begin
   SystemDef.numitems := Ord(sys_end); // # of menu items
   SystemDef.prevMenu := @OptionsDef; // previous menu
   SystemDef.leftMenu := @ControlsDef; // left menu
-  SystemDef.rightMenu := @SoundDef; // right menu
+  SystemDef.rightMenu := @OptionsGeneralDef;  // right menu
   SystemDef.menuitems := Pmenuitem_tArray(@SystemMenu);  // menu items
   SystemDef.drawproc := @M_DrawSystem;  // draw routine
-  SystemDef.x := 32;
-  SystemDef.y := 68; // x,y of menu
+  SystemDef.x := DEF_MENU_ITEMS_START_X;
+  SystemDef.y := DEF_MENU_ITEMS_START_Y;
   SystemDef.lastOn := 0; // last item user was on in menu
   SystemDef.itemheight := LINEHEIGHT2;
   SystemDef.texturebk := true;
@@ -4872,8 +4963,8 @@ begin
   KeyBindingsDef1.rightMenu := @KeyBindingsDef2; // right menu
   KeyBindingsDef1.menuitems := Pmenuitem_tArray(@KeyBindingsMenu1);  // menu items
   KeyBindingsDef1.drawproc := @M_DrawBindings1;  // draw routine
-  KeyBindingsDef1.x := 32;
-  KeyBindingsDef1.y := 34; // x,y of menu
+  KeyBindingsDef1.x := DEF_MENU_ITEMS_START_X;
+  KeyBindingsDef1.y := DEF_MENU_ITEMS_START_Y;
   KeyBindingsDef1.lastOn := 0; // last item user was on in menu
   KeyBindingsDef1.itemheight := LINEHEIGHT2;
   KeyBindingsDef1.texturebk := true;
@@ -4900,8 +4991,8 @@ begin
   KeyBindingsDef2.rightMenu := @KeyBindingsDef1; // right menu
   KeyBindingsDef2.menuitems := Pmenuitem_tArray(@KeyBindingsMenu2);  // menu items
   KeyBindingsDef2.drawproc := @M_DrawBindings2;  // draw routine
-  KeyBindingsDef2.x := 32;
-  KeyBindingsDef2.y := 34; // x,y of menu
+  KeyBindingsDef2.x := DEF_MENU_ITEMS_START_X;
+  KeyBindingsDef2.y := DEF_MENU_ITEMS_START_Y;
   KeyBindingsDef2.lastOn := 0; // last item user was on in menu
   KeyBindingsDef2.itemheight := LINEHEIGHT2;
   KeyBindingsDef2.texturebk := true;
