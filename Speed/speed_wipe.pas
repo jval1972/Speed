@@ -30,7 +30,7 @@
 
 {$I speed.inc}
 
-unit f_wipe;
+unit speed_wipe;
 
 interface
 

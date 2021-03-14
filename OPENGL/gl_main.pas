@@ -99,11 +99,7 @@ uses
   {$IFNDEF HEXEN}
   e_endoom,
   {$ENDIF}
-  {$IFDEF STRIFE}
-  f_fade,
-  {$ELSE}
-  f_wipe,
-  {$ENDIF}
+  speed_wipe,
   r_main,
   mt_utils,
   i_displaymodes,

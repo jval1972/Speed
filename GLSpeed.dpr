@@ -324,7 +324,7 @@ uses
   w_folders in 'Base\w_folders.pas',
   r_subsectors in 'Base\r_subsectors.pas',
   e_endoom in 'Base\e_endoom.pas',
-  f_wipe in 'Base\f_wipe.pas',
+  speed_wipe in 'Speed\speed_wipe.pas',
   r_renderstyle in 'Base\r_renderstyle.pas',
   vx_voxelsprite in 'Base\vx_voxelsprite.pas',
   w_wadwriter in 'Base\w_wadwriter.pas',
