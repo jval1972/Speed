@@ -950,7 +950,7 @@ begin
           c := toupper(ConsoleText[line].line[i]);
           if (c >= HU_FONTSTART) and (c <= {$IFDEF DOOM_OR_STRIFE}HU_FONTEND{$ELSE}HU_CFONTEND{$ENDIF}) then
           begin
-            patch := {$IFDEF DOOM_OR_STRIFE}hu_font{$ELSE}hu_font3{$ENDIF}[Ord(c) - Ord(HU_FONTSTART)];
+            patch := hu_fontY[Ord(c) - Ord(HU_FONTSTART)];
             if c in FIXED_PITCH_CHARS then
             begin
               V_DrawPatch(x + C_FONTWIDTH - patch.width, y, SCN_CON, patch, false);
@@ -985,9 +985,9 @@ begin
     for i := 1 to Length(ConsoleInputBuff) do
     begin
       c := toupper(ConsoleInputBuff[i]);
-      if (c >= HU_FONTSTART) and (c <= {$IFDEF DOOM_OR_STRIFE}HU_FONTEND{$ELSE}HU_CFONTEND{$ENDIF}) and (x < xmax) then
+      if (c >= HU_FONTSTART) and (c <= HU_FONTEND) and (x < xmax) then
       begin
-        patch := {$IFDEF DOOM_OR_STRIFE}hu_font{$ELSE}hu_font3{$ENDIF}[Ord(c) - Ord(HU_FONTSTART)];
+        patch := hu_fontY[Ord(c) - Ord(HU_FONTSTART)];
         if c in FIXED_PITCH_CHARS then
         begin
           V_DrawPatch(x + C_FONTWIDTH - patch.width, y, SCN_CON, patch, false);
@@ -1005,7 +1005,7 @@ begin
 
     if cursonon and (x < xmax) then
     begin
-      patch := {$IFDEF DOOM_OR_STRIFE}hu_font{$ELSE}hu_font3{$ENDIF}[Ord('_') - Ord(HU_FONTSTART)];
+      patch := hu_fontY[Ord('_') - Ord(HU_FONTSTART)];
       V_DrawPatch(x, y, SCN_CON, patch, false);
     end;
     cursor_x := x;
@@ -1019,7 +1019,7 @@ begin
   begin
     if cursonon and (cursor_x < xmax) then
     begin
-      patch := {$IFDEF DOOM_OR_STRIFE}hu_font{$ELSE}hu_font3{$ENDIF}[Ord('_') - Ord(HU_FONTSTART)];
+      patch := hu_fontY[Ord('_') - Ord(HU_FONTSTART)];
       V_DrawPatch(cursor_x, cursor_y, SCN_CON, patch, false);
     end;
     cursor_needs_update := false;

@@ -1283,6 +1283,7 @@ begin
     r1 := (SMALL_FONT_COLORS[cidx] shr 16) and $FF;
     g1 := (SMALL_FONT_COLORS[cidx] shr 8) and $FF;
     b1 := SMALL_FONT_COLORS[cidx] and $FF;
+    wadwriter.AddSeparator('FN_START');
     for ch := 33 to 127 do
     begin
       x := (Ord(ch - 31) - 1) mod 16;
@@ -1312,6 +1313,7 @@ begin
       wadwriter.AddData('SFNT' + Chr(Ord('A') + cidx) + IntToStrzFill(3, Ord(ch)), p, size);
       memfree(p, size);
     end;
+    wadwriter.AddSeparator('FN_END');
   end;
   MemFree(pointer(imgout), 8 * 8);
 
@@ -1362,6 +1364,7 @@ begin
       end;
     end;
 
+    wadwriter.AddSeparator('FN_START');
     for ch := 33 to 127 do
     begin
       fidx := ch - 32;
@@ -1398,6 +1401,7 @@ begin
       wadwriter.AddData('BFNT' + Chr(Ord('A') + cidx) + IntToStrzFill(3, Ord(ch)), p, size);
       memfree(p, size);
     end;
+    wadwriter.AddSeparator('FN_END');
   end;
 
   memfree(pointer(imginp), imgsize);

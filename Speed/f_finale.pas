@@ -286,10 +286,10 @@ begin
       continue;
     end;
 
-    w := hu_font[c1].width;
+    w := hu_fontY[c1].width;
     if cx + w > 320 then
       break;
-    V_DrawPatch(cx, cy, SCN_TMP, hu_font[c1], false);
+    V_DrawPatch(cx, cy, SCN_TMP, hu_fontY[c1], false);
     cx := cx + w;
     dec(count);
   end;
@@ -491,7 +491,7 @@ begin
       width := width + 4
     else
     begin
-      w := hu_font[c1].width;
+      w := hu_fontY[c1].width;
       width := width + w;
     end;
   end;
@@ -508,8 +508,8 @@ begin
       cx := cx + 4
     else
     begin
-      w := hu_font[c1].width;
-      V_DrawPatch(cx, 180, SCN_TMP, hu_font[c1], false);
+      w := hu_fontY[c1].width;
+      V_DrawPatch(cx, 180, SCN_TMP, hu_fontY[c1], false);
       cx := cx + w;
     end;
   end;

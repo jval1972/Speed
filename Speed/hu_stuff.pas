@@ -77,7 +77,7 @@ function HU_dequeueChatChar: char;
 procedure HU_Erase;
 
 var
-  hu_font: array[0..HU_FONTSIZE - 1] of Ppatch_t;
+  hu_fontY: array[0..HU_FONTSIZE - 1] of Ppatch_t;
 
   chat_on: boolean;
 
@@ -234,12 +234,12 @@ const
 
 function HU_TITLEY: integer;
 begin
-  result := V_GetScreenHeight(SCN_FG) * 167 div 200 - hu_font[0].height;
+  result := V_GetScreenHeight(SCN_FG) * 167 div 200 - hu_fontY[0].height;
 end;
 
 function HU_LEVELTIMEY: integer;
 begin
-  result := V_GetScreenHeight(SCN_FG) * 167 div 200 - 2 * hu_font[0].height;
+  result := V_GetScreenHeight(SCN_FG) * 167 div 200 - 2 * hu_fontY[0].height;
 end;
 
 const
@@ -252,7 +252,7 @@ end;
 
 function HU_INPUTY: integer;
 begin
-  result := HU_MSGY + HU_MSGHEIGHT * (hu_font[0].height + 1)
+  result := HU_MSGY + HU_MSGHEIGHT * (hu_fontY[0].height + 1)
 end;
 
 const
@@ -388,7 +388,7 @@ begin
     buffer := 'SFNTA' + IntToStrZfill(3, j);
 
     inc(j);
-    hu_font[i] := Ppatch_t(W_CacheLumpName(buffer, PU_STATIC));
+    hu_fontY[i] := Ppatch_t(W_CacheLumpName(buffer, PU_STATIC));
   end;
 
   for i := 0 to FPSSIZE - 1 do
@@ -423,18 +423,18 @@ begin
   // create the message widget
   HUlib_initSText(@w_message,
     HU_MSGX, HU_MSGY, HU_MSGHEIGHT,
-    @hu_font,
+    @hu_fontY,
     Ord(HU_FONTSTART), @message_on);
 
   // create the map title widget
   HUlib_initTextLine(@w_title,
     HU_TITLEX, HU_TITLEY,
-    @hu_font,
+    @hu_fontY,
     Ord(HU_FONTSTART));
 
   HUlib_initTextLine(@w_leveltime,
     HU_LEVELTIMEX, HU_LEVELTIMEY,
-    @hu_font,
+    @hu_fontY,
     Ord(HU_FONTSTART));
 
   case gamemode of
@@ -451,7 +451,7 @@ begin
   // create the chat widget
   HUlib_initIText(@w_chat,
     HU_INPUTX, HU_INPUTY,
-    @hu_font,
+    @hu_fontY,
     Ord(HU_FONTSTART), @chat_on);
 
   // create the inputbuffer widgets
@@ -486,7 +486,7 @@ begin
     if m_fps[i] <> ' ' then
     begin
       c := Ord(toupper(m_fps[i])) - Ord(HU_FONTSTART);
-      V_DrawPatch(x, y, SCN_FG, hu_font[c], false);
+      V_DrawPatch(x, y, SCN_FG, hu_fontY[c], false);
       x := x - 8;
     end
     else
