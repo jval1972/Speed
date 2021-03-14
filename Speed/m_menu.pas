@@ -558,7 +558,6 @@ type
     od_usefake3d,
 {$ENDIF}
     od_fixstallhack,
-    od_hidedoublicatedbarrels,
     od_autoadjustmissingtextures,
 {$IFNDEF OPENGL}
     od_optimizedcolumnrendering,
@@ -4059,14 +4058,6 @@ begin
   pmi.routine := @M_BoolCmd;
   pmi.pBoolVal := @fixstallhack;
   pmi.alphaKey := 's';
-
-  inc(pmi);
-  pmi.status := 1;
-  pmi.name := '!Hide duplicated barrels';
-  pmi.cmd := 'hidedoublicatedbarrels';
-  pmi.routine := @M_BoolCmd;
-  pmi.pBoolVal := @hidedoublicatedbarrels;
-  pmi.alphaKey := 'b';
 
   inc(pmi);
   pmi.status := 1;
