@@ -1094,7 +1094,7 @@ end;
 //
 procedure M_DrawSaveLoadBorder(x, y: integer);
 begin
-  M_Frame3d(x - 3, y - 3, 320 - x - 20, y + 12, 121, 123, 118);
+  M_Frame3d(x, y - 3, 320 - x, y + 11, 121, 123, 118);
 end;
 
 //
@@ -1109,7 +1109,9 @@ begin
   for i := 0 to Ord(load_end) - 1 do
   begin
     M_DrawSaveLoadBorder(LoadDef.x, LoadDef.y + LoadDef.itemheight * i);
-    M_WriteText(LoadDef.x, LoadDef.y + LoadDef.itemheight * i, savegamestrings[i], ma_left, @hu_fontY, @hu_fontB);
+    M_WriteText(LoadDef.x + 4, LoadDef.y + LoadDef.itemheight * i, savegamestrings[i], ma_left, @hu_fontY, @hu_fontB);
+    if i = itemOn then
+      M_WriteText(LoadDef.x + ARROWXOFF, LoadDef.y + i * LoadDef.itemheight, '-', ma_left, @hu_fontW, @hu_fontB);
   end;
 end;
 
@@ -1151,15 +1153,17 @@ begin
 
   for i := 0 to Ord(load_end) - 1 do
   begin
-    M_DrawSaveLoadBorder(LoadDef.x, LoadDef.y + LoadDef.itemheight * i);
-    M_WriteText(LoadDef.x, LoadDef.y + LoadDef.itemheight * i, savegamestrings[i], ma_left, @hu_fontY, @hu_fontB);
+    M_DrawSaveLoadBorder(SaveDef.x, SaveDef.y + SaveDef.itemheight * i);
+    M_WriteText(SaveDef.x + 4, SaveDef.y + SaveDef.itemheight * i, savegamestrings[i], ma_left, @hu_fontY, @hu_fontB);
+    if i = itemOn then
+      M_WriteText(SaveDef.x + ARROWXOFF, SaveDef.y + i * SaveDef.itemheight, '-', ma_left, @hu_fontW, @hu_fontB);
   end;
 
   if saveStringEnter <> 0 then
   begin
     i := M_StringWidth(savegamestrings[saveSlot], @hu_fontY);
     if (gametic div 18) mod 2 = 0 then
-      M_WriteText(LoadDef.x + i, LoadDef.y + LoadDef.itemheight * saveSlot, '_', ma_left, @hu_fontY, @hu_fontB);
+      M_WriteText(SaveDef.x + i + 4, SaveDef.y + SaveDef.itemheight * saveSlot, '_', ma_left, @hu_fontY, @hu_fontB);
   end;
 end;
 
@@ -5017,8 +5021,8 @@ begin
   LoadDef.prevMenu := @MainDef; // previous menu
   LoadDef.menuitems := Pmenuitem_tArray(@LoadMenu);  // menu items
   LoadDef.drawproc := @M_DrawLoad;  // draw routine
-  LoadDef.x := 80;
-  LoadDef.y := 34; // x,y of menu
+  LoadDef.x := 40;
+  LoadDef.y := 40;
   LoadDef.lastOn := 0; // last item user was on in menu
   LoadDef.itemheight := LINEHEIGHT;
   LoadDef.texturebk := false;
@@ -5043,8 +5047,8 @@ begin
   SaveDef.prevMenu := @MainDef; // previous menu
   SaveDef.menuitems := Pmenuitem_tArray(@SaveMenu);  // menu items
   SaveDef.drawproc := M_DrawSave;  // draw routine
-  SaveDef.x := 80;
-  SaveDef.y := 34; // x,y of menu
+  SaveDef.x := 40;
+  SaveDef.y := 40;
   SaveDef.lastOn := 0; // last item user was on in menu
   SaveDef.itemheight := LINEHEIGHT;
   SaveDef.texturebk := false;
