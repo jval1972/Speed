@@ -65,7 +65,8 @@ type
     ML_SECTORS,   // Sectors, from editing
     ML_REJECT,    // LUT, sector-sector visibility
     ML_BLOCKMAP,  // LUT, motion clipping, walls/grid element
-    ML_PATH       // JVAL: Speed haste path
+    ML_PATH,      // JVAL: Speed haste path
+    ML_MAPDATA    // JVAL: Speed haste extra data
   );
 
   mapvertex_t = record

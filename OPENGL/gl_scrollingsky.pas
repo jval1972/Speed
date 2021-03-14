@@ -40,6 +40,7 @@ uses
   dglOpenGL,
   gl_defs,
   gl_tex,
+  speed_race,
   w_wad;
 
 const
@@ -64,10 +65,15 @@ var
 begin
   glColor4f(1.0, 1.0, 1.0, 1.0);
 
-  i := (map - 1) mod NUMSKIES;
+  stmp := race.skytex;
+  if stmp = '' then
+  begin
+    i := (map - 1) mod NUMSKIES;
+    sprintf(stmp, sNUBES, [i]);
+  end;
 
-  sprintf(stmp, sNUBES, [i]);
   lump := W_CheckNumForName(stmp);
+
   if lump >= 0 then
   begin
     texnubes := gld_RegisterPatch(lump, Ord(CR_DEFAULT), True);
@@ -98,8 +104,15 @@ begin
     glPopMatrix;
   end;
 
-  sprintf(stmp, sMOUNT, [i]);
+  stmp := race.mountaintex;
+  if stmp = '' then
+  begin
+    i := (map - 1) mod NUMSKIES;
+    sprintf(stmp, sMOUNT, [i]);
+  end;
+
   lump := W_CheckNumForName(stmp);
+
   if lump >= 0 then
   begin
     glEnable(GL_BLEND);

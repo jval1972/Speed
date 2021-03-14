@@ -1874,15 +1874,15 @@ begin
     printf('SH_LoadPath()'#13#10);
   SH_LoadPath(lumpnum + Ord(ML_THINGS), lumpnum + Ord(ML_PATH));
 
+  // JVAL: 20210312 - Init race
+  if devparm then
+    printf('SH_InitRace()'#13#10);
+  SH_InitRace(lumpnum + Ord(ML_MAPDATA));
+
   // JVAL: 20210310 - Init cars
   if devparm then
     printf('SH_InitLevelCars()'#13#10);
   SH_InitLevelCars;
-
-  // JVAL: 20210312 - Init race
-  if devparm then
-    printf('SH_InitRace()'#13#10);
-  SH_InitRace;
 
   {$IFNDEF OPENGL}
   if devparm then

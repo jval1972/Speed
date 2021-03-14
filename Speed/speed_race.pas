@@ -42,7 +42,7 @@ type
 
   groundtype_t = (gt_asphalt, gt_grass, gt_dirt, gt_sand, gt_unknown);
 
-  racestatus_t = (rs_waiting, rs_racing);
+  racestatus_t = (rs_waiting, rs_racing, rs_playerfinished);
 
   race_t = record
     cartype: cartype_t;
@@ -50,6 +50,10 @@ type
     completed: boolean;
     ground: Pground_t;
     groundlump: integer;
+    mapsprite: string[8];
+    skytex: string[8];
+    mountaintex: string[8];
+    groundtex: string[8];
   end;
 
   slipperinessinfo_t = record
@@ -62,7 +66,7 @@ const
 
 const
   slipperinessinfo: array[groundtype_t] of slipperinessinfo_t = (
-    (smin: 224; smax: 255), // Asphalt
+    (smin: 224; smax: 255), // asphalt
     (smin: 150; smax: 220), // grass
     (smin: 100; smax: 180), // dirt
     (smin:  80; smax: 150), // sand
@@ -72,7 +76,7 @@ const
 var
   race: race_t;
 
-procedure SH_InitRace;
+procedure SH_InitRace(const lump: integer);
 
 function SH_GroundTypeAtXY(const x, y: fixed_t): groundtype_t;
 
@@ -90,10 +94,37 @@ uses
   w_wad,
   z_zone;
 
-procedure SH_InitRace;
+procedure SH_InitRace(const lump: integer);
+var
+  sl: TDStringList;
+  idx: integer;
 begin
   race.groundlump := R_GetLumpForFlat(sectors[0].floorpic);
   race.ground := W_CacheLumpNum(race.groundlump, PU_LEVEL);
+
+  race.mapsprite := '';
+  race.skytex := '';
+  race.mountaintex := '';
+  race.groundtex := '';
+
+  sl := TDStringList.Create;
+  try
+    sl.Text := W_TextLumpNum(lump);
+    idx := sl.IndexOfName(sMAPDATA_sprite);
+    if idx >= 0 then
+      race.mapsprite := sl.ValuesIdx[idx];
+    idx := sl.IndexOfName(sMAPDATA_sky);
+    if idx >= 0 then
+      race.skytex := sl.ValuesIdx[idx];
+    idx := sl.IndexOfName(sMAPDATA_mountain);
+    if idx >= 0 then
+      race.mountaintex := sl.ValuesIdx[idx];
+    idx := sl.IndexOfName(sMAPDATA_ground);
+    if idx >= 0 then
+      race.groundtex := sl.ValuesIdx[idx];
+  finally
+    sl.Free;
+  end;
 end;
 
 function SH_GroundTypeAtXY(const x, y: fixed_t): groundtype_t;

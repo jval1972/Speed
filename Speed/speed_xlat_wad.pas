@@ -42,6 +42,12 @@ const
   SPEED_LEVEL_SCALE = 2;
   NUM_SPEED_MAPS = 8;
 
+const
+  sMAPDATA_sprite = 'sprite';
+  sMAPDATA_sky = 'sky';
+  sMAPDATA_mountain = 'mountain';
+  sMAPDATA_ground = 'ground';
+
 implementation
 
 uses
@@ -706,10 +712,10 @@ function TSpeedToWADConverter.GenerateLevels(const scale: integer): boolean;
     memfree(pointer(bufpath), bufpathsize);
 
     lst := TDStringList.Create;
-    lst.Add('sprite=' + mapsprite);
-    lst.Add('sky=' + mapsky);
-    lst.Add('mountain=' + mapmount);
-    lst.Add('ground=' + extraflat);
+    lst.Add(sMAPDATA_sprite + '=' + mapsprite);
+    lst.Add(sMAPDATA_sky + '=' + mapsky);
+    lst.Add(sMAPDATA_mountain + '=' + mapmount);
+    lst.Add(sMAPDATA_ground + '=' + extraflat);
     wadwriter.AddString('MAPDATA', lst.Text);
     lst.Free;
   end;
