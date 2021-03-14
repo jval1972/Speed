@@ -77,7 +77,13 @@ function HU_dequeueChatChar: char;
 procedure HU_Erase;
 
 var
-  hu_fontY: array[0..HU_FONTSIZE - 1] of Ppatch_t;
+  hu_fontY: array[0..HU_FONTSIZE - 1] of Ppatch_t;  // Small Yellow Text
+  hu_fontW: array[0..HU_FONTSIZE - 1] of Ppatch_t;  // Small White Text
+  hu_fontB: array[0..HU_FONTSIZE - 1] of Ppatch_t;  // Small Black Text
+  hu_fontR: array[0..HU_FONTSIZE - 1] of Ppatch_t;  // Small Red Text
+  big_fontY: array[0..HU_FONTSIZE - 1] of Ppatch_t;  // Big Yellow Text
+  big_fontW: array[0..HU_FONTSIZE - 1] of Ppatch_t;  // Big White Text
+  big_fontB: array[0..HU_FONTSIZE - 1] of Ppatch_t;  // Big Black Text
 
   chat_on: boolean;
 
@@ -385,10 +391,17 @@ begin
   j := Ord(HU_FONTSTART);
   for i := 0 to HU_FONTSIZE - 1 do
   begin
-    buffer := 'SFNTA' + IntToStrZfill(3, j);
-
+    buffer := IntToStrZfill(3, j);
     inc(j);
-    hu_fontY[i] := Ppatch_t(W_CacheLumpName(buffer, PU_STATIC));
+
+    hu_fontY[i] := W_CacheLumpName('SFNTA' + buffer, PU_STATIC);
+    hu_fontW[i] := W_CacheLumpName('SFNTB' + buffer, PU_STATIC);
+    hu_fontB[i] := W_CacheLumpName('SFNTC' + buffer, PU_STATIC);
+    hu_fontR[i] := W_CacheLumpName('SFNTD' + buffer, PU_STATIC);
+
+    big_fontY[i] := W_CacheLumpName('BFNTA' + buffer, PU_STATIC);
+    big_fontW[i] := W_CacheLumpName('BFNTB' + buffer, PU_STATIC);
+    big_fontB[i] := W_CacheLumpName('BFNTC' + buffer, PU_STATIC);
   end;
 
   for i := 0 to FPSSIZE - 1 do
