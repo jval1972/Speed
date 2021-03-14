@@ -22,8 +22,7 @@
 //  02111-1307, USA.
 //
 // DESCRIPTION:
-//  Mission start screen wipe/melt, special effects.
-//  Mission begin melt/wipe screen special effect.
+//  Screen fade effect.
 //
 //------------------------------------------------------------------------------
 //  Site  : https://sourceforge.net/projects/speed-game/
@@ -44,16 +43,6 @@ procedure wipe_EndScreen;
 
 function wipe_Ticker(ticks: integer): boolean;
 
-type
-  wipe_t = (
-    // simple gradual pixel change for 8-bit only
-    wipe_ColorXForm,
-    // weird screen melt
-    wipe_Melt,
-    wipe_NUMWIPES
-  );
-
-{$IFDEF OPENGL}
 var
   WIPESCREENWIDTH: integer;
   WIPESCREENHEIGHT: integer;
@@ -62,233 +51,132 @@ var
   w_screen32: PLongWordArray = nil;
 
 procedure wipe_ClearMemory;
-{$ENDIF}
 
 implementation
 
 uses
   doomdef,
-  m_rnd,
+  r_hires,
   m_fixed,
-  mt_utils,
-{$IFDEF OPENGL}
+  i_system,
   gl_main,
-{$ELSE}
-  i_video,
-{$ENDIF}
   v_data,
-  v_video,
-  z_zone;
-
-//
-//                       SCREEN WIPE PACKAGE
-//
+  v_video;
 
 var
-  wipe_scr_start: PLongWordArray;
-  wipe_scr_end: PLongWordArray;
+  fade_scr_start: PLongWordArray;
+  fade_scr_end: PLongWordArray;
 
 var
-  yy: Pfixed_tArray;
-  vy: fixed_t;
+  fadefactor: fixed_t = 0;
 
-
-{$IFDEF OPENGL}
 function wipe_glsize(const value: integer): integer;
 begin
   result := 1;
   while result < value do
     result := result * 2;
 end;
-{$ENDIF}
 
-procedure wipe_initMelt;
+procedure wipe_initFade;
 var
   i, r: integer;
-  py, py1: Pfixed_t;
-  SHEIGHTS: array[0..MAXWIDTH - 1] of integer;
-  RANDOMS: array[0..319] of byte;
 begin
-{$IFDEF OPENGL}
   WIPESCREENWIDTH := wipe_glsize(SCREENWIDTH);
   WIPESCREENHEIGHT := wipe_glsize(SCREENHEIGHT);
   if w_screen32 = nil then
     w_screen32 := malloc(WIPESCREENWIDTH * WIPESCREENHEIGHT * SizeOf(LongWord));
-{$ENDIF}
-
-  for i := 0 to SCREENWIDTH - 1 do
-    SHEIGHTS[i] := trunc(i * 320 / SCREENWIDTH);
-  for i := 0 to 319 do
-    RANDOMS[i] := I_Random;
-
-  {$IFNDEF OPENGL}
   // copy start screen to main screen
-  MT_memcpy(screen32, wipe_scr_start, SCREENWIDTH * SCREENHEIGHT * SizeOf(LongWord));
-  {$ELSE}
   for i := 0 to SCREENWIDTH - 1 do
     for r := 0 to SCREENHEIGHT - 1 do
-      w_screen32[r * WIPESCREENWIDTH + i] := wipe_scr_start[r * SCREENWIDTH + i];
-  {$ENDIF}
-  // setup initial column positions
-  // (y<0 => not ready to scroll yet)
-  yy := Z_Malloc(SCREENWIDTH * SizeOf(fixed_t), PU_STATIC, nil);
-  py := @yy[0];
-  py1 := py;
-
-  py^ := -(RANDOMS[0] mod 16);
-  for i := 1 to SCREENWIDTH - 1 do
-  begin
-    inc(py);
-    r := (RANDOMS[SHEIGHTS[i]] mod 3) - 1;
-    py^ := py1^ + r;
-    if py^ > 0 then
-      py^ := 0
-    else if py^ = -16 then
-      py^ := -15;
-    inc(py1);
-  end;
-
-// JVAL change wipe timing
-  vy := FRACUNIT * SCREENHEIGHT div 200;
-  py := @yy[0];
-  for i := 0 to SCREENWIDTH - 1 do
-  begin
-    py^ := py^ * vy;
-    inc(py);
-  end;
-
-  for i := 1 to SCREENWIDTH - 1 do
-    if SHEIGHTS[i - 1] = SHEIGHTS[i] then
-      yy[i] := yy[i - 1];
+      w_screen32[r * WIPESCREENWIDTH + i] := fade_scr_start[r * SCREENWIDTH + i];
+  fadefactor := FRACUNIT;
 end;
 
-function wipe_doMelt(ticks: integer): integer;
+function wipe_ColorFadeAverage(const c1, c2: LongWord; const factor: fixed_t): LongWord;
+var
+  ffade: fixed_t;
+begin
+  if factor > FRACUNIT div 2 then
+  begin
+    ffade := (FRACUNIT - factor) * 2;
+    result := R_ColorAverage(c2, $161616, ffade);
+  end
+  else
+  begin
+    ffade := factor * 2;
+    result := R_ColorAverage(c1, $161616, ffade);
+  end;
+end;
+
+function wipe_doFade(ticks: integer): integer;
 var
   i: integer;
   j: integer;
-  dy: fixed_t;
-  sidx: PLongWord;
-  didx: PLongWord;
-  py: Pfixed_t;
-  pos: integer;
 begin
   result := 1;
 
-  while ticks > 0 do
-  begin
-    py := @yy[0];
-    for i := 0 to SCREENWIDTH - 1 do
-    begin
-      if py^ < 0 then
-      begin
-        py^ := py^ + vy;
-        result := 0;
-      end
-      else if py^ < SCREENHEIGHT * FRACUNIT then
-      begin
-        if py^ <= 15 * vy then
-          dy := py^ + vy
-        else
-          dy := 8 * vy;
-        if (py^ + dy) >= SCREENHEIGHT * FRACUNIT then
-          dy := SCREENHEIGHT * FRACUNIT - py^;
-        if ticks = 1 then
-        begin
-          pos := py^ div FRACUNIT;
-          sidx := @wipe_scr_end[i];
-          {$IFDEF OPENGL}
-          didx := @w_screen32[i];
-          {$ELSE}
-          didx := @screen32[i];
-          {$ENDIF}
-          for j := 0 to pos - 1 do
-          begin
-            didx^ := sidx^{$IFDEF OPENGL} or $FF000000{$ENDIF};
-            {$IFDEF OPENGL}
-            inc(didx, WIPESCREENWIDTH);
-            {$ELSE}
-            inc(didx, SCREENWIDTH);
-            {$ENDIF}
-            inc(sidx, SCREENWIDTH);
-          end;
-          sidx := @wipe_scr_start[i];
-          for j := pos to SCREENHEIGHT - 1 do
-          begin
-            didx^ := sidx^{$IFDEF OPENGL} or $FF000000{$ENDIF};
-            {$IFDEF OPENGL}
-            inc(didx, WIPESCREENWIDTH);
-            {$ELSE}
-            inc(didx, SCREENWIDTH);
-            {$ENDIF}
-            inc(sidx, SCREENWIDTH);
-          end;
-        end;
+  if fadefactor = 0 then
+    exit;
 
-        py^ := py^ + dy;
+  fadefactor := fadefactor - ticks * 2048;
+  if fadefactor < 0 then
+    fadefactor := 0;
 
-        result := 0;
-      end;
-      inc(py);
-    end;
-    dec(ticks);
-  end;
+  for i := 0 to SCREENWIDTH - 1 do
+    for j := 0 to SCREENHEIGHT - 1 do
+      w_screen32[j * WIPESCREENWIDTH  + i] := wipe_ColorFadeAverage(fade_scr_end[j * SCREENWIDTH + i], fade_scr_start[j * SCREENWIDTH + i], fadefactor) or $FF000000;
+  if fadefactor > 0 then
+    result := 0;
 end;
 
-procedure wipe_exitMelt;
+procedure wipe_exitFade;
 begin
-  Z_Free(yy);
-  memfree(pointer(wipe_scr_start), SCREENWIDTH * SCREENHEIGHT * SizeOf(LongWord));
-  memfree(pointer(wipe_scr_end), SCREENWIDTH * SCREENHEIGHT * SizeOf(LongWord));
+  memfree(pointer(fade_scr_start), SCREENWIDTH * SCREENHEIGHT * SizeOf(LongWord));
+  memfree(pointer(fade_scr_end), SCREENWIDTH * SCREENHEIGHT * SizeOf(LongWord));
 end;
 
-{$IFDEF OPENGL}
 procedure wipe_ClearMemory;
 begin
   if w_screen32 <> nil then
     memfree(pointer(w_screen32), WIPESCREENWIDTH * WIPESCREENHEIGHT * SizeOf(LongWord));
 end;
-{$ENDIF}
 
 procedure wipe_StartScreen;
 begin
-  wipe_scr_start := malloc(SCREENWIDTH * SCREENHEIGHT * SizeOf(LongWord));
-  I_ReadScreen32(wipe_scr_start);
-{$IFDEF OPENGL}
-  I_ReverseScreen(wipe_scr_start);
-{$ENDIF}
+  fade_scr_start := malloc(SCREENWIDTH * SCREENHEIGHT * SizeOf(LongWord));
+  I_ReadScreen32(fade_scr_start);
+  I_ReverseScreen(fade_scr_start);
 end;
 
 procedure wipe_EndScreen;
 begin
-  wipe_scr_end := malloc(SCREENWIDTH * SCREENHEIGHT * SizeOf(LongWord));
-  I_ReadScreen32(wipe_scr_end);
-{$IFDEF OPENGL}
-  I_ReverseScreen(wipe_scr_end);
-{$ENDIF}
+  fade_scr_end := malloc(SCREENWIDTH * SCREENHEIGHT * SizeOf(LongWord));
+  I_ReadScreen32(fade_scr_end);
+  I_ReverseScreen(fade_scr_end);
 end;
 
+// when zero, stop the fade
 var
-  wiping: boolean = false;
+  fading: boolean = false;
 
-// when zero, stop the wipe
 function wipe_Ticker(ticks: integer): boolean;
 begin
   // initial stuff
-  if not wiping then
+  if not fading then
   begin
-    wiping := true;
-    wipe_initMelt;
+    fading := true;
+    wipe_initFade;
   end;
 
-  // do a piece of wipe-in
-  if wipe_doMelt(ticks) <> 0 then
+  // do a piece of fade
+  if wipe_doFade(ticks) <> 0 then
   begin
     // final stuff
-    wiping := false;
-    wipe_exitMelt;
+    fading := false;
+    wipe_exitFade;
   end;
 
-  result := not wiping;
+  result := not fading;
 end;
 
 end.
