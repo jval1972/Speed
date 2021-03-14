@@ -84,6 +84,7 @@ var
   big_fontY: array[0..HU_FONTSIZE - 1] of Ppatch_t;  // Big Yellow Text
   big_fontW: array[0..HU_FONTSIZE - 1] of Ppatch_t;  // Big White Text
   big_fontB: array[0..HU_FONTSIZE - 1] of Ppatch_t;  // Big Black Text
+  big_fontR: array[0..HU_FONTSIZE - 1] of Ppatch_t;  // Big Red Text
 
   chat_on: boolean;
 
@@ -402,6 +403,7 @@ begin
     big_fontY[i] := W_CacheLumpName('BFNTA' + buffer, PU_STATIC);
     big_fontW[i] := W_CacheLumpName('BFNTB' + buffer, PU_STATIC);
     big_fontB[i] := W_CacheLumpName('BFNTC' + buffer, PU_STATIC);
+    big_fontR[i] := W_CacheLumpName('BFNTD' + buffer, PU_STATIC);
   end;
 
   for i := 0 to FPSSIZE - 1 do

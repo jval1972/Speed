@@ -254,44 +254,89 @@ var
 //
 //      Menu Functions
 //
+procedure M_HorzLine(const x1, x2, y: integer; const color: byte);
+var
+  i: integer;
+begin
+  for i := y * 320 + x1 to y * 320 + x2 do
+    screens[SCN_TMP][i] := color;
+end;
+
+procedure M_VertLine(const x, y1, y2: integer; const color: byte);
+var
+  i: integer;
+begin
+  for i := y1 to y2 do
+    screens[SCN_TMP][i * 320 + x] := color;
+end;
+
+procedure M_Frame3d(const x1, y1, x2, y2: integer; const color1, color2, color3: byte);
+var
+  i: integer;
+begin
+  M_HorzLine(x1, x2, y1, color1);
+  M_HorzLine(x1, x2, y2, color2);
+  M_VertLine(x1, y1, y2, color2);
+  M_VertLine(x2, y1, y2, color1);
+  for i := y1 + 1 to y2 - 1 do
+    M_HorzLine(x1 + 1, x2 - 1, i, color3);
+end;
+
+procedure M_DrawHeadLine(const y: integer; const str: string);
+var
+  i: integer;
+begin
+  M_HorzLine(0, 319, y, 64);
+  M_HorzLine(0, 319, y + 15, 80);
+  for i := y + 1 to y + 14 do
+    M_HorzLine(0, 319, i, 63);
+
+  M_WriteText(160, y, str, ma_center, @big_fontR, @big_fontB);
+end;
+
+procedure M_DrawSubHeadLine(const y: integer; const str: string);
+var
+  i: integer;
+begin
+  M_HorzLine(0, 319, y, 64);
+  M_HorzLine(0, 319, y + 15, 80);
+  for i := y + 1 to y + 14 do
+    M_HorzLine(0, 319, i, 63);
+
+  M_WriteText(25, y, str, ma_left, @big_fontW, @big_fontB);
+end;
+
+procedure M_DrawSmallLine(const y: integer; const str: string);
+var
+  i: integer;
+begin
+  M_HorzLine(0, 319, y, 64);
+  M_HorzLine(0, 319, y + 9, 80);
+  for i := y + 1 to y + 8 do
+    M_HorzLine(0, 319, i, 63);
+
+  M_WriteText(160, y + 2, str, ma_center, @hu_fontW, @big_fontB);
+end;
+
 procedure M_DrawThermo(x, y, thermWidth, thermDot: integer; numdots: integer = -1);
 var
-  xx: integer;
   i: integer;
-  tmpdot: integer;
+  p: integer;
 begin
-  xx := x;
-  V_DrawPatch(xx, y, SCN_TMP, 'M_THERML', false);
-  xx := xx + 8;
-  for i := 0 to thermWidth - 1 do
-  begin
-    V_DrawPatch(xx, y, SCN_TMP, 'M_THERMM', false);
-    xx := xx + 8;
-  end;
-  V_DrawPatch(xx, y, SCN_TMP, 'M_THERMR', false);
+  M_Frame3d(x, y, x + thermWidth * 8 + 2, y + 10, 121, 123, 118);
 
-  if numdots < 0 then
+  if numdots <= 1 then
     numdots := thermWidth;
-
-  tmpdot := thermDot;
-  if tmpdot < 0 then
-    tmpdot := 0
-  else if tmpdot >= numdots then
-    tmpdot := numdots - 1;
-  V_DrawPatch((x + 8) + (tmpdot * 8 * thermWidth) div numdots, y, SCN_TMP,
-    'M_THERMO', false);
-end;
-
-procedure M_DrawEmptyCell(menu: Pmenu_t; item: integer);
-begin
-  V_DrawPatch(menu.x - 10, menu.y + item * menu.itemheight - 1, SCN_TMP,
-    'M_CELL1', false);
-end;
-
-procedure M_DrawSelCell(menu: Pmenu_t; item: integer);
-begin
-  V_DrawPatch(menu.x - 10, menu.y + item * menu.itemheight - 1, SCN_TMP,
-    'M_CELL2', false);
+  if numdots < 2 then
+    numdots := 2;
+  p := Round(thermDot / (numdots - 1) * thermWidth * 8 + 1);
+  for i := 1 to thermWidth * 8 do
+  begin
+    if i < p then
+      M_VertLine(x + i, y + 2, y + 8, 53)
+    else
+      M_VertLine(x + i, y + 2, y + 8, 118);
+  end;
 end;
 
 procedure M_StartMessage(const str: string; routine: PmessageRoutine; const input: boolean);
@@ -1096,18 +1141,8 @@ end;
 // Draw border for the savegame description
 //
 procedure M_DrawSaveLoadBorder(x, y: integer);
-var
-  i: integer;
 begin
-  V_DrawPatch(x - 8, y + 7, SCN_TMP, 'M_LSLEFT', false);
-
-  for i := 0 to 23 do
-  begin
-    V_DrawPatch (x, y + 7, SCN_TMP, 'M_LSCNTR', false);
-    x := x + 8;
-  end;
-
-  V_DrawPatch(x, y + 7, SCN_TMP, 'M_LSRGHT', false);
+  M_Frame3d(x - 3, y - 3, 320 - x - 20, y + 12, 121, 123, 118);
 end;
 
 //
