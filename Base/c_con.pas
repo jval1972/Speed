@@ -70,32 +70,13 @@ var
   autoexecfile: string;
 
 const
-{$IFDEF DOOM}
   DEFAUTOEXEC = 'Speed.con';
-{$ENDIF}
-{$IFDEF HERETIC}
-  DEFAUTOEXEC = 'Heretic32.con';
-{$ENDIF}
-{$IFDEF HEXEN}
-  DEFAUTOEXEC = 'Hexen32.con';
-{$ENDIF}
-{$IFDEF STRIFE}
-  DEFAUTOEXEC = 'Strife32.con';
-{$ENDIF}
 
 implementation
 
 uses
   d_delphi,
-{$IFDEF HEXEN}
-  g_demo,
-{$ENDIF}
-{$IFDEF STRIFE}
-  d_check,
-{$ENDIF}
-{$IFDEF DOOM}
   doomstat,
-{$ENDIF}
   doomdef,
   c_cmds,
   c_utils,
@@ -161,13 +142,8 @@ var
   ConsoleInitialized: boolean = false;
 
 const
-{$IFDEF STRIFE}
-  C_FONTWIDTH = 10;
-  C_FONTHEIGHT = 10;
-{$ELSE}
-  C_FONTWIDTH = 8;
-  C_FONTHEIGHT = 8;
-{$ENDIF}
+  C_FONTWIDTH = 9;
+  C_FONTHEIGHT = 9;
 
 function isDivideLine(const s: string): boolean;
 var
