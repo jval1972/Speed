@@ -1238,33 +1238,22 @@ begin
   M_ReadSaveStrings;
 end;
 
-procedure M_StartSound(origin: pointer; sfx_id: integer);
+procedure M_MenuSound;
 begin
   if gamestate = GS_ENDOOM then
     exit;
-  S_StartSound(origin, sfx_id);
+  S_StartSound(nil, 'DSMENU');
 end;
 
 //
 //      M_QuickSave
 //
-procedure M_SwtchnSound;
-begin
-  M_StartSound(nil, Ord(sfx_swtchn));
-end;
-
-procedure M_SwtchxSound;
-begin
-  M_StartSound(nil, Ord(sfx_swtchx));
-end;
-
-
 procedure M_QuickSaveResponse(ch: integer);
 begin
   if ch = Ord('y') then
   begin
     M_DoSave(quickSaveSlot);
-    M_SwtchxSound;
+    M_MenuSound;
   end;
 end;
 
@@ -1274,7 +1263,7 @@ var
 begin
   if not usergame then
   begin
-    M_StartSound(nil, Ord(sfx_oof));
+    M_MenuSound;
     exit;
   end;
 
@@ -1302,7 +1291,7 @@ begin
   if ch = Ord('y') then
   begin
     M_LoadSelect(quickSaveSlot);
-    M_SwtchxSound;
+    M_MenuSound;
   end;
 end;
 
@@ -2249,7 +2238,7 @@ procedure M_CmdEndGame;
 begin
   if not usergame then
   begin
-    M_StartSound(nil, Ord(sfx_oof));
+    M_MenuSound;
     exit;
   end;
 
@@ -2321,7 +2310,7 @@ procedure M_CmdQuit;
 begin
   if not netgame then
   begin
-    M_StartSound(nil, quitsounds[_SHR(gametic, 2) and 7]);
+    M_MenuSound;
     I_WaitVBL(1000);
   end;
   G_Quit;
@@ -2684,7 +2673,7 @@ begin
       exit;
 
     menuactive := false;
-    M_SwtchxSound;
+    M_MenuSound;
     exit;
   end;
 
@@ -2700,14 +2689,14 @@ begin
             currentMenu := @ReadDef1;
 
           itemOn := 0;
-          M_SwtchnSound;
+          M_MenuSound;
           result := true;
           exit;
         end;
       KEY_F2:  // Save
         begin
           M_StartControlPanel;
-          M_SwtchnSound;
+          M_MenuSound;
           M_SaveGame(0);
           result := true;
           exit;
@@ -2715,7 +2704,7 @@ begin
       KEY_F3:  // Load
         begin
           M_StartControlPanel;
-          M_SwtchnSound;
+          M_MenuSound;
           M_LoadGame(0);
           result := true;
           exit;
@@ -2725,27 +2714,27 @@ begin
           M_StartControlPanel;
           currentMenu := @SoundVolDef;
           itemOn := Ord(sfx_vol);
-          M_SwtchnSound;
+          M_MenuSound;
           result := true;
           exit;
         end;
       KEY_F5:   // Detail toggle
         begin
           M_ChangeDetail(0);
-          M_SwtchnSound;
+          M_MenuSound;
           result := true;
           exit;
         end;
       KEY_F6:   // Quicksave
         begin
-          M_SwtchnSound;
+          M_MenuSound;
           M_QuickSave;
           result := true;
           exit;
         end;
       KEY_F7:   // End game
         begin
-          M_SwtchnSound;
+          M_MenuSound;
           M_EndGame(0);
           result := true;
           exit;
@@ -2753,20 +2742,20 @@ begin
       KEY_F8:   // Toggle messages
         begin
           M_ChangeMessages(0);
-          M_SwtchnSound;
+          M_MenuSound;
           result := true;
           exit;
         end;
       KEY_F9:   // Quickload
         begin
-          M_SwtchnSound;
+          M_MenuSound;
           M_QuickLoad;
           result := true;
           exit;
         end;
       KEY_F10:  // Quit DOOM
         begin
-          M_SwtchnSound;
+          M_MenuSound;
           M_QuitDOOM(0);
           result := true;
           exit;
@@ -2809,7 +2798,7 @@ begin
     if ch = KEY_ESCAPE then
     begin
       M_StartControlPanel;
-      M_SwtchnSound;
+      M_MenuSound;
       result := true;
       exit;
     end;
@@ -2824,7 +2813,7 @@ begin
         itemOn := -1;
         repeat
           inc(itemOn);
-          M_StartSound(nil, Ord(sfx_pstop));
+          M_MenuSound;
         until currentMenu.menuitems[itemOn].status <> -1;
         result := true;
         exit;
@@ -2834,7 +2823,7 @@ begin
         itemOn := currentMenu.numitems;
         repeat
           dec(itemOn);
-          M_StartSound(nil, Ord(sfx_pstop));
+          M_MenuSound;
         until currentMenu.menuitems[itemOn].status <> -1;
         result := true;
         exit;
@@ -2846,7 +2835,7 @@ begin
             itemOn := 0
           else
             inc(itemOn);
-          M_StartSound(nil, Ord(sfx_pstop));
+          M_MenuSound;
         until currentMenu.menuitems[itemOn].status <> -1;
         result := true;
         exit;
@@ -2858,7 +2847,7 @@ begin
             itemOn := currentMenu.numitems - 1
           else
             dec(itemOn);
-          M_StartSound(nil, Ord(sfx_pstop));
+          M_MenuSound;
         until currentMenu.menuitems[itemOn].status <> -1;
         result := true;
         exit;
@@ -2868,7 +2857,7 @@ begin
         if Assigned(currentMenu.menuitems[itemOn].routine) and
           (currentMenu.menuitems[itemOn].status = 2) then
         begin
-          M_StartSound(nil, Ord(sfx_stnmov));
+          M_MenuSound;
           currentMenu.menuitems[itemOn].routine(0);
         end
         else if (currentMenu.leftMenu <> nil) and not (ev._type in [ev_mouse, ev_joystick]) then
@@ -2876,7 +2865,7 @@ begin
           currentMenu.lastOn := itemOn;
           currentMenu := currentMenu.leftMenu;
           itemOn := currentMenu.lastOn;
-          M_SwtchnSound;
+          M_MenuSound;
         end;
         result := true;
         exit;
@@ -2886,7 +2875,7 @@ begin
         if Assigned(currentMenu.menuitems[itemOn].routine) and
           (currentMenu.menuitems[itemOn].status = 2) then
         begin
-          M_StartSound(nil, Ord(sfx_stnmov));
+          M_MenuSound;
           currentMenu.menuitems[itemOn].routine(1);
         end
         else if (currentMenu.rightMenu <> nil) and not (ev._type in [ev_mouse, ev_joystick]) then
@@ -2894,7 +2883,7 @@ begin
           currentMenu.lastOn := itemOn;
           currentMenu := currentMenu.rightMenu;
           itemOn := currentMenu.lastOn;
-          M_SwtchnSound;
+          M_MenuSound;
         end;
         result := true;
         exit;
@@ -2908,12 +2897,12 @@ begin
           if currentMenu.menuitems[itemOn].status = 2 then
           begin
             currentMenu.menuitems[itemOn].routine(1); // right arrow
-            M_StartSound(nil, Ord(sfx_stnmov));
+            M_MenuSound;
           end
           else
           begin
             currentMenu.menuitems[itemOn].routine(itemOn);
-            M_StartSound(nil, Ord(sfx_pistol));
+            M_MenuSound;
           end;
         end;
         result := true;
@@ -2923,7 +2912,7 @@ begin
       begin
         currentMenu.lastOn := itemOn;
         M_ClearMenus;
-        M_SwtchxSound;
+        M_MenuSound;
         result := true;
         exit;
       end;
@@ -2934,13 +2923,13 @@ begin
         if (currentMenu = @ReadDefExt) and (extrahelpscreens_idx > 0) then
         begin
           dec(extrahelpscreens_idx);
-          M_SwtchnSound;
+          M_MenuSound;
         end
         else if currentMenu.prevMenu <> nil then
         begin
           currentMenu := currentMenu.prevMenu;
           itemOn := currentMenu.lastOn;
-          M_SwtchnSound;
+          M_MenuSound;
         end;
         result := true;
         exit;
@@ -2951,7 +2940,7 @@ begin
         if currentMenu.menuitems[i].alphaKey = Chr(ch) then
         begin
           itemOn := i;
-          M_StartSound(nil, Ord(sfx_pstop));
+          M_MenuSound;
           result := true;
           exit;
         end;
@@ -2959,7 +2948,7 @@ begin
         if currentMenu.menuitems[i].alphaKey = Chr(ch) then
         begin
           itemOn := i;
-          M_StartSound(nil, Ord(sfx_pstop));
+          M_MenuSound;
           result := true;
           exit;
         end;
