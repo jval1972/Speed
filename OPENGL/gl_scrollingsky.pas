@@ -72,6 +72,8 @@ begin
     sprintf(stmp, sNUBES, [i]);
   end;
 
+  glDisable(GL_DEPTH_TEST);
+
   lump := W_CheckNumForName(stmp);
 
   if lump >= 0 then
@@ -95,10 +97,10 @@ begin
       glTexCoord2f(u + 2.0, 0.0); glVertex3f(-x,   y, z);
       glTexCoord2f(u + 2.0, v);   glVertex3f(-x, 0.0, z);
 
-      glTexCoord2f(u, 0.0); glVertex3f( x, y,  z);
-      glTexCoord2f(u, 0.0); glVertex3f(-x, y,  z);
-      glTexCoord2f(u, 0.0); glVertex3f(-x, y, -z);
-      glTexCoord2f(u, 0.0); glVertex3f( x, y, -z);
+      glTexCoord2f(0.0, 0.0); glVertex3f( x, y,  z);
+      glTexCoord2f(0.0, 0.0); glVertex3f(-x, y,  z);
+      glTexCoord2f(0.0, 0.0); glVertex3f(-x, y, -z);
+      glTexCoord2f(0.0, 0.0); glVertex3f( x, y, -z);
     glEnd;
 
     glPopMatrix;
@@ -139,6 +141,8 @@ begin
 
     glPopMatrix;
   end;
+  
+  glEnable(GL_DEPTH_TEST);
 end;
 
 end.
