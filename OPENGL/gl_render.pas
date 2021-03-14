@@ -113,7 +113,6 @@ uses
   m_stack,
   info,
   sc_states,
-  gl_ambient,
   gl_main,
   gl_misc,
   gl_tex,
@@ -604,7 +603,6 @@ begin
   gld_InitModels;
   gld_InitVoxels;
   gld_InitLightmap;
-  gld_InitAmbient;
   gld_InitI3DTextures;
 end;
 
@@ -1822,8 +1820,6 @@ begin
 
   glViewport(0, 0, SCREENWIDTH, SCREENHEIGHT);
   gld_Set2DMode;
-
- // gld_AmbientExecute;
 
 //  R_DrawPlayer;
 
@@ -4778,7 +4774,6 @@ begin
     gld_VoxelsDone;
     gld_LightmapDone;
     gld_ClipperDone;
-    gld_AmbientDone;
     gld_ShutDownAutomap;
     gld_ShutDownI3DTextures;
   end;
