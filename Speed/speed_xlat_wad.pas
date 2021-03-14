@@ -1019,6 +1019,7 @@ var
   lump: integer;
   buf: PByteArray;
   bufsize: integer;
+  i: integer;
   p: pointer;
   size: integer;
   palname: string;
@@ -1060,6 +1061,11 @@ begin
     f.Read(buf[4], lumps[lump].size);
     PSmallIntArray(buf)[0] := 320;
     PSmallIntArray(buf)[1] := lumps[lump].size div 320;
+
+    for i := 5 to lumps[lump].size + 3 do
+      if buf[i] > 0 then
+        if (buf[i] < 16) or (buf[i] > 239) then
+          buf[i] := buf[i - 1];
 
     SH_CreateDoomPatchFromLumpData(buf, solid, p, size);
   end;
