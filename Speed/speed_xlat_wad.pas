@@ -1173,8 +1173,10 @@ end;
 function TSpeedToWADConverter.GenerateFonts: boolean;
 const
   NUM_SMALL_FONT_COLORS = 3;
+  NUM_BIG_FONT_COLORS = 3;
 var
   SMALL_FONT_COLORS: array[0..NUM_SMALL_FONT_COLORS - 1] of LongWord;
+  BIG_FONT_COLORS: array[0..NUM_SMALL_FONT_COLORS - 1] of LongWord;
   buf: PByteArray;
   cidx: integer;
   r1, g1, b1: LongWord;
@@ -1185,7 +1187,11 @@ var
   pnoise: double;
   p: pointer;
   size: integer;
-  i, j, x, y, fpos: integer;
+  i, j, k, x, y, fpos: integer;
+  imgsize: integer;
+  imginp: PByteArray;
+  fidx, widx, w: integer;
+  imgoutw: PByteArray;
 
   function Interpolate(const a, b, frac: double): double;
   begin
@@ -1307,6 +1313,94 @@ begin
     end;
   end;
   MemFree(pointer(imgout), 8 * 8);
+
+
+  BIG_FONT_COLORS[0] := $E2CE4A;
+  BIG_FONT_COLORS[1] := $F0F0F0;
+  BIG_FONT_COLORS[2] := $0F0F0F;
+
+  imgsize := SizeOf(BIG_FONT_DATA);
+  imginp := malloc(imgsize);
+
+  imgout := malloc(16 * 16);
+
+  for cidx := 0 to NUM_BIG_FONT_COLORS - 1 do
+  begin
+    r1 := (BIG_FONT_COLORS[cidx] shr 16) and $FF;
+    g1 := (BIG_FONT_COLORS[cidx] shr 8) and $FF;
+    b1 := BIG_FONT_COLORS[cidx] and $FF;
+    for i := 0 to imgsize - 1 do
+    begin
+      if BIG_FONT_DATA[i] = 0 then
+        imginp[i] := 255
+      else
+      begin
+        if BIG_FONT_DATA[i] = 255 then
+          pnoise := PerlinNoise(i mod 1520, i div 1520)
+        else
+          pnoise := 0.0;
+        r := round(r1 * BIG_FONT_DATA[i] / 256 + pnoise);
+        if r > 255 then
+          r := 255
+        else if r < 0 then
+          r := 0;
+        g := round(g1 * BIG_FONT_DATA[i] / 256 + pnoise);
+        if g > 255 then
+          g := 255
+        else if g < 0 then
+          g := 0;
+        b := round(b1 * BIG_FONT_DATA[i] / 256 + pnoise);
+        if b > 255 then
+          b := 255
+        else if b < 0 then
+          b := 0;
+        c := r shl 16 + g shl 8 + b;
+        imginp[i] := V_FindAproxColorIndex(@def_palL, c, 16, 239);
+        if def_palL[imginp[i]] = 0 then
+          imginp[i] := 255;
+      end;
+    end;
+
+    for ch := 33 to 127 do
+    begin
+      fidx := ch - 32;
+      if fidx > 0 then
+      begin
+        y := (fidx - 1) * 16;
+        for k := 0 to 16 * 16 - 1 do
+          imgout[k] := imginp[y * 16 + k];
+        SH_RotatebitmapBuffer90(imgout, 16, 16);
+        // Right trim image
+        widx := 16 * 16 - 1;
+        while widx > 0 do
+        begin
+          if imgout[widx] <> 255 then
+            break;
+          dec(widx);
+        end;
+        if widx < 14 * 16 then
+        begin
+          w := (widx div 16) + 1;
+          imgoutw := malloc(16 * w);
+          memcpy(imgoutw, imgout, w * 16);
+          SH_CreateDoomPatch(imgoutw, w, 16, false, p, size, 1, 3);
+          memfree(pointer(imgoutw), 16 * w);
+        end
+        else
+          SH_CreateDoomPatch(imgout, 16, 16, false, p, size, 1, 3);
+      end
+      else
+      begin
+        memset(imgout, 0, 16 * 16);
+        SH_CreateDoomPatch(imgout, 5, 16, false, p, size, 1, 3);
+      end;
+      wadwriter.AddData('BFNT' + Chr(Ord('A') + cidx) + IntToStrzFill(3, Ord(ch)), p, size);
+      memfree(p, size);
+    end;
+  end;
+
+  memfree(pointer(imginp), imgsize);
+  memfree(pointer(imgout), 16 * 16);
 end;
 
 type
