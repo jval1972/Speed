@@ -112,6 +112,7 @@ uses
   m_argv,
   m_misc,
   m_fixed,
+  mn_textwrite,
   mt_utils,
   i_system,
   i_threads,
@@ -119,7 +120,6 @@ uses
   i_mp3,
   i_sound,
   i_displaymodes,
-{$IFDEF OPENGL}
   gl_main,
   gl_defs,
   gl_models,
@@ -127,12 +127,6 @@ uses
   gl_lightmaps,
   gl_shadows,
   gl_tex,
-{$ELSE}
-  i_video,
-  r_batchcolumn,
-  r_scale,
-  r_slopes, // JVAL: Slopes
-{$ENDIF}
   e_endoom,
   p_setup,
   p_mobj_h,
@@ -317,178 +311,6 @@ procedure M_StopMessage;
 begin
   menuactive := messageLastMenuActive;
   messageToPrint := 0;
-end;
-
-//
-// Find string width from hu_fontY chars
-//
-function M_StringWidth(const str: string): integer;
-var
-  i: integer;
-  c: integer;
-begin
-  result := 0;
-  for i := 1 to Length(str) do
-  begin
-    c := Ord(toupper(str[i])) - Ord(HU_FONTSTART);
-    if (c < 0) or (c >= HU_FONTSIZE) then
-      result := result + 4
-    else
-      result := result + hu_fontY[c].width;
-  end;
-end;
-
-//
-// Find string height from hu_fontY chars
-//
-function M_StringHeight(const str: string): integer;
-var
-  i: integer;
-  height: integer;
-begin
-  height := hu_fontY[0].height;
-
-  result := height;
-  for i := 1 to Length(str) do
-    if str[i] = #13 then
-      result := result + height;
-end;
-
-type
-  menupos_t = record
-    x, y: integer;
-  end;
-
-//
-// Write a string using the hu_fontY
-//
-function M_WriteText(x, y: integer; const str: string): menupos_t;
-var
-  w: integer;
-  ch: integer;
-  c: integer;
-  cx: integer;
-  cy: integer;
-  len: integer;
-begin
-  len := Length(str);
-  if len = 0 then
-  begin
-    result.x := x;
-    result.y := y;
-    exit;
-  end;
-
-  ch := 1;
-  cx := x;
-  cy := y;
-
-  while true do
-  begin
-    if ch > len then
-      break;
-
-    c := Ord(str[ch]);
-    inc(ch);
-
-    if c = 0 then
-      break;
-
-    if c = 10 then
-    begin
-      cx := x;
-      continue;
-    end;
-
-    if c = 13 then
-    begin
-      cy := cy + 12;
-      continue;
-    end;
-
-    c := Ord(toupper(Chr(c))) - Ord(HU_FONTSTART);
-    if (c < 0) or (c >= HU_FONTSIZE) then
-    begin
-      cx := cx + 4;
-      continue;
-    end;
-
-    w := hu_fontY[c].width;
-    if (cx + w) > 320 then
-      break;
-    V_DrawPatch(cx, cy, SCN_TMP, hu_fontY[c], false);
-    cx := cx + w;
-  end;
-
-  result.x := cx;
-  result.y := cy;
-end;
-
-function M_WriteWhiteText(x, y: integer; const str: string): menupos_t;
-var
-  w: integer;
-  ch: integer;
-  c: integer;
-  cx: integer;
-  cy: integer;
-  len: integer;
-  oldtranslation: PByteArray;
-begin
-  len := Length(str);
-  if len = 0 then
-  begin
-    result.x := x;
-    result.y := y;
-    exit;
-  end;
-
-  ch := 1;
-  cx := x;
-  cy := y;
-
-  oldtranslation := v_translation;
-  v_translation := W_CacheLumpName('TRN_MENU', PU_STATIC);
-  while true do
-  begin
-    if ch > len then
-      break;
-
-    c := Ord(str[ch]);
-    inc(ch);
-
-    if c = 0 then
-      break;
-
-    if c = 10 then
-    begin
-      cx := x;
-      continue;
-    end;
-
-    if c = 13 then
-    begin
-      cy := cy + 12;
-      continue;
-    end;
-
-    c := Ord(toupper(Chr(c))) - Ord(HU_FONTSTART);
-    if (c < 0) or (c >= HU_FONTSIZE) then
-    begin
-      cx := cx + 4;
-      continue;
-    end;
-
-    w := hu_fontY[c].width;
-    if (cx + w) > 320 then
-      break;
-    V_DrawPatch(cx, cy, SCN_TMP, hu_fontY[c], false);
-    cx := cx + w;
-  end;
-  Z_ChangeTag(v_translation, PU_CACHE);
-  v_translation := oldtranslation;
-
-  result.x := cx;
-  result.y := cy;
 end;
 
 //
@@ -1168,15 +990,15 @@ begin
   for i := 0 to stop - start - 1 do
   begin
     s := KeyBindingsInfo[start + i].text + ': ';
-    len := M_StringWidth(s);
-    M_WriteText(m.x, m.y + m.itemheight * i, s);
+    len := M_StringWidth(s, @hu_fontY);
+    M_WriteText(m.x, m.y + m.itemheight * i, s, ma_left, @hu_fontY, @hu_fontB);
     drawkey := true;
     if bindkeyEnter then
       if i = bindkeySlot - start then
         if (gametic div 18) mod 2 <> 0 then
           drawkey := false;
     if drawkey then
-      M_WriteWhiteText(m.x + len, m.y + m.itemheight * i, M_KeyToString(KeyBindingsInfo[start + i].pkey^));
+      M_WriteText(m.x + len, m.y + m.itemheight * i, M_KeyToString(KeyBindingsInfo[start + i].pkey^), ma_left, @hu_fontW, @hu_fontB);
   end;
 end;
 
@@ -1299,7 +1121,7 @@ begin
   for i := 0 to Ord(load_end) - 1 do
   begin
     M_DrawSaveLoadBorder(LoadDef.x, LoadDef.y + LoadDef.itemheight * i);
-    M_WriteText(LoadDef.x, LoadDef.y + LoadDef.itemheight * i, savegamestrings[i]);
+    M_WriteText(LoadDef.x, LoadDef.y + LoadDef.itemheight * i, savegamestrings[i], ma_left, @hu_fontY, @hu_fontB);
   end;
 end;
 
@@ -1341,14 +1163,14 @@ begin
   for i := 0 to Ord(load_end) - 1 do
   begin
     M_DrawSaveLoadBorder(LoadDef.x, LoadDef.y + LoadDef.itemheight * i);
-    M_WriteText(LoadDef.x, LoadDef.y + LoadDef.itemheight * i, savegamestrings[i]);
+    M_WriteText(LoadDef.x, LoadDef.y + LoadDef.itemheight * i, savegamestrings[i], ma_left, @hu_fontY, @hu_fontB);
   end;
 
   if saveStringEnter <> 0 then
   begin
-    i := M_StringWidth(savegamestrings[saveSlot]);
+    i := M_StringWidth(savegamestrings[saveSlot], @hu_fontY);
     if (gametic div 18) mod 2 = 0 then
-      M_WriteText(LoadDef.x + i, LoadDef.y + LoadDef.itemheight * saveSlot, '_');
+      M_WriteText(LoadDef.x + i, LoadDef.y + LoadDef.itemheight * saveSlot, '_', ma_left, @hu_fontY, @hu_fontB);
   end;
 end;
 
@@ -1571,8 +1393,10 @@ begin
   V_DrawPatch(20, 48, SCN_TMP, 'MENU_COM', false);
 
   dogs := GetIntegerInRange(dogs, 0, MAXPLAYERS - 1);
-  ppos := M_WriteText(CompatibilityDef.x, CompatibilityDef.y + CompatibilityDef.itemheight * Ord(cmp_dogs), 'Dogs (Marine Best Friend): ');
-  M_WriteWhiteText(ppos.x, ppos.y, itoa(dogs));
+  ppos.x := CompatibilityDef.x;
+  ppos.y := CompatibilityDef.y + CompatibilityDef.itemheight * Ord(cmp_dogs);
+  ppos := M_WriteText(ppos.x, ppos.y, 'Dogs (Marine Best Friend): ', ma_left, @hu_fontY, @hu_fontB);
+  M_WriteText(ppos.x, ppos.y, itoa(dogs), ma_left, @hu_fontW, @hu_fontB);
 end; 
 
 const
@@ -1829,8 +1653,10 @@ begin
   V_DrawPatch(108, 15, SCN_TMP, 'M_OPTTTL', false);
   V_DrawPatch(20, 48, SCN_TMP, 'MENU_CON', false);
 
-  ppos := M_WriteText(ControlsDef.x, ControlsDef.y + ControlsDef.itemheight * Ord(ctrl_keyboardmode), 'Keyboard preset: ');
-  M_WriteWhiteText(ppos.x, ppos.y, mkeyboardmodes[M_GetKeyboardMode]);
+  ppos.x := ControlsDef.x;
+  ppos.y := ControlsDef.y + ControlsDef.itemheight * Ord(ctrl_keyboardmode);
+  ppos := M_WriteText(ppos.x, ppos.y, 'Keyboard preset: ', ma_left, @hu_fontY, @hu_fontB);
+  M_WriteText(ppos.x, ppos.y, mkeyboardmodes[M_GetKeyboardMode], ma_left, @hu_fontW, @hu_fontB);
 end;
 
 procedure M_DrawSound;
@@ -1847,8 +1673,10 @@ begin
   V_DrawPatch(20, 48, SCN_TMP, 'MENU_SYS', false);
 
   M_FixScreenshotFormat;
-  ppos := M_WriteText(SystemDef.x, SystemDef.y + SystemDef.itemheight * Ord(sys_screenshottype), 'Screenshot format: ');
-  M_WriteWhiteText(ppos.x, ppos.y, screenshotformat);
+  ppos.x := SystemDef.x;
+  ppos.y := SystemDef.y + SystemDef.itemheight * Ord(sys_screenshottype);
+  ppos := M_WriteText(ppos.x, ppos.y, 'Screenshot format: ', ma_left, @hu_fontY, @hu_fontB);
+  M_WriteText(ppos.x, ppos.y, screenshotformat, ma_left, @hu_fontW, @hu_fontB);
 end;
 
 procedure M_OptionsSound(choice: integer);
@@ -2202,28 +2030,17 @@ var
 begin
   M_DrawDisplayOptions;
 
-  ppos := M_WriteText(OptionsDisplayDetailDef.x, OptionsDisplayDetailDef.y + OptionsDisplayDetailDef.itemheight * Ord(od_detaillevel), 'Detail level: ');
-  {$IFDEF OPENGL}
+  ppos.x := OptionsDisplayDetailDef.x;
+  ppos.y := OptionsDisplayDetailDef.y + OptionsDisplayDetailDef.itemheight * Ord(od_detaillevel);
+  ppos := M_WriteText(ppos.x, ppos.y, 'Detail level: ', ma_left, @hu_fontY, @hu_fontB);
   sprintf(stmp, '%s (%dx%dx32)', [detailStrings[detailLevel], SCREENWIDTH, SCREENHEIGHT]);
-  {$ELSE}
-  sprintf(stmp, '%s (%dx%dx%s)', [detailStrings[detailLevel], SCREENWIDTH, SCREENHEIGHT, colordepths[videomode = vm32bit]]);
-  {$ENDIF}
-  M_WriteWhiteText(ppos.x, ppos.y, stmp);
+  M_WriteText(ppos.x, ppos.y, stmp, ma_left, @hu_fontW, @hu_fontB);
 end;
 
 procedure M_ChangeFullScreen(choice: integer);
 begin
-  {$IFDEF OPENGL}
   GL_ChangeFullScreen(not fullscreen);
-  {$ELSE}
-  I_ChangeFullScreen((fullscreen + 1) mod NUMFULLSCREEN_MODES);
-  {$ENDIF}
 end;
-
-const
-  strfullscreenmodes: array[0..NUMFULLSCREEN_MODES - 1] of string = (
-    'SHARED', 'EXCLUSIVE', 'OFF'
-  );
 
 procedure M_DrawDisplaySetVideoMode;
 var
@@ -2232,19 +2049,20 @@ var
 begin
   M_DrawDisplayOptions;
 
-  {$IFNDEF OPENGL}
-  fullscreen := fullscreen mod NUMFULLSCREEN_MODES;
-  {$ENDIF}
-  ppos := M_WriteText(OptionsDisplayVideoModeDef.x, OptionsDisplayVideoModeDef.y + OptionsDisplayVideoModeDef.itemheight * Ord(odm_fullscreen), 'FullScreen: ');
-  M_WriteWhiteText(ppos.x, ppos.y, {$IFDEF OPENGL}yesnoStrings[fullscreen]{$ELSE}strfullscreenmodes[fullscreen]{$ENDIF});
+  ppos.x := OptionsDisplayVideoModeDef.x;
+  ppos.y := OptionsDisplayVideoModeDef.y + OptionsDisplayVideoModeDef.itemheight * Ord(odm_fullscreen);
+  ppos := M_WriteText(ppos.x, ppos.y, 'FullScreen: ', ma_left, @hu_fontY, @hu_fontB);
+  M_WriteText(ppos.x, ppos.y, yesnoStrings[fullscreen], ma_left, @hu_fontW, @hu_fontB);
 
   if mdisplaymode_idx < 0 then
     mdisplaymode_idx := 0
   else if mdisplaymode_idx >= numdisplaymodes then
     mdisplaymode_idx := numdisplaymodes - 1;
-  ppos := M_WriteText(OptionsDisplayVideoModeDef.x, OptionsDisplayVideoModeDef.y + OptionsDisplayVideoModeDef.itemheight * Ord(odm_screensize), 'Screen Size: ');
+  ppos.x := OptionsDisplayVideoModeDef.x;
+  ppos.y := OptionsDisplayVideoModeDef.y + OptionsDisplayVideoModeDef.itemheight * Ord(odm_screensize);
+  ppos := M_WriteText(ppos.x, ppos.y, 'Screen Size: ', ma_left, @hu_fontY, @hu_fontB);
   sprintf(stmp, '(%dx%d)', [displaymodes[mdisplaymode_idx].width, displaymodes[mdisplaymode_idx].height]);
-  M_WriteWhiteText(ppos.x, ppos.y, stmp);
+  M_WriteText(ppos.x, ppos.y, stmp, ma_left, @hu_fontW, @hu_fontB);
 
   M_DrawThermo(
     OptionsDisplayVideoModeDef.x, OptionsDisplayVideoModeDef.y + OptionsDisplayVideoModeDef.itemheight * (Ord(odm_screensize) + 1), 30, mdisplaymode_idx, numdisplaymodes);
@@ -2253,7 +2071,7 @@ begin
     stmp := 'No change'
   else
     sprintf(stmp, 'Set video mode to %dx%d...', [displaymodes[mdisplaymode_idx].width, displaymodes[mdisplaymode_idx].height]);
-  M_WriteText(OptionsDisplayVideoModeDef.x, OptionsDisplayVideoModeDef.y + OptionsDisplayVideoModeDef.itemheight * Ord(odm_setvideomode), stmp);
+  M_WriteText(OptionsDisplayVideoModeDef.x, OptionsDisplayVideoModeDef.y + OptionsDisplayVideoModeDef.itemheight * Ord(odm_setvideomode), stmp, ma_left, @hu_fontY, @hu_fontB);
 end;
 
 procedure M_SwitchShadeMode(choice: integer);
@@ -2271,8 +2089,10 @@ var
 begin
   M_DrawDisplayOptions;
 
-  ppos := M_WriteText(OptionsDisplayAppearanceDef.x, OptionsDisplayAppearanceDef.y + OptionsDisplayAppearanceDef.itemheight * Ord(od_shademenubackground), 'Menu background: ');
-  M_WriteWhiteText(ppos.x, ppos.y, menubackrounds[shademenubackground mod 3]);
+  ppos.x := OptionsDisplayAppearanceDef.x;
+  ppos.y := OptionsDisplayAppearanceDef.y + OptionsDisplayAppearanceDef.itemheight * Ord(od_shademenubackground);
+  ppos := M_WriteText(ppos.x, ppos.y, 'Menu background: ', ma_left, @hu_fontY, @hu_fontB);
+  M_WriteText(ppos.x, ppos.y, menubackrounds[shademenubackground mod 3], ma_left, @hu_fontW, @hu_fontB);
 end;
 
 procedure M_DrawDisplayAutomapOptions;
@@ -2293,8 +2113,10 @@ begin
   V_DrawPatch(20, 48, SCN_TMP, 'MENU_ASP', false);
 
   aspectratioidx := _nearest_aspect_index;
-  ppos := M_WriteText(OptionsDisplayAspectRatioDef.x, OptionsDisplayAspectRatioDef.y + OptionsDisplayAspectRatioDef.itemheight * Ord(oda_forceaspectratio), 'Force Aspect Ratio: ');
-  M_WriteWhiteText(ppos.x, ppos.y, straspectratios[_nearest_aspect_index]);
+  ppos.x := OptionsDisplayAspectRatioDef.x;
+  ppos.y := OptionsDisplayAspectRatioDef.y + OptionsDisplayAspectRatioDef.itemheight * Ord(oda_forceaspectratio);
+  ppos := M_WriteText(ppos.x, ppos.y, 'Force Aspect Ratio: ', ma_left, @hu_fontY, @hu_fontB);
+  M_WriteText(ppos.x, ppos.y, straspectratios[_nearest_aspect_index], ma_left, @hu_fontW, @hu_fontB);
 end;
 
 procedure M_DrawOptionsDisplayCamera;
@@ -2305,12 +2127,16 @@ begin
   V_DrawPatch(20, 48, SCN_TMP, 'MENU_CAM', false);
 
   chasecamera_viewxy := ibetween(chasecamera_viewxy, CHASECAMERA_XY_MIN, CHASECAMERA_XY_MAX);
-  ppos := M_WriteText(OptionsDisplayCameraDef.x, OptionsDisplayCameraDef.y + OptionsDisplayCameraDef.itemheight * Ord(odc_chasecameraxy), 'Chase Camera XY position: ');
-  M_WriteWhiteText(ppos.x, ppos.y, itoa(chasecamera_viewxy));
+  ppos.x := OptionsDisplayCameraDef.x;
+  ppos.y := OptionsDisplayCameraDef.y + OptionsDisplayCameraDef.itemheight * Ord(odc_chasecameraxy);
+  ppos := M_WriteText(ppos.x, ppos.y, 'Chase Camera XY position: ', ma_left, @hu_fontY, @hu_fontB);
+  M_WriteText(ppos.x, ppos.y, itoa(chasecamera_viewxy), ma_left, @hu_fontW, @hu_fontB);
 
   chasecamera_viewz := ibetween(chasecamera_viewz, CHASECAMERA_Z_MIN, CHASECAMERA_Z_MAX);
-  ppos := M_WriteText(OptionsDisplayCameraDef.x, OptionsDisplayCameraDef.y + OptionsDisplayCameraDef.itemheight * Ord(odc_chasecameraz), 'Chase Camera Z position: ');
-  M_WriteWhiteText(ppos.x, ppos.y, itoa(chasecamera_viewz));
+  ppos.x := OptionsDisplayCameraDef.x;
+  ppos.y := OptionsDisplayCameraDef.y + OptionsDisplayCameraDef.itemheight * Ord(odc_chasecameraz);
+  ppos := M_WriteText(ppos.x, ppos.y, 'Chase Camera Z position: ', ma_left, @hu_fontY, @hu_fontB);
+  M_WriteText(ppos.x, ppos.y, itoa(chasecamera_viewz), ma_left, @hu_fontY, @hu_fontB);
 
   M_DrawThermo(
     OptionsDisplayCameraDef.x, OptionsDisplayCameraDef.y + OptionsDisplayCameraDef.itemheight * (Ord(odc_chasecameraxy) + 1), 21, (chasecamera_viewxy - CHASECAMERA_XY_MIN) div 8, (CHASECAMERA_XY_MAX - CHASECAMERA_XY_MIN) div 8 + 1);
@@ -2319,84 +2145,18 @@ begin
     OptionsDisplayCameraDef.x, OptionsDisplayCameraDef.y + OptionsDisplayCameraDef.itemheight * (Ord(odc_chasecameraz) + 1), 21, (chasecamera_viewz - CHASECAMERA_Z_MIN) div 4, (CHASECAMERA_Z_MAX - CHASECAMERA_Z_MIN) div 4 + 1);
 end;
 
-{$IFNDEF OPENGL}
-var
-  lightmapcolorintensityidx: integer = DEFLMCOLORSENSITIVITY div 8;
-
-procedure M_ChangeLightmapColorIntensity(choice: integer);
-begin
-  case choice of
-    0: if lightmapcolorintensityidx > 0 then
-         dec(lightmapcolorintensityidx);
-    1: if lightmapcolorintensityidx < (MAXLMCOLORSENSITIVITY - MINLMCOLORSENSITIVITY) div 8 then
-         inc(lightmapcolorintensityidx);
-  end;
-  lightmapcolorintensity := MINLMCOLORSENSITIVITY + lightmapcolorintensityidx * 8;
-end;
-
-procedure M_ChangeLightmapFadeoutFunc(choice: integer);
-begin
-  r_lightmapfadeoutfunc :=  (r_lightmapfadeoutfunc + 1) mod NUMLIGHTMAPFADEOUTFUNCS;
-end;
-
-procedure M_ChangeLightmapLightWidthFactor(choice: integer);
-begin
-  case choice of
-    0: if lightwidthfactor > MINLIGHTWIDTHFACTOR then
-         dec(lightwidthfactor);
-    1: if lightwidthfactor < MAXLIGHTWIDTHFACTOR then
-         inc(lightwidthfactor);
-  end;
-end;
-
-procedure M_LightmapDefaults(choice: integer);
-begin
-  lightmapcolorintensity := DEFLMCOLORSENSITIVITY;
-  lightwidthfactor := DEFLIGHTWIDTHFACTOR;
-  r_lightmapfadeoutfunc := 0;
-end;
-
-const
-  strlightmapfadefunc: array[0..NUMLIGHTMAPFADEOUTFUNCS - 1] of string =
-    ('LINEAR', 'CURVED', 'PERSIST', 'COSINE', 'SIGMOID');
-
-procedure M_DrawOptionsLightmap;
-var
-  ppos: menupos_t;
-begin
-  M_DrawDisplayOptions;
-  V_DrawPatch(20, 48, SCN_TMP, 'MENU_LIG', false);
-
-  r_lightmapfadeoutfunc := ibetween(r_lightmapfadeoutfunc, 0, NUMLIGHTMAPFADEOUTFUNCS - 1);
-  lightmapcolorintensityidx := (lightmapcolorintensity - 32) div 8;
-
-  ppos := M_WriteText(OptionsLightmapDef.x, OptionsLightmapDef.y + OptionsLightmapDef.itemheight * Ord(ol_lightmapfunc), 'Fadeout function: ');
-  M_WriteWhiteText(ppos.x, ppos.y, strlightmapfadefunc[r_lightmapfadeoutfunc]);
-
-  ppos := M_WriteText(OptionsLightmapDef.x, OptionsLightmapDef.y + OptionsLightmapDef.itemheight * Ord(ol_colorintensity), 'Color intensity: ');
-  M_WriteWhiteText(ppos.x, ppos.y, itoa((lightmapcolorintensity * 100) div DEFLMCOLORSENSITIVITY) + '%');
-  M_DrawThermo(
-    OptionsLightmapDef.x, OptionsLightmapDef.y + OptionsLightmapDef.itemheight * (Ord(ol_colorintensity) + 1), 21, lightmapcolorintensityidx, (MAXLMCOLORSENSITIVITY - MINLMCOLORSENSITIVITY) div 8 + 1);
-
-  ppos := M_WriteText(OptionsLightmapDef.x, OptionsLightmapDef.y + OptionsLightmapDef.itemheight * Ord(ol_lightwidthfactor), 'Distance from source: ');
-  M_WriteWhiteText(ppos.x, ppos.y, itoa((lightwidthfactor * 100) div DEFLIGHTWIDTHFACTOR) + '%');
-  M_DrawThermo(
-    OptionsLightmapDef.x, OptionsLightmapDef.y + OptionsLightmapDef.itemheight * (Ord(ol_lightwidthfactor) + 1), 21, lightwidthfactor, MAXLIGHTWIDTHFACTOR + 1);
-end;
-{$ENDIF}
-
 procedure M_DrawOptionsDisplay32bit;
 var
   ppos: menupos_t;
 begin
   M_DrawDisplayOptions;
 
-  ppos := M_WriteText(OptionsDisplay32bitDef.x, OptionsDisplay32bitDef.y + OptionsDisplay32bitDef.itemheight * Ord(od_flatfiltering),
-    'Flat filtering: ');
-  M_WriteWhiteText(ppos.x, ppos.y, flatfilteringstrings[extremeflatfiltering]);
+  ppos.x := OptionsDisplay32bitDef.x;
+  ppos.y := OptionsDisplay32bitDef.y + OptionsDisplay32bitDef.itemheight * Ord(od_flatfiltering);
+  ppos := M_WriteText(ppos.x, ppos.y, 'Flat filtering: ', ma_left, @hu_fontY, @hu_fontB);
+  M_WriteText(ppos.x, ppos.y, flatfilteringstrings[extremeflatfiltering], ma_left, @hu_fontW, @hu_fontB);
 end;
 
-{$IFDEF OPENGL}
 procedure M_DrawOptionsDisplayOpenGL;
 begin
   M_DrawDisplayOptions;
@@ -2428,8 +2188,10 @@ begin
   M_DrawDisplayOptions;
 
   vx_maxoptimizerpasscount := GetIntegerInRange(vx_maxoptimizerpasscount, 0, MAX_VX_OPTIMIZE);
-  ppos := M_WriteText(OptionsDisplayOpenGLVoxelsDef.x, OptionsDisplayOpenGLVoxelsDef.y + OptionsDisplayOpenGLVoxelsDef.itemheight * Ord(od_glv_optimize), 'Voxel mesh optimization: ');
-  M_WriteWhiteText(ppos.x, ppos.y, str_voxeloptimizemethod[vx_maxoptimizerpasscount]);
+  ppos.x := OptionsDisplayOpenGLVoxelsDef.x;
+  ppos.y := OptionsDisplayOpenGLVoxelsDef.y + OptionsDisplayOpenGLVoxelsDef.itemheight * Ord(od_glv_optimize);
+  ppos := M_WriteText(ppos.x, ppos.y, 'Voxel mesh optimization: ', ma_left, @hu_fontY, @hu_fontB);
+  M_WriteText(ppos.x, ppos.y, str_voxeloptimizemethod[vx_maxoptimizerpasscount], ma_left, @hu_fontW, @hu_fontB);
 end;
 
 procedure M_ChangeTextureFiltering(choice: integer);
@@ -2444,10 +2206,11 @@ var
 begin
   M_DrawDisplayOptions;
 
-  ppos := M_WriteText(OptionsDisplayOpenGLFilterDef.x, OptionsDisplayOpenGLFilterDef.y + OptionsDisplayOpenGLFilterDef.itemheight * Ord(od_glf_texture_filter), 'Filter: ');
-  M_WriteWhiteText(ppos.x, ppos.y, gl_tex_filter_string);
+  ppos.x := OptionsDisplayOpenGLFilterDef.x;
+  ppos.y := OptionsDisplayOpenGLFilterDef.y + OptionsDisplayOpenGLFilterDef.itemheight * Ord(od_glf_texture_filter);
+  ppos := M_WriteText(ppos.x, ppos.y, 'Filter: ', ma_left, @hu_fontY, @hu_fontB);
+  M_WriteText(ppos.x, ppos.y, gl_tex_filter_string, ma_left, @hu_fontW, @hu_fontB);
 end;
-{$ENDIF}
 
 procedure M_Options(choice: integer);
 begin
@@ -2867,7 +2630,7 @@ begin
         begin
           if (ch >= 32) and (ch <= 127) and
              (saveCharIndex < SAVESTRINGSIZE - 1) and
-             (M_StringWidth(savegamestrings[saveSlot]) < (SAVESTRINGSIZE - 2) * 8) then
+             (M_StringWidth(savegamestrings[saveSlot], @hu_fontY) < (SAVESTRINGSIZE - 2) * 8) then
           begin
             inc(saveCharIndex);
             savegamestrings[saveSlot] := savegamestrings[saveSlot] + Chr(ch);
@@ -3342,7 +3105,7 @@ begin
   if messageToPrint <> 0 then
   begin
 
-    mheight := M_StringHeight(messageString);
+    mheight := M_StringHeight(messageString, @hu_fontY);
     y := (200 - mheight) div 2;
     mheight := y + mheight + 20;
     MT_ZeroMemory(screens[SCN_TMP], 320 * mheight);
@@ -3354,8 +3117,7 @@ begin
         y := y + hu_fontY[0].height
       else if messageString[i] = #10 then
       begin
-        x := (320 - M_StringWidth(str)) div 2;
-        M_WriteText(x, y, str);
+        M_WriteText(160, y, str, ma_center, @hu_fontY, @hu_fontB);
         str := '';
       end
       else
@@ -3363,9 +3125,8 @@ begin
     end;
     if str <> '' then
     begin
-      x := (320 - M_StringWidth(str)) div 2;
       y := y + hu_fontY[0].height;
-      M_WriteText(x, y, str);
+      M_WriteText(160, y, str, ma_center, @hu_fontY, @hu_fontB);
     end;
 
     M_FinishUpdate(mheight);
@@ -3398,11 +3159,11 @@ begin
         delete(str, 1, 1);
         if currentMenu.menuitems[i].pBoolVal <> nil then
         begin
-          ppos := M_WriteText(x, y, str + ': ');
-          M_WriteWhiteText(ppos.x, ppos.y, yesnoStrings[currentMenu.menuitems[i].pBoolVal^]);
+          ppos := M_WriteText(x, y, str + ': ', ma_left, @hu_fontY, @hu_fontB);
+          M_WriteText(ppos.x, ppos.y, yesnoStrings[currentMenu.menuitems[i].pBoolVal^], ma_left, @hu_fontW, @hu_fontB);
         end
         else
-          M_WriteText(x, y, str);
+          M_WriteText(x, y, str, ma_left, @hu_fontY, @hu_fontB);
       end
       else
         V_DrawPatch(x, y, SCN_TMP,
@@ -3412,13 +3173,13 @@ begin
   end;
 
   if currentMenu.leftMenu <> nil then
-    M_WriteWhiteText(5, 158, '<<');
+    M_WriteText(5, 158, '<<', ma_left, @hu_fontW, @hu_fontB);
 
   if currentMenu.rightMenu <> nil then
   begin
     rstr := '>>';
-    rlen := M_StringWidth(rstr);
-    M_WriteWhiteText(315 - rlen, 158, rstr);
+    rlen := M_StringWidth(rstr, @hu_fontY);
+    M_WriteText(315 - rlen, 158, rstr, ma_left, @hu_fontW, @hu_fontB);
   end;
 
   if currentMenu.itemheight > LINEHEIGHT2 then
@@ -3426,7 +3187,7 @@ begin
     V_DrawPatch(x + SKULLXOFF, currentMenu.y + SKULLYOFF + itemOn * currentMenu.itemheight, SCN_TMP,
       skullName[whichSkull], false)
   else
-    M_WriteWhiteText(x + ARROWXOFF, currentMenu.y + itemOn * currentMenu.itemheight, '-');
+    M_WriteText(x + ARROWXOFF, currentMenu.y + itemOn * currentMenu.itemheight, '-', ma_left, @hu_fontW, @hu_fontB);
 
   M_FinishUpdate(200);
 end;

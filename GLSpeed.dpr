@@ -364,7 +364,8 @@ uses
   gl_scrollingsky in 'OPENGL\gl_scrollingsky.pas',
   speed_race in 'Speed\speed_race.pas',
   speed_font in 'Speed\speed_font.pas',
-  speed_particles in 'Speed\speed_particles.pas';
+  speed_particles in 'Speed\speed_particles.pas',
+  mn_textwrite in 'Speed\mn_textwrite.pas';
 
 var
   Saved8087CW: Word;
