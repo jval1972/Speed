@@ -50,9 +50,6 @@ procedure R_InitBuffer(width, height: integer);
 //  for player rendering etc.
 procedure R_InitTranslationTables;
 
-// Rendering function.
-procedure R_FillBackScreen;
-
 // If the view size is not full screen, draws a border around it.
 procedure R_DrawViewBorder;
 
@@ -237,124 +234,6 @@ begin
   end;
 end;
 
-
-//
-// R_FillBackScreen
-// Fills the back screen with a pattern
-//  for variable screen sizes
-// Also draws a beveled edge.
-//
-procedure R_FillBackScreen;
-var
-{$IFNDEF OPENGL}
-  src: PByteArray;
-  dest: PByteArray;
-  x: integer;
-  y: integer;
-  patch: Ppatch_t;
-  tviewwindowx: integer;
-  tviewwindowy: integer;
-  tviewheight: integer;
-  tscaledviewwidth: integer;
-{$ENDIF}
-  name: string;
-begin
-  if scaledviewwidth = SCREENWIDTH then
-    exit;
-
-  if gamemode = commercial then
-    name := 'GRNROCK'   // DOOM II border patch.
-  else
-    name := 'FLOOR7_2'; // DOOM border patch.
-
-{$IFDEF OPENGL}
-  gld_DrawBackground(name);
-{$ELSE}
-
-  needsbackscreen := false;
-
-  src := W_CacheLumpName(name, PU_STATIC);
-
-  dest := screens[SCN_TMP];
-
-  for y := 0 to 200 - ST_HEIGHT do
-  begin
-    for x := 0 to 320 div 64 - 1 do
-    begin
-      memcpy(dest, PByteArray(integer(src) + _SHL(y and 63, 6)), 64);
-      dest := @dest[64];
-    end;
-    if 320 and 63 <> 0 then
-    begin
-      memcpy(dest, PByteArray(integer(src) + _SHL(y and 63, 6)), 320 and 63);
-      dest := @dest[64];
-    end;
-  end;
-
-  Z_ChangeTag(src, PU_CACHE);
-
-  tviewwindowx := viewwindowx * 320 div SCREENWIDTH + 1;
-  tviewwindowy := viewwindowy * 200 div SCREENHEIGHT + 1;
-  tviewheight := viewheight * 200 div SCREENHEIGHT - 2;
-  tscaledviewwidth := scaledviewwidth * 320 div SCREENWIDTH - 2;
-
-  patch := W_CacheLumpName('brdr_t', PU_STATIC);
-  x := 0;
-  while x < tscaledviewwidth do
-  begin
-    V_DrawPatch(tviewwindowx + x, tviewwindowy - 8, SCN_TMP, patch, false);
-    x := x + 8;
-  end;
-  Z_ChangeTag(patch, PU_CACHE);
-
-  patch := W_CacheLumpName('brdr_b', PU_STATIC);
-  x := 0;
-  while x < tscaledviewwidth do
-  begin
-    V_DrawPatch(tviewwindowx + x, tviewwindowy + tviewheight, SCN_TMP, patch, false);
-    x := x + 8;
-  end;
-  Z_ChangeTag(patch, PU_CACHE);
-
-  patch := W_CacheLumpName('brdr_l', PU_STATIC);
-  y := 0;
-  while y < tviewheight do
-  begin
-    V_DrawPatch(tviewwindowx - 8, tviewwindowy + y, SCN_TMP, patch, false);
-    y := y + 8;
-  end;
-  Z_ChangeTag(patch, PU_CACHE);
-
-  patch := W_CacheLumpName('brdr_r', PU_STATIC);
-  y := 0;
-  while y < tviewheight do
-  begin
-    V_DrawPatch(tviewwindowx + tscaledviewwidth, tviewwindowy + y, SCN_TMP, patch, false);
-    y := y + 8;
-  end;
-  Z_ChangeTag(patch, PU_CACHE);
-
-  // Draw beveled edge.
-  V_DrawPatch(tviewwindowx - 8, tviewwindowy - 8, SCN_TMP,
-    'brdr_tl', false);
-
-  V_DrawPatch(tviewwindowx + tscaledviewwidth, tviewwindowy - 8, SCN_TMP,
-    'brdr_tr', false);
-
-  V_DrawPatch(tviewwindowx - 8, tviewwindowy + tviewheight, SCN_TMP,
-    'brdr_bl', false);
-
-  V_DrawPatch(tviewwindowx + tscaledviewwidth, tviewwindowy + tviewheight, SCN_TMP,
-    'brdr_br', false);
-
-  V_RemoveTransparency(SCN_TMP, 0, -1);
-  V_CopyRect(0, 0, SCN_TMP, V_GetScreenWidth(SCN_TMP), V_GetScreenHeight(SCN_TMP), 0, 0, SCN_BG, true);
-
-  R_ScreenBlanc(SCN_BG);
-  x := V_PreserveY(ST_Y) * V_GetScreenWidth(SCN_BG); //SCREENWIDTH;
-  R_VideoBlanc(SCN_BG, x, (V_GetScreenHeight(SCN_BG) - V_PreserveY(ST_Y)) * V_GetScreenWidth(SCN_BG));
-{$ENDIF}
-end;
 
 //
 // Copy a screen buffer.

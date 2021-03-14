@@ -171,75 +171,6 @@ begin
           // Ouch.
         end;
       end;
-    // DOOM II and missions packs with E1, M34
-    commercial:
-      begin
-        S_ChangeMusic(Ord(mus_read_m), true);
-        case gamemap of
-          6:
-            begin
-              finaleflat := bgflat06;
-              case gamemission of
-                pack_tnt: finaletext := T1TEXT;
-                pack_plutonia: finaletext := P1TEXT;
-              else
-                finaletext := C1TEXT;
-              end;
-            end;
-         11:
-            begin
-              finaleflat := bgflat11;
-              case gamemission of
-                pack_tnt: finaletext := T2TEXT;
-                pack_plutonia: finaletext := P2TEXT;
-              else
-                finaletext := C2TEXT;
-              end;
-            end;
-         20:
-            begin
-              finaleflat := bgflat20;
-              case gamemission of
-                pack_tnt: finaletext := T3TEXT;
-                pack_plutonia: finaletext := P3TEXT;
-              else
-                finaletext := C3TEXT;
-              end;
-            end;
-         30:
-            begin
-              finaleflat := bgflat30;
-              case gamemission of
-                pack_tnt: finaletext := T4TEXT;
-                pack_plutonia: finaletext := P4TEXT;
-              else
-                finaletext := C4TEXT;
-              end;
-            end;
-         15:
-            begin
-              finaleflat := bgflat15;
-              case gamemission of
-                pack_tnt: finaletext := T5TEXT;
-                pack_plutonia: finaletext := P5TEXT;
-              else
-                finaletext := C5TEXT;
-              end;
-            end;
-         31:
-            begin
-              finaleflat := bgflat31;
-              case gamemission of
-                pack_tnt: finaletext := T6TEXT;
-                pack_plutonia: finaletext := P6TEXT;
-              else
-                finaletext := C6TEXT;
-              end;
-            end;
-        else
-        // Ouch.
-        end;
-      end;
   else
     begin
       S_ChangeMusic(Ord(mus_read_m), true);
@@ -266,26 +197,6 @@ procedure F_Ticker;
 var
   i: integer;
 begin
-  // check for skipping
-  if (gamemode = commercial) and (finalecount > 50) then
-  begin
-    // go on to the next level
-    i := 0;
-    while i < MAXPLAYERS do
-    begin
-      if players[i].cmd.buttons <> 0 then
-        break;
-      inc(i);
-    end;
-    if i < MAXPLAYERS then
-    begin
-      if gamemap = 30 then
-        F_StartCast
-      else
-        gameaction := ga_worlddone;
-    end;
-  end;
-
   // advance animation
   inc(finalecount);
 
@@ -294,9 +205,6 @@ begin
     F_CastTicker;
     exit;
   end;
-
-  if gamemode = commercial then
-    exit;
 
   if (finalestage = 0) and (finalecount > Length(finaletext) * TEXTSPEED + TEXTWAIT) then
   begin

@@ -192,13 +192,8 @@ var
   lump: integer;
 begin
   lump := W_CheckNumForName('STTMINUS');
-  if lump = -1 then
-    oldversion := true;
 
-  if oldsharewareversion or oldversion then
-    sttminus := Ppatch_t(W_CacheLumpName('STCFN046', PU_STATIC))
-  else
-    sttminus := Ppatch_t(W_CacheLumpNum(lump, PU_STATIC));
+  sttminus := Ppatch_t(W_CacheLumpNum(lump, PU_STATIC));
 end;
 
 // ?

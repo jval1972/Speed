@@ -135,7 +135,6 @@ uses
   d_notifications,
   c_con,
   c_cmds,
-  d_check,
   e_endoom,
   f_finale,
   m_argv,
@@ -465,7 +464,6 @@ begin
   begin
     if (amstate <> am_only) and (gametic <> 0) then
     begin
-      R_FillBackScreen; // draw the pattern into the back screen
       D_RenderPlayerView(@players[displayplayer]);
     end;
   end;
@@ -589,16 +587,10 @@ begin
   case demosequence of
     0:
       begin
-        if gamemode = commercial then
-          pagetic := TICRATE * 11
-        else
-          pagetic := (TICRATE * 170) div 35;
+        pagetic := (TICRATE * 170) div 35;
         gamestate := GS_DEMOSCREEN;
-        pagename := decide(customgame = cg_bfg2, pg_DMENUPIC, pg_TITLE);
-        if gamemode = commercial then
-          S_StartMusic(Ord(mus_dm2ttl))
-        else
-          S_StartMusic(Ord(mus_intro));
+        pagename := pg_TITLE;
+        S_StartMusic(Ord(mus_intro));
       end;
     1:
       begin
@@ -617,20 +609,11 @@ begin
     4:
       begin
         gamestate := GS_DEMOSCREEN;
-        if gamemode = commercial then
-        begin
-          pagetic := TICRATE * 11;
-          pagename := decide(customgame = cg_bfg2, pg_DMENUPIC, pg_TITLE); 
-          S_StartMusic(Ord(mus_dm2ttl));
-        end
+        pagetic := (TICRATE * 200) div 35;
+        if gamemode = retail then
+          pagename := pg_CREDIT
         else
-        begin
-          pagetic := (TICRATE * 200) div 35;
-          if gamemode = retail then
-            pagename := pg_CREDIT
-          else
-            pagename := pg_HELP2;
-        end;
+          pagename := pg_HELP2;
       end;
     5:
       begin
@@ -669,7 +652,6 @@ begin
     try
       wadfiles.Add(fname);
       PAK_AddFile(fname);
-      D_CheckCustomWad(fname);
     except
       printf('D_AddFile(): Can not add %s'#13#10, [fname]);
     end;
@@ -1251,14 +1233,6 @@ begin
            '                           '#13#10,
             [VERSION div 100, 2, VERSION mod 100]);
       end;
-    commercial:
-      begin
-        printf(
-           '                         ' +
-           'DOOM 2: Hell on Earth v%d.%.*d' +
-           '                           '#13#10,
-            [VERSION div 100, 2, VERSION mod 100]);
-      end;
   else
       printf(
          '                         ' +
@@ -1769,14 +1743,6 @@ begin
     if not DEH_ParseLumpName('GAMEDEF') then
       I_Warning('DEH_ParseLumpName(): GAMEDEF lump not found, using defaults.'#13#10);
 
-  if customgame in [cg_chex, cg_chex2] then
-    if not DEH_ParseLumpName('CHEX.DEH') then
-      I_Warning('DEH_ParseLumpName(): GAMEDEF lump for CHEX QUEST not found, using defaults.'#13#10);
-
-  if customgame = cg_hacx then
-    if not DEH_ParseLumpName('HACX.DEH') then
-      I_Warning('DEH_ParseLumpName(): GAMEDEF lump for HACX not found, using defaults.'#13#10);
-
   SUC_Progress(41);
 
   printf('SC_Init: Initializing script engine.'#13#10);
@@ -1878,66 +1844,17 @@ begin
       SUC_SetGameMode('Shareware Doom');
       {$ENDIF}
     end
-    else if W_CheckNumForName('map01') <> -1 then
-    begin
-      gamemode := commercial;
-      if Pos('TNT.WAD', strupper(doomcwad)) > 0 then
-      begin
-        gamemission := pack_tnt;
-        {$IFNDEF FPC}
-        SUC_SetGameMode('TNT Evilution');
-        {$ENDIF}
-      end
-      else if Pos('PLUTONIA.WAD', strupper(doomcwad)) > 0 then
-      begin
-        gamemission := pack_plutonia;
-        {$IFNDEF FPC}
-        SUC_SetGameMode('The Plutonia Experiment');
-        {$ENDIF}
-      end
-      else
-      begin
-        gamemission := doom2;
-        {$IFNDEF FPC}
-        if customgame = cg_freedoom then
-          SUC_SetGameMode('FREEDOOM')
-        else
-          SUC_SetGameMode('DOOM2: Hell On Earth');
-        {$ENDIF}
-      end;
-    end
     else
       I_Error('Game mode indetermined'#13#10);
   end
   else
   begin
-    {$IFNDEF FPC}
-    if customgame = cg_chex then
-      SUC_SetGameMode('Chex Quest')
-    else if customgame = cg_chex2 then
-       SUC_SetGameMode('Chex Quest 2')
-    else if customgame = cg_freedoom then
-       SUC_SetGameMode('FREEDOOM')
-    else if customgame = cg_bfg2 then
-       SUC_SetGameMode('DOOM2: BFG Edition')
-    else if customgame = cg_hacx then
-       SUC_SetGameMode('HACX')
-    else if (gamemission = doom) and (gamemode = retail) then
+    if (gamemission = doom) and (gamemode = retail) then
       SUC_SetGameMode('Ultimate Doom')
     else if (gamemission = doom) and (gamemode = registered) then
       SUC_SetGameMode('Registered Doom')
     else if (gamemission = doom) and (gamemode = shareware) then
-      SUC_SetGameMode('Shareware Doom')
-    else if gamemode = commercial then
-    begin
-      if gamemission = pack_tnt then
-        SUC_SetGameMode('TNT Evilution')
-      else if gamemission = pack_plutonia then
-        SUC_SetGameMode('The Plutonia Experiment')
-      else if gamemission = doom2 then
-        SUC_SetGameMode('DOOM2: Hell On Earth');
-    end;
-    {$ENDIF}
+      SUC_SetGameMode('Shareware Doom');
   end;
 
   SUC_Progress(59);
@@ -1950,19 +1867,11 @@ begin
   p := M_CheckParm('-warp');
   if (p <> 0) and (p < myargc - 1) then
   begin
-    if gamemode = commercial then
+    if p < myargc - 2 then
     begin
-      startmap := atoi(myargv[p + 1]);
+      startepisode := atoi(myargv[p + 1]);
+      startmap := atoi(myargv[p + 2]);
       autostart := true;
-    end
-    else
-    begin
-      if p < myargc - 2 then
-      begin
-        startepisode := atoi(myargv[p + 1]);
-        startmap := atoi(myargv[p + 2]);
-        autostart := true;
-      end;
     end;
   end;
 
@@ -2032,8 +1941,7 @@ begin
     indetermined:
       printf(MSG_SHAREWARE);
     registered,
-    retail,
-    commercial:
+    retail:
       printf(MSG_COMMERCIAL);
   else
     begin

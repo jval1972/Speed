@@ -276,10 +276,6 @@ begin
        (player.ammo[Ord(am_cell)] <> 0) and
       (gamemode <> shareware) then
       player.pendingweapon := wp_plasma
-    else if (player.weaponowned[Ord(wp_supershotgun)] <> 0) and
-            (player.ammo[Ord(am_shell)] > 2) and
-            (gamemode = commercial) then
-      player.pendingweapon := wp_supershotgun
     else if (player.weaponowned[Ord(wp_chaingun)] <> 0) and
             (player.ammo[Ord(am_clip)] <> 0) then
       player.pendingweapon := wp_chaingun

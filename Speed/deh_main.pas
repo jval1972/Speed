@@ -1148,14 +1148,6 @@ begin
             if par_map in [1..9] then
               if par_time >= 0 then // JVAL =0 ????
                 pars[par_episode, par_map] := par_time;
-        end
-        else
-        begin // Doom2, Plutonia, TNT
-          par_map := atoi(token2, -1);
-          par_time := atoi(token3, -1);
-          if par_map in [1..32] then
-            if par_time >= 0 then // JVAL =0 ????
-              cpars[par_map - 1] := par_time;
         end;
 
       end;
@@ -1643,9 +1635,6 @@ begin
   for i := 1 to 3 do
     for j := 1 to 9 do
       result.Add('PAR %d %d %d', [i, j, pars[i, j]]);
-  result.Add('# Doom 2 (commercial)');
-  for i := 0 to 31 do
-    result.Add('PAR %d %d', [i + 1, cpars[i]]);
 
   result.Add('');
 
@@ -2741,7 +2730,6 @@ begin
   DEH_AddString(@deh_strings, @castorder[16].name, 'CC_HERO');
 
   DEH_AddString(@deh_strings, @pg_CREDIT, 'PAGE_CREDIT');
-  DEH_AddString(@deh_strings, @pg_HELP, 'PAGE_HELP');
   DEH_AddString(@deh_strings, @pg_HELP1, 'PAGE_HELP1');
   DEH_AddString(@deh_strings, @pg_HELP2, 'PAGE_HELP2');
   DEH_AddString(@deh_strings, @pg_VICTORY2, 'PAGE_VICTORY2');

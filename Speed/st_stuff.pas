@@ -388,9 +388,6 @@ var
 // main bar left
   sbar: Ppatch_t;
 
-// main bar right (for old shareware 0.99 version)
-  sbar2: Ppatch_t;
-
 // medikit
   smedikit: integer;
 // Weapons ammo for small display
@@ -789,8 +786,6 @@ begin
   if st_statusbaron then
   begin
     V_DrawPatch(ST_X, 0, SCN_ST, sbar, false);
-    if oldsharewareversion then
-      V_DrawPatch(ST_X2, 0, SCN_ST, sbar2, false);
     if netgame then
       V_DrawPatch(ST_FX, 0, SCN_ST, faceback, false);
   end;
@@ -893,26 +888,14 @@ begin
         plyr._message := STSTR_MUS;
         cht_GetParam(@cheat_mus, buf);
 
-        if gamemode = commercial then
-        begin
-          musnum := Ord(mus_runnin) + (Ord(buf[1]) - Ord('0')) * 10 + Ord(buf[2]) - Ord('0') - 1;
+        musnum := Ord(mus_e1m1) + (Ord(buf[1]) - Ord('1')) * 9 + Ord(buf[2]) - Ord('1');
 
-          if (Ord(buf[1]) - Ord('0')) * 10 + Ord(buf[2]) - Ord('0') > 35 then
-            plyr._message := STSTR_NOMUS
-          else
-            S_ChangeMusic(musnum, true);
-        end
+        if (musnum > 0) and (buf[2] <> '0') and
+           ( ((musnum < 28) and (gamemode <> shareware)) or
+             ((musnum < 10) and (gamemode = shareware))) then
+          S_ChangeMusic(musnum, true)
         else
-        begin
-          musnum := Ord(mus_e1m1) + (Ord(buf[1]) - Ord('1')) * 9 + Ord(buf[2]) - Ord('1');
-
-          if (musnum > 0) and (buf[2] <> '0') and
-             ( ((musnum < 28) and (gamemode <> shareware)) or
-               ((musnum < 10) and (gamemode = shareware))) then
-            S_ChangeMusic(musnum, true)
-          else
-            plyr._message := STSTR_NOMUS;
-        end;
+          plyr._message := STSTR_NOMUS;
       end
       // Simplified, accepting both "noclip" and "idspispopd".
       // no clipping mode cheat
@@ -962,19 +945,11 @@ begin
       cht_GetParam(@cheat_clev, buf);
       plyr._message := STSTR_WLEV;
 
-      if gamemode = commercial then
-      begin
-        epsd := 0;
-        map := (Ord(buf[1]) - Ord('0')) * 10 + Ord(buf[2]) - Ord('0');
-      end
-      else
-      begin
-        epsd := Ord(buf[1]) - Ord('0');
-        map := Ord(buf[2]) - Ord('0');
-        // Catch invalid maps.
-        if epsd < 1 then
-          exit;
-      end;
+      epsd := Ord(buf[1]) - Ord('0');
+      map := Ord(buf[2]) - Ord('0');
+      // Catch invalid maps.
+      if epsd < 1 then
+        exit;
 
       if map < 1 then
         exit;
@@ -991,18 +966,6 @@ begin
       if (gamemode = shareware) and
          ((epsd > 1) or (map > 9)) then
         exit;
-
-      if (gamemode = commercial) and
-         ((epsd > 1) or (map > 34)) then
-        exit;
-
-      // JVAL: Chex Support
-      if customgame in [cg_chex, cg_chex2] then
-      begin
-        epsd := 1;
-        if map > 5 then
-          map := 5;
-      end;
 
       // So be it.
       if W_CheckNumForName(P_GetMapName(epsd, map)) > -1 then
@@ -1324,10 +1287,6 @@ begin
   else
     palette := 0;
 
-  if customgame in [cg_chex, cg_chex2] then
-    if (palette >= STARTREDPALS) and (palette < STARTREDPALS + NUMREDPALS) then
-      palette := RADIATIONPAL;
-          
   if palette <> st_palette then
   begin
     st_palette := palette;
@@ -1520,17 +1479,8 @@ begin
   faceback := Ppatch_t(W_CacheLumpName(namebuf, PU_STATIC));
 
   // status bar background bits
-  lump :=  W_CheckNumForName('STBAR');
-  if lump = -1 then
-  begin
-    oldsharewareversion := true;
-    lump :=  W_CheckNumForName('STMBARL');
-    sbar := Ppatch_t(W_CacheLumpNum(lump, PU_STATIC));
-    lump :=  W_CheckNumForName('STMBARR');
-    sbar2 := Ppatch_t(W_CacheLumpNum(lump, PU_STATIC));
-  end
-  else
-    sbar := Ppatch_t(W_CacheLumpNum(lump, PU_STATIC));
+  lump :=  W_GetNumForName('STBAR');
+  sbar := Ppatch_t(W_CacheLumpNum(lump, PU_STATIC));
 
 // JVAL
 // Statusbar medikit, use stimpack patch (STIMA0)
@@ -1607,8 +1557,6 @@ begin
     Z_ChangeTag(keys[i], PU_CACHE);
 
   Z_ChangeTag(sbar, PU_CACHE);
-  if oldsharewareversion then
-    Z_ChangeTag(sbar2, PU_CACHE);
   Z_ChangeTag(faceback, PU_CACHE);
 
   for i := 0 to ST_NUMFACES - 1 do

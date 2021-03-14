@@ -500,9 +500,6 @@ var
   i: integer;
   a: Pwianim_t;
 begin
-  if gamemode = commercial then
-    exit;
-
   if wbs.epsd > 2 then
     exit;
 
@@ -528,9 +525,6 @@ var
   i: integer;
   a: Pwianim_t;
 begin
-  if gamemode = commercial then
-    exit;
-
   if wbs.epsd > 2 then
     exit;
 
@@ -581,9 +575,6 @@ var
   i: integer;
   a: Pwianim_t;
 begin
-  if gamemode = commercial then
-    exit;
-
   if wbs.epsd > 2 then
     exit;
 
@@ -755,36 +746,31 @@ var
   i: integer;
   last: integer;
 begin
-  if gamemode <> commercial then
+  if wbs.epsd > 2 then
   begin
-    if wbs.epsd > 2 then
-    begin
-      WI_DrawEL;
-      exit;
-    end;
-
-    if wbs.last = 8 then
-      last := wbs.next - 1
-    else
-      last := wbs.last;
-
-    // draw a splat on taken cities.
-    for i := 0 to last do
-      WI_DrawOnLnode(i, @splat);
-
-    // splat the secret level?
-    if wbs.didsecret then
-      WI_DrawOnLnode(8, @splat);
-
-    // draw flashing ptr
-    if snl_pointeron then
-      WI_DrawOnLnode(wbs.next, @yah);
+    WI_DrawEL;
+    exit;
   end;
 
+  if wbs.last = 8 then
+    last := wbs.next - 1
+  else
+    last := wbs.last;
+
+  // draw a splat on taken cities.
+  for i := 0 to last do
+    WI_DrawOnLnode(i, @splat);
+
+  // splat the secret level?
+  if wbs.didsecret then
+    WI_DrawOnLnode(8, @splat);
+
+  // draw flashing ptr
+  if snl_pointeron then
+    WI_DrawOnLnode(wbs.next, @yah);
+
   // draws which level you are entering..
-  if (gamemode <> commercial) or
-     (wbs.next <> 30) then
-    WI_DrawEL;
+  WI_DrawEL;
 end;
 
 procedure WI_DrawNoState;
@@ -917,10 +903,7 @@ begin
     begin
       S_StartSound(nil, Ord(sfx_slop));
 
-      if gamemode = commercial then
-        WI_InitNoState
-      else
-        WI_InitShowNextLoc;
+      WI_InitShowNextLoc;
     end;
   end
   else if dm_state and 1 <> 0 then
@@ -1173,10 +1156,7 @@ begin
     if acceleratestage <> 0 then
     begin
       S_StartSound(nil, Ord(sfx_sgcock));
-      if gamemode = commercial then
-        WI_InitNoState
-      else
-        WI_InitShowNextLoc;
+      WI_InitShowNextLoc;
     end;
   end
   else if ng_state and 1 <> 0 then
@@ -1345,10 +1325,7 @@ begin
     begin
       S_StartSound(nil, Ord(sfx_sgcock));
 
-      if gamemode = commercial then
-        WI_InitNoState
-      else
-        WI_InitShowNextLoc;
+      WI_InitShowNextLoc;
     end;
   end
   else if sp_state and 1 <> 0 then
@@ -1433,10 +1410,7 @@ begin
   if bcnt = 1 then
   begin
     // intermission music
-    if gamemode = commercial then
-      S_ChangeMusic(Ord(mus_dm2int), true)
-    else
-      S_ChangeMusic(Ord(mus_inter), true);
+    S_ChangeMusic(Ord(mus_inter), true);
   end;
 
   WI_checkForAccelerate;
@@ -1471,78 +1445,56 @@ var
   a: Pwianim_t;
   name: string;
 begin
-  if gamemode = commercial then
-    wibackground := 'INTERPIC'
-  else
-    sprintf(wibackground, 'WIMAP%d', [wbs.epsd]);
+  sprintf(wibackground, 'WIMAP%d', [wbs.epsd]);
 
   if gamemode = retail then
     if wbs.epsd = 3 then
       wibackground := 'INTERPIC';
 
-  if gamemode = commercial then
+  lnamessize := NUMMAPS; // JVAL: VERSION 204
+  lnames :=
+    Ppatch_tPArray(
+      Z_Malloc(SizeOf(Ppatch_t) * NUMMAPS, PU_STATIC, nil));
+  for i := 0 to NUMMAPS - 1 do
   begin
-    NUMCMAPS := 32;
-    lnamessize := NUMCMAPS; // JVAL: VERSION 204
-    lnames :=
-      Ppatch_tPArray(
-        Z_Malloc(SizeOf(Ppatch_t) * NUMCMAPS, PU_STATIC, nil));
-    for i := 0 to NUMCMAPS - 1 do
-    begin
-      name := 'CWILV' + IntToStrZfill(2, i); // JVAL: was sprintf(name, 'CWILV%2.2d', i);
-      lnames[i] := W_CacheLumpName(name, PU_STATIC);
-    end;
-  end
-  else
+    sprintf(name, 'WILV%d%d', [wbs.epsd, i]);
+    lnames[i] := W_CacheLumpName(name, PU_STATIC);
+  end;
+
+  // you are here
+  yah[0] := W_CacheLumpName('WIURH0', PU_STATIC);
+
+  // you are here (alt.)
+  yah[1] := W_CacheLumpName('WIURH1', PU_STATIC);
+
+  // splat
+  splat := W_CacheLumpName('WISPLAT', PU_STATIC);
+
+  if wbs.epsd < 3 then
   begin
-    lnamessize := NUMMAPS; // JVAL: VERSION 204
-    lnames :=
-      Ppatch_tPArray(
-        Z_Malloc(SizeOf(Ppatch_t) * NUMMAPS, PU_STATIC, nil));
-    for i := 0 to NUMMAPS - 1 do
+    for j := 0 to NUMANIMS[wbs.epsd] - 1 do
     begin
-      sprintf(name, 'WILV%d%d', [wbs.epsd, i]);
-      lnames[i] := W_CacheLumpName(name, PU_STATIC);
-    end;
-
-    // you are here
-    yah[0] := W_CacheLumpName('WIURH0', PU_STATIC);
-
-    // you are here (alt.)
-    yah[1] := W_CacheLumpName('WIURH1', PU_STATIC);
-
-    // splat
-    splat := W_CacheLumpName('WISPLAT', PU_STATIC);
-
-    if wbs.epsd < 3 then
-    begin
-      for j := 0 to NUMANIMS[wbs.epsd] - 1 do
+      a := @anims[wbs.epsd, j];
+      for i := 0 to a.nanims - 1 do
       begin
-        a := @anims[wbs.epsd, j];
-        for i := 0 to a.nanims - 1 do
+        // MONDO HACK!
+        if (wbs.epsd <> 1) or (j <> 8) then
         begin
-          // MONDO HACK!
-          if (wbs.epsd <> 1) or (j <> 8) then
-          begin
-            // animations
-            sprintf(name, 'WIA%d%.2d%.2d', [wbs.epsd, j, i]); // JVAL ????
-            a.p[i] := W_CacheLumpName(name, PU_STATIC);
-          end
-          else
-          begin
-          // HACK ALERT!
-            a.p[i] := anims[1, 4].p[i];
-          end;
+          // animations
+          sprintf(name, 'WIA%d%.2d%.2d', [wbs.epsd, j, i]); // JVAL ????
+          a.p[i] := W_CacheLumpName(name, PU_STATIC);
+        end
+        else
+        begin
+        // HACK ALERT!
+          a.p[i] := anims[1, 4].p[i];
         end;
       end;
     end;
   end;
 
   // More hacks on minus sign.
-  if oldsharewareversion or oldversion then
-    wiminus := W_CacheLumpName('STCFN046', PU_STATIC)
-  else
-    wiminus := W_CacheLumpName('WIMINUS', PU_STATIC);
+  wiminus := W_CacheLumpName('WIMINUS', PU_STATIC);
 
   for i := 0 to 9 do
   begin
@@ -1633,29 +1585,21 @@ begin
   for i := 0 to 9 do
     Z_ChangeTag(num[i], PU_CACHE);
 
-  if gamemode = commercial then
+  Z_ChangeTag(yah[0], PU_CACHE);
+  Z_ChangeTag(yah[1], PU_CACHE);
+
+  Z_ChangeTag(splat, PU_CACHE);
+
+  for i := 0 to NUMMAPS - 1 do
+    Z_ChangeTag(lnames[i], PU_CACHE);
+
+  if wbs.epsd < 3 then
   begin
-    for i := 0 to NUMCMAPS - 1 do
-      Z_ChangeTag(lnames[i], PU_CACHE);
-  end
-  else
-  begin
-    Z_ChangeTag(yah[0], PU_CACHE);
-    Z_ChangeTag(yah[1], PU_CACHE);
-
-    Z_ChangeTag(splat, PU_CACHE);
-
-    for i := 0 to NUMMAPS - 1 do
-      Z_ChangeTag(lnames[i], PU_CACHE);
-
-    if wbs.epsd < 3 then
+    for j := 0 to NUMANIMS[wbs.epsd] - 1 do
     begin
-      for j := 0 to NUMANIMS[wbs.epsd] - 1 do
-      begin
-        if (wbs.epsd <> 1) or (j <> 8) then
-          for i := 0 to anims[wbs.epsd, j].nanims - 1 do
-            Z_ChangeTag(anims[wbs.epsd, j].p[i], PU_CACHE);
-      end;
+      if (wbs.epsd <> 1) or (j <> 8) then
+        for i := 0 to anims[wbs.epsd, j].nanims - 1 do
+          Z_ChangeTag(anims[wbs.epsd, j].p[i], PU_CACHE);
     end;
   end;
 

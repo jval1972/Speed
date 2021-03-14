@@ -247,9 +247,6 @@ var
 // DOOM Par Times
   pars: array[1..3, 1..9] of integer;
 
-// DOOM II Par Times
-  cpars: array[0..31] of integer;
-
 var
   p_initialbullets: integer = 50;
   allowvanillademos: boolean = true;
@@ -1065,26 +1062,10 @@ begin
   //  setting one.
   skyflatnum := R_FlatNumForName(SKYFLATNAME);
 
-  // DOOM determines the sky texture to be used
-  // depending on the current episode, and the game version.
-  if (gamemode = commercial) or
-     (gamemission = pack_tnt) or
-     (gamemission = pack_plutonia) then
-  begin
-    if gamemap < 12 then
-      skytexture := R_TextureNumForName('SKY1')
-    else if gamemap < 21 then
-      skytexture := R_TextureNumForName('SKY2')
-    else
-      skytexture := R_TextureNumForName('SKY3');
-  end
+  if gameepisode < 5 then
+    skytexture := R_TextureNumForName('SKY' + Chr(Ord('0') + gameepisode))
   else
-  begin
-    if gameepisode < 5 then
-      skytexture := R_TextureNumForName('SKY' + Chr(Ord('0') + gameepisode))
-    else
-      skytexture := R_TextureNumForName('SKY1');
-  end;
+    skytexture := R_TextureNumForName('SKY1');
 
   if wipegamestate = Ord(GS_LEVEL) then
     wipegamestate := -1;  // force a wipe
@@ -1736,10 +1717,7 @@ end;
 procedure G_SecretExitLevel;
 begin
   // IF NO WOLF3D LEVELS, NO SECRET EXIT!
-  if (gamemode = commercial) and (W_CheckNumForName('map31') < 0) then
-    secretexit := false
-  else
-    secretexit := true;
+  secretexit := true;
   gameaction := ga_completed;
 end;
 
@@ -1759,90 +1737,44 @@ begin
     AM_Stop;
   end;
 
-  if gamemode <> commercial then
-  begin
-    case gamemap of
-      8:
-        begin
-          gameaction := ga_victory;
-          exit;
-        end;
-      9:
-        begin
-          for i := 0 to MAXPLAYERS - 1 do
-            players[i].didsecret := true;
-        end;
-    end;
+  case gamemap of
+    8:
+      begin
+        gameaction := ga_victory;
+        exit;
+      end;
+    9:
+      begin
+        for i := 0 to MAXPLAYERS - 1 do
+          players[i].didsecret := true;
+      end;
   end;
-
-  // JVAL: Chex Support
-  if customgame in [cg_chex, cg_chex2] then
-    if gamemap  = 5 then
-    begin
-      gameaction := ga_victory;
-      exit;
-    end;
-
-  // JVAL: Hacx Support
-  if customgame = cg_hacx then
-    if gamemap  = 20 then
-    begin
-      gameaction := ga_victory;
-      exit;
-    end;
 
   wminfo.didsecret := players[consoleplayer].didsecret;
   wminfo.epsd := gameepisode - 1;
   wminfo.last := gamemap - 1;
 
   // wminfo.next is 0 biased, unlike gamemap
-  if gamemode = commercial then
+  if secretexit then
+    wminfo.next := 8  // go to secret level
+  else if gamemap = 9 then
   begin
-    if secretexit then
-    begin
-      case gamemap of
-         2: if customgame = cg_bfg2 then wminfo.next := 32;
-        15: wminfo.next := 30;
-        31: wminfo.next := 31;
-      end
-    end
-    else
-    begin
-      case gamemap of
-        31,
-        32: wminfo.next := 15;
-        33: if customgame = cg_bfg2 then wminfo.next := 2;
-      else
-        wminfo.next := gamemap;
-      end;
+    // returning from secret level
+    case gameepisode of
+      1: wminfo.next := 3;
+      2: wminfo.next := 5;
+      3: wminfo.next := 6;
+      4: wminfo.next := 2;
     end
   end
   else
-  begin
-    if secretexit then
-      wminfo.next := 8  // go to secret level
-    else if gamemap = 9 then
-    begin
-      // returning from secret level
-      case gameepisode of
-        1: wminfo.next := 3;
-        2: wminfo.next := 5;
-        3: wminfo.next := 6;
-        4: wminfo.next := 2;
-      end
-    end
-    else
-      wminfo.next := gamemap; // go to next level
-  end;
+    wminfo.next := gamemap; // go to next level
 
   wminfo.maxkills := totalkills;
   wminfo.maxitems := totalitems;
   wminfo.maxsecret := totalsecret;
   wminfo.maxfrags := 0;
-  if gamemode = commercial then
-    wminfo.partime := TICRATE * cpars[gamemap - 1]
-  else
-    wminfo.partime := TICRATE * pars[gameepisode][gamemap];
+  wminfo.partime := TICRATE * pars[gameepisode][gamemap];
   wminfo.pnum := consoleplayer;
 
   for i := 0 to MAXPLAYERS - 1 do
@@ -1874,17 +1806,6 @@ begin
 
   if secretexit then
     players[consoleplayer].didsecret := true;
-
-  if gamemode = commercial then
-  begin
-    if secretexit then
-    begin
-      if gamemap in [15, 31, 6, 11, 20, 30] then
-        F_StartFinale
-    end
-    else if gamemap in [6, 11, 20, 30] then
-      F_StartFinale;
-  end;
 end;
 
 procedure G_DoWorldDone;
@@ -2252,29 +2173,16 @@ begin
 
   mapname := strupper(parm1);
 
-  if gamemode = commercial then
-  begin
-    epsd := 0;
-    map := atoi(parm1);
-    if (mapname[1] = 'M') then
-      if length(mapname) = 5 then
-        if (mapname[2] = 'A') and
-           (mapname[3] = 'P') then
-          map := atoi(mapname[4] + mapname[5]);
-  end
-  else
-  begin
-    epsd := atoi(parm1);
-    map := atoi(parm2);
-    if parm2 = '' then
-      if (mapname[1] = 'E') then
-        if length(mapname) = 4 then
-          if (mapname[3] = 'M') then
-          begin
-            epsd := atoi(mapname[2]);
-            map := atoi(mapname[4]);
-          end;
-  end;
+  epsd := atoi(parm1);
+  map := atoi(parm2);
+  if parm2 = '' then
+    if (mapname[1] = 'E') then
+      if length(mapname) = 4 then
+        if (mapname[3] = 'M') then
+        begin
+          epsd := atoi(mapname[2]);
+          map := atoi(mapname[4]);
+        end;
 
   if W_CheckNumForName(P_GetMapName(epsd, map)) > -1 then
   begin
@@ -2296,16 +2204,8 @@ begin
     exit;
   end;
 
-  if gamemode = commercial then
-  begin
-    epsd := 0;
-    map := 99;
-  end
-  else
-  begin
-    epsd := 9;
-    map := 9;
-  end;
+  epsd := 9;
+  map := 9;
 
   if W_CheckNumForName(P_GetMapName(epsd, map)) > -1 then
   begin
@@ -2376,26 +2276,8 @@ begin
     if map < 1 then
       map := 1;
 
-    if (map > 9) and (gamemode <> commercial) then
+    if map > 9 then
       map := 9;
-
-    // JVAL: Chex Support
-    if customgame in [cg_chex, cg_chex2] then
-    begin
-      if map > 5 then
-        map := 5;
-      if episode > 1 then
-        episode := 1;
-    end;
-
-    // JVAL: Hacx Support
-    if customgame = cg_hacx then
-    begin
-      if map > 20 then
-        map := 20;
-      if episode > 1 then
-        episode := 1;
-    end;
   end;
 
   levelinf := P_GetLevelInfo(P_GetMapName(episode, map));
@@ -2842,12 +2724,6 @@ begin
   demo_p := demobuffer;
   demoend := @demo_p[len];
 
-  if oldsharewareversion then
-  begin
-    I_Warning('G_DoPlayDemo(): Demo is from an unsupported game version = 0.99'#13#10);
-    exit;
-  end;
-
   if PInteger(demo_p)^ = DEMOHDR then
   begin
     demo_p := @demo_p[4];
@@ -3135,41 +3011,6 @@ initialization
   pars[3, 8] := 30;
   pars[3, 9] := 135;
 
-
-  ZeroMemory(@cpars, SizeOf(cpars));
-
-  cpars[0] := 30;
-  cpars[1] := 90;
-  cpars[2] := 120;
-  cpars[3] := 120;
-  cpars[4] := 90;
-  cpars[5] := 150;
-  cpars[6] := 120;
-  cpars[7] := 120;
-  cpars[8] := 270;
-  cpars[9] := 90;
-  cpars[10] := 210;
-  cpars[11] := 150;
-  cpars[12] := 150;
-  cpars[13] := 150;
-  cpars[14] := 210;
-  cpars[15] := 150;
-  cpars[16] := 420;
-  cpars[17] := 150;
-  cpars[18] := 210;
-  cpars[19] := 150;
-  cpars[20] := 240;
-  cpars[21] := 150;
-  cpars[22] := 180;
-  cpars[23] := 150;
-  cpars[24] := 150;
-  cpars[25] := 300;
-  cpars[26] := 330;
-  cpars[27] := 420;
-  cpars[28] := 300;
-  cpars[29] := 180;
-  cpars[30] := 120;
-  cpars[31] := 30;
 
   precache := true;
 

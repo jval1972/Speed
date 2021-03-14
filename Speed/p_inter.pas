@@ -432,20 +432,11 @@ begin
           player.health := p_maxhealth;
         player.mo.health := player.health;
         player._message := GOTSUPER;
-        if not oldsharewareversion then
-          sound := Ord(sfx_getpow);
+        sound := Ord(sfx_getpow);
       end;
 
     Ord(SPR_MEGA):
       begin
-        if gamemode <> commercial then
-          exit;
-        player.health := 200;
-        player.mo.health := player.health;
-        P_GiveArmor(player, p_bluearmorclass);
-        player._message := GOTMSPHERE;
-        if not oldsharewareversion then
-          sound := Ord(sfx_getpow);
       end;
 
   // cards
@@ -541,8 +532,7 @@ begin
         if not P_GivePower(player, Ord(pw_invulnerability)) then
           exit;
         player._message := GOTINVUL;
-        if not oldsharewareversion then
-          sound := Ord(sfx_getpow);
+        sound := Ord(sfx_getpow);
       end;
 
     Ord(SPR_PSTR):
@@ -552,8 +542,7 @@ begin
         player._message := GOTBERSERK;
         if player.readyweapon <> wp_fist then
           player.pendingweapon := wp_fist;
-        if not oldsharewareversion then
-          sound := Ord(sfx_getpow);
+        sound := Ord(sfx_getpow);
       end;
 
     Ord(SPR_PINS):
@@ -561,8 +550,7 @@ begin
         if not P_GivePower(player, Ord(pw_invisibility)) then
           exit;
         player._message := GOTINVIS;
-        if not oldsharewareversion then
-          sound := Ord(sfx_getpow);
+        sound := Ord(sfx_getpow);
       end;
 
     Ord(SPR_SUIT):
@@ -570,8 +558,7 @@ begin
         if not P_GivePower(player, Ord(pw_ironfeet)) then
           exit;
         player._message := GOTSUIT;
-        if not oldsharewareversion then
-          sound := Ord(sfx_getpow);
+        sound := Ord(sfx_getpow);
       end;
 
     Ord(SPR_PMAP):
@@ -579,8 +566,7 @@ begin
         if not P_GivePower(player, Ord(pw_allmap)) then
           exit;
         player._message := GOTMAP;
-        if not oldsharewareversion then
-          sound := Ord(sfx_getpow);
+        sound := Ord(sfx_getpow);
       end;
 
     Ord(SPR_PVIS):
@@ -588,8 +574,7 @@ begin
         if not P_GivePower(player, Ord(pw_infrared)) then
           exit;
         player._message := GOTVISOR;
-        if not oldsharewareversion then
-          sound := Ord(sfx_getpow);
+        sound := Ord(sfx_getpow);
       end;
 
   // ammo
@@ -859,21 +844,16 @@ begin
   begin
     // JVAL: Support for Chex Quest
     // Note: We allow the dropitems to custom defined actors
-    if customgame in [cg_chex, cg_chex2] then
-      item := 0
-    else
-    begin
-      case target._type of
-        Ord(MT_WOLFSS),
-        Ord(MT_POSSESSED):
-          item := Ord(MT_CLIP);
-        Ord(MT_SHOTGUY):
-          item := Ord(MT_SHOTGUN);
-        Ord(MT_CHAINGUY):
-          item := Ord(MT_CHAINGUN);
-        else
-          item := 0;
-      end;
+    case target._type of
+      Ord(MT_WOLFSS),
+      Ord(MT_POSSESSED):
+        item := Ord(MT_CLIP);
+      Ord(MT_SHOTGUY):
+        item := Ord(MT_SHOTGUN);
+      Ord(MT_CHAINGUY):
+        item := Ord(MT_CHAINGUN);
+      else
+        item := 0;
     end;
   end;
 

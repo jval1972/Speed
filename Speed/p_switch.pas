@@ -173,8 +173,6 @@ begin
 
   if (gamemode = registered) or (gamemode = retail) then
     episode := 2
-  else if gamemode = commercial then
-    episode := 3
   else
     episode := 1;
 

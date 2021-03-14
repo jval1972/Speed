@@ -1187,39 +1187,14 @@ end;
 
 procedure M_DrawBindings2;
 begin
-  case customgame of
-    cg_hacx:
-      begin
-        KeyBindingsInfo[Ord(kb_weapon0)].text := 'Kick/Hoig Reznator';
-        KeyBindingsInfo[Ord(kb_weapon1)].text := 'Pistol';
-        KeyBindingsInfo[Ord(kb_weapon2)].text := 'Tazer/Cryogun';
-        KeyBindingsInfo[Ord(kb_weapon3)].text := 'Uzi';
-        KeyBindingsInfo[Ord(kb_weapon4)].text := 'Photon ''zooka';
-        KeyBindingsInfo[Ord(kb_weapon5)].text := 'Stick';
-        KeyBindingsInfo[Ord(kb_weapon6)].text := 'Nuker';
-        KeyBindingsInfo[Ord(kb_weapon7)].text := 'Hoig Reznator';
-      end;
-    cg_chex, cg_chex2:
-      begin
-        KeyBindingsInfo[Ord(kb_weapon0)].text := 'Bootspoon/Super Bootspork';
-        KeyBindingsInfo[Ord(kb_weapon1)].text := 'Mini-zorcher';
-        KeyBindingsInfo[Ord(kb_weapon2)].text := 'Large zorcher';
-        KeyBindingsInfo[Ord(kb_weapon3)].text := 'Rapid zorcher';
-        KeyBindingsInfo[Ord(kb_weapon4)].text := 'Zorch propulsor';
-        KeyBindingsInfo[Ord(kb_weapon5)].text := 'Phasing zorcher';
-        KeyBindingsInfo[Ord(kb_weapon6)].text := 'LAZ Device';
-        KeyBindingsInfo[Ord(kb_weapon7)].text := 'Super Bootspork';
-      end;
-  else
-    KeyBindingsInfo[Ord(kb_weapon0)].text := 'Fists/Chainsaw';
-    KeyBindingsInfo[Ord(kb_weapon1)].text := 'Pistol';
-    KeyBindingsInfo[Ord(kb_weapon2)].text := 'Shotgun';
-    KeyBindingsInfo[Ord(kb_weapon3)].text := 'Chaingun'; 
-    KeyBindingsInfo[Ord(kb_weapon4)].text := 'Rocket launcher';
-    KeyBindingsInfo[Ord(kb_weapon5)].text := 'Plasma gun';
-    KeyBindingsInfo[Ord(kb_weapon6)].text := 'BFG 9000';
-    KeyBindingsInfo[Ord(kb_weapon7)].text := 'Chainsaw';
-  end;
+  KeyBindingsInfo[Ord(kb_weapon0)].text := 'Fists/Chainsaw';
+  KeyBindingsInfo[Ord(kb_weapon1)].text := 'Pistol';
+  KeyBindingsInfo[Ord(kb_weapon2)].text := 'Shotgun';
+  KeyBindingsInfo[Ord(kb_weapon3)].text := 'Chaingun';
+  KeyBindingsInfo[Ord(kb_weapon4)].text := 'Rocket launcher';
+  KeyBindingsInfo[Ord(kb_weapon5)].text := 'Plasma gun';
+  KeyBindingsInfo[Ord(kb_weapon6)].text := 'BFG 9000';
+  KeyBindingsInfo[Ord(kb_weapon7)].text := 'Chainsaw';
 
   M_DrawBindings(KeyBindingsDef2, Ord(kb_weapon0), Ord(kb_end));
 end;
@@ -1537,8 +1512,6 @@ procedure M_DrawReadThis1;
 begin
   inhelpscreens := true;
   case gamemode of
-    commercial:
-      V_PageDrawer(pg_HELP);
     shareware,
     registered,
     retail:
@@ -1553,8 +1526,7 @@ procedure M_DrawReadThis2;
 begin
   inhelpscreens := true;
   case gamemode of
-    retail,
-    commercial:
+    retail:
       // This hack keeps us from having to change menus.
       V_PageDrawer(pg_CREDIT);
     shareware,
@@ -2116,20 +2088,7 @@ begin
     exit;
   end;
 
-  if gamemode = commercial then
-  begin
-    if oldsharewareversion then
-      NewDef.numitems := Ord(newg_nightmare); // No nightmare in old shareware
-    M_SetupNextMenu(@NewDef);
-  end
-  else
-  begin
-      // JVAL: Chex Support
-    if customgame in [cg_chex, cg_chex2] then
-      M_SetupNextMenu(@NewDef)
-    else
-      M_SetupNextMenu(@EpiDef);
-  end;
+  M_SetupNextMenu(@EpiDef);
 end;
 
 //
@@ -2182,8 +2141,6 @@ begin
 
   epi := choice;
 
-  if oldsharewareversion then
-    NewDef.numitems := Ord(newg_nightmare); // No nightmare in old shareware shareware
   M_SetupNextMenu(@NewDef);
 end;
 
@@ -2597,25 +2554,11 @@ const
     Ord(sfx_sgtatk)
   );
 
-  quitsounds2: array[0..7] of integer = (
-    Ord(sfx_vilact),
-    Ord(sfx_getpow),
-    Ord(sfx_boscub),
-    Ord(sfx_slop),
-    Ord(sfx_skeswg),
-    Ord(sfx_kntdth),
-    Ord(sfx_bspact),
-    Ord(sfx_sgtatk)
-  );
-
 procedure M_CmdQuit;
 begin
   if not netgame then
   begin
-    if gamemode = commercial then
-      M_StartSound(nil, quitsounds2[_SHR(gametic, 2) and 7])
-    else
-      M_StartSound(nil, quitsounds[_SHR(gametic, 2) and 7]);
+    M_StartSound(nil, quitsounds[_SHR(gametic, 2) and 7]);
     I_WaitVBL(1000);
   end;
   G_Quit;
@@ -3619,20 +3562,6 @@ begin
   //  like HELP1/2, and four episodes.
 
   case gamemode of
-    commercial:
-      begin
-        // This is used because DOOM 2 had only one HELP
-        //  page. I use CREDIT as second page now, but
-        //  kept this hack for educational purposes.
-        MainMenu[Ord(mm_readthis)] := MainMenu[Ord(mm_quitdoom)];
-        dec(MainDef.numitems);
-        MainDef.y := MainDef.y + 8;
-        NewDef.prevMenu := @MainDef;
-        ReadDef1.drawproc := M_DrawReadThis1;
-        ReadDef1.x := 330;
-        ReadDef1.y := 165;
-        ReadMenu1[0].routine := @M_FinishReadThis;
-      end;
     shareware:
       begin
         ReadDef2.x := 280;

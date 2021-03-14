@@ -780,12 +780,6 @@ begin
           newweapon := wp_fist;
     end;
 
-    if (gamemode = commercial) and
-       (newweapon = wp_shotgun) and
-       (player.weaponowned[Ord(wp_supershotgun)] <> 0) and
-       (player.readyweapon <> wp_supershotgun) then
-      newweapon := wp_supershotgun;
-
     if (player.weaponowned[Ord(newweapon)] <> 0) and
        (newweapon <> player.readyweapon) then
       // Do not go to plasma or BFG in shareware,

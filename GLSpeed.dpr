@@ -252,7 +252,6 @@ uses
   p_adjust in 'Base\p_adjust.pas',
   w_autoload in 'Base\w_autoload.pas',
   p_common in 'Base\p_common.pas',
-  d_check in 'Speed\d_check.pas',
   r_aspect in 'Base\r_aspect.pas',
   i_threads in 'Base\i_threads.pas',
   r_colormaps in 'Base\r_colormaps.pas',

@@ -63,18 +63,12 @@ const
   VERSION = VERSION205;
   VERSIONSLOPES = VERSION122;
 
-var
-  oldsharewareversion: boolean = false;
-  oldversion: boolean = false;
-
 type
 // Game mode handling - identify IWAD version
 //  to handle IWAD dependend animations etc.
   GameMode_t = (
     shareware,      // DOOM 1 shareware, E1, M9
     registered,     // DOOM 1 registered, E3, M27
-    commercial,     // DOOM 2 retail, E1 M34
-    ///////////     // DOOM 2 german edition not handled
     retail,         // DOOM 1 retail, E4, M36
     indetermined    // Well, no IWAD found.
   );
@@ -82,29 +76,17 @@ type
 // Mission packs - might be useful for TC stuff?
   GameMission_t = (
     doom,           // DOOM 1
-    doom2,          // DOOM 2
-    pack_tnt,       // TNT mission pack
-    pack_plutonia,  // Plutonia pack
     none
   );
 
   GameVersion_t = (
     exe_doom_1_9,   // Doom 1.9: used for shareware, registered and commercial
-    exe_hacx,       // Hacx executable (Doom 1.9 with patch applied)
-    exe_ultimate,   // Ultimate Doom (retail)
-    exe_final,      // Final Doom
-    exe_final2,     // Final Doom (alternate exe)
-    exe_chex        // Chex Quest executable (based on Final Doom)
+    exe_ultimate    // Ultimate Doom (retail)
   );
 
   // JVAL: Chex Support
   CustomGame_t = (
-    cg_none,
-    cg_chex,
-    cg_chex2,
-    cg_hacx,
-    cg_freedoom,
-    cg_bfg2
+    cg_none
   );
 
 // Identify language to use, software localization.
@@ -124,7 +106,7 @@ const
   // MIN RENDERING DIMENTIONS
   MINWIDTH = 160;
   MINHEIGHT = 100;
-  
+
 var
 // Rendering Engine Screen Dimentions
   SCREENWIDTH: integer;

@@ -443,14 +443,7 @@ begin
     registered,
     retail: s := HU_TITLE;
   else
-    begin
-      case gamemission of
-        pack_tnt: s := HU_TITLET;
-        pack_plutonia: s := HU_TITLEP;
-      else
-        s := HU_TITLE2;
-      end;
-    end;
+    s := '';
   end;
 
   for i := 1 to Length(s) do
@@ -647,10 +640,7 @@ begin
               message_nottobefuckedwith := true;
               message_on := true;
               message_counter := HU_MSGTIMEOUT;
-              if gamemode = commercial then
-                S_StartSound(nil, Ord(sfx_radio))
-              else
-                S_StartSound(nil, Ord(sfx_tink));
+              S_StartSound(nil, Ord(sfx_tink));
             end;
             HUlib_resetIText(@w_inputbuffer[i]);
           end;

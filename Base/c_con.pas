@@ -878,15 +878,7 @@ end;
 
 procedure C_DrawConsoleBackground;
 begin
-{$IFDEF DOOM}
-  V_DrawPatchFullScreenTMP320x200(decide(customgame = cg_bfg2, pg_DMENUPIC, pg_TITLE));
-{$ENDIF}
-{$IFDEF HERETIC_OR_HEXEN}
-  V_CopyRawDataToScreen(SCN_TMP, 'TITLE');
-{$ENDIF}
-{$IFDEF STRIFE}
-  V_DrawPatchFullScreenTMP320x200(char8tostring(W_GetNameForNum(D_Help0Lump)));
-{$ENDIF}
+  V_DrawPatchFullScreenTMP320x200(pg_TITLE);
 
 // A little bit darker background...
   R_ApplyColormap(0, 320 * 200, SCN_TMP, ConsoleColormap);

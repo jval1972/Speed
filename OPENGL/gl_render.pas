@@ -47,10 +47,6 @@ var
   extra_blue: float = 0.0;
   extra_alpha: float = 0.0;
 
-procedure gld_DrawBackground(const name: string);
-
-procedure gld_DrawBackgroundFrame;
-
 procedure gld_Finish;
 
 procedure gld_AddSprite(vspr: Pvissprite_t);
@@ -689,69 +685,8 @@ begin
   glEnd;
 end;
 
-procedure gld_DrawBackground(const name: string);
-var
-  gltexture: PGLTexture;
-  fU1, fU2, fV1, fV2: float;
-  width, height: float;
-{$IFDEF DOOM}
-  sbar: Integer;
-{$ENDIF}
-begin
-  gltexture := gld_RegisterFlat(W_GetNumForName(name), false);
-  gld_BindFlat(gltexture);
-  if gltexture = nil then
-    exit;
-  fU1 := 0;
-  fV1 := 0;
-  fU2 := 320 / gltexture.realtexwidth;
-  {$IFDEF DOOM}
-  sbar := ST_HEIGHT;
-  {$ENDIF}
-  fV2 := (200{$IFDEF DOOM} - sbar{$ENDIF}) / gltexture.realtexheight;
-  width := SCREENWIDTH;
-  height := SCREENHEIGHT{$IFDEF DOOM} - sbar * SCREENHEIGHT / 200{$ENDIF};
-
-  glBegin(GL_TRIANGLE_STRIP);
-    glTexCoord2f(fU1, fV1);
-    glVertex2f(0.0, 0.0);
-    glTexCoord2f(fU1, fV2);
-    glVertex2f(0.0, height);
-    glTexCoord2f(fU2, fV1);
-    glVertex2f(width, 0);
-    glTexCoord2f(fU2, fV2);
-    glVertex2f(width, height);
-  glEnd;
-end;
-
 var
   scissoron: boolean = false;
-
-procedure gld_DrawBackgroundFrame;
-var
-  x1, x2, y1, y2: integer;
-begin
-  if (viewwindowx <= 0) and (viewwindowy <= 0) then
-    Exit;
-
-  x1 := viewwindowx - 1;
-  x2 := x1 + viewwidth + 2;
-  y1 := viewwindowy - 1;
-  y2 := y1 + viewheight + 2;
-
-  glDisable(GL_TEXTURE_2D);
-
-  glColor4f(0.5, 0.5, 0.5, 1.0);
-  glBegin(GL_LINE_STRIP);
-    glVertex2i(x1, y1);
-    glVertex2i(x2, y1);
-    glVertex2i(x2, y2);
-    glVertex2i(x1, y2);
-    glVertex2i(x1, y1);
-  glEnd;
-
-  glEnable(GL_TEXTURE_2D);
-end;
 
 procedure gld_DrawLine(x0, y0, x1, y1: integer; PalColor: byte);
 var
@@ -1894,8 +1829,6 @@ begin
 
   if scissoron then
     glDisable(GL_SCISSOR_TEST);
-
-  gld_DrawBackgroundFrame;
 
   if scissoron then
     glEnable(GL_SCISSOR_TEST);
