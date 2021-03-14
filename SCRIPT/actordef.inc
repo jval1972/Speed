@@ -993,7 +993,6 @@
     '  Health 1000'#13#10 +
     '  Mass 1000'#13#10 +
     '  Reactiontime 8'#13#10 +
-    '  Scale 2'#13#10 +
     '  States'#13#10 +
     '  {'#13#10 +
     '    Spawn:'#13#10 +
@@ -1029,7 +1028,6 @@
     '  Health 1000'#13#10 +
     '  Mass 1000'#13#10 +
     '  Reactiontime 8'#13#10 +
-    '  Scale 2'#13#10 +
     '  States'#13#10 +
     '  {'#13#10 +
     '    Spawn:'#13#10 +
@@ -1065,7 +1063,6 @@
     '  Health 1000'#13#10 +
     '  Mass 1000'#13#10 +
     '  Reactiontime 8'#13#10 +
-    '  Scale 2'#13#10 +
     '  States'#13#10 +
     '  {'#13#10 +
     '    Spawn:'#13#10 +
@@ -1103,7 +1100,6 @@
     '  RenderStyle Translucent'#13#10 +
     '  Alpha 0.6'#13#10 +
     '  Reactiontime 8'#13#10 +
-    '  Scale 2'#13#10 +
     '  States'#13#10 +
     '  {'#13#10 +
     '    Spawn:'#13#10 +
@@ -1141,7 +1137,6 @@
     '  RenderStyle Translucent'#13#10 +
     '  Alpha 0.6'#13#10 +
     '  Reactiontime 8'#13#10 +
-    '  Scale 2'#13#10 +
     '  States'#13#10 +
     '  {'#13#10 +
     '    Spawn:'#13#10 +

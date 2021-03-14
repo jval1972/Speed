@@ -8,7 +8,6 @@ ACTOR MT_DIRT1A
   Health 1000
   Mass 1000
   Reactiontime 8
-  Scale 2
   States
   {
     Spawn:
@@ -44,7 +43,6 @@ ACTOR MT_DIRT2A
   Health 1000
   Mass 1000
   Reactiontime 8
-  Scale 2
   States
   {
     Spawn:
@@ -80,7 +78,6 @@ ACTOR MT_DIRT3A
   Health 1000
   Mass 1000
   Reactiontime 8
-  Scale 2
   States
   {
     Spawn:
@@ -118,7 +115,6 @@ ACTOR MT_SMOKE1A
   RenderStyle Translucent
   Alpha 0.6
   Reactiontime 8
-  Scale 2
   States
   {
     Spawn:
@@ -156,7 +152,6 @@ ACTOR MT_SPARK1A
   RenderStyle Translucent
   Alpha 0.6
   Reactiontime 8
-  Scale 2
   States
   {
     Spawn:
