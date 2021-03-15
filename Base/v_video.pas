@@ -3692,7 +3692,6 @@ begin
   Z_ChangeTag(p, PU_CACHE);
 end;
 
-{$IFDEF DOOM_OR_STRIFE}
 procedure V_PageDrawer(const pagename: string);
 var
   p: Ppatch_t;
@@ -3700,7 +3699,7 @@ var
   oldscreen, newscreen: PByteArray;
   oldw, oldh: integer;
 begin
-  if {$IFNDEF OPENGL}(videomode = vm32bit) and{$ENDIF} useexternaltextures then
+  if useexternaltextures then
     if T_DrawFullScreenPatch(pagename, screen32) then
     begin
       V_FullScreenStretch;
@@ -3743,45 +3742,6 @@ begin
   Z_ChangeTag(p, PU_CACHE);
   V_FullScreenStretch;
 end;
-{$ELSE}
-procedure V_PageDrawer(const pagename: string);
-{$IFDEF OPENGL}
-var
-  len: integer;
-  lump: integer;
-  lmpdata: pointer;
-{$ENDIF}
-begin
-{$IFDEF OPENGL}
-  if T_DrawFullScreenPatch(pagename, screen32) then
-  begin
-    V_FullScreenStretch;
-    exit;
-  end;
-  lump := W_GetNumForName(pagename);
-  len := W_LumpLength(lump);
-  if len <> 320 * 200 then
-    I_DevError('V_PageDrawer(): Lump "%s" has invalid size: %d (does not have 320x200 size).'#13#10, [pagename, len]);
-
-  lmpdata := W_CacheLumpNum(lump, PU_STATIC);
-  memcpy(screens[SCN_TMP], lmpdata, len);
-  Z_ChangeTag(lmpdata, PU_CACHE);
-
-  V_CopyRect32(0, 0, SCN_TMP, 320, 200, 0, 0, true);
-
-{$ELSE}
-  if (videomode = vm32bit) and useexternaltextures then
-    if T_DrawFullScreenPatch(pagename, screen32) then
-    begin
-      V_FullScreenStretch;
-      exit;
-    end;
-  V_CopyRawDataToScreen(SCN_TMP, pagename);
-  V_CopyRect(0, 0, SCN_TMP, 320, 200, 0, 0, SCN_FG, true);
-{$ENDIF}
-  V_FullScreenStretch;
-end;
-{$ENDIF}
 
 //
 // V_DrawBlock
