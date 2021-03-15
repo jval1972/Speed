@@ -38,6 +38,7 @@ uses
   d_delphi,
   mdl_base,
   i3d_model,
+  r_soft3d,
   speed_cars;
 
 type
@@ -56,7 +57,8 @@ type
     destructor Destroy; override;
     procedure Draw(const frm1, frm2: integer; const offset: float); override;
     procedure DrawSimple(const frm: integer); override;
-    procedure DrawCar(const car: Pcarinfo_t);
+    procedure DrawCarGL(const car: Pcarinfo_t);
+    procedure DrawCarSoft(const car: Pcarinfo_t; const device: Pdevice_t);
   end;
 
 implementation
@@ -142,10 +144,17 @@ begin
   fmdl.RenderGL(fxscale, fyscale, fzscale, fxoffset, fyoffset, fzoffset);
 end;
 
-procedure TI3DModel.DrawCar(const car: Pcarinfo_t);
+procedure TI3DModel.DrawCarGL(const car: Pcarinfo_t);
 begin
   fmdl.RenderGLEx(fxscale, fyscale, fzscale, fxoffset, fyoffset, fzoffset,
     car.tex1old, car.tex1, car.tex2old, car.tex2);
 end;
+
+procedure TI3DModel.DrawCarSoft(const car: Pcarinfo_t; const device: Pdevice_t);
+begin
+  fmdl.RenderGLEx(fxscale, fyscale, fzscale, fxoffset, fyoffset, fzoffset,
+    car.tex1old, car.tex1, car.tex2old, car.tex2);
+end;
+
 
 end.

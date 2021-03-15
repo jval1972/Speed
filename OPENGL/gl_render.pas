@@ -3771,7 +3771,7 @@ begin
   begin
     if sprite.mo.carid >= 0 then
 //      (modelinf.model.model as TI3DModel).DrawCar(@carinfo[rtlcars[sprite.mo.carid].mo.carinfo])
-      (modelinf.model.model as TI3DModel).DrawCar(@carinfo[sprite.mo.carinfo])
+      (modelinf.model.model as TI3DModel).DrawCarGL(@carinfo[sprite.mo.carinfo])
     else
       modelinf.model.DrawSimple(info.startframe, sprite.mo.scale);
   end

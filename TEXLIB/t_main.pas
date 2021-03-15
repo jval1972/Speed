@@ -60,7 +60,8 @@ interface
 
 uses
   d_delphi,
-  t_colors;
+  t_colors,
+  Graphics;
 
 const
    //        redpos       greenpos     bluepos
@@ -177,6 +178,8 @@ type
   end;
 
 function T_LoadHiResTexture(const FileName: string): PTexture;
+
+function T_HiResTextureAsBitmap(const FileName: string): TBitmap;
 
 var
   TextureExtensions: TDStringList;
@@ -298,6 +301,29 @@ begin
     dispose(result, Destroy);
     result := nil;
   end;
+end;
+
+function T_HiResTextureAsBitmap(const FileName: string): TBitmap;
+var
+  tex: PTexture;
+  y: integer;
+  ln: PLongWordArray;
+begin
+  Result := TBitmap.Create;
+  tex := T_LoadHiResTexture(FileName);
+  if tex = nil then
+    Exit;
+
+  tex.ConvertTo32bit;
+  Result.PixelFormat := pf32Bit;
+  Result.Width := tex.GetWidth;
+  Result.Height := tex.GetHeight;
+  for y := 0 to Result.Height - 1 do
+  begin
+    ln := Result.ScanLine[y];
+    tex.GetRow32(y, Result.Width * 4, ln);
+  end;
+  Dispose(tex, Destroy);
 end;
 
 constructor TTexture.Create;

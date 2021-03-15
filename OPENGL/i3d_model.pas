@@ -37,6 +37,7 @@ interface
 uses
   d_delphi,
   dglOpenGL,
+  r_soft3d,
   i3d_structs;
 
 type
@@ -88,6 +89,11 @@ type
     function RenderGLEx(const scalex, scaley, scalez: single;
       const offsetx, offsety, offsetz: single;
       const oldtex1, tex1, oldtex2, tex2: string): integer;
+    function RenderSoft(const device: Pdevice_t; const scalex, scaley, scalez: single;
+      const offsetx, offsety, offsetz: single): integer;
+    function RenderSoftEx(const device: Pdevice_t; const scalex, scaley, scalez: single;
+      const offsetx, offsety, offsetz: single;
+      const oldtex1, tex1, oldtex2, tex2: string): integer;
     function AddCorrection(const face: integer; const vertex: integer; const visible: boolean;
       const x, y, z: integer; const du, dv: single; const c: LongWord): boolean;
     procedure SaveCorrectionsToStream(const strm: TDStream);
@@ -105,6 +111,7 @@ type
 implementation
 
 uses
+  t_main,
   gl_defs,
   gl_tex,
   Graphics,
@@ -740,6 +747,203 @@ begin
     textures[obj.materials[idx1].texid] := savetex1;
   if idx2 >= 0 then
     textures[obj.materials[idx2].texid] := savetex2;
+end;
+
+function TI3DModelLoader.RenderSoft(const device: Pdevice_t; const scalex, scaley, scalez: single;
+  const offsetx, offsety, offsetz: single): integer;
+var
+  i, j, k: integer;
+  v1, v2, v3: vertex_t;
+  lasttex, newtex: TBitmap;
+  extra: TDStringList;
+  idx: integer;
+  basetex: TBitmap;
+
+  procedure _softcolor(const m: O3DM_TMaterial_p);
+  var
+    cl: i3dcolor3f_t;
+    r, g, b: integer;
+    cname: string;
+    idx: integer;
+    bm: TBitmap;
+  begin
+    r := Trunc(cl.r * 255);
+    g := Trunc(cl.g * 255);
+    b := Trunc(cl.b * 255);
+    cname := itoa(r) + '_'  + itoa(g) + '_' + itoa(b);
+    idx := extra.IndexOf(cname);
+    if idx >= 0 then
+    begin
+      device_set_texture(device, extra.Objects[idx] as TBitmap);
+      Exit;
+    end;
+
+    bm := TBitmap.Create;
+    bm.PixelFormat := pf32bit;
+    bm.Width := 2;
+    bm.Height := 2;
+    bm.Canvas.Pixels[0, 0] := r shl 16 + g shl 8 + b;
+    bm.Canvas.Pixels[1, 0] := r shl 16 + g shl 8 + b;
+    bm.Canvas.Pixels[0, 1] := r shl 16 + g shl 8 + b;
+    bm.Canvas.Pixels[1, 1] := r shl 16 + g shl 8 + b;
+    extra.AddObject(cname, bm);
+    device_set_texture(device, bm);
+  end;
+
+  procedure _softtexcoord(const v: Pvertex_t; const tx, ty: integer);
+  var
+    ax, ay: single;
+  begin
+    UVtoGL(tx, ty, ax, ay);
+    v.tc.u := ax;
+    v.tc.v := ay;
+  end;
+
+  procedure _softvertex(const v: Pvertex_t; const x, y, z: integer);
+  begin
+    v.pos.x := (1.0 * x - obj.dcx) * obj.scx / DEF_I3D_SCALE * scalex + offsetx;
+    v.pos.x := (1.0 * y - obj.dcy) * obj.scy / DEF_I3D_SCALE * scaley + offsety;
+    v.pos.x := -(1.0 * z - obj.dcz) * obj.scz / DEF_I3D_SCALE * scalez + offsetz;
+  end;
+
+begin
+  Result := 0;
+
+  if obj = nil then
+    Exit;
+
+  lasttex := nil;
+
+  extra := TDStringList.Create;
+
+  v1.pos.w := 1.0;
+  v1.color.r := 1.0;
+  v1.color.g := 1.0;
+  v1.color.b := 1.0;
+  v1.rhw := 1.0;
+  v2.pos.w := 1.0;
+  v2.color.r := 1.0;
+  v2.color.g := 1.0;
+  v2.color.b := 1.0;
+  v2.rhw := 1.0;
+  v3.pos.w := 1.0;
+  v3.color.r := 1.0;
+  v3.color.g := 1.0;
+  v3.color.b := 1.0;
+  v3.rhw := 1.0;
+
+  basetex := TBitmap.Create;
+  basetex.PixelFormat := pf32bit;
+  basetex.Width := 2;
+  basetex.Height := 2;
+  basetex.Canvas.Pixels[0, 0] := $FFFFFF;
+  basetex.Canvas.Pixels[1, 0] := $FFFFFF;
+  basetex.Canvas.Pixels[0, 1] := $FFFFFF;
+  basetex.Canvas.Pixels[1, 1] := $FFFFFF;
+
+  for i := 0 to obj.nFaces - 1 do
+  begin
+    if not objfaces[i].h.visible then
+      Continue;
+    if fselected = i then
+      Continue;
+    if objfaces[i].h.material <> nil then
+    begin
+      newtex := nil;
+
+      idx := fbitmaps.IndexOf(objfaces[i].h.material.texname);
+      if idx >= 0 then
+        newtex := fbitmaps.Objects[idx] as TBitmap;
+      if newtex <> nil then
+      begin
+        if newtex <> lasttex then
+        begin
+          device_set_texture(device, newtex);
+          lasttex := newtex;
+        end;
+      end
+      else
+      begin
+        lasttex := nil;
+        _softcolor(objfaces[i].h.material);
+      end;
+    end
+    else
+    begin
+      lasttex := nil;
+      device_set_texture(device, basetex);
+    end;
+
+    _softtexcoord(@v1, objfaces[i].verts[0].tx, objfaces[i].verts[0].ty);
+    _softvertex(@v1, objfaces[i].verts[0].vert.x, objfaces[i].verts[0].vert.y, objfaces[i].verts[0].vert.z);
+
+    for j := 1 to objfaces[i].h.nVerts - 2 do
+    begin
+      _softtexcoord(@v2, objfaces[i].verts[j].tx, objfaces[i].verts[j].ty);
+      _softvertex(@v2, objfaces[i].verts[j].vert.x, objfaces[i].verts[j].vert.y, objfaces[i].verts[j].vert.z);
+      k := j + 1;
+      _softtexcoord(@v3, objfaces[i].verts[k].tx, objfaces[i].verts[k].ty);
+      _softvertex(@v3, objfaces[i].verts[k].vert.x, objfaces[i].verts[k].vert.y, objfaces[i].verts[k].vert.z);
+      device_draw_primitive(device, @v1, @v2, @v3);
+    end;
+
+    Result := Result + objfaces[i].h.nVerts - 2;
+  end;
+
+  for i := 0 to extra.Count - 1 do
+    extra.Objects[i].Free;
+  extra.Free;
+  basetex.Free;
+end;
+
+function TI3DModelLoader.RenderSoftEx(const device: Pdevice_t; const scalex, scaley, scalez: single;
+  const offsetx, offsety, offsetz: single;
+  const oldtex1, tex1, oldtex2, tex2: string): integer;
+var
+  do1, do2: boolean;
+  i: integer;
+  savetex1, savetex2: TBitmap;
+  idx1, idx2: integer;
+begin
+  do1 := tex1 <> '';
+  do2 := tex2 <> '';
+
+  savetex1 := nil;
+  savetex2 := nil;
+  idx1 := -1;
+  idx2 := -1;
+
+  if do1 then
+    for i := 0 to fbitmaps.Count - 1 do
+      if fbitmaps.Strings[i] = oldtex1 then
+      begin
+        idx1 := i;
+        savetex1 := fbitmaps.Objects[i] as TBitmap;
+        fbitmaps.Objects[i] := T_HiResTextureAsBitmap(tex1);
+        Break;
+      end;
+  if do2 then
+    for i := 0 to obj.nMaterials - 1 do
+      if obj.materials[i].texname = oldtex2 then
+      begin
+        idx2 := i;
+        savetex2 := fbitmaps.Objects[i] as TBitmap;
+        fbitmaps.Objects[i] := T_HiResTextureAsBitmap(tex2);
+        Break;
+      end;
+
+  Result := RenderSoft(device, scalex, scaley, scalez, offsetx, offsety, offsetz);
+
+  if idx1 >= 0 then
+  begin
+    fbitmaps.Objects[idx1].Free;
+    fbitmaps.Objects[idx1] := savetex1;
+  end;
+  if idx2 >= 0 then
+  begin
+    fbitmaps.Objects[idx2].Free;
+    fbitmaps.Objects[idx2] := savetex2;
+  end;
 end;
 
 end.
