@@ -108,6 +108,7 @@ uses
   m_misc,
   m_fixed,
   mn_textwrite,
+  mn_drawmodel,
   mt_utils,
   i_system,
   i_threads,
@@ -3135,7 +3136,7 @@ begin
   MT_ZeroMemory(screens[SCN_TMP], 320 * 200);
 
   if (shademenubackground = 2) and currentMenu.texturebk then
-    M_DrawMenuBackground(pg_TITLE);
+    M_DrawMenuBackground('MBG_RECO');
 
   if Assigned(currentMenu.drawproc) then
     currentMenu.drawproc; // call Draw routine
