@@ -55,7 +55,7 @@ type
     skytex: string[8];
     mountaintex: string[8];
     groundtex: string[8];
-    playercars: array[0..MAXPLAYERS - 1] of integer;
+    playercars: array[cartype_t, 0..MAXPLAYERS - 1] of integer;
   end;
 
   slipperinessinfo_t = record

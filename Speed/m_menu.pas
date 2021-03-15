@@ -1924,7 +1924,7 @@ begin
   begin
     stmp := NewGameSetupMenu[i].name;
     if i = Ord(news_carselect) then
-      stmp := stmp + ': ' + '#' + itoa(Ord(race.playercars[consoleplayer]))
+      stmp := stmp + ': ' + '#' + itoa(Ord(race.playercars[racecartype, consoleplayer]))
     else if i = Ord(news_difficultylevel) then
       stmp := stmp + ': ' + str_skill[gameskill]
     else if i = Ord(news_carmodel) then
