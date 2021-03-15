@@ -321,7 +321,7 @@ begin
   for y := 0 to Result.Height - 1 do
   begin
     ln := Result.ScanLine[y];
-    tex.GetRow32(y, Result.Width * 4, ln);
+    tex.GetRow32(y, Result.Width, ln);
   end;
   Dispose(tex, Destroy);
 end;
