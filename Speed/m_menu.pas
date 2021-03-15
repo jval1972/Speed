@@ -1978,7 +1978,7 @@ end;
 //      M_Episode
 //
 var
-  epi: integer;
+  menu_episode: integer;
 
 procedure M_DrawEpisode;
 var
@@ -2003,7 +2003,7 @@ begin
   if ch <> Ord('y') then
     exit;
 
-  G_DeferedInitNew(sk_nightmare, epi + 1, 1); // JVAL nightmare become sk_nightmare
+  G_DeferedInitNew(sk_nightmare, menu_episode + 1, 1); // JVAL nightmare become sk_nightmare
   M_ClearMenus;
 end;
 
@@ -2015,7 +2015,7 @@ begin
     exit;
   end;
 
-  G_DeferedInitNew(skill_t(choice), epi + 1, 1);
+  G_DeferedInitNew(skill_t(choice), menu_episode + 1, 1);
   M_ClearMenus;
 end;
 
@@ -2035,7 +2035,7 @@ begin
     choice := 0;
   end;
 
-  epi := choice;
+  menu_episode := choice;
 
   M_SetupNextMenu(@NewDef);
 end;
