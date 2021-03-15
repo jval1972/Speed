@@ -777,6 +777,8 @@ function RemoveQuotesFromString(const s: string): string;
 
 function isdigit(const c: char): boolean;
 
+function iSign(const x: integer): integer;
+
 implementation
 
 uses
@@ -4487,6 +4489,16 @@ end;
 function isdigit(const c: char): boolean;
 begin
   result := c in ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
+end;
+
+function iSign(const x: integer): integer;
+begin
+  if x > 0 then
+    Result := 1
+  else if x < 0 then
+    Result := -1
+  else
+    Result := 0;
 end;
 
 end.

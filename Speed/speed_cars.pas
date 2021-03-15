@@ -48,6 +48,7 @@ type
     tex2old, tex2: string[64]; // Replacement textures
     number: integer;  // Number (as seen in texture replacements)
     maxspeed: fixed_t;  // in Doom units (fixed_t)
+    maxreversespeed: fixed_t; // Reverse speed (negative) in Doom units (fixed_t)
     baseaccel: fixed_t; // Acceleration speed (Doom units per TIC)
     basedeccel: fixed_t;  // Brake speed (Doom units per TIC)
     turnspeed: angle_t; // angle to turn per TIC
@@ -78,6 +79,7 @@ const
       tex2: '';
       number: 27;
       maxspeed: 305 * KMH_TO_FIXED;
+      maxreversespeed: -50 * KMH_TO_FIXED;
       baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
@@ -91,6 +93,7 @@ const
       tex2: '';
       number: 3;
       maxspeed: 310 * KMH_TO_FIXED;
+      maxreversespeed: -50 * KMH_TO_FIXED;
       baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
@@ -104,6 +107,7 @@ const
       tex2: '';
       number: 56;
       maxspeed: 315 * KMH_TO_FIXED;
+      maxreversespeed: -50 * KMH_TO_FIXED;
       baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
@@ -117,6 +121,7 @@ const
       tex2: '';
       number: 30;
       maxspeed: 320 * KMH_TO_FIXED;
+      maxreversespeed: -50 * KMH_TO_FIXED;
       baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
@@ -131,6 +136,7 @@ const
       tex2: '';
       number: 1;
       maxspeed: 325 * KMH_TO_FIXED;
+      maxreversespeed: -50 * KMH_TO_FIXED;
       baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
@@ -144,6 +150,7 @@ const
       tex2: '';
       number: 33;
       maxspeed: 330 * KMH_TO_FIXED;
+      maxreversespeed: -50 * KMH_TO_FIXED;
       baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
@@ -157,6 +164,7 @@ const
       tex2: '';
       number: 12;
       maxspeed: 305 * KMH_TO_FIXED;
+      maxreversespeed: -50 * KMH_TO_FIXED;
       baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
@@ -171,6 +179,7 @@ const
       tex2: '';
       number: 4;
       maxspeed: 310 * KMH_TO_FIXED;
+      maxreversespeed: -50 * KMH_TO_FIXED;
       baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
@@ -184,6 +193,7 @@ const
       tex2: '';
       number: 9;
       maxspeed: 315 * KMH_TO_FIXED;
+      maxreversespeed: -50 * KMH_TO_FIXED;
       baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
@@ -197,6 +207,7 @@ const
       tex2: '';
       number: 22;
       maxspeed: 320 * KMH_TO_FIXED;
+      maxreversespeed: -50 * KMH_TO_FIXED;
       baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
@@ -210,6 +221,7 @@ const
       tex2: '';
       number: 62;
       maxspeed: 325 * KMH_TO_FIXED;
+      maxreversespeed: -50 * KMH_TO_FIXED;
       baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
@@ -224,6 +236,7 @@ const
       tex2: '';
       number: 7;
       maxspeed: 330 * KMH_TO_FIXED;
+      maxreversespeed: -50 * KMH_TO_FIXED;
       baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
@@ -237,6 +250,7 @@ const
       tex2: '';
       number: 18;
       maxspeed: 305 * KMH_TO_FIXED;
+      maxreversespeed: -50 * KMH_TO_FIXED;
       baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
@@ -250,6 +264,7 @@ const
       tex2: '';
       number: 54;
       maxspeed: 310 * KMH_TO_FIXED;
+      maxreversespeed: -50 * KMH_TO_FIXED;
       baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
@@ -263,6 +278,7 @@ const
       tex2: '';
       number: 88;
       maxspeed: 315 * KMH_TO_FIXED;
+      maxreversespeed: -50 * KMH_TO_FIXED;
       baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
@@ -276,6 +292,7 @@ const
       tex2: '';
       number: 6;
       maxspeed: 320 * KMH_TO_FIXED;
+      maxreversespeed: -50 * KMH_TO_FIXED;
       baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
@@ -289,6 +306,7 @@ const
       tex2: '';
       number: 23;
       maxspeed: 325 * KMH_TO_FIXED;
+      maxreversespeed: -50 * KMH_TO_FIXED;
       baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
@@ -302,6 +320,7 @@ const
       tex2: '';
       number: 45;
       maxspeed: 330 * KMH_TO_FIXED;
+      maxreversespeed: -50 * KMH_TO_FIXED;
       baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
@@ -316,6 +335,7 @@ const
       tex2: '';
       number: 73;
       maxspeed: 305 * KMH_TO_FIXED;
+      maxreversespeed: -50 * KMH_TO_FIXED;
       baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
@@ -329,6 +349,7 @@ const
       tex2: '';
       number: 99;
       maxspeed: 310 * KMH_TO_FIXED;
+      maxreversespeed: -50 * KMH_TO_FIXED;
       baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 364 * FRACUNIT; // ~2 * ANG1
@@ -344,6 +365,7 @@ const
       tex2: '';
       number: 15;
       maxspeed: 245 * KMH_TO_FIXED;
+      maxreversespeed: -45 * KMH_TO_FIXED;
       baseaccel: 12 * 1024;
       basedeccel: 48 * 1024;
       turnspeed: 348 * FRACUNIT; // ~2 * ANG1
@@ -357,6 +379,7 @@ const
       tex2: '';
       number: 17;
       maxspeed: 250 * KMH_TO_FIXED;
+      maxreversespeed: -45 * KMH_TO_FIXED;
       baseaccel: 12 * 1024;
       basedeccel: 48 * 1024;
       turnspeed: 348 * FRACUNIT; // ~2 * ANG1
@@ -370,6 +393,7 @@ const
       tex2: '';
       number: 19;
       maxspeed: 255 * KMH_TO_FIXED;
+      maxreversespeed: -45 * KMH_TO_FIXED;
       baseaccel: 12 * 1024;
       basedeccel: 48 * 1024;
       turnspeed: 348 * FRACUNIT; // ~2 * ANG1
@@ -383,6 +407,7 @@ const
       tex2: '';
       number: 4;
       maxspeed: 260 * KMH_TO_FIXED;
+      maxreversespeed: -45 * KMH_TO_FIXED;
       baseaccel: 12 * 1024;
       basedeccel: 48 * 1024;
       turnspeed: 348 * FRACUNIT; // ~2 * ANG1
@@ -396,6 +421,7 @@ const
       tex2: '';
       number: 77;
       maxspeed: 245 * KMH_TO_FIXED;
+      maxreversespeed: -45 * KMH_TO_FIXED;
       baseaccel: 12 * 1024;
       basedeccel: 48 * 1024;
       turnspeed: 348 * FRACUNIT; // ~2 * ANG1
@@ -409,6 +435,7 @@ const
       tex2: '';
       number: 94;
       maxspeed: 250 * KMH_TO_FIXED;
+      maxreversespeed: -45 * KMH_TO_FIXED;
       baseaccel: 12 * 1024;
       basedeccel: 48 * 1024;
       turnspeed: 348 * FRACUNIT; // ~2 * ANG1
@@ -422,6 +449,7 @@ const
       tex2: '';
       number: 87;
       maxspeed: 255 * KMH_TO_FIXED;
+      maxreversespeed: -45 * KMH_TO_FIXED;
       baseaccel: 12 * 1024;
       basedeccel: 48 * 1024;
       turnspeed: 348 * FRACUNIT; // ~2 * ANG1
@@ -435,6 +463,7 @@ const
       tex2: '';
       number: 6;
       maxspeed: 260 * KMH_TO_FIXED;
+      maxreversespeed: -45 * KMH_TO_FIXED;
       baseaccel: 12 * 1024;
       basedeccel: 48 * 1024;
       turnspeed: 348 * FRACUNIT; // ~2 * ANG1
@@ -448,6 +477,7 @@ const
       tex2: '';
       number: 83;
       maxspeed: 245 * KMH_TO_FIXED;
+      maxreversespeed: -45 * KMH_TO_FIXED;
       baseaccel: 12 * 1024;
       basedeccel: 48 * 1024;
       turnspeed: 348 * FRACUNIT; // ~2 * ANG1
@@ -461,6 +491,7 @@ const
       tex2: '';
       number: 7;
       maxspeed: 250 * KMH_TO_FIXED;
+      maxreversespeed: -45 * KMH_TO_FIXED;
       baseaccel: 12 * 1024;
       basedeccel: 48 * 1024;
       turnspeed: 348 * FRACUNIT; // ~2 * ANG1
@@ -474,6 +505,7 @@ const
       tex2: '';
       number: 32;
       maxspeed: 255 * KMH_TO_FIXED;
+      maxreversespeed: -45 * KMH_TO_FIXED;
       baseaccel: 12 * 1024;
       basedeccel: 48 * 1024;
       turnspeed: 348 * FRACUNIT; // ~2 * ANG1
@@ -487,6 +519,7 @@ const
       tex2: '';
       number: 43;
       maxspeed: 260 * KMH_TO_FIXED;
+      maxreversespeed: -45 * KMH_TO_FIXED;
       baseaccel: 12 * 1024;
       basedeccel: 48 * 1024;
       turnspeed: 348 * FRACUNIT; // ~2 * ANG1
@@ -500,6 +533,7 @@ const
       tex2: '';
       number: 48;
       maxspeed: 245 * KMH_TO_FIXED;
+      maxreversespeed: -45 * KMH_TO_FIXED;
       baseaccel: 12 * 1024;
       basedeccel: 48 * 1024;
       turnspeed: 348 * FRACUNIT; // ~2 * ANG1
@@ -513,6 +547,7 @@ const
       tex2: '';
       number: 78;
       maxspeed: 250 * KMH_TO_FIXED;
+      maxreversespeed: -45 * KMH_TO_FIXED;
       baseaccel: 12 * 1024;
       basedeccel: 48 * 1024;
       turnspeed: 348 * FRACUNIT; // ~2 * ANG1
@@ -526,6 +561,7 @@ const
       tex2: '';
       number: 18;
       maxspeed: 255 * KMH_TO_FIXED;
+      maxreversespeed: -45 * KMH_TO_FIXED;
       baseaccel: 12 * 1024;
       basedeccel: 48 * 1024;
       turnspeed: 348 * FRACUNIT; // ~2 * ANG1
@@ -539,6 +575,7 @@ const
       tex2: '';
       number: 9;
       maxspeed: 260 * KMH_TO_FIXED;
+      maxreversespeed: -45 * KMH_TO_FIXED;
       baseaccel: 12 * 1024;
       basedeccel: 48 * 1024;
       turnspeed: 348 * FRACUNIT; // ~2 * ANG1
@@ -552,6 +589,7 @@ const
       tex2: '';
       number: 11;
       maxspeed: 245 * KMH_TO_FIXED;
+      maxreversespeed: -45 * KMH_TO_FIXED;
       baseaccel: 12 * 1024;
       basedeccel: 48 * 1024;
       turnspeed: 348 * FRACUNIT; // ~2 * ANG1
@@ -565,6 +603,7 @@ const
       tex2: '';
       number: 23;
       maxspeed: 250 * KMH_TO_FIXED;
+      maxreversespeed: -45 * KMH_TO_FIXED;
       baseaccel: 12 * 1024;
       basedeccel: 48 * 1024;
       turnspeed: 348 * FRACUNIT; // ~2 * ANG1
@@ -578,6 +617,7 @@ const
       tex2: '';
       number: 54;
       maxspeed: 255 * KMH_TO_FIXED;
+      maxreversespeed: -45 * KMH_TO_FIXED;
       baseaccel: 12 * 1024;
       basedeccel: 48 * 1024;
       turnspeed: 348 * FRACUNIT; // ~2 * ANG1
@@ -591,6 +631,7 @@ const
       tex2: '';
       number: 92;
       maxspeed: 260 * KMH_TO_FIXED;
+      maxreversespeed: -45 * KMH_TO_FIXED;
       baseaccel: 12 * 1024;
       basedeccel: 48 * 1024;
       turnspeed: 348 * FRACUNIT; // ~2 * ANG1
@@ -613,6 +654,7 @@ uses
   d_player,
   info_h,
   info,
+  g_game,
   p_tick,
   p_mobj,
   m_rnd,
@@ -756,15 +798,20 @@ begin
 
   slipf := SH_SlipperFactorAtXY(mo.x, mo.y);
 
-  enginespeed := GetIntegerInRange(enginespeed + SH_SlipCalculation(cmd.accelerate - cmd.brake, slipf), 0, carinfo[mo.carinfo].maxspeed);
+  if cmd.accelerate < 0 then
+    enginespeed := GetIntegerInRange(enginespeed + SH_SlipCalculation(cmd.accelerate - cmd.brake, slipf), carinfo[mo.carinfo].maxreversespeed, carinfo[mo.carinfo].maxspeed)
+  else
+    enginespeed := GetIntegerInRange(enginespeed + SH_SlipCalculation(cmd.accelerate - cmd.brake, slipf), 0, carinfo[mo.carinfo].maxspeed);
+  if slipf < slipperinessinfo[gt_asphalt].smin then
+    enginespeed := (7 * enginespeed + enginespeed * slipf div 255) div 8;
 
-  if enginespeed > 0 then
+  if abs(enginespeed) > 0 then
   begin
-    if actualspeed < enginespeed then
+    if actualspeed < abs(enginespeed) then
     begin
       turn64 := cmd.turn;
       turn64 := turn64 * actualspeed;
-      turn64 := turn64 div enginespeed;
+      turn64 := turn64 div abs(enginespeed);
       mo.angle := mo.angle + (turn64 + cmd.turn) div 2;
     end
     else
@@ -773,8 +820,8 @@ begin
 
   // Adjust momentum
   an := mo.angle shr ANGLETOFINESHIFT;
-  mo.momx := mo.momx div 2 + FixedMul(enginespeed, finecosine[an]) div 2;
-  mo.momy := mo.momy div 2 + FixedMul(enginespeed, finesine[an]) div 2;
+  mo.momx := dx div 2 + iSign(enginespeed) * FixedMul(enginespeed, finecosine[an]) div 2;
+  mo.momy := dy div 2 + iSign(enginespeed) * FixedMul(enginespeed, finesine[an]) div 2;
 
   mo.carvelocity := enginespeed;
 end;
@@ -795,7 +842,7 @@ begin
   p := mo.player;
 
   cmd.turn := p.cmd.angleturn * FRACUNIT;
-  t := carinfo[mo.carinfo].turnspeed;
+  t := carinfo[mo.carinfo].turnspeed - (8 + Ord(gameskill)) * 16 * FRACUNIT;
   if cmd.turn < -t then
     cmd.turn := -t
   else if cmd.turn > t then
@@ -808,9 +855,25 @@ begin
   end
   else if p.cmd.forwardmove < 0 then
   begin
-    cmd.brake := carinfo[mo.carinfo].basedeccel;
+    if mo.carvelocity <= 0 then
+    begin
+      cmd.brake := 0;
+      cmd.accelerate := -carinfo[mo.carinfo].baseaccel div 6;
+    end
+    else
+    begin
+      cmd.brake := carinfo[mo.carinfo].basedeccel div 4;
+      cmd.accelerate := 0;
+    end;
+  end
+  else
+  begin
+    if mo.carvelocity > 0 then
+      cmd.brake := carinfo[mo.carinfo].basedeccel div 32
+    else
+      cmd.brake := 0;
     cmd.accelerate := 0;
-  end;
+  end
 end;
 
 procedure SH_MoveCarPlayer(const mo: Pmobj_t);
