@@ -601,6 +601,8 @@ const
 
 procedure SH_InitLevelCars;
 
+procedure SH_MoveCarPlayer(const mo: Pmobj_t);
+
 procedure SH_MoveCarAI(const mo: Pmobj_t);
 
 implementation
@@ -608,6 +610,7 @@ implementation
 uses
   d_delphi,
   d_think,
+  d_player,
   info_h,
   info,
   p_tick,
@@ -781,6 +784,40 @@ var
   cmd: drivingcmd_t;
 begin
   SH_BuildDrivingCmdAI(mo, @cmd);
+  SH_ExecuteDrivingCmd(mo, @cmd);
+end;
+
+procedure SH_BuildDrivingCmdPlayer(const mo: Pmobj_t; const cmd: Pdrivingcmd_t);
+var
+  p: Pplayer_t;
+  t: integer;
+begin
+  p := mo.player;
+
+  cmd.turn := p.cmd.angleturn * FRACUNIT;
+  t := carinfo[mo.carinfo].turnspeed;
+  if cmd.turn < -t then
+    cmd.turn := -t
+  else if cmd.turn > t then
+    cmd.turn := t;
+
+  if p.cmd.forwardmove > 0 then
+  begin
+    cmd.brake := 0;
+    cmd.accelerate := carinfo[mo.carinfo].baseaccel;
+  end
+  else if p.cmd.forwardmove < 0 then
+  begin
+    cmd.brake := carinfo[mo.carinfo].basedeccel;
+    cmd.accelerate := 0;
+  end;
+end;
+
+procedure SH_MoveCarPlayer(const mo: Pmobj_t);
+var
+  cmd: drivingcmd_t;
+begin
+  SH_BuildDrivingCmdPlayer(mo, @cmd);
   SH_ExecuteDrivingCmd(mo, @cmd);
 end;
 

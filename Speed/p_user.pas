@@ -77,6 +77,7 @@ uses
   p_maputl,
   r_main,
   r_defs,
+  speed_cars,
   sounds,
   s_sound,
   doomdef,
@@ -339,7 +340,9 @@ var
   look2: integer;
   movefactor: fixed_t;
 begin
-  cmd := @player.cmd;
+  SH_MoveCarPlayer(player.mo);
+
+(*  cmd := @player.cmd;
 
   player.mo.angle := player.mo.angle + _SHLW(cmd.angleturn, 16);
 
@@ -500,7 +503,7 @@ begin
         player.lookdir := player.lookdir16 div 16;
       end;
     end;
-  end;
+  end; *)
 
   if not G_NeedsCompatibilityMode then
   begin
@@ -703,7 +706,7 @@ begin
   if player.cheats and CF_NOCLIP <> 0 then
     player.mo.flags := player.mo.flags or MF_NOCLIP
   else
-    player.mo.flags := player.mo.flags and (not MF_NOCLIP);
+    player.mo.flags := player.mo.flags and not MF_NOCLIP;
 
   // chain saw run forward
   cmd := @player.cmd;
@@ -712,7 +715,7 @@ begin
     cmd.angleturn := 0;
     cmd.forwardmove := $c800 div 512;
     cmd.sidemove := 0;
-    player.mo.flags := player.mo.flags and (not MF_JUSTATTACKED);
+    player.mo.flags := player.mo.flags and not MF_JUSTATTACKED;
   end;
 
   if player.quaketics > 0 then
