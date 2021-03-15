@@ -41,7 +41,7 @@ const
   KMH_TO_FIXED = 4370; // Speed in fixed point arithmetic
 
 type
-  cartype_t = (ct_formula, ct_stock);
+  cartype_t = (ct_formula, ct_stock, ct_any);
 
   carinfo_t = record
     tex1old, tex1: string[64]; // Replacement textures
@@ -646,7 +646,8 @@ begin
 
   carids := TDNumberList.Create;
   for i := 0 to NUMCARINFO - 1 do
-    carids.Add(i);
+    if (race.cartype = carinfo[i].cartype) or (race.cartype = ct_any) or (carinfo[i].cartype = ct_any) then
+      carids.Add(i);
 
   for i := 0 to lst.Count - 1 do
   begin

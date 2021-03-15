@@ -99,6 +99,8 @@ var
   sl: TDStringList;
   idx: integer;
 begin
+  race.cartype := ct_any;
+
   race.groundlump := R_GetLumpForFlat(sectors[0].floorpic);
   race.ground := W_CacheLumpNum(race.groundlump, PU_LEVEL);
 
