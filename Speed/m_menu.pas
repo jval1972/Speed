@@ -408,18 +408,18 @@ type
 //
 // NEW GAME
 //
-  newgame_e = (
-    newg_killthings,
-    newg_toorough,
-    newg_hurtme,
-    newg_violence,
-    newg_nightmare,
-    newg_end
+  selectskill_e = (
+    ssk_killthings,
+    ssk_toorough,
+    ssk_hurtme,
+    ssk_violence,
+    ssk_nightmare,
+    selectskill_end
   );
 
 var
-  NewGameMenu: array[0..Ord(newg_end) - 1] of menuitem_t;
-  NewDef: menu_t;
+  SelectSkillMenu: array[0..Ord(selectskill_end) - 1] of menuitem_t;
+  SelectSkillDef: menu_t;
 
 type
   newgamesetup_e = (
@@ -1940,7 +1940,7 @@ end;
 //
 // M_NewGame
 //
-procedure M_DrawNewGame;
+procedure M_DrawSelectSkill;
 var
   i, y: integer;
 begin
@@ -1948,12 +1948,12 @@ begin
   M_DrawSubHeadLine(40, 'Select Skill Level');
 
   y := DEF_MENU_ITEMS_START_Y;
-  for i := Ord(newg_killthings) to Ord(newg_nightmare) do
+  for i := Ord(ssk_killthings) to Ord(selectskill_end) - 1 do
   begin
     if itemOn = i then
-      M_WriteText(160, y, NewGameMenu[i].name, ma_center, @big_fontY, @big_fontB)
+      M_WriteText(160, y, SelectSkillMenu[i].name, ma_center, @big_fontY, @big_fontB)
     else
-      M_WriteText(160, y, NewGameMenu[i].name, ma_center, @big_fontW, @big_fontB);
+      M_WriteText(160, y, SelectSkillMenu[i].name, ma_center, @big_fontW, @big_fontB);
     y := y + 14;
   end;
 end;
@@ -2009,7 +2009,7 @@ end;
 
 procedure M_ChooseSkill(choice: integer);
 begin
-  if choice = Ord(newg_nightmare) then
+  if choice = Ord(ssk_nightmare) then
   begin
     M_StartMessage(SNIGHTMARE + #13#10 + PRESSYN, @M_VerifyNightmare, true);
     exit;
@@ -2037,7 +2037,7 @@ begin
 
   menu_episode := choice;
 
-  M_SetupNextMenu(@NewDef);
+  M_SetupNextMenu(@SelectSkillDef);
 end;
 
 //
@@ -3269,7 +3269,7 @@ end;
 
 procedure M_CmdMenuNewDef;
 begin
-  M_CmdSetupNextMenu(@NewDef);
+  M_CmdSetupNextMenu(@SelectSkillDef);
 end;
 
 procedure M_CmdMenuOptionsDef;
@@ -3613,8 +3613,8 @@ begin
   EpiDef.texturebk := true;
 
 ////////////////////////////////////////////////////////////////////////////////
-//NewGameMenu
-  pmi := @NewGameMenu[0];
+//SelectSkillMenu
+  pmi := @SelectSkillMenu[0];
   pmi.status := 1;
   pmi.name := 'Begginer';
   pmi.cmd := '';
@@ -3655,16 +3655,16 @@ begin
   pmi.alphaKey := 'n';
 
 ////////////////////////////////////////////////////////////////////////////////
-//NewDef
-  NewDef.numitems := Ord(newg_end); // # of menu items
-  NewDef.prevMenu := @EpiDef; // previous menu
-  NewDef.menuitems := Pmenuitem_tArray(@NewGameMenu);  // menu items
-  NewDef.drawproc := @M_DrawNewGame;  // draw routine
-  NewDef.x := DEF_MENU_ITEMS_START_X;
-  NewDef.y := DEF_MENU_ITEMS_START_Y;
-  NewDef.lastOn := Ord(newg_hurtme); // last item user was on in menu
-  NewDef.itemheight := LINEHEIGHT;
-  NewDef.texturebk := false;
+//SelectSkillDef
+  SelectSkillDef.numitems := Ord(selectskill_end); // # of menu items
+  SelectSkillDef.prevMenu := @EpiDef; // previous menu
+  SelectSkillDef.menuitems := Pmenuitem_tArray(@SelectSkillMenu);  // menu items
+  SelectSkillDef.drawproc := @M_DrawSelectSkill;  // draw routine
+  SelectSkillDef.x := DEF_MENU_ITEMS_START_X;
+  SelectSkillDef.y := DEF_MENU_ITEMS_START_Y;
+  SelectSkillDef.lastOn := Ord(ssk_hurtme); // last item user was on in menu
+  SelectSkillDef.itemheight := LINEHEIGHT;
+  SelectSkillDef.texturebk := false;
 
 ////////////////////////////////////////////////////////////////////////////////
 //OptionsMenu
