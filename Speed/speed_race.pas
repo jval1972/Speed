@@ -33,6 +33,7 @@ interface
 
 uses
   d_delphi,
+  doomdef,
   m_fixed,
   speed_cars;
 
@@ -54,6 +55,7 @@ type
     skytex: string[8];
     mountaintex: string[8];
     groundtex: string[8];
+    playercars: array[0..MAXPLAYERS - 1] of integer;
   end;
 
   slipperinessinfo_t = record
