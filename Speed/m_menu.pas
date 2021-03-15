@@ -1928,7 +1928,7 @@ begin
     else if i = Ord(news_difficultylevel) then
       stmp := stmp + ': ' + str_skill[gameskill]
     else if i = Ord(news_carmodel) then
-      stmp := stmp + ': ' + str_cartype[race.cartype];
+      stmp := stmp + ': ' + str_cartype[racecartype];
     if itemOn = i then
       M_WriteText(160, y, stmp, ma_center, @big_fontY, @big_fontB)
     else
@@ -1972,6 +1972,22 @@ begin
   end;
 
   M_SetupNextMenu(@EpiDef);
+end;
+
+procedure M_ChangeDifficulty;
+begin
+  if gameskill = sk_nightmare then
+    gameskill := sk_baby
+  else
+    inc(gameskill);
+end;
+
+procedure M_ChangeCarModel;
+begin
+  if racecartype = ct_any then
+    racecartype := ct_formula
+  else
+    inc(racecartype);
 end;
 
 //
@@ -3542,7 +3558,7 @@ begin
   pmi.status := 1;
   pmi.name := 'Difficulty level';
   pmi.cmd := '';
-  pmi.routine := nil;
+  pmi.routine := @M_ChangeDifficulty;
   pmi.pBoolVal := nil;
   pmi.alphaKey := 'd';
 
@@ -3550,7 +3566,7 @@ begin
   pmi.status := 1;
   pmi.name := 'Car Model';
   pmi.cmd := '';
-  pmi.routine := nil;
+  pmi.routine := @M_ChangeCarModel;
   pmi.pBoolVal := nil;
   pmi.alphaKey := 'm';
 
@@ -3648,7 +3664,7 @@ begin
 
   inc(pmi);
   pmi.status := 1;
-  pmi.name := 'Very hard';
+  pmi.name := 'Super-human';
   pmi.cmd := '';
   pmi.routine := @M_ChooseSkill;
   pmi.pBoolVal := nil;
