@@ -439,10 +439,8 @@ var
 // GENERAL MENU
 type
   optionsgeneral_e = (
-    endgame,
-    messages,
-    mousesens,
-    option_empty2,
+    mn_endgame,
+    mn_messages,
     optgen_end
   );
 
@@ -2006,10 +2004,10 @@ begin
   M_DrawSubHeadLine(40, 'General');
 
   y := DEF_MENU_ITEMS_START_Y;
-  for i := Ord(endgame) to Ord(mousesens) do
+  for i := Ord(mn_endgame) to Ord(mn_messages) do
   begin
     str := OptionsGeneralMenu[i].name;
-    if i = Ord(messages) then
+    if i = Ord(mn_messages) then
       if showMessages = 1 then
         str := str + ': ON'
       else
@@ -2020,9 +2018,6 @@ begin
       M_WriteText(160, y, str, ma_center, @big_fontW, @big_fontB);
     y := y + 14;
   end;
-
-  M_DrawThermo(
-    50, OptionsGeneralDef.y + OptionsGeneralDef.itemheight * (Ord(mousesens) + 1), 20, mouseSensitivity);
 end;
 
 procedure M_DrawSensitivity;
@@ -3604,7 +3599,7 @@ begin
   OptionsDef.y := DEF_MENU_ITEMS_START_Y;
   OptionsDef.lastOn := 0; // last item user was on in menu
   OptionsDef.itemheight := LINEHEIGHT;
-  OptionsDef.texturebk := false;
+  OptionsDef.texturebk := true;
 
 ////////////////////////////////////////////////////////////////////////////////
 //OptionsGeneralMenu
@@ -3624,22 +3619,6 @@ begin
   pmi.pBoolVal := nil;
   pmi.alphaKey := 'm';
 
-  inc(pmi);
-  pmi.status := 2;
-  pmi.name := 'Mouse Sensitivity';
-  pmi.cmd := '';
-  pmi.routine := @M_ChangeSensitivity;
-  pmi.pBoolVal := nil;
-  pmi.alphaKey := 'm';
-
-  inc(pmi);
-  pmi.status := -1;
-  pmi.name := '';
-  pmi.cmd := '';
-  pmi.routine := nil;
-  pmi.pBoolVal := nil;
-  pmi.alphaKey := #0;
-
 ////////////////////////////////////////////////////////////////////////////////
 //OptionsGeneralDef
   OptionsGeneralDef.numitems := Ord(optgen_end); // # of menu items
@@ -3652,7 +3631,7 @@ begin
   OptionsGeneralDef.y := DEF_MENU_ITEMS_START_Y;
   OptionsGeneralDef.lastOn := 0; // last item user was on in menu
   OptionsGeneralDef.itemheight := LINEHEIGHT;
-  OptionsGeneralDef.texturebk := false;
+  OptionsGeneralDef.texturebk := true;
 
 ////////////////////////////////////////////////////////////////////////////////
 //OptionsDisplayMenu
@@ -3708,7 +3687,7 @@ begin
   OptionsDisplayDef.y := DEF_MENU_ITEMS_START_Y;
   OptionsDisplayDef.lastOn := 0; // last item user was on in menu
   OptionsDisplayDef.itemheight := LINEHEIGHT;
-  OptionsDisplayDef.texturebk := false;
+  OptionsDisplayDef.texturebk := true;
 
 ////////////////////////////////////////////////////////////////////////////////
 //OptionsDisplayDetailMenu
@@ -4605,7 +4584,7 @@ begin
   SoundVolDef.y := DEF_MENU_ITEMS_START_Y;
   SoundVolDef.lastOn := 0; // last item user was on in menu
   SoundVolDef.itemheight := LINEHEIGHT2;
-  SoundVolDef.texturebk := false;
+  SoundVolDef.texturebk := true;
 
 ////////////////////////////////////////////////////////////////////////////////
 //CompatibilityMenu
@@ -4990,7 +4969,7 @@ begin
   LoadDef.y := 40;
   LoadDef.lastOn := 0; // last item user was on in menu
   LoadDef.itemheight := LINEHEIGHT;
-  LoadDef.texturebk := false;
+  LoadDef.texturebk := true;
 
 ////////////////////////////////////////////////////////////////////////////////
 //SaveMenu
@@ -5016,7 +4995,7 @@ begin
   SaveDef.y := 40;
   SaveDef.lastOn := 0; // last item user was on in menu
   SaveDef.itemheight := LINEHEIGHT;
-  SaveDef.texturebk := false;
+  SaveDef.texturebk := true;
 
 ////////////////////////////////////////////////////////////////////////////////
   joywait := 0;
