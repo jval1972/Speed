@@ -1928,7 +1928,7 @@ begin
     else if i = Ord(news_difficultylevel) then
       stmp := stmp + ': ' + str_skill[gameskill]
     else if i = Ord(news_carmodel) then
-      stmp := stmp + str_cartype[race.cartype];
+      stmp := stmp + ': ' + str_cartype[race.cartype];
     if itemOn = i then
       M_WriteText(160, y, stmp, ma_center, @big_fontY, @big_fontB)
     else
