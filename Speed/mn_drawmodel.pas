@@ -123,7 +123,8 @@ begin
     ln := device.bframebuffer.ScanLine[j];
     pb := @screens[SCN_TMP][x * 320 + y];
     for i := 0 to device.bframebuffer.Width - 1 do
-      pb[i] := V_FindAproxColorIndex(@videopal, ln[i], 16, 239);
+      if ln[i] <> 0 then
+        pb[i] := V_FindAproxColorIndex(@videopal, ln[i], 16, 239);
   end;
 
   device_destroy(@device);
