@@ -1960,6 +1960,11 @@ end;
 
 procedure M_NewGame(choice: integer);
 begin
+  M_SetupNextMenu(@NewGameSetupDef);
+end;
+
+procedure M_EpisodeMenu(choice: integer);
+begin
   if netgame and not demoplayback then
   begin
     M_StartMessage(SNEWGAME + #13#10 + PRESSKEY, nil, false);
@@ -1979,7 +1984,8 @@ procedure M_DrawEpisode;
 var
   i, y: integer;
 begin
-  M_DrawHeadLine(15, 'Select Course');
+  M_DrawHeadLine(15, 'New Game');
+  M_DrawSubHeadLine(40, 'Select Course');
 
   y := DEF_MENU_ITEMS_START_Y;
   for i := Ord(mn_ep1) to Ord(ep_end) - 1 do
@@ -3504,7 +3510,7 @@ begin
   pmi.status := 1;
   pmi.name := 'Championship';
   pmi.cmd := '';
-  pmi.routine := @M_Episode;
+  pmi.routine := @M_EpisodeMenu;
   pmi.pBoolVal := nil;
   pmi.alphaKey := 'c';
 
@@ -3604,7 +3610,7 @@ begin
   EpiDef.y := DEF_MENU_ITEMS_START_Y;
   EpiDef.lastOn := Ord(mn_ep1); // last item user was on in menu
   EpiDef.itemheight := LINEHEIGHT;
-  EpiDef.texturebk := false;
+  EpiDef.texturebk := true;
 
 ////////////////////////////////////////////////////////////////////////////////
 //NewGameMenu
