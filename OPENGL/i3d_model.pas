@@ -802,8 +802,8 @@ var
   procedure _softvertex(const v: Pvertex_t; const x, y, z: integer);
   begin
     v.pos.x := (1.0 * x - obj.dcx) * obj.scx / DEF_I3D_SCALE * scalex + offsetx;
-    v.pos.x := (1.0 * y - obj.dcy) * obj.scy / DEF_I3D_SCALE * scaley + offsety;
-    v.pos.x := -(1.0 * z - obj.dcz) * obj.scz / DEF_I3D_SCALE * scalez + offsetz;
+    v.pos.y := (1.0 * y - obj.dcy) * obj.scy / DEF_I3D_SCALE * scaley + offsety;
+    v.pos.z := -(1.0 * z - obj.dcz) * obj.scz / DEF_I3D_SCALE * scalez + offsetz;
   end;
 
 begin
