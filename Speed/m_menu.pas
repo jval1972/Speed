@@ -319,7 +319,7 @@ begin
   if numdots < 2 then
     numdots := 2;
   p := Round(thermDot / (numdots - 1) * thermWidth * 8 + 1);
-  for i := 1 to thermWidth * 8 do
+  for i := 2 to thermWidth * 8 do
   begin
     if i < p then
       M_VertLine(x + i, y + 2, y + 8, 53)
