@@ -365,7 +365,8 @@ uses
   speed_race in 'Speed\speed_race.pas',
   speed_font in 'Speed\speed_font.pas',
   speed_particles in 'Speed\speed_particles.pas',
-  mn_textwrite in 'Speed\mn_textwrite.pas';
+  mn_textwrite in 'Speed\mn_textwrite.pas',
+  r_soft3d in 'Base\r_soft3d.pas';
 
 var
   Saved8087CW: Word;
