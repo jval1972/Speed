@@ -2350,7 +2350,7 @@ begin
 end;
 
 //
-// M_QuitDOOM
+// M_QuitSpeed
 //
 const
   quitsounds: array[0..7] of integer = (
@@ -2383,7 +2383,7 @@ begin
   M_CmdQuit;
 end;
 
-procedure M_QuitDOOM(choice: integer);
+procedure M_QuitSpeed(choice: integer);
 begin
   // We pick index 0 which is language sensitive,
   //  or one at random, between 1 and maximum number.
@@ -2814,7 +2814,7 @@ begin
       KEY_F10:  // Quit DOOM
         begin
           M_MenuSound;
-          M_QuitDOOM(0);
+          M_QuitSpeed(0);
           result := true;
           exit;
         end;
@@ -3423,7 +3423,7 @@ begin
   pmi.status := 1;
   pmi.name := 'Quit';
   pmi.cmd := '';
-  pmi.routine := @M_QuitDOOM;
+  pmi.routine := @M_QuitSpeed;
   pmi.pBoolVal := nil;
   pmi.alphaKey := 'q';
 
