@@ -152,7 +152,7 @@ end;
 
 procedure TI3DModel.DrawCarSoft(const car: Pcarinfo_t; const device: Pdevice_t);
 begin
-  fmdl.RenderGLEx(fxscale, fyscale, fzscale, fxoffset, fyoffset, fzoffset,
+  fmdl.RenderSoftEx(device, fxscale, fyscale, fzscale, fxoffset, fyoffset, fzoffset,
     car.tex1old, car.tex1, car.tex2old, car.tex2);
 end;
 
