@@ -141,7 +141,7 @@ type
   Pdefault_t = ^default_t;
 
 const
-  NUMDEFAULTS = 191;
+  NUMDEFAULTS = 190;
 
 // JVAL
 // Note: All setable defaults must be in lowercase, don't ask why. Just do it. :)
@@ -297,14 +297,6 @@ const
      defaultivalue: 1;
      defaultbvalue: false;
      _type: tInteger),
-
-    (name: 'menubackgroundflat';
-     location: @menubackgroundflat;
-     setable: DFS_ALWAYS;
-     defaultsvalue: DEFMENUBACKGROUNDFLAT;
-     defaultivalue: 0;
-     defaultbvalue: false;
-     _type: tString),
 
     (name: 'displaydiskbusyicon';
      location: @displaydiskbusyicon;

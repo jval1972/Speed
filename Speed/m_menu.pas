@@ -84,11 +84,6 @@ var
 
   inhelpscreens: boolean;
 
-  menubackgroundflat: string = 'FLOOR4_6';
-
-const
-  DEFMENUBACKGROUNDFLAT = 'FLOOR4_6';
-
 procedure M_ShutDownMenus;
 
 procedure M_InitMenus;
@@ -3085,39 +3080,9 @@ begin
   end;
 end;
 
-procedure M_DrawFlatBackground(const sflat: string);
-var
-  x, y: integer;
-  src: PByteArray;
-  dest: integer;
-  iflat: integer;
+procedure M_DrawMenuBackground(const pg: string);
 begin
-  iflat := R_FlatNumForName(sflat);
-  if iflat < 0 then
-  begin
-    iflat := R_FlatNumForName(DEFMENUBACKGROUNDFLAT);
-    if iflat < 0 then
-      exit;
-  end;
-
-  src := W_CacheLumpNum(R_GetLumpForFlat(iflat), PU_STATIC);
-  dest := 0;
-
-  for y := 0 to 200 - 1 do
-  begin
-    for x := 0 to (320 div 64) - 1 do
-    begin
-      memcpy(@screens[SCN_TMP, dest], @src[_SHL(y and 63, 6)], 64);
-      dest := dest + 64;
-    end;
-
-    if 320 and 63 <> 0 then
-    begin
-      memcpy(@screens[SCN_TMP, dest], @src[_SHL(y and 63, 6)], 320 and 63);
-      dest := dest + (320 and 63);
-    end;
-  end;
-  Z_ChangeTag(src, PU_CACHE);
+  V_DrawPatchFullScreenTMP320x200(pg);
 end;
 
 //
@@ -3175,7 +3140,7 @@ begin
   MT_ZeroMemory(screens[SCN_TMP], 320 * 200);
 
   if (shademenubackground = 2) and currentMenu.texturebk then
-    M_DrawFlatBackground(menubackgroundflat);
+    M_DrawMenuBackground(pg_TITLE);
 
   if Assigned(currentMenu.drawproc) then
     currentMenu.drawproc; // call Draw routine
