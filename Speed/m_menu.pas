@@ -138,6 +138,8 @@ uses
   r_intrpl,
   r_camera,
   r_draw,
+  speed_cars,
+  speed_race,
   t_main,
   vx_voxelsprite,
   v_data,
@@ -418,6 +420,21 @@ type
 var
   NewGameMenu: array[0..Ord(newg_end) - 1] of menuitem_t;
   NewDef: menu_t;
+
+type
+  newgamesetup_e = (
+    news_championship,
+    news_singlerace,
+    news_practice,
+    news_carselect,
+    news_difficultylevel,
+    news_carmodel,
+    news_end
+  );
+
+var
+  NewGameSetupMenu: array[0..Ord(news_end) - 1] of menuitem_t;
+  NewGameSetupDef: menu_t;
 
 type
 //
@@ -1875,6 +1892,47 @@ begin
       M_WriteText(160, y, MainMenu[i].name, ma_center, @big_fontY, @big_fontB)
     else
       M_WriteText(160, y, MainMenu[i].name, ma_center, @big_fontW, @big_fontB);
+    y := y + 14;
+  end;
+end;
+
+const
+  str_skill: array[skill_t] of string = (
+    'Beginner',
+    'Easy',
+    'Medium',
+    'Hard',
+    'Super-human'
+  );
+
+  str_cartype: array[cartype_t] of string = (
+    'Formula 1',
+    'Stock',
+    'Any'
+  );
+
+procedure M_DrawNewGameSetup;
+var
+  i, y: integer;
+  stmp: string;
+begin
+  M_DrawHeadLine(15, 'New Game');
+  M_DrawSubHeadLine(40, 'Select Skill Level');
+
+  y := DEF_MENU_ITEMS_START_Y;
+  for i := 0 to Ord(news_end) - 1 do
+  begin
+    stmp := NewGameSetupMenu[i].name;
+    if i = Ord(news_carselect) then
+      stmp := stmp + ': ' + '#' + itoa(Ord(race.playercars[consoleplayer]))
+    else if i = Ord(news_difficultylevel) then
+      stmp := stmp + ': ' + str_skill[gameskill]
+    else if i = Ord(news_carmodel) then
+      stmp := stmp + str_cartype[race.cartype];
+    if itemOn = i then
+      M_WriteText(160, y, stmp, ma_center, @big_fontY, @big_fontB)
+    else
+      M_WriteText(160, y, stmp, ma_center, @big_fontW, @big_fontB);
     y := y + 14;
   end;
 end;
@@ -3439,6 +3497,68 @@ begin
   MainDef.lastOn := 0;
   MainDef.itemheight := LINEHEIGHT;
   MainDef.texturebk := false;
+
+////////////////////////////////////////////////////////////////////////////////
+//NewGameSetupMenu
+  pmi := @NewGameSetupMenu[0];
+  pmi.status := 1;
+  pmi.name := 'Championship';
+  pmi.cmd := '';
+  pmi.routine := @M_Episode;
+  pmi.pBoolVal := nil;
+  pmi.alphaKey := 'c';
+
+  inc(pmi);
+  pmi.status := 1;
+  pmi.name := 'Single Race';
+  pmi.cmd := '';
+  pmi.routine := nil;
+  pmi.pBoolVal := nil;
+  pmi.alphaKey := 's';
+
+  inc(pmi);
+  pmi.status := 1;
+  pmi.name := 'Practice';
+  pmi.cmd := '';
+  pmi.routine := nil;
+  pmi.pBoolVal := nil;
+  pmi.alphaKey := 'p';
+
+  inc(pmi);
+  pmi.status := 1;
+  pmi.name := 'Select Car';
+  pmi.cmd := '';
+  pmi.routine := nil;
+  pmi.pBoolVal := nil;
+  pmi.alphaKey := 'c';
+
+  inc(pmi);
+  pmi.status := 1;
+  pmi.name := 'Difficulty level';
+  pmi.cmd := '';
+  pmi.routine := nil;
+  pmi.pBoolVal := nil;
+  pmi.alphaKey := 'd';
+
+  inc(pmi);
+  pmi.status := 1;
+  pmi.name := 'Car Model';
+  pmi.cmd := '';
+  pmi.routine := nil;
+  pmi.pBoolVal := nil;
+  pmi.alphaKey := 'm';
+
+////////////////////////////////////////////////////////////////////////////////
+//NewGameSetupDef
+  NewGameSetupDef.numitems := Ord(news_end); // # of menu items
+  NewGameSetupDef.prevMenu := @MainDef; // previous menu
+  NewGameSetupDef.menuitems := Pmenuitem_tArray(@NewGameSetupMenu);  // menu items
+  NewGameSetupDef.drawproc := @M_DrawNewGameSetup;  // draw routine
+  NewGameSetupDef.x := DEF_MENU_ITEMS_START_X;
+  NewGameSetupDef.y := DEF_MENU_ITEMS_START_Y;
+  NewGameSetupDef.lastOn := 0; // last item user was on in menu
+  NewGameSetupDef.itemheight := LINEHEIGHT;
+  NewGameSetupDef.texturebk := true;
 
 ////////////////////////////////////////////////////////////////////////////////
 //EpisodeMenu
