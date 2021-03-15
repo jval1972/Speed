@@ -146,14 +146,21 @@ end;
 
 procedure TI3DModel.DrawCarGL(const car: Pcarinfo_t);
 begin
-  fmdl.RenderGLEx(fxscale, fyscale, fzscale, fxoffset, fyoffset, fzoffset,
-    car.tex1old, car.tex1, car.tex2old, car.tex2);
+  fmdl.RenderGLEx(
+    fxscale, fyscale, fzscale,
+    fxoffset, fyoffset, fzoffset,
+    car.tex1old, car.tex1, car.tex2old, car.tex2
+  );
 end;
 
 procedure TI3DModel.DrawCarSoft(const car: Pcarinfo_t; const device: Pdevice_t);
 begin
-  fmdl.RenderSoftEx(device, fxscale, fyscale, fzscale, fxoffset, fyoffset, fzoffset,
-    car.tex1old, car.tex1, car.tex2old, car.tex2);
+  fmdl.RenderSoftEx(
+    device,
+    MAP_COEFF * fxscale, MAP_COEFF * fyscale, MAP_COEFF * fzscale,
+    MAP_COEFF * fxoffset, MAP_COEFF * fyoffset, MAP_COEFF * fzoffset,
+    car.tex1old, car.tex1, car.tex2old, car.tex2
+  );
 end;
 
 
