@@ -75,8 +75,10 @@ begin
     end;
 
   if idx < 0 then
+  begin
     I_Warning('M_DrawCarModel(): Can not find model %s'#13#10, [cinfo.model3d]);
     Exit; // Not found !
+  end;
 
   modelinf := @modelmanager.items[idx];
   if modelinf.model = nil then
