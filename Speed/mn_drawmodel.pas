@@ -121,7 +121,7 @@ begin
   for j := 0 to device.bframebuffer.Height - 1 do
   begin
     ln := device.bframebuffer.ScanLine[j];
-    pb := @screens[SCN_TMP][x * 320 + y];
+    pb := @screens[SCN_TMP][(y + j) * 320 + x];
     for i := 0 to device.bframebuffer.Width - 1 do
       if ln[i] <> 0 then
         pb[i] := V_FindAproxColorIndex(@videopal, ln[i], 16, 239);
