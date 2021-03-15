@@ -812,16 +812,16 @@ begin
       turn64 := cmd.turn;
       turn64 := turn64 * actualspeed;
       turn64 := turn64 div abs(enginespeed);
-      mo.angle := mo.angle + (turn64 + cmd.turn) div 2;
+      mo.angle := mo.angle + iSign(enginespeed) * (turn64 + cmd.turn) div 2;
     end
     else
-      mo.angle := mo.angle + cmd.turn;
+      mo.angle := mo.angle + iSign(enginespeed) * cmd.turn;
   end;
 
   // Adjust momentum
   an := mo.angle shr ANGLETOFINESHIFT;
-  mo.momx := dx div 2 + iSign(enginespeed) * FixedMul(enginespeed, finecosine[an]) div 2;
-  mo.momy := dy div 2 + iSign(enginespeed) * FixedMul(enginespeed, finesine[an]) div 2;
+  mo.momx := dx div 2 + FixedMul(enginespeed, finecosine[an]) div 2;
+  mo.momy := dy div 2 + FixedMul(enginespeed, finesine[an]) div 2;
 
   mo.carvelocity := enginespeed;
 end;
