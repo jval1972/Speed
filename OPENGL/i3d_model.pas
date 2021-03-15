@@ -761,16 +761,15 @@ var
 
   procedure _softcolor(const m: O3DM_TMaterial_p);
   var
-    cl: i3dcolor3f_t;
-    r, g, b: integer;
+    cl: LongWord;
     cname: string;
     idx: integer;
     bm: TBitmap;
   begin
-    r := Trunc(cl.r * 255);
-    g := Trunc(cl.g * 255);
-    b := Trunc(cl.b * 255);
-    cname := itoa(r) + '_'  + itoa(g) + '_' + itoa(b);
+    cl := I3DPalColorL(m.color);
+    if cl = 0 then
+      cl := $010101;
+    cname := itoa(cl);
     idx := extra.IndexOf(cname);
     if idx >= 0 then
     begin
@@ -782,10 +781,10 @@ var
     bm.PixelFormat := pf32bit;
     bm.Width := 2;
     bm.Height := 2;
-    bm.Canvas.Pixels[0, 0] := r shl 16 + g shl 8 + b;
-    bm.Canvas.Pixels[1, 0] := r shl 16 + g shl 8 + b;
-    bm.Canvas.Pixels[0, 1] := r shl 16 + g shl 8 + b;
-    bm.Canvas.Pixels[1, 1] := r shl 16 + g shl 8 + b;
+    bm.Canvas.Pixels[0, 0] := cl;
+    bm.Canvas.Pixels[1, 0] := cl;
+    bm.Canvas.Pixels[0, 1] := cl;
+    bm.Canvas.Pixels[1, 1] := cl;
     extra.AddObject(cname, bm);
     device_set_texture(device, bm);
   end;
@@ -802,8 +801,8 @@ var
   procedure _softvertex(const v: Pvertex_t; const x, y, z: integer);
   begin
     v.pos.x := (1.0 * x - obj.dcx) * obj.scx / DEF_I3D_SCALE * scalex + offsetx;
-    v.pos.y := (1.0 * y - obj.dcy) * obj.scy / DEF_I3D_SCALE * scaley + offsety;
-    v.pos.z := -(1.0 * z - obj.dcz) * obj.scz / DEF_I3D_SCALE * scalez + offsetz;
+    v.pos.z := (1.0 * y - obj.dcy) * obj.scy / DEF_I3D_SCALE * scaley + offsety;
+    v.pos.y := -(1.0 * z - obj.dcz) * obj.scz / DEF_I3D_SCALE * scalez + offsetz;
   end;
 
 begin
