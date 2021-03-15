@@ -390,15 +390,15 @@ type
 // EPISODE SELECT
 //
   episodes_e = (
-    ep1,
-    ep2,
-    ep3,
-    ep4,
+    mn_ep1,
+    mn_ep2,
+    mn_ep3,
+    mn_ep4,
     ep_end
   );
 
 var
-  EpisodeMenu: array[0..3] of menuitem_t;
+  EpisodeMenu: array[0..Ord(ep_end) - 1] of menuitem_t;
   EpiDef: menu_t;
 
 type
@@ -1923,7 +1923,7 @@ begin
   M_DrawHeadLine(15, 'Select Course');
 
   y := DEF_MENU_ITEMS_START_Y;
-  for i := Ord(ep1) to Ord(ep_end) do
+  for i := Ord(mn_ep1) to Ord(ep_end) - 1 do
   begin
     if itemOn = i then
       M_WriteText(160, y, EpisodeMenu[i].name, ma_center, @big_fontY, @big_fontB)
@@ -3481,7 +3481,7 @@ begin
   EpiDef.drawproc := @M_DrawEpisode;  // draw routine
   EpiDef.x := DEF_MENU_ITEMS_START_X;
   EpiDef.y := DEF_MENU_ITEMS_START_Y;
-  EpiDef.lastOn := Ord(ep1); // last item user was on in menu
+  EpiDef.lastOn := Ord(mn_ep1); // last item user was on in menu
   EpiDef.itemheight := LINEHEIGHT;
   EpiDef.texturebk := false;
 
