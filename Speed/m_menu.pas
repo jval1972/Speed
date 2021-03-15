@@ -277,7 +277,7 @@ begin
   for i := y + 1 to y + 14 do
     M_HorzLine(0, 319, i, 118);
 
-  M_WriteText(160, y + 3, str, ma_center, @big_fontR, @big_fontB);
+  M_WriteText(160, y + 3, str, ma_center, @big_fontW, @big_fontB);
 end;
 
 procedure M_DrawSubHeadLine(const y: integer; const str: string);
