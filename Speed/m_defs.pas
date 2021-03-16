@@ -69,6 +69,7 @@ uses
   r_draw,
   r_dynlights,
   speed_cars,
+  speed_race,
   s_sound,
   t_main,
   t_png,
@@ -142,7 +143,7 @@ type
   Pdefault_t = ^default_t;
 
 const
-  NUMDEFAULTS = 196;
+  NUMDEFAULTS = 197;
 
 // JVAL
 // Note: All setable defaults must be in lowercase, don't ask why. Just do it. :)
@@ -864,6 +865,14 @@ const
 
     (name: 'anycar';
      location: @def_anycar;
+     setable: DFS_NEVER;
+     defaultsvalue: '';
+     defaultivalue: 0;
+     defaultbvalue: true;
+     _type: tInteger),
+
+    (name: 'racecartype';
+     location: @racecartype;
      setable: DFS_NEVER;
      defaultsvalue: '';
      defaultivalue: 0;

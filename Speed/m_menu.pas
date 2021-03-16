@@ -1907,7 +1907,7 @@ const
     'Super-human'
   );
 
-  str_cartype: array[cartype_t] of string = (
+  str_cartype: array[0..Ord(ct_any)] of string = (
     'Formula 1',
     'Stock',
     'Any'
@@ -1928,9 +1928,10 @@ begin
     stmp := NewGameSetupMenu[i].name;
     if i = Ord(news_carselect) then
     begin
+      racecartype := GetIntegerInRange(racecartype, 0, Ord(ct_any));
       case racecartype of
-        ct_formula: fcar := GetIntegerInRange(def_f1car, 0, NUMCARINFO - 1);
-        ct_stock: fcar := GetIntegerInRange(def_ncar, 0, NUMCARINFO - 1);
+        Ord(ct_formula): fcar := GetIntegerInRange(def_f1car, 0, NUMCARINFO - 1);
+        Ord(ct_stock): fcar := GetIntegerInRange(def_ncar, 0, NUMCARINFO - 1);
       else
         fcar := GetIntegerInRange(def_anycar, 0, NUMCARINFO - 1);
       end;
@@ -2054,8 +2055,8 @@ end;
 
 procedure M_ChangeCarModel;
 begin
-  if racecartype = ct_any then
-    racecartype := ct_formula
+  if racecartype = Ord(ct_any) then
+    racecartype := Ord(ct_formula)
   else
     inc(racecartype);
 end;

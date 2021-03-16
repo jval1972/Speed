@@ -80,7 +80,7 @@ const
 
 var
   race: race_t;
-  racecartype: cartype_t = ct_formula;
+  racecartype: integer = 0;
 
 procedure SH_InitRace(const lump: integer);
 
@@ -105,7 +105,8 @@ var
   sl: TDStringList;
   idx: integer;
 begin
-  race.cartype := racecartype;
+  racecartype := GetIntegerInRange(racecartype, 0, Ord(ct_any));
+  race.cartype := cartype_t(racecartype);
 
   race.groundlump := R_GetLumpForFlat(sectors[0].floorpic);
   race.ground := W_CacheLumpNum(race.groundlump, PU_LEVEL);
