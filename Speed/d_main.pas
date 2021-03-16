@@ -556,6 +556,7 @@ end;
 procedure D_PageDrawer;
 begin
   V_PageDrawer(pagename);
+  V_DrawPatch(160, 180, SCN_FG, 'MMCRED', true);
 end;
 
 //
