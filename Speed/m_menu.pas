@@ -1917,7 +1917,7 @@ var
   stmp: string;
 begin
   M_DrawHeadLine(15, 'New Game');
-  M_DrawSubHeadLine(40, 'Select Skill Level');
+  M_DrawSubHeadLine(40, 'New Game Setup');
 
   y := DEF_MENU_ITEMS_START_Y;
   for i := 0 to Ord(news_end) - 1 do
