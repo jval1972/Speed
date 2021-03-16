@@ -602,7 +602,7 @@ begin
       begin
         pagetic := (TICRATE * 200) div 35;
         gamestate := GS_DEMOSCREEN;
-        pagename := pg_CREDIT;
+        pagename := pg_TITLE;
       end;
     3:
       begin
@@ -612,10 +612,7 @@ begin
       begin
         gamestate := GS_DEMOSCREEN;
         pagetic := (TICRATE * 200) div 35;
-        if gamemode = retail then
-          pagename := pg_CREDIT
-        else
-          pagename := pg_HELP2;
+        pagename := pg_TITLE;
       end;
     5:
       begin
