@@ -1913,9 +1913,6 @@ const
     'Any'
   );
 
-const
-  menu_skill: skill_t = sk_medium;
-
 procedure M_DrawNewGameSetup;
 var
   i, y: integer;
@@ -1931,7 +1928,7 @@ begin
     if i = Ord(news_carselect) then
       stmp := stmp + ': ' + '#' + itoa(Ord(race.playercars[racecartype, consoleplayer]))
     else if i = Ord(news_difficultylevel) then
-      stmp := stmp + ': ' + str_skill[menu_skill]
+      stmp := stmp + ': ' + str_skill[skill_t(mgameskill)]
     else if i = Ord(news_carmodel) then
       stmp := stmp + ': ' + str_cartype[racecartype];
     if itemOn = i then
@@ -2001,7 +1998,7 @@ begin
   mname := mapdatalst.Strings[idx];
   m_episode := atoi(mname[2]);
   m_map := atoi(mname[4]);
-  G_DeferedInitNew(menu_skill, m_episode, m_map);
+  G_DeferedInitNew(skill_t(mgameskill), m_episode, m_map);
   M_ClearMenus;
 end;
 
@@ -2040,10 +2037,10 @@ end;
 
 procedure M_ChangeDifficulty;
 begin
-  if menu_skill = sk_nightmare then
-    menu_skill := sk_baby
+  if skill_t(mgameskill) = sk_nightmare then
+    mgameskill := Ord(sk_baby)
   else
-    inc(menu_skill);
+    inc(mgameskill);
 end;
 
 procedure M_ChangeCarModel;
@@ -3518,8 +3515,8 @@ var
 begin
   threadmenushader := TDThread.Create(@M_Thr_ShadeScreen);
 
-  menu_skill := gameskill;
-  
+  mgameskill := Ord(gameskill);
+
 ////////////////////////////////////////////////////////////////////////////////
 //gammamsg
   gammamsg[0] := GAMMALVL0;
