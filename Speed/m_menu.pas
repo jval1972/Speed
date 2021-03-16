@@ -215,7 +215,7 @@ type
     alphaKey: char;
   end;
   Pmenuitem_t = ^menuitem_t;
-  menuitem_tArray = packed array[0..$FFFF] of menuitem_t;
+  menuitem_tArray = packed array[0..$FF] of menuitem_t;
   Pmenuitem_tArray = ^menuitem_tArray;
 
   Pmenu_t = ^menu_t;
