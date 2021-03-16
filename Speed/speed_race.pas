@@ -51,6 +51,9 @@ type
     completed: boolean;
     ground: Pground_t;
     groundlump: integer;
+    name: string[64];
+    best: integer;
+    level: integer;
     mapsprite: string[8];
     skytex: string[8];
     mountaintex: string[8];
@@ -107,6 +110,9 @@ begin
   race.groundlump := R_GetLumpForFlat(sectors[0].floorpic);
   race.ground := W_CacheLumpNum(race.groundlump, PU_LEVEL);
 
+  race.name := '';
+  race.best := 0;
+  race.level := 0;
   race.mapsprite := '';
   race.skytex := '';
   race.mountaintex := '';
@@ -127,6 +133,15 @@ begin
     idx := sl.IndexOfName(sMAPDATA_ground);
     if idx >= 0 then
       race.groundtex := sl.ValuesIdx[idx];
+    idx := sl.IndexOfName(sMAPDATA_name);
+    if idx >= 0 then
+      race.name := sl.ValuesIdx[idx];
+    idx := sl.IndexOfName(sMAPDATA_best);
+    if idx >= 0 then
+      race.best := atoi(sl.ValuesIdx[idx]);
+    idx := sl.IndexOfName(sMAPDATA_level);
+    if idx >= 0 then
+      race.level := atoi(sl.ValuesIdx[idx]);
   finally
     sl.Free;
   end;

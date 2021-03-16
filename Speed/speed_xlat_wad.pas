@@ -47,6 +47,9 @@ const
   sMAPDATA_sky = 'sky';
   sMAPDATA_mountain = 'mountain';
   sMAPDATA_ground = 'ground';
+  sMAPDATA_name = 'name';
+  sMAPDATA_best = 'best';
+  sMAPDATA_level = 'level';
 
 implementation
 
@@ -61,6 +64,7 @@ uses
   speed_is2,
   speed_sounds,
   speed_level,
+  sc_engine,
   r_defs,
   v_video,
   w_pak,
@@ -467,6 +471,20 @@ begin
 end;
 
 function TSpeedToWADConverter.GenerateLevels(const scale: integer): boolean;
+type
+  circuit_t = record
+    name: string[64];
+    number: integer;
+    level: integer;
+    len: integer;
+    best: integer;
+    record1, record2: integer;
+    nback: integer;
+  end;
+const
+  MAXCIRCUITS = 8;
+var
+  circuits: array[0..MAXCIRCUITS - 1] of circuit_t;
 
   function _makelevel(const prefix, prefix2: string; const mapname: string;
     const mapsprite, mapsky, mapmount, extraflat: string): boolean;
@@ -522,12 +540,74 @@ function TSpeedToWADConverter.GenerateLevels(const scale: integer): boolean;
     lst.Add(sMAPDATA_sky + '=' + mapsky);
     lst.Add(sMAPDATA_mountain + '=' + mapmount);
     lst.Add(sMAPDATA_ground + '=' + extraflat);
+    lst.Add(sMAPDATA_name + '=' + circuits[atoi(prefix)].name);
+    lst.Add(sMAPDATA_best + '=' + itoa(circuits[atoi(prefix)].best));
+    lst.Add(sMAPDATA_level + '=' + itoa(circuits[atoi(prefix)].level));
+
     wadwriter.AddString('MAPDATA', lst.Text);
     lst.Free;
   end;
 
+var
+  sc: TScriptEngine;
+  buf: pointer;
+  i, nc, sz: integer;
+  pc: PChar;
+  stmp: string;
 begin
   result := true;
+
+  stmp := '';
+
+  if ReadLump(lumps, numlumps, 'CIRCUITS.LST', buf, sz) then
+  begin
+    pc := buf;
+    for i := 0 to sz - 1 do
+    begin
+      stmp := stmp + pc^;
+      inc(pc);
+    end;
+    memfree(buf, sz);
+  end;
+
+  ZeroMemory(@circuits, SizeOf(circuits));
+
+  if stmp <> '' then
+  begin
+    sc := TScriptEngine.Create(stmp);
+    sc.MustGetInteger;
+    nc := sc._Integer;
+    for i := 0 to nc - 1 do
+    begin
+      if i = MAXCIRCUITS then
+        break;
+      sc.GetString; // Circuit
+      sc.GetString; // Name
+      if sc.GetString then
+        circuits[i].name := sc._String;
+      sc.GetString; // Number
+      if sc.GetInteger then
+        circuits[i].number := sc._Integer;
+      sc.GetString; // Level
+      if sc.GetInteger then
+        circuits[i].level := sc._Integer;
+      sc.GetString; // Length
+      if sc.GetInteger then
+        circuits[i].len := sc._Integer;
+      sc.GetString; // Best
+      if sc.GetInteger then
+        circuits[i].best := sc._Integer;
+      sc.GetString; // Record
+      if sc.GetInteger then
+        circuits[i].record1 := sc._Integer;
+      if sc.GetInteger then
+        circuits[i].record2 := sc._Integer;
+      sc.GetString; // NBack
+      if sc.GetInteger then
+        circuits[i].nback := sc._Integer;
+    end;
+    sc.Free;
+  end;
 
   _makelevel('00', '00', 'E1M1', 'MAPSPR00', 'NUBES0', 'MOUNT0' ,extramapflats[0]);
   _makelevel('01', '01', 'E1M2', 'MAPSPR01', 'NUBES1', 'MOUNT1' ,extramapflats[1]);

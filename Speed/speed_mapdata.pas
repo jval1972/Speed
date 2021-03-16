@@ -40,6 +40,10 @@ procedure SH_ShutDownMapData;
 
 type
   mapdata_t = record
+    lname: string[8];
+    name: string[64];
+    best: integer;
+    level: integer;
     mapsprite: string[8];
     skytex: string[8];
     mountaintex: string[8];
@@ -67,6 +71,9 @@ uses
 constructor TMapData.Create;
 begin
   Inherited Create;
+  mapdata.name := '';
+  mapdata.best := 0;
+  mapdata.level := 0;
   mapdata.mapsprite := '';
   mapdata.skytex := '';
   mapdata.mountaintex := '';
@@ -92,7 +99,7 @@ begin
       if lump >= 0 then
       begin
         mlump := -1;
-        for k := lump to lump + Ord(ML_MAPDATA) - 1 do
+        for k := lump + 1 to lump + Ord(ML_MAPDATA) do
         begin
           if k >= W_NumLumps then
             Break;
@@ -104,13 +111,18 @@ begin
         end;
         if mlump >= 0 then
         begin
+          mrec.lname := lname;
+          mrec.name := '';
+          mrec.best := 0;
+          mrec.level := 0;
           mrec.mapsprite := '';
           mrec.skytex := '';
           mrec.mountaintex := '';
           mrec.groundtex := '';
+
           sl := TDStringList.Create;
           try
-            sl.Text := W_TextLumpNum(lump);
+            sl.Text := W_TextLumpNum(mlump);
             idx := sl.IndexOfName(sMAPDATA_sprite);
             if idx >= 0 then
               mrec.mapsprite := sl.ValuesIdx[idx];
@@ -123,6 +135,15 @@ begin
             idx := sl.IndexOfName(sMAPDATA_ground);
             if idx >= 0 then
               mrec.groundtex := sl.ValuesIdx[idx];
+            idx := sl.IndexOfName(sMAPDATA_name);
+            if idx >= 0 then
+              mrec.name := sl.ValuesIdx[idx];
+            idx := sl.IndexOfName(sMAPDATA_best);
+            if idx >= 0 then
+              mrec.best := atoi(sl.ValuesIdx[idx]);
+            idx := sl.IndexOfName(sMAPDATA_level);
+            if idx >= 0 then
+              mrec.level := atoi(sl.ValuesIdx[idx]);
           finally
             sl.Free;
           end;
