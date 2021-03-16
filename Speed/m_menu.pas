@@ -275,33 +275,14 @@ const
   HEADCOLORS: array[0..NUMHEADCOLORS - 1] of integer = (
     63, 61, 58, 55, 53, 50, 48, 50, 53, 55, 58, 61, 63);
 
-procedure M_DrawHeadLine(const y: integer; const str: string);
+procedure M_DrawHeadLine(const x, y: integer; const str: string);
 var
   i: integer;
 begin
   for i := 0 to NUMHEADCOLORS - 1 do
     M_HorzLine(0, 319, y + 2 + i, HEADCOLORS[i]);
 
-  M_WriteText(20, y, str, ma_left, @big_fontW, @big_fontB);
-{  M_HorzLine(0, 319, y, 121);
-  M_HorzLine(0, 319, y + 15, 123);
-  for i := y + 1 to y + 14 do
-    M_HorzLine(0, 319, i, 118);
-
-  M_WriteText(160, y + 3, str, ma_center, @big_fontW, @big_fontB);}
-end;
-
-procedure M_DrawSubHeadLine(const y: integer; const str: string);
-var
-  i: integer;
-begin
-  M_DrawHeadLine(y, str);
-{  M_HorzLine(0, 319, y, 121);
-  M_HorzLine(0, 319, y + 15, 123);
-  for i := y + 1 to y + 14 do
-    M_HorzLine(0, 319, i, 118);
-
-  M_WriteText(25, y + 3, str, ma_left, @big_fontW, @big_fontB);}
+  M_WriteText(x, y, str, ma_left, @big_fontW, @big_fontB);
 end;
 
 procedure M_DrawSmallLine(const y: integer; const str: string);
@@ -1002,8 +983,8 @@ var
   s: string;
   drawkey: boolean;
 begin
-  M_DrawHeadLine(15, 'Controls');
-  M_DrawSubHeadLine(40, 'Key Bindings');
+  M_DrawHeadLine(20, 15, 'Controls');
+  M_DrawHeadLine(30, 40, 'Key Bindings');
 
   for i := 0 to stop - start - 1 do
   begin
@@ -1125,7 +1106,7 @@ procedure M_DrawLoad;
 var
   i: integer;
 begin
-  M_DrawHeadLine(15, 'Load Game');
+  M_DrawHeadLine(20, 15, 'Load Game');
 
   for i := 0 to Ord(load_end) - 1 do
   begin
@@ -1170,7 +1151,7 @@ procedure M_DrawSave;
 var
   i: integer;
 begin
-  M_DrawHeadLine(15, 'Save Game');
+  M_DrawHeadLine(20, 15, 'Save Game');
 
   for i := 0 to Ord(load_end) - 1 do
   begin
@@ -1371,8 +1352,8 @@ end;
 //
 procedure M_DrawSoundVol;
 begin
-  M_DrawHeadLine(15, 'Options');
-  M_DrawSubHeadLine(40, 'Volume Control');
+  M_DrawHeadLine(20, 15, 'Options');
+  M_DrawHeadLine(30, 40, 'Volume Control');
 
   M_DrawThermo(
     SoundVolDef.x, SoundVolDef.y + SoundVolDef.itemheight * (Ord(sfx_vol) + 1), 16, snd_SfxVolume);
@@ -1393,8 +1374,8 @@ procedure M_DrawCompatibility;
 var
   ppos: menupos_t;
 begin
-  M_DrawHeadLine(15, 'Options');
-  M_DrawSubHeadLine(40, 'Compatibility');
+  M_DrawHeadLine(20, 15, 'Options');
+  M_DrawHeadLine(30, 40, 'Compatibility');
 
   dogs := GetIntegerInRange(dogs, 0, MAXPLAYERS - 1);
   ppos.x := CompatibilityDef.x;
@@ -1654,8 +1635,8 @@ procedure M_DrawControls;
 var
   ppos: menupos_t;
 begin
-  M_DrawHeadLine(15, 'Options');
-  M_DrawSubHeadLine(40, 'Controls');
+  M_DrawHeadLine(20, 15, 'Options');
+  M_DrawHeadLine(30, 40, 'Controls');
 
   ppos.x := ControlsDef.x;
   ppos.y := ControlsDef.y + ControlsDef.itemheight * Ord(ctrl_keyboardmode);
@@ -1665,16 +1646,16 @@ end;
 
 procedure M_DrawSound;
 begin
-  M_DrawHeadLine(15, 'Options');
-  M_DrawSubHeadLine(40, 'Sound');
+  M_DrawHeadLine(20, 15, 'Options');
+  M_DrawHeadLine(30, 40, 'Sound');
 end;
 
 procedure M_DrawSystem;
 var
   ppos: menupos_t;
 begin
-  M_DrawHeadLine(15, 'Options');
-  M_DrawSubHeadLine(40, 'System');
+  M_DrawHeadLine(20, 15, 'Options');
+  M_DrawHeadLine(30, 40, 'System');
 
   M_FixScreenshotFormat;
   ppos.x := SystemDef.x;
@@ -1926,8 +1907,8 @@ var
   i, y: integer;
   stmp: string;
 begin
-  M_DrawHeadLine(15, 'New Game');
-  M_DrawSubHeadLine(40, 'New Game Setup');
+  M_DrawHeadLine(20, 15, 'New Game');
+  M_DrawHeadLine(30, 40, 'New Game Setup');
 
   y := DEF_MENU_ITEMS_START_Y;
   for i := 0 to Ord(news_end) - 1 do
@@ -1954,8 +1935,8 @@ procedure M_DrawSelectSkill;
 var
   i, y: integer;
 begin
-  M_DrawHeadLine(15, 'New Game');
-  M_DrawSubHeadLine(40, 'Select Skill Level');
+  M_DrawHeadLine(20, 15, 'New Game');
+  M_DrawHeadLine(30, 40, 'Select Skill Level');
 
   y := DEF_MENU_ITEMS_START_Y;
   for i := Ord(ssk_killthings) to Ord(selectskill_end) - 1 do
@@ -2010,8 +1991,8 @@ procedure M_DrawEpisode;
 var
   i, y: integer;
 begin
-  M_DrawHeadLine(15, 'New Game');
-  M_DrawSubHeadLine(40, 'Select Course');
+  M_DrawHeadLine(20, 15, 'New Game');
+  M_DrawHeadLine(30, 40, 'Select Course');
 
   y := DEF_MENU_ITEMS_START_Y;
   for i := Ord(mn_ep1) to Ord(ep_end) - 1 do
@@ -2073,7 +2054,7 @@ procedure M_DrawOptions;
 var
   i, y: integer;
 begin
-  M_DrawHeadLine(15, 'Options');
+  M_DrawHeadLine(20, 15, 'Options');
 
   y := DEF_MENU_ITEMS_START_Y;
   for i := 0 to Ord(opt_end) - 1 do
@@ -2091,8 +2072,8 @@ var
   i, y: integer;
   str: string;
 begin
-  M_DrawHeadLine(15, 'Options');
-  M_DrawSubHeadLine(40, 'General');
+  M_DrawHeadLine(20, 15, 'Options');
+  M_DrawHeadLine(30, 40, 'General');
 
   y := DEF_MENU_ITEMS_START_Y;
   for i := Ord(mn_endgame) to Ord(mn_messages) do
@@ -2113,8 +2094,8 @@ end;
 
 procedure M_DrawSensitivity;
 begin
-  M_DrawHeadLine(15, 'Options');
-  M_DrawSubHeadLine(40, 'Mouse Sensitivity');
+  M_DrawHeadLine(20, 15, 'Options');
+  M_DrawHeadLine(30, 40, 'Mouse Sensitivity');
 
   M_DrawThermo(
     SensitivityDef.x, SensitivityDef.y + SensitivityDef.itemheight * (Ord(sens_mousesensitivity) + 1), 20, mouseSensitivity);
@@ -2130,8 +2111,8 @@ procedure M_DrawDisplayOptions;
 var
   i, y: integer;
 begin
-  M_DrawHeadLine(15, 'Options');
-  M_DrawSubHeadLine(40, 'Display Options');
+  M_DrawHeadLine(20, 15, 'Options');
+  M_DrawHeadLine(30, 40, 'Display Options');
 
   y := DEF_MENU_ITEMS_START_Y;
   for i := 0 to Ord(optdisp_end) - 1 do
@@ -2152,9 +2133,9 @@ var
   stmp: string;
   ppos: menupos_t;
 begin
-  M_DrawHeadLine(15, 'Display Options');
+  M_DrawHeadLine(20, 15, 'Display Options');
 
-  M_DrawSubHeadLine(40, 'Detail');
+  M_DrawHeadLine(30, 40, 'Detail');
 
   ppos.x := OptionsDisplayDetailDef.x;
   ppos.y := OptionsDisplayDetailDef.y + OptionsDisplayDetailDef.itemheight * Ord(od_detaillevel);
@@ -2173,9 +2154,9 @@ var
   stmp: string;
   ppos: menupos_t;
 begin
-  M_DrawHeadLine(15, 'Display Options');
+  M_DrawHeadLine(20, 15, 'Display Options');
 
-  M_DrawSubHeadLine(40, 'Set Video Mode');
+  M_DrawHeadLine(30, 40, 'Set Video Mode');
 
 
   ppos.x := OptionsDisplayVideoModeDef.x;
@@ -2216,9 +2197,9 @@ procedure M_DrawDisplayAppearanceOptions;
 var
   ppos: menupos_t;
 begin
-  M_DrawHeadLine(15, 'Display Options');
+  M_DrawHeadLine(20, 15, 'Display Options');
 
-  M_DrawSubHeadLine(40, 'Appearence');
+  M_DrawHeadLine(30, 40, 'Appearence');
 
   ppos.x := OptionsDisplayAppearanceDef.x;
   ppos.y := OptionsDisplayAppearanceDef.y + OptionsDisplayAppearanceDef.itemheight * Ord(od_shademenubackground);
@@ -2228,22 +2209,22 @@ end;
 
 procedure M_DrawDisplayAutomapOptions;
 begin
-  M_DrawHeadLine(15, 'Display Options');
-  M_DrawSubHeadLine(40, 'Automap');
+  M_DrawHeadLine(20, 15, 'Display Options');
+  M_DrawHeadLine(30, 40, 'Automap');
 end;
 
 procedure M_DrawOptionsDisplayAdvanced;
 begin
-  M_DrawHeadLine(15, 'Display Options');
-  M_DrawSubHeadLine(40, 'Advanced');
+  M_DrawHeadLine(20, 15, 'Display Options');
+  M_DrawHeadLine(30, 40, 'Advanced');
 end;
 
 procedure M_DrawOptionsDisplayAspectRatio;
 var
   ppos: menupos_t;
 begin
-  M_DrawHeadLine(15, 'Display Options');
-  M_DrawSubHeadLine(40, 'Aspect Ratio');
+  M_DrawHeadLine(20, 15, 'Display Options');
+  M_DrawHeadLine(30, 40, 'Aspect Ratio');
 
   aspectratioidx := _nearest_aspect_index;
   ppos.x := OptionsDisplayAspectRatioDef.x;
@@ -2256,8 +2237,8 @@ procedure M_DrawOptionsDisplayCamera;
 var
   ppos: menupos_t;
 begin
-  M_DrawHeadLine(15, 'Display Options');
-  M_DrawSubHeadLine(40, 'Camera');
+  M_DrawHeadLine(20, 15, 'Display Options');
+  M_DrawHeadLine(30, 40, 'Camera');
 
   chasecamera_viewxy := ibetween(chasecamera_viewxy, CHASECAMERA_XY_MIN, CHASECAMERA_XY_MAX);
   ppos.x := OptionsDisplayCameraDef.x;
@@ -2282,8 +2263,8 @@ procedure M_DrawOptionsDisplay32bit;
 var
   ppos: menupos_t;
 begin
-  M_DrawHeadLine(15, 'Display Options');
-  M_DrawSubHeadLine(40, 'True Color Options');
+  M_DrawHeadLine(20, 15, 'Display Options');
+  M_DrawHeadLine(30, 40, 'True Color Options');
 
   ppos.x := OptionsDisplay32bitDef.x;
   ppos.y := OptionsDisplay32bitDef.y + OptionsDisplay32bitDef.itemheight * Ord(od_flatfiltering);
@@ -2293,14 +2274,14 @@ end;
 
 procedure M_DrawOptionsDisplayOpenGL;
 begin
-  M_DrawHeadLine(15, 'Display Options');
-  M_DrawSubHeadLine(40, 'OpenGL');
+  M_DrawHeadLine(20, 15, 'Display Options');
+  M_DrawHeadLine(30, 40, 'OpenGL');
 end;
 
 procedure M_DrawOptionsDisplayOpenGLModels;
 begin
-  M_DrawHeadLine(15, 'Display Options');
-  M_DrawSubHeadLine(40, 'Models');
+  M_DrawHeadLine(20, 15, 'Display Options');
+  M_DrawHeadLine(30, 40, 'Models');
 end;
 
 procedure M_ChangeVoxelOptimization(choice: integer);
@@ -2321,8 +2302,8 @@ procedure M_DrawOptionsDisplayOpenGLVoxels;
 var
   ppos: menupos_t;
 begin
-  M_DrawHeadLine(15, 'Display Options');
-  M_DrawSubHeadLine(40, 'Voxels');
+  M_DrawHeadLine(20, 15, 'Display Options');
+  M_DrawHeadLine(30, 40, 'Voxels');
 
   vx_maxoptimizerpasscount := GetIntegerInRange(vx_maxoptimizerpasscount, 0, MAX_VX_OPTIMIZE);
   ppos.x := OptionsDisplayOpenGLVoxelsDef.x;
@@ -2341,8 +2322,8 @@ procedure M_DrawOptionsDisplayOpenGLFilter;
 var
   ppos: menupos_t;
 begin
-  M_DrawHeadLine(15, 'Display Options');
-  M_DrawSubHeadLine(40, 'Texture Filtering');
+  M_DrawHeadLine(20, 15, 'Display Options');
+  M_DrawHeadLine(30, 40, 'Texture Filtering');
 
   ppos.x := OptionsDisplayOpenGLFilterDef.x;
   ppos.y := OptionsDisplayOpenGLFilterDef.y + OptionsDisplayOpenGLFilterDef.itemheight * Ord(od_glf_texture_filter);
