@@ -3257,13 +3257,13 @@ begin
   end;
 
   if currentMenu.leftMenu <> nil then
-    M_WriteText(5, 44, '<<', ma_left, @hu_fontW, @hu_fontB);
+    M_WriteText(5, 44, '<<', ma_left, @hu_fontG, @hu_fontB);
 
   if currentMenu.rightMenu <> nil then
   begin
     rstr := '>>';
     rlen := M_StringWidth(rstr, @hu_fontY);
-    M_WriteText(315 - rlen, 44, rstr, ma_left, @hu_fontW, @hu_fontB);
+    M_WriteText(315 - rlen, 44, rstr, ma_left, @hu_fontG, @hu_fontB);
   end;
 
   if currentMenu.itemheight <= LINEHEIGHT2 then
