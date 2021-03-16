@@ -44,6 +44,7 @@ type
     name: string[64];
     best: integer;
     level: integer;
+    len: integer;
     mapsprite: string[8];
     skytex: string[8];
     mountaintex: string[8];
@@ -74,6 +75,7 @@ begin
   mapdata.name := '';
   mapdata.best := 0;
   mapdata.level := 0;
+  mapdata.len := 0;
   mapdata.mapsprite := '';
   mapdata.skytex := '';
   mapdata.mountaintex := '';
@@ -138,6 +140,9 @@ begin
             idx := sl.IndexOfName(sMAPDATA_name);
             if idx >= 0 then
               mrec.name := sl.ValuesIdx[idx];
+            idx := sl.IndexOfName(sMAPDATA_length);
+            if idx >= 0 then
+              mrec.len := atoi(sl.ValuesIdx[idx]);
             idx := sl.IndexOfName(sMAPDATA_best);
             if idx >= 0 then
               mrec.best := atoi(sl.ValuesIdx[idx]);

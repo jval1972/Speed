@@ -52,6 +52,7 @@ type
     ground: Pground_t;
     groundlump: integer;
     name: string[64];
+    len: integer;
     best: integer;
     level: integer;
     mapsprite: string[8];
@@ -136,6 +137,9 @@ begin
     idx := sl.IndexOfName(sMAPDATA_name);
     if idx >= 0 then
       race.name := sl.ValuesIdx[idx];
+    idx := sl.IndexOfName(sMAPDATA_length);
+    if idx >= 0 then
+      race.len := atoi(sl.ValuesIdx[idx]);
     idx := sl.IndexOfName(sMAPDATA_best);
     if idx >= 0 then
       race.best := atoi(sl.ValuesIdx[idx]);

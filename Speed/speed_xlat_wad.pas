@@ -48,6 +48,7 @@ const
   sMAPDATA_mountain = 'mountain';
   sMAPDATA_ground = 'ground';
   sMAPDATA_name = 'name';
+  sMAPDATA_length = 'length';
   sMAPDATA_best = 'best';
   sMAPDATA_level = 'level';
 
@@ -541,6 +542,7 @@ var
     lst.Add(sMAPDATA_mountain + '=' + mapmount);
     lst.Add(sMAPDATA_ground + '=' + extraflat);
     lst.Add(sMAPDATA_name + '=' + circuits[atoi(prefix)].name);
+    lst.Add(sMAPDATA_length + '=' + itoa(circuits[atoi(prefix)].len));
     lst.Add(sMAPDATA_best + '=' + itoa(circuits[atoi(prefix)].best));
     lst.Add(sMAPDATA_level + '=' + itoa(circuits[atoi(prefix)].level));
 
