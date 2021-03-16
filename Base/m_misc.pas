@@ -883,6 +883,8 @@ begin
   gl_drawsky := true;
   {$ENDIF}
   {$ENDIF}
+  mgameskill := GetIntegerInRange(mgameskill, Ord(sk_baby), Ord(sk_nightmare));
+  gameskill := skill_t(mgameskill);
 end;
 
 end.

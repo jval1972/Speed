@@ -141,7 +141,7 @@ type
   Pdefault_t = ^default_t;
 
 const
-  NUMDEFAULTS = 190;
+  NUMDEFAULTS = 192;
 
 // JVAL
 // Note: All setable defaults must be in lowercase, don't ask why. Just do it. :)
@@ -821,6 +821,22 @@ const
      defaultbvalue: false;
      _type: tBoolean),
 {$ENDIF}
+    (name: 'Game';
+     location: nil;
+     setable: DFS_NEVER;
+     defaultsvalue: '';
+     defaultivalue: 0;
+     defaultbvalue: false;
+     _type: tGroup),
+
+    (name: 'gameskill';
+     location: @mgameskill;
+     setable: DFS_NEVER;
+     defaultsvalue: '';
+     defaultivalue: 2;
+     defaultbvalue: true;
+     _type: tInteger),
+
      // Compatibility
     (name: 'Compatibility';
      location: nil;

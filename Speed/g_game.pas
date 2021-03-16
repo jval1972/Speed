@@ -181,6 +181,7 @@ var
   wminfo: wbstartstruct_t; // parms for world map / intermission
 
   gameskill: skill_t;
+  mgameskill: integer;
 
   bodyqueslot: integer;
 
@@ -2328,6 +2329,7 @@ begin
   gameepisode := episode;
   gamemap := map;
   gameskill := skill;
+  mgameskill := Ord(gameskill);
 
   viewactive := true;
   demostarttic := 0;
