@@ -141,6 +141,7 @@ uses
   speed_cars,
   speed_race,
   speed_mapdata,
+  speed_string_format,
   t_main,
   vx_voxelsprite,
   v_data,
@@ -2027,7 +2028,7 @@ begin
   end;
 
   M_WriteText(20, 114, 'LENGTH', ma_left, @hu_fontW, @hu_fontB);
-  M_WriteText(100, 114, itoa(mdata.len), ma_left, @hu_fontY, @hu_fontB);
+  M_WriteText(100, 114, SH_Meters2KM(mdata.len), ma_left, @hu_fontY, @hu_fontB);
 
   V_DrawPatch(250, 150, SCN_TMP, SH_MapData(mname).mapsprite, false);
 end;

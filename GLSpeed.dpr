@@ -368,7 +368,8 @@ uses
   mn_textwrite in 'Speed\mn_textwrite.pas',
   r_soft3d in 'Base\r_soft3d.pas',
   mn_drawmodel in 'Speed\mn_drawmodel.pas',
-  speed_mapdata in 'Speed\speed_mapdata.pas';
+  speed_mapdata in 'Speed\speed_mapdata.pas',
+  speed_string_format in 'Speed\speed_string_format.pas';
 
 var
   Saved8087CW: Word;
