@@ -165,6 +165,7 @@ uses
   psi_overlay,
   speed_alias,
   speed_flatsize,
+  speed_mapdata,
   r_draw,
   r_main,
   r_hires,
@@ -1778,6 +1779,13 @@ begin
   D_AddDEHFiles('-deh');
   D_AddDEHFiles('-bex');
 
+  SUC_Progress(46);
+
+  printf('SH_InitMapData: Initializing Speed Haste Map Data'#13#10);
+  SH_InitMapData;
+
+  SUC_Progress(47);
+
   printf('Info_CheckStates: Check states tables'#13#10);
   Info_CheckStates;
 
@@ -2128,6 +2136,8 @@ begin
   PS_ShutDown;
   printf('DEH_ShutDown: Shut down dehacked subsystem.'#13#10);
   DEH_ShutDown;
+  printf('SH_ShutMapData: Shut Down Speed Haste Map Data'#13#10);
+  SH_ShutDownMapData;
   printf('Info_ShutDown: Shut down game definition.'#13#10);
   Info_ShutDown;
   printf('PAK_ShutDown: Shut down PAK/ZIP/PK3/PK4 file system.'#13#10);
