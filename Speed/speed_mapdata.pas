@@ -53,6 +53,9 @@ type
 
 function SH_MapData(const lname: string): mapdata_t;
 
+var
+  mapdatalst: TDStringList;
+
 implementation
 
 uses
@@ -69,9 +72,6 @@ begin
   mapdata.mountaintex := '';
   mapdata.groundtex := '';
 end;
-
-var
-  mapdatalst: TDStringList;
 
 procedure SH_InitMapData;
 var
