@@ -964,7 +964,7 @@ begin
   end;
 
   // Update display, next frame, with current state.
-  if (not didinterpolations) or (Ord(gamestate) <> wipegamestate) then
+  if not didinterpolations or (Ord(gamestate) <> wipegamestate) then
   begin
     firstinterpolation := true;
     D_Display;
