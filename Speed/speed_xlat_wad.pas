@@ -874,6 +874,11 @@ begin
         if (buf[i] < 16) or (buf[i] > 239) then
           buf[i] := buf[i - 1];
 
+    if not solid then
+      for i := 4 to lumps[lump].size + 3 do
+        if buf[i] = 0 then
+          buf[i] := 255;
+
     SH_CreateDoomPatchFromLumpData(buf, solid, p, size);
   end;
 
@@ -917,6 +922,7 @@ var
   lst: TDStringList;
   s1, s2: string;
   aw, ah: integer;
+  transparentpix: TDSTringList;
 begin
   lst := TDStringList.Create;
   for i := 0 to numlumps - 1 do
@@ -926,6 +932,12 @@ begin
       lst.Add(rname);
   end;
 
+  transparentpix := TDSTringList.Create;
+  transparentpix.Add('MSCBAR.PIX');
+  transparentpix.Add('MSFBAR.PIX');
+  transparentpix.Add('SALP0.PIX');
+  transparentpix.Add('SALP1.PIX');
+
   wadwriter.AddSeparator('G_START');
 
   for i := 0 to lst.Count - 1 do
@@ -933,9 +945,11 @@ begin
     rname := lst.Strings[i];
     wname := LeftStr(rname, length(rname) - 4);
 
-    GeneratePIX(rname, wname, true);
+    GeneratePIX(rname, wname, transparentpix.IndexOf(rname) < 0);
     pk3entry.Add(wname + '=' + rname);
   end;
+  
+  transparentpix.Free;
 
   result := lst.Count > 0;
 
