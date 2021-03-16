@@ -140,6 +140,7 @@ uses
   r_data,
   speed_things,
   speed_cars,
+  speed_race,
   st_stuff,
   hu_stuff,
   s_sound,
@@ -1163,6 +1164,13 @@ begin
 
   result := P_SpawnMobj(x, y, z, Ord(MT_PLAYER), @mthing);
 
+  case race.cartype of
+    ct_formula: result.carinfo := GetIntegerInRange(def_f1car, 0, NUMCARINFO - 1);
+    ct_stock: result.carinfo := GetIntegerInRange(def_ncar, 0, NUMCARINFO - 1);
+    ct_any: result.carinfo := GetIntegerInRange(def_anycar, 0, NUMCARINFO - 1);
+  end;
+  result.carid := result.carinfo;
+  
   // set color translations for player sprites
   if mthing._type > 1 then
     result.flags := result.flags or _SHL(plnum, MF_TRANSSHIFT);

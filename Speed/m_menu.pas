@@ -1917,6 +1917,7 @@ procedure M_DrawNewGameSetup;
 var
   i, y: integer;
   stmp: string;
+  fcar: integer;
 begin
   M_DrawHeadLine(20, 15, 'New Game');
   M_DrawHeadLine(30, 40, 'New Game Setup');
@@ -1926,7 +1927,15 @@ begin
   begin
     stmp := NewGameSetupMenu[i].name;
     if i = Ord(news_carselect) then
-      stmp := stmp + ': ' + '#' + itoa(Ord(race.playercars[racecartype, consoleplayer]))
+    begin
+      case racecartype of
+        ct_formula: fcar := GetIntegerInRange(def_f1car, 0, NUMCARINFO - 1);
+        ct_stock: fcar := GetIntegerInRange(def_ncar, 0, NUMCARINFO - 1);
+      else
+        fcar := GetIntegerInRange(def_anycar, 0, NUMCARINFO - 1);
+      end;
+      stmp := stmp + ': ' + '#' + itoa(fcar)
+    end
     else if i = Ord(news_difficultylevel) then
       stmp := stmp + ': ' + str_skill[skill_t(mgameskill)]
     else if i = Ord(news_carmodel) then

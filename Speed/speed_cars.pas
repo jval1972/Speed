@@ -646,6 +646,11 @@ procedure SH_MoveCarPlayer(const mo: Pmobj_t);
 
 procedure SH_MoveCarAI(const mo: Pmobj_t);
 
+var
+  def_f1car: integer = 0;
+  def_ncar: integer = 20;
+  def_anycar: integer = 0;
+
 implementation
 
 uses

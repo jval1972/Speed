@@ -68,6 +68,7 @@ uses
   r_camera,
   r_draw,
   r_dynlights,
+  speed_cars,
   s_sound,
   t_main,
   t_png,
@@ -141,7 +142,7 @@ type
   Pdefault_t = ^default_t;
 
 const
-  NUMDEFAULTS = 193;
+  NUMDEFAULTS = 196;
 
 // JVAL
 // Note: All setable defaults must be in lowercase, don't ask why. Just do it. :)
@@ -839,6 +840,30 @@ const
 
     (name: 'select_cource';
      location: @menu_select_cource;
+     setable: DFS_NEVER;
+     defaultsvalue: '';
+     defaultivalue: 0;
+     defaultbvalue: true;
+     _type: tInteger),
+
+    (name: 'f1car';
+     location: @def_f1car;
+     setable: DFS_NEVER;
+     defaultsvalue: '';
+     defaultivalue: 0;
+     defaultbvalue: true;
+     _type: tInteger),
+
+    (name: 'ncar';
+     location: @def_ncar;
+     setable: DFS_NEVER;
+     defaultsvalue: '';
+     defaultivalue: 20;
+     defaultbvalue: true;
+     _type: tInteger),
+
+    (name: 'anycar';
+     location: @def_anycar;
      setable: DFS_NEVER;
      defaultsvalue: '';
      defaultivalue: 0;
