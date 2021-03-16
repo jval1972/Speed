@@ -141,7 +141,7 @@ type
   Pdefault_t = ^default_t;
 
 const
-  NUMDEFAULTS = 192;
+  NUMDEFAULTS = 193;
 
 // JVAL
 // Note: All setable defaults must be in lowercase, don't ask why. Just do it. :)
@@ -834,6 +834,14 @@ const
      setable: DFS_NEVER;
      defaultsvalue: '';
      defaultivalue: 2;
+     defaultbvalue: true;
+     _type: tInteger),
+
+    (name: 'select_cource';
+     location: @menu_select_cource;
+     setable: DFS_NEVER;
+     defaultsvalue: '';
+     defaultivalue: 0;
      defaultbvalue: true;
      _type: tInteger),
 

@@ -90,6 +90,9 @@ procedure M_InitMenus;
 
 procedure M_SetKeyboardMode(const mode: integer);
 
+var
+  menu_select_cource: integer = 0;
+
 implementation
 
 uses
@@ -1978,7 +1981,8 @@ end;
 
 procedure M_SingleRace;
 begin
-  M_SetupNextMenu(@SelectCourseDef[0]);
+  menu_select_cource := GetIntegerInRange(menu_select_cource, 0, mapdatalst.Count - 1);
+  M_SetupNextMenu(@SelectCourseDef[menu_select_cource]);
 end;
 
 procedure M_SelectCourse;
@@ -2012,6 +2016,7 @@ begin
   M_DrawHeadLine(20, 15, 'Select Course');
 
   idx := currentmenu.menuitems[0].tag;
+  menu_select_cource := idx;
 
   mname := mapdatalst.Strings[idx];
   mdata := SH_MapData(mname);
