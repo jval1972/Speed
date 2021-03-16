@@ -140,6 +140,7 @@ uses
   r_draw,
   speed_cars,
   speed_race,
+  speed_mapdata,
   t_main,
   vx_voxelsprite,
   v_data,
@@ -213,6 +214,8 @@ type
     pBoolVal: PBoolean;
     // hotkey in menu
     alphaKey: char;
+    // tag
+    tag: integer;
   end;
   Pmenuitem_t = ^menuitem_t;
   menuitem_tArray = packed array[0..$FF] of menuitem_t;
@@ -426,6 +429,10 @@ type
 var
   NewGameSetupMenu: array[0..Ord(news_end) - 1] of menuitem_t;
   NewGameSetupDef: menu_t;
+
+var
+  SelectCourseMenu: array[0..99] of menuitem_t;
+  SelectCourseDef: array[0..99] of menu_t;
 
 type
 //
@@ -1902,6 +1909,9 @@ const
     'Any'
   );
 
+const
+  menu_skill: skill_t = sk_medium;
+
 procedure M_DrawNewGameSetup;
 var
   i, y: integer;
@@ -1917,7 +1927,7 @@ begin
     if i = Ord(news_carselect) then
       stmp := stmp + ': ' + '#' + itoa(Ord(race.playercars[racecartype, consoleplayer]))
     else if i = Ord(news_difficultylevel) then
-      stmp := stmp + ': ' + str_skill[gameskill]
+      stmp := stmp + ': ' + str_skill[menu_skill]
     else if i = Ord(news_carmodel) then
       stmp := stmp + ': ' + str_cartype[racecartype];
     if itemOn = i then
@@ -1965,12 +1975,69 @@ begin
   M_SetupNextMenu(@EpiDef);
 end;
 
+procedure M_SingleRace;
+begin
+  M_SetupNextMenu(@SelectCourseDef[0]);
+end;
+
+procedure M_SelectCourse;
+var
+  idx: integer;
+  mname: string;
+  m_episode, m_map: integer;
+begin
+  if netgame and not demoplayback then
+  begin
+    M_StartMessage(SNEWGAME + #13#10 + PRESSKEY, nil, false);
+    exit;
+  end;
+
+  idx := currentmenu.menuitems[0].tag;
+  mname := mapdatalst.Strings[idx];
+  m_episode := atoi(mname[2]);
+  m_map := atoi(mname[4]);
+  G_DeferedInitNew(menu_skill, m_episode, m_map);
+  M_ClearMenus;
+end;
+
+procedure M_DrawSelectCourse;
+var
+  idx: integer;
+  mname: string;
+  mdata: mapdata_t;
+begin
+  V_DrawPatch(0, 0, SCN_TMP, 'MBG_CIRC', false);
+
+  M_DrawHeadLine(20, 15, 'Select Course');
+
+  idx := currentmenu.menuitems[0].tag;
+
+  mname := mapdatalst.Strings[idx];
+  mdata := SH_MapData(mname);
+
+  M_DrawHeadLine(30, 40, mdata.lname);
+
+  M_WriteText(80, 66, mdata.name, ma_center, @hu_fontY, @hu_fontB);
+
+  case mdata.level of
+    0: V_DrawPatch(80, 100, SCN_TMP, 'MSFAMA', false);
+    1: V_DrawPatch(80, 100, SCN_TMP, 'MSFBEG', false);
+  else
+    V_DrawPatch(80, 100, SCN_TMP, 'MSFPRO', false);
+  end;
+
+  M_WriteText(20, 114, 'LENGTH', ma_left, @hu_fontW, @hu_fontB);
+  M_WriteText(100, 114, itoa(mdata.len), ma_left, @hu_fontY, @hu_fontB);
+
+  V_DrawPatch(250, 150, SCN_TMP, SH_MapData(mname).mapsprite, false);
+end;
+
 procedure M_ChangeDifficulty;
 begin
-  if gameskill = sk_nightmare then
-    gameskill := sk_baby
+  if menu_skill = sk_nightmare then
+    menu_skill := sk_baby
   else
-    inc(gameskill);
+    inc(menu_skill);
 end;
 
 procedure M_ChangeCarModel;
@@ -3530,7 +3597,7 @@ begin
   pmi.status := 1;
   pmi.name := 'Single Race';
   pmi.cmd := '';
-  pmi.routine := nil;
+  pmi.routine := @M_SingleRace;
   pmi.pBoolVal := nil;
   pmi.alphaKey := 's';
 
@@ -3578,6 +3645,33 @@ begin
   NewGameSetupDef.itemheight := LINEHEIGHT;
   NewGameSetupDef.texturebk := true;
 
+////////////////////////////////////////////////////////////////////////////////
+// SelectCourseMenu & SelectCourseDef
+  for i := 0 to mapdatalst.Count - 1 do
+  begin
+    SelectCourseMenu[i].status := 1;
+    SelectCourseMenu[i].name := mapdatalst.Strings[i];
+    SelectCourseMenu[i].cmd := '';
+    SelectCourseMenu[i].routine := @M_SelectCourse;
+    SelectCourseMenu[i].pBoolVal := nil;
+    SelectCourseMenu[i].alphaKey := #13;
+    SelectCourseMenu[i].tag := i;
+
+    SelectCourseDef[i].numitems := 1; // # of menu items
+    SelectCourseDef[i].prevMenu := @NewGameSetupDef; // previous menu
+    if i = 0 then
+      SelectCourseDef[i].leftMenu := @SelectCourseDef[mapdatalst.Count - 1]
+    else
+      SelectCourseDef[i].leftMenu := @SelectCourseDef[(i - 1) mod mapdatalst.Count];
+    SelectCourseDef[i].rightMenu := @SelectCourseDef[(i + 1) mod mapdatalst.Count];
+    SelectCourseDef[i].menuitems := Pmenuitem_tArray(@SelectCourseMenu[i]);  // menu items
+    SelectCourseDef[i].drawproc := @M_DrawSelectCourse;  // draw routine
+    SelectCourseDef[i].x := DEF_MENU_ITEMS_START_X;
+    SelectCourseDef[i].y := DEF_MENU_ITEMS_START_Y;
+    SelectCourseDef[i].lastOn := 0; // last item user was on in menu
+    SelectCourseDef[i].itemheight := 100;
+    SelectCourseDef[i].texturebk := false;
+  end;
 ////////////////////////////////////////////////////////////////////////////////
 //EpisodeMenu
   pmi := @EpisodeMenu[0];
