@@ -270,28 +270,38 @@ begin
     M_HorzLine(x1 + 1, x2 - 1, i, color3);
 end;
 
+const
+  NUMHEADCOLORS = 13;
+  HEADCOLORS: array[0..NUMHEADCOLORS - 1] of integer = (
+    63, 61, 58, 55, 53, 50, 48, 50, 53, 55, 58, 61, 63);
+
 procedure M_DrawHeadLine(const y: integer; const str: string);
 var
   i: integer;
 begin
-  M_HorzLine(0, 319, y, 121);
+  for i := 0 to NUMHEADCOLORS - 1 do
+    M_HorzLine(0, 319, y + 2 + i, HEADCOLORS[i]);
+
+  M_WriteText(20, y, str, ma_left, @big_fontW, @big_fontB);
+{  M_HorzLine(0, 319, y, 121);
   M_HorzLine(0, 319, y + 15, 123);
   for i := y + 1 to y + 14 do
     M_HorzLine(0, 319, i, 118);
 
-  M_WriteText(160, y + 3, str, ma_center, @big_fontW, @big_fontB);
+  M_WriteText(160, y + 3, str, ma_center, @big_fontW, @big_fontB);}
 end;
 
 procedure M_DrawSubHeadLine(const y: integer; const str: string);
 var
   i: integer;
 begin
-  M_HorzLine(0, 319, y, 121);
+  M_DrawHeadLine(y, str);
+{  M_HorzLine(0, 319, y, 121);
   M_HorzLine(0, 319, y + 15, 123);
   for i := y + 1 to y + 14 do
     M_HorzLine(0, 319, i, 118);
 
-  M_WriteText(25, y + 3, str, ma_left, @big_fontW, @big_fontB);
+  M_WriteText(25, y + 3, str, ma_left, @big_fontW, @big_fontB);}
 end;
 
 procedure M_DrawSmallLine(const y: integer; const str: string);
