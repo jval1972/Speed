@@ -1248,7 +1248,7 @@ begin
   if mthing._type <= 4 then
   begin
     // save spots for respawning in network games
-    if (not netgame) and (mthing._type > 1) and (mthing._type <= dogs + 1) then
+    if not netgame and (mthing._type > 1) and (mthing._type <= dogs + 1) then
     begin
       // use secretcount to avoid multiple dogs in case of multiple starts
       players[mthing._type - 1].secretcount := 1;
