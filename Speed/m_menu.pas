@@ -1986,6 +1986,7 @@ end;
 //
 var
   menu_episode: integer;
+  menu_gamemap: integer;
 
 procedure M_DrawEpisode;
 var
@@ -3627,7 +3628,7 @@ begin
 //SelectSkillMenu
   pmi := @SelectSkillMenu[0];
   pmi.status := 1;
-  pmi.name := 'Begginer';
+  pmi.name := 'Beginner';
   pmi.cmd := '';
   pmi.routine := @M_ChooseSkill;
   pmi.pBoolVal := nil;
