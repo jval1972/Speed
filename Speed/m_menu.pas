@@ -3513,6 +3513,8 @@ var
 begin
   threadmenushader := TDThread.Create(@M_Thr_ShadeScreen);
 
+  menu_skill := gameskill;
+  
 ////////////////////////////////////////////////////////////////////////////////
 //gammamsg
   gammamsg[0] := GAMMALVL0;
