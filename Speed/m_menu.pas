@@ -406,20 +406,6 @@ type
 //
 // NEW GAME
 //
-  selectskill_e = (
-    ssk_killthings,
-    ssk_toorough,
-    ssk_hurtme,
-    ssk_violence,
-    ssk_nightmare,
-    selectskill_end
-  );
-
-var
-  SelectSkillMenu: array[0..Ord(selectskill_end) - 1] of menuitem_t;
-  SelectSkillDef: menu_t;
-
-type
   newgamesetup_e = (
     news_championship,
     news_singlerace,
@@ -1952,24 +1938,6 @@ end;
 //
 // M_NewGame
 //
-procedure M_DrawSelectSkill;
-var
-  i, y: integer;
-begin
-  M_DrawHeadLine(20, 15, 'New Game');
-  M_DrawHeadLine(30, 40, 'Select Skill Level');
-
-  y := DEF_MENU_ITEMS_START_Y;
-  for i := Ord(ssk_killthings) to Ord(selectskill_end) - 1 do
-  begin
-    if itemOn = i then
-      M_WriteText(160, y, SelectSkillMenu[i].name, ma_center, @big_fontY, @big_fontB)
-    else
-      M_WriteText(160, y, SelectSkillMenu[i].name, ma_center, @big_fontW, @big_fontB);
-    y := y + 14;
-  end;
-end;
-
 procedure M_NewGame(choice: integer);
 begin
   M_SetupNextMenu(@NewGameSetupDef);
@@ -2093,27 +2061,6 @@ begin
       M_WriteText(160, y, EpisodeMenu[i].name, ma_center, @big_fontW, @big_fontB);
     y := y + 14;
   end;
-end;
-
-procedure M_VerifyNightmare(ch: integer);
-begin
-  if ch <> Ord('y') then
-    exit;
-
-  G_DeferedInitNew(sk_nightmare, gametype_t(mgametype), menu_episode + 1, 1); // JVAL nightmare become sk_nightmare
-  M_ClearMenus;
-end;
-
-procedure M_ChooseSkill(choice: integer);
-begin
-  if choice = Ord(ssk_nightmare) then
-  begin
-    M_StartMessage(SNIGHTMARE + #13#10 + PRESSYN, @M_VerifyNightmare, true);
-    exit;
-  end;
-
-  G_DeferedInitNew(skill_t(choice), gametype_t(mgametype), menu_episode + 1, 1);
-  M_ClearMenus;
 end;
 
 procedure M_ChooseEpisode(choice: integer);
@@ -3370,11 +3317,6 @@ begin
   M_CmdSetupNextMenu(@MainDef);
 end;
 
-procedure M_CmdMenuNewDef;
-begin
-  M_CmdSetupNextMenu(@SelectSkillDef);
-end;
-
 procedure M_CmdMenuOptionsDef;
 begin
   M_CmdSetupNextMenu(@OptionsDef);
@@ -3506,7 +3448,6 @@ begin
   C_AddCmd('defaults, setdefaults', @M_SetDefaults);
   C_AddCmd('default, setdefault', @M_SetDefaults);
   C_AddCmd('menu_main', @M_CmdMenuMainDef);
-  C_AddCmd('menu_newgame, menu_new', @M_CmdMenuNewDef);
   C_AddCmd('menu_options', @M_CmdMenuOptionsDef);
   C_AddCmd('menu_optionsgeneral, menu_generaloptions', @M_CmdMenuOptionsGeneralDef);
   C_AddCmd('menu_optionsdisplay, menu_displayoptions, menu_display', @M_CmdMenuOptionsDisplayDef);
@@ -3743,60 +3684,6 @@ begin
   EpiDef.lastOn := Ord(mn_ep1); // last item user was on in menu
   EpiDef.itemheight := LINEHEIGHT;
   EpiDef.texturebk := true;
-
-////////////////////////////////////////////////////////////////////////////////
-//SelectSkillMenu
-  pmi := @SelectSkillMenu[0];
-  pmi.status := 1;
-  pmi.name := 'Beginner';
-  pmi.cmd := '';
-  pmi.routine := @M_ChooseSkill;
-  pmi.pBoolVal := nil;
-  pmi.alphaKey := 'i';
-
-  inc(pmi);
-  pmi.status := 1;
-  pmi.name := 'Easy';
-  pmi.cmd := '';
-  pmi.routine := @M_ChooseSkill;
-  pmi.pBoolVal := nil;
-  pmi.alphaKey := 'h';
-
-  inc(pmi);
-  pmi.status := 1;
-  pmi.name := 'Medium';
-  pmi.cmd := '';
-  pmi.routine := @M_ChooseSkill;
-  pmi.pBoolVal := nil;
-  pmi.alphaKey := 'h';
-
-  inc(pmi);
-  pmi.status := 1;
-  pmi.name := 'Hard';
-  pmi.cmd := '';
-  pmi.routine := @M_ChooseSkill;
-  pmi.pBoolVal := nil;
-  pmi.alphaKey := 'u';
-
-  inc(pmi);
-  pmi.status := 1;
-  pmi.name := 'Super-human';
-  pmi.cmd := '';
-  pmi.routine := @M_ChooseSkill;
-  pmi.pBoolVal := nil;
-  pmi.alphaKey := 'n';
-
-////////////////////////////////////////////////////////////////////////////////
-//SelectSkillDef
-  SelectSkillDef.numitems := Ord(selectskill_end); // # of menu items
-  SelectSkillDef.prevMenu := @EpiDef; // previous menu
-  SelectSkillDef.menuitems := Pmenuitem_tArray(@SelectSkillMenu);  // menu items
-  SelectSkillDef.drawproc := @M_DrawSelectSkill;  // draw routine
-  SelectSkillDef.x := DEF_MENU_ITEMS_START_X;
-  SelectSkillDef.y := DEF_MENU_ITEMS_START_Y;
-  SelectSkillDef.lastOn := Ord(ssk_hurtme); // last item user was on in menu
-  SelectSkillDef.itemheight := LINEHEIGHT;
-  SelectSkillDef.texturebk := false;
 
 ////////////////////////////////////////////////////////////////////////////////
 //OptionsMenu
