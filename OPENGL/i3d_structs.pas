@@ -95,6 +95,10 @@ const
 const
   DEF_I3D_SCALE = 256 * 2048;
 
+const
+  // Mesh flags (in O3DM_Object).
+  FLOF_HASTIRES = $0001;
+
 type
   vec3i_t = packed record
     x, y, z: integer;

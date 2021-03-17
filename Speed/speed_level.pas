@@ -131,9 +131,6 @@ const
   FLSF_VECTOR  = $0001;
   FLSF_NOSCALE = $0002;
 
-  // Mesh flags (in O3DM_Object).
-  FLOF_HASTIRES = $0001;
-
 function Speed_levelCRC(const aname: string): string;
 var
   lname: string;
