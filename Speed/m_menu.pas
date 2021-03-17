@@ -2047,7 +2047,7 @@ end;
 
 procedure M_ChangeDifficulty;
 begin
-  if skill_t(mgameskill) = sk_nightmare then
+  if mgameskill = Ord(sk_nightmare) then
     mgameskill := Ord(sk_baby)
   else
     inc(mgameskill);
