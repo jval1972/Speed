@@ -73,6 +73,7 @@ type
     numcorrections: integer;
     defPos: R3D_TPosVector;
     defRot: R3D_TAngles;
+    tireperimeters: array[0..3] of integer;
     tirecenters: array[0..3] of vec3i_t;
   protected
     function GetNumFaces: integer; virtual;
@@ -125,6 +126,11 @@ uses
 constructor TI3DModelLoader.Create;
 begin
   Inherited Create;
+
+  tireperimeters[0] := 0;
+  tireperimeters[1] := 0;
+  tireperimeters[2] := 0;
+  tireperimeters[3] := 0;
 
   tirecenters[0].x := 0;
   tirecenters[0].y := 0;
@@ -229,6 +235,7 @@ begin
     tirecenters[i].x := (xmin + xmax) div 2;
     tirecenters[i].y := (ymin + ymax) div 2;
     tirecenters[i].z := (zmin + zmax) div 2;
+    tireperimeters[i] := (ymax - ymin);
   end;
 end;
 
@@ -469,6 +476,11 @@ begin
     corrections := nil;
     numcorrections := 0;
   end;
+
+  tireperimeters[0] := 0;
+  tireperimeters[1] := 0;
+  tireperimeters[2] := 0;
+  tireperimeters[3] := 0;
 
   tirecenters[0].x := 0;
   tirecenters[0].y := 0;
