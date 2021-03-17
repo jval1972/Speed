@@ -3671,6 +3671,138 @@ begin
   result := -1;
 end;
 
+function gld_DrawPlayerModel(sprite: PGLSprite; const idx: integer): boolean;
+var
+  modelinf: Pmodelmanageritem_t;
+  restoreblend: Boolean;
+  restoreequation: Boolean;
+begin
+  if gl_uselightmaps then
+  begin
+    glActiveTextureARB(GL_TEXTURE1_ARB);
+    glMatrixMode(GL_TEXTURE);
+    glPushMatrix;
+    glTranslatef(sprite.x * MAP_COEFF / (LIGHTMAPSIZEX * LIGHTMAPUNIT),
+                 sprite.y * MAP_COEFF / (LIGHTMAPSIZEY * LIGHTMAPUNIT),
+                 sprite.z * MAP_COEFF / (LIGHTMAPSIZEZ * LIGHTMAPUNIT));
+    glActiveTextureARB(GL_TEXTURE0_ARB);
+  end;
+
+  glMatrixMode(GL_MODELVIEW);
+  glPushMatrix;
+  glTranslatef(sprite.x, sprite.y, sprite.z);
+  glRotatef(sprite.mo.angle / (ANGLE_MAX / 360.0) - 90.0, 0.0, 1.0, 0.0);
+
+  // JVAL
+  // Draw light effects (only if not invulnerability)
+  if uselightboost then
+    if not lightdeflumppresent then
+      if players[displayplayer].fixedcolormap <> 32 then
+      // JVAL: Use old color effects only if LIGHTDEF lump not found
+        if sprite.flags and GLS_LIGHT <> 0 then
+        begin
+          if sprite.flags and GLS_WHITELIGHT <> 0 then
+            gld_SetUplight(1.0, 1.0, 1.0)
+          else if sprite.flags and GLS_REDLIGHT <> 0 then
+            gld_SetUplight(1.0, 0.0, 0.0)
+          else if sprite.flags and GLS_GREENLIGHT <> 0 then
+            gld_SetUplight(0.0, 1.0, 0.0)
+          else if sprite.flags and GLS_BLUELIGHT <> 0 then
+            gld_SetUplight(0.0, 0.0, 1.0)
+          else if sprite.flags and GLS_YELLOWLIGHT <> 0 then
+            gld_SetUplight(1.0, 1.0, 0.0);
+          glBegin(GL_TRIANGLE_STRIP);
+            glTexCoord2f(0.0, 0.0);
+            glVertex3f(2.0 * sprite.x1, 2.0 * sprite.y1, 0.01);
+            glTexCoord2f(1.0, 0.0);
+            glVertex3f(2.0 * sprite.x2, 2.0 * sprite.y1, 0.01);
+            glTexCoord2f(0.0, 1.0);
+            glVertex3f(2.0 * sprite.x1, 2.0 * sprite.y2, 0.01);
+            glTexCoord2f(1.0, 1.0);
+            glVertex3f(2.0 * sprite.x2, 2.0 * sprite.y2, 0.01);
+          glEnd;
+          glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+          glAlphaFunc(GL_GEQUAL, 0.5);
+        end;
+
+  restoreblend := false;
+  restoreequation := false;
+
+  if sprite.flags and GLS_SHADOW <> 0 then
+  begin
+    glBlendFunc(GL_DST_COLOR, GL_ONE_MINUS_SRC_ALPHA);
+    glAlphaFunc(GL_GEQUAL, 0.1);
+    glColor4f(0.2, 0.2, 0.2, 0.33);
+    restoreblend := true;
+  end
+  else
+  begin
+    if sprite.flags and GLS_TRANSPARENT <> 0 then
+    begin
+      gld_StaticLightAlpha(sprite.light, sprite.alpha);
+      glAlphaFunc(GL_GEQUAL, 0.01);
+      restoreblend := true;
+    end
+    else if sprite.flags and GLS_ADDITIVE <> 0 then
+    begin
+      gld_StaticLightAlpha(sprite.light, sprite.alpha);
+      glAlphaFunc(GL_GEQUAL, 0.01);
+      glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+      restoreblend := true;
+    end
+    else if sprite.flags and GLS_SUBTRACTIVE <> 0 then
+    begin
+      gld_StaticLightAlpha(sprite.light, sprite.alpha);
+      glAlphaFunc(GL_GEQUAL, 0.01);
+      glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+      glBlendEquation(GL_FUNC_REVERSE_SUBTRACT);
+      restoreblend := true;
+      restoreequation := true;
+    end
+    else
+      gld_StaticLight(sprite.light);
+  end;
+
+  last_gltexture := nil;
+
+  Result := False;
+
+  modelinf := @modelmanager.items[idx];
+  if modelinf.model <> nil then
+    if modelinf.model.modeltype = mt_i3d then
+      if sprite.mo.carid >= 0 then
+      begin
+        (modelinf.model.model as TI3DModel).DrawCarGL(sprite.mo);
+        Result := True;
+      end;
+
+  if restoreblend then
+    glAlphaFunc(GL_GEQUAL, 0.01);
+  if restoreequation then
+    glBlendEquation(GL_FUNC_ADD);
+
+  glPopMatrix;
+
+  if gl_uselightmaps then
+  begin
+    glActiveTextureARB(GL_TEXTURE1_ARB);
+    glMatrixMode(GL_TEXTURE);
+    glPopMatrix;
+    glMatrixMode(GL_MODELVIEW);
+    glActiveTextureARB(GL_TEXTURE0_ARB);
+  end;
+
+  if sprite.flags and (GLS_SHADOW or GLS_TRANSPARENT or GLS_ADDITIVE or GLS_SUBTRACTIVE) <> 0 then
+  begin
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glAlphaFunc(GL_GEQUAL, 0.5);
+    if sprite.flags and GLS_SUBTRACTIVE <> 0 then
+      glBlendEquation(GL_FUNC_ADD);
+  end;
+  glColor3f(1.0, 1.0, 1.0);
+
+end;
+
 procedure gld_DrawModel(sprite: PGLSprite; const idx: integer);
 var
   info: Pmodelstate_t;
@@ -4057,12 +4189,32 @@ begin
 end;
 
 procedure gld_DrawSprite(sprite: PGLSprite);
+var
+  i, idx: integer;
+  cinfo: Pcarinfo_t;
 begin
   if sprite.models <> nil then
   begin
     gld_DrawModels(sprite);
     exit;
   end;
+
+  if sprite.mo.player <> nil then
+    if Pplayer_t(sprite.mo.player).mo = sprite.mo then // No voodoo dolls
+      if sprite.mo.carinfo >= 0 then
+      begin
+        idx := -1;
+        cinfo := @carinfo[sprite.mo.carinfo];
+        for i := 0 to modelmanager.size - 1 do
+          if cinfo.model3d = modelmanager.items[i].name then
+          begin
+            idx := i;
+            Break;
+          end;
+        if idx >= 0 then
+          if gld_DrawPlayerModel(sprite, idx) then
+            exit;
+      end;
 
   if gl_drawvoxels and (sprite.voxels <> nil) then
   begin
