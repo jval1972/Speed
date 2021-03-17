@@ -528,9 +528,9 @@ modeldef "CAR0N0A.I3D"
   xoffset 0.0
   yoffset 0.0
   zoffset 0.0
-  xscale -0.02441406250
-  yscale 0.02441406250
-  zscale 0.02441406250
+  xscale -0.015
+  yscale 0.015
+  zscale 0.015
 }
 
 modeldef "CAR0N1A.I3D"
@@ -538,9 +538,9 @@ modeldef "CAR0N1A.I3D"
   xoffset 0.0
   yoffset 0.0
   zoffset 0.0
-  xscale -0.02441406250
-  yscale 0.02441406250
-  zscale 0.02441406250
+  xscale -0.015
+  yscale 0.015
+  zscale 0.015
 }
 
 modeldef "CAR0N2A.I3D"
@@ -548,9 +548,9 @@ modeldef "CAR0N2A.I3D"
   xoffset 0.0
   yoffset 0.0
   zoffset 0.0
-  xscale -0.02441406250
-  yscale 0.02441406250
-  zscale 0.02441406250
+  xscale -0.015
+  yscale 0.015
+  zscale 0.015
 }
 
 modeldef "CAR0N3A.I3D"
@@ -558,9 +558,9 @@ modeldef "CAR0N3A.I3D"
   xoffset 0.0
   yoffset 0.0
   zoffset 0.0
-  xscale -0.02441406250
-  yscale 0.02441406250
-  zscale 0.02441406250
+  xscale -0.015
+  yscale 0.015
+  zscale 0.015
 }
 
 modeldef "CAR0N4A.I3D"
@@ -568,9 +568,9 @@ modeldef "CAR0N4A.I3D"
   xoffset 0.0
   yoffset 0.0
   zoffset 0.0
-  xscale -0.02441406250
-  yscale 0.02441406250
-  zscale 0.02441406250
+  xscale -0.015
+  yscale 0.015
+  zscale 0.015
 }
 
 modeldef "CAR0N5A.I3D"
@@ -578,9 +578,9 @@ modeldef "CAR0N5A.I3D"
   xoffset 0.0
   yoffset 0.0
   zoffset 0.0
-  xscale -0.02441406250
-  yscale 0.02441406250
-  zscale 0.02441406250
+  xscale -0.015
+  yscale 0.015
+  zscale 0.015
 }
 
 
@@ -713,9 +713,9 @@ modeldef "CAR1N0A.I3D"
   xoffset 0.0
   yoffset 0.0
   zoffset 0.0
-  xscale -0.02441406250
-  yscale 0.02441406250
-  zscale 0.02441406250
+  xscale -0.015
+  yscale 0.015
+  zscale 0.015
 }
 
 modeldef "CAR1N1A.I3D"
@@ -723,9 +723,9 @@ modeldef "CAR1N1A.I3D"
   xoffset 0.0
   yoffset 0.0
   zoffset 0.0
-  xscale -0.02441406250
-  yscale 0.02441406250
-  zscale 0.02441406250
+  xscale -0.015
+  yscale 0.015
+  zscale 0.015
 }
 
 modeldef "CAR1N2A.I3D"
@@ -733,9 +733,9 @@ modeldef "CAR1N2A.I3D"
   xoffset 0.0
   yoffset 0.0
   zoffset 0.0
-  xscale -0.02441406250
-  yscale 0.02441406250
-  zscale 0.02441406250
+  xscale -0.015
+  yscale 0.015
+  zscale 0.015
 }
 
 modeldef "CAR1N3A.I3D"
@@ -743,9 +743,9 @@ modeldef "CAR1N3A.I3D"
   xoffset 0.0
   yoffset 0.0
   zoffset 0.0
-  xscale -0.02441406250
-  yscale 0.02441406250
-  zscale 0.02441406250
+  xscale -0.015
+  yscale 0.015
+  zscale 0.015
 }
 
 modeldef "CAR1N4A.I3D"
@@ -753,9 +753,9 @@ modeldef "CAR1N4A.I3D"
   xoffset 0.0
   yoffset 0.0
   zoffset 0.0
-  xscale -0.02441406250
-  yscale 0.02441406250
-  zscale 0.02441406250
+  xscale -0.015
+  yscale 0.015
+  zscale 0.015
 }
 
 modeldef "CAR1N5A.I3D"
@@ -763,9 +763,9 @@ modeldef "CAR1N5A.I3D"
   xoffset 0.0
   yoffset 0.0
   zoffset 0.0
-  xscale -0.02441406250
-  yscale 0.02441406250
-  zscale 0.02441406250
+  xscale -0.015
+  yscale 0.015
+  zscale 0.015
 }
 
 
