@@ -38,7 +38,8 @@ uses
   d_delphi,
   dglOpenGL,
   r_soft3d,
-  i3d_structs;
+  i3d_structs,
+  p_mobj_h;
 
 type
   TI3dModelCorrection = record
@@ -75,6 +76,8 @@ type
     defRot: R3D_TAngles;
     tireperimeters: array[0..3] of integer;
     tirecenters: array[0..3] of vec3i_t;
+    tirerotation: array[0..3] of float;
+    tireangle: float;
   protected
     function GetNumFaces: integer; virtual;
     function GetFace(Index: Integer): O3DM_TFace_p; virtual;
@@ -91,8 +94,7 @@ type
     function RenderGL(const scalex, scaley, scalez: single;
       const offsetx, offsety, offsetz: single): integer;
     function RenderGLEx(const scalex, scaley, scalez: single;
-      const offsetx, offsety, offsetz: single;
-      const oldtex1, tex1, oldtex2, tex2: string): integer;
+      const offsetx, offsety, offsetz: single; const mo: Pmobj_t): integer;
     function RenderSoft(const device: Pdevice_t; const scalex, scaley, scalez: single;
       const offsetx, offsety, offsetz: single): integer;
     function RenderSoftEx(const device: Pdevice_t; const scalex, scaley, scalez: single;
@@ -116,9 +118,11 @@ implementation
 
 uses
   t_main,
+  tables,
   gl_defs,
   gl_tex,
   Graphics,
+  speed_cars,
   i3d_palette,
   i3d_textures,
   sc_engine;
@@ -144,6 +148,13 @@ begin
   tirecenters[3].x := 0;
   tirecenters[3].y := 0;
   tirecenters[3].z := 0;
+
+  tirerotation[0] := 0.0;
+  tirerotation[1] := 0.0;
+  tirerotation[2] := 0.0;
+  tirerotation[3] := 0.0;
+
+  tireangle := 0.0;
 
   defPos[0] := 0;
   defPos[1] := 0;
@@ -494,6 +505,13 @@ begin
   tirecenters[3].x := 0;
   tirecenters[3].y := 0;
   tirecenters[3].z := 0;
+
+  tirerotation[0] := 0.0;
+  tirerotation[1] := 0.0;
+  tirerotation[2] := 0.0;
+  tirerotation[3] := 0.0;
+
+  tireangle := 0.0;
 end;
 
 procedure TI3DModelLoader.ApplyCorrection(const cor: PI3dModelCorrection);
@@ -502,7 +520,7 @@ var
 begin
   if obj = nil then
     Exit;
-    
+
   if not IsIntegerInRange(cor.face, 0, obj.nFaces - 1) then
     Exit;
 
@@ -719,6 +737,7 @@ function TI3DModelLoader.RenderGL(const scalex, scaley, scalez: single;
 var
   i, j: integer;
   lasttex, newtex: TGluint;
+  tireid: integer;
 
   procedure _glcolor(const m: O3DM_TMaterial_p);
   var
@@ -746,6 +765,24 @@ var
       (1.0 * y - obj.dcy) * obj.scy / DEF_I3D_SCALE * scaley + offsety,
       -(1.0 * z - obj.dcz) * obj.scz / DEF_I3D_SCALE * scalez + offsetz
     );
+  end;
+
+  function _glX(const x: integer): float;
+  begin
+    Result :=
+      (1.0 * x - obj.dcx) * obj.scx / DEF_I3D_SCALE * scalex + offsetx;
+  end;
+
+  function _glY(const y: integer): float;
+  begin
+    Result :=
+      (1.0 * y - obj.dcy) * obj.scy / DEF_I3D_SCALE * scaley + offsety;
+  end;
+
+  function _glZ(const z: integer): float;
+  begin
+    Result :=
+      -(1.0 * z - obj.dcz) * obj.scz / DEF_I3D_SCALE * scalez + offsetz;
   end;
 
 begin
@@ -791,6 +828,18 @@ begin
       glColor4f(1.0, 1.0, 1.0, 1.0);
     end;
 
+    if HasTires and (i < 64) then
+    begin
+      tireid := i div 16;
+      glPushMatrix;
+
+      glTranslatef(_glX(tirecenters[tireid].x), _glY(tirecenters[tireid].y), _glZ(tirecenters[tireid].z));
+
+      glRotatef(tirerotation[tireid], 1, 0, 0);
+
+      glTranslatef(-_glX(tirecenters[tireid].x), -_glY(tirecenters[tireid].y), -_glZ(tirecenters[tireid].z));
+    end;
+
     glBegin(GL_TRIANGLE_FAN);
 
     for j := 0 to objfaces[i].h.nVerts - 1 do
@@ -801,21 +850,58 @@ begin
 
     glEnd;
 
+    if HasTires and (i < 64) then
+      glPopMatrix;
+
     Result := Result + objfaces[i].h.nVerts - 2;
   end;
   glEnable(GL_TEXTURE_2D);
   gld_ResetLastTexture;
 end;
 
+const
+// In "real" physics in one TIC there is about one whole tire rotation
+// Thus we slow down the tire rotation so the eye can actually see the rotation
+  TIRE_EYE_COEF = 8.0;
+
 function TI3DModelLoader.RenderGLEx(const scalex, scaley, scalez: single;
-  const offsetx, offsety, offsetz: single;
-  const oldtex1, tex1, oldtex2, tex2: string): integer;
+  const offsetx, offsety, offsetz: single; const mo: Pmobj_t): integer;
 var
   do1, do2: boolean;
   i: integer;
   savetex1, savetex2: TGluint;
   idx1, idx2: integer;
+  cinfo: Pcarinfo_t;
+  oldtex1, tex1, oldtex2, tex2: string;
 begin
+  cinfo := @carinfo[mo.carinfo];
+  oldtex1 := cinfo.tex1old;
+  tex1 := cinfo.tex1;
+  oldtex2 := cinfo.tex2old;
+  tex2 := cinfo.tex2;
+
+
+  if HasTires then
+  begin
+    for i := 0 to 3 do
+    begin
+      tirerotation[i] := mo.tiredistance[i] / abs(tireperimeters[i] /DEF_I3D_SCALE * scalex * map_coeff * obj.scy * TIRE_EYE_COEF) * 360.0;
+      if tirerotation[i] > 0 then
+        tirerotation[i] := tirerotation[i] - (trunc(tirerotation[1]) div 360) * 360;
+    end;
+    tireangle := mo.tireangle / ANG1 * 360.0;
+  end
+  else
+  begin
+    tirerotation[0] := 0.0;
+    tirerotation[1] := 0.0;
+    tirerotation[2] := 0.0;
+    tirerotation[3] := 0.0;
+    tireangle := 0.0;
+  end;
+
+// perimeter -> abs(tireperimeters[0] /DEF_I3D_SCALE *scalex * map_coeff * obj.scy * 2 * pi)
+
   do1 := tex1 <> '';
   do2 := tex2 <> '';
 

@@ -146,15 +146,8 @@ begin
 end;
 
 procedure TI3DModel.DrawCarGL(const mo: Pmobj_t);
-var
-  car: Pcarinfo_t;
 begin
-  car := @carinfo[mo.carinfo];
-  fmdl.RenderGLEx(
-    fxscale, fyscale, fzscale,
-    fxoffset, fyoffset, fzoffset,
-    car.tex1old, car.tex1, car.tex2old, car.tex2
-  );
+  fmdl.RenderGLEx(fxscale, fyscale, fzscale, fxoffset, fyoffset, fzoffset, mo);
 end;
 
 procedure TI3DModel.DrawCarSoft(const car: Pcarinfo_t; const device: Pdevice_t);
