@@ -907,9 +907,9 @@ begin
     else
       x := x mod device.tex_width;
     if y < 0 then
-      y := (-y) mod device.tex_width
+      y := (-y) mod device.tex_height
     else
-      y := y mod device.tex_width;
+      y := y mod device.tex_height;
   end
   else
   begin
