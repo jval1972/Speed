@@ -890,7 +890,7 @@ begin
     begin
       tirerotation[i] := mo.tiredistance[i] / abs(tireperimeters[i] /DEF_I3D_SCALE * scalex * map_coeff * obj.scy * TIRE_EYE_COEF) * 360.0;
       if tirerotation[i] > 0 then
-        tirerotation[i] := tirerotation[i] - (trunc(tirerotation[1]) div 360) * 360;
+        tirerotation[i] := tirerotation[i] - (trunc(tirerotation[i]) div 360) * 360;
     end;
     tireangle := mo.tireangle / ANG1;
   end
