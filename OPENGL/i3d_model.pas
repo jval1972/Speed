@@ -125,12 +125,28 @@ uses
 constructor TI3DModelLoader.Create;
 begin
   Inherited Create;
+
+  tirecenters[0].x := 0;
+  tirecenters[0].y := 0;
+  tirecenters[0].z := 0;
+  tirecenters[1].x := 0;
+  tirecenters[1].y := 0;
+  tirecenters[1].z := 0;
+  tirecenters[2].x := 0;
+  tirecenters[2].y := 0;
+  tirecenters[2].z := 0;
+  tirecenters[3].x := 0;
+  tirecenters[3].y := 0;
+  tirecenters[3].z := 0;
+
   defPos[0] := 0;
   defPos[1] := 0;
   defPos[2] := 0;
+
   defRot[0] := 0;
   defRot[1] := 0;
   defRot[2] := 0;
+
   obj := nil;
   objsize := 0;
   numtextures := 0;
@@ -453,6 +469,19 @@ begin
     corrections := nil;
     numcorrections := 0;
   end;
+
+  tirecenters[0].x := 0;
+  tirecenters[0].y := 0;
+  tirecenters[0].z := 0;
+  tirecenters[1].x := 0;
+  tirecenters[1].y := 0;
+  tirecenters[1].z := 0;
+  tirecenters[2].x := 0;
+  tirecenters[2].y := 0;
+  tirecenters[2].z := 0;
+  tirecenters[3].x := 0;
+  tirecenters[3].y := 0;
+  tirecenters[3].z := 0;
 end;
 
 procedure TI3DModelLoader.ApplyCorrection(const cor: PI3dModelCorrection);
