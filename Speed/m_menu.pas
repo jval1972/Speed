@@ -216,6 +216,8 @@ type
 
     // Yes/No location
     pBoolVal: PBoolean;
+    // Integer Extra param
+    pIntVal: PInteger;
     // hotkey in menu
     alphaKey: char;
     // tag
@@ -423,6 +425,14 @@ var
 var
   SelectCourseMenu: array[0..99] of menuitem_t;
   SelectCourseDef: array[0..99] of menu_t;
+
+var
+  SelectCarF1Menu: array[0..99] of menuitem_t;
+  SelectCarF1Def: array[0..99] of menu_t;
+  SelectCarNSMenu: array[0..99] of menuitem_t;
+  SelectCarNSDef: array[0..99] of menu_t;
+  SelectCarAnyMenu: array[0..99] of menuitem_t;
+  SelectCarAnyDef: array[0..99] of menu_t;
 
 type
 //
@@ -1916,8 +1926,8 @@ begin
     begin
       racecartype := GetIntegerInRange(racecartype, 0, Ord(ct_any));
       case racecartype of
-        Ord(ct_formula): fcar := GetIntegerInRange(def_f1car, 0, NUMCARINFO - 1);
-        Ord(ct_stock): fcar := GetIntegerInRange(def_ncar, 0, NUMCARINFO - 1);
+        Ord(ct_formula): fcar := GetIntegerInRange(def_f1car, 0, NUMCARINFO_FORMULA - 1);
+        Ord(ct_stock): fcar := GetIntegerInRange(def_ncar, NUMCARINFO_FORMULA, NUMCARINFO_FORMULA + NUMCARINFO_STOCK - 1);
       else
         fcar := GetIntegerInRange(def_anycar, 0, NUMCARINFO - 1);
       end;
@@ -1967,6 +1977,69 @@ begin
   mgametype := Ord(gt_practice);
   menu_select_cource := GetIntegerInRange(menu_select_cource, 0, mapdatalst.Count - 1);
   M_SetupNextMenu(@SelectCourseDef[menu_select_cource]);
+end;
+
+procedure M_SelectCarModel;
+var
+  i, idx: integer;
+begin
+  case racecartype of
+    Ord(ct_formula):
+      begin
+        def_f1car := GetIntegerInRange(def_f1car, 0, NUMCARINFO_FORMULA - 1);
+        idx := -1;
+        for i := 0 to 99 do
+          if SelectCarF1Def[i].menuitems[0].tag = def_f1car then
+          begin
+            idx := i;
+            break;
+          end;
+        if idx >= 0 then
+          M_SetupNextMenu(@SelectCarF1Def[idx]);
+      end;
+    Ord(ct_stock):
+      begin
+        def_ncar := GetIntegerInRange(def_ncar, NUMCARINFO_FORMULA, NUMCARINFO_FORMULA + NUMCARINFO_STOCK - 1);
+        idx := -1;
+        for i := 0 to 99 do
+          if SelectCarNSDef[i].menuitems[0].tag = def_ncar then
+          begin
+            idx := i;
+            break;
+          end;
+        if idx >= 0 then
+          M_SetupNextMenu(@SelectCarNSDef[idx]);
+      end;
+  else
+    def_anycar := GetIntegerInRange(def_anycar, 0, NUMCARINFO - 1);
+    idx := -1;
+    for i := 0 to 99 do
+      if SelectCarAnyDef[i].menuitems[0].tag = def_anycar then
+      begin
+        idx := i;
+        break;
+      end;
+    if idx >= 0 then
+      M_SetupNextMenu(@SelectCarAnyDef[idx]);
+  end;
+end;
+
+procedure M_SelectCar;
+begin
+  currentmenu.menuitems[0].pIntVal^ := currentmenu.menuitems[0].tag;
+  M_SetupNextMenu(currentmenu.prevMenu);
+end;
+
+procedure M_DrawSelectCar;
+var
+  fcar: integer;
+begin
+  V_DrawPatch(0, 0, SCN_TMP, 'MBG_CAR', false);
+
+  M_DrawHeadLine(20, 15, 'Select Car');
+
+  fcar := currentmenu.menuitems[0].tag;
+  M_DrawHeadLine(30, 40, 'Car #' + itoa(fcar));
 end;
 
 procedure M_SelectCourse;
@@ -3473,6 +3546,7 @@ end;
 procedure M_InitMenus;
 var
   i: integer;
+  nc: integer;
   pmi: Pmenuitem_t;
 begin
   threadmenushader := TDThread.Create(@M_Thr_ShadeScreen);
@@ -3495,7 +3569,9 @@ begin
   pmi.cmd := '';
   pmi.routine := @M_NewGame;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'n';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -3503,7 +3579,9 @@ begin
   pmi.cmd := '';
   pmi.routine := @M_Options;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'o';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -3511,7 +3589,9 @@ begin
   pmi.cmd := '';
   pmi.routine := @M_LoadGame;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'l';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -3519,7 +3599,9 @@ begin
   pmi.cmd := '';
   pmi.routine := @M_SaveGame;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 's';
+  pmi.tag := 0;
 
   // Another hickup with Special edition.
   inc(pmi);
@@ -3528,7 +3610,9 @@ begin
   pmi.cmd := '';
   pmi.routine := @M_ReadThis;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'r';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -3536,7 +3620,9 @@ begin
   pmi.cmd := '';
   pmi.routine := @M_QuitSpeed;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'q';
+  pmi.tag := 0;
 
 ////////////////////////////////////////////////////////////////////////////////
 //MainDef
@@ -3558,7 +3644,9 @@ begin
   pmi.cmd := '';
   pmi.routine := @M_EpisodeMenu;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'c';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -3566,7 +3654,9 @@ begin
   pmi.cmd := '';
   pmi.routine := @M_SingleRace;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 's';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -3574,15 +3664,19 @@ begin
   pmi.cmd := '';
   pmi.routine := @M_PracticeRace;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'p';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
   pmi.name := 'Select Car';
   pmi.cmd := '';
-  pmi.routine := nil;
+  pmi.routine := @M_SelectCarModel;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'c';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -3590,7 +3684,9 @@ begin
   pmi.cmd := '';
   pmi.routine := @M_ChangeDifficulty;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'd';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -3598,7 +3694,9 @@ begin
   pmi.cmd := '';
   pmi.routine := @M_ChangeCarModel;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'm';
+  pmi.tag := 0;
 
 ////////////////////////////////////////////////////////////////////////////////
 //NewGameSetupDef
@@ -3621,6 +3719,7 @@ begin
     SelectCourseMenu[i].cmd := '';
     SelectCourseMenu[i].routine := @M_SelectCourse;
     SelectCourseMenu[i].pBoolVal := nil;
+    SelectCourseMenu[i].pIntVal := nil;
     SelectCourseMenu[i].alphaKey := #13;
     SelectCourseMenu[i].tag := i;
 
@@ -3639,6 +3738,101 @@ begin
     SelectCourseDef[i].itemheight := 100;
     SelectCourseDef[i].texturebk := false;
   end;
+
+////////////////////////////////////////////////////////////////////////////////
+// Select Car Menus
+  nc := 0;
+  for i := 0 to NUMCARINFO - 1 do
+    if carinfo[i].cartype = ct_formula then
+    begin
+      SelectCarF1Menu[nc].status := 1;
+      SelectCarF1Menu[nc].name := itoa(nc);
+      SelectCarF1Menu[nc].cmd := '';
+      SelectCarF1Menu[nc].routine := @M_SelectCar;
+      SelectCarF1Menu[nc].pBoolVal := nil;
+      SelectCarF1Menu[nc].pIntVal := @def_f1car;
+      SelectCarF1Menu[nc].alphaKey := #13;
+      SelectCarF1Menu[nc].tag := i;
+
+      SelectCarF1Def[nc].numitems := 1; // # of menu items
+      SelectCarF1Def[nc].prevMenu := @NewGameSetupDef; // previous menu
+      if nc = 0 then
+        SelectCarF1Def[nc].leftMenu := @SelectCarF1Def[NUMCARINFO_FORMULA - 1]
+      else
+        SelectCarF1Def[nc].leftMenu := @SelectCarF1Def[(nc - 1) mod NUMCARINFO_FORMULA];
+      SelectCarF1Def[nc].rightMenu := @SelectCarF1Def[(nc + 1) mod NUMCARINFO_FORMULA];
+      SelectCarF1Def[nc].menuitems := Pmenuitem_tArray(@SelectCarF1Menu[nc]);  // menu items
+      SelectCarF1Def[nc].drawproc := @M_DrawSelectCar;  // draw routine
+      SelectCarF1Def[nc].x := DEF_MENU_ITEMS_START_X;
+      SelectCarF1Def[nc].y := DEF_MENU_ITEMS_START_Y;
+      SelectCarF1Def[nc].lastOn := 0; // last item user was on in menu
+      SelectCarF1Def[nc].itemheight := 100;
+      SelectCarF1Def[nc].texturebk := false;
+
+      inc(nc);
+    end;
+
+  nc := 0;
+  for i := 0 to NUMCARINFO - 1 do
+    if carinfo[i].cartype = ct_stock then
+    begin
+      SelectCarNSMenu[nc].status := 1;
+      SelectCarNSMenu[nc].name := itoa(nc);
+      SelectCarNSMenu[nc].cmd := '';
+      SelectCarNSMenu[nc].routine := @M_SelectCar;
+      SelectCarNSMenu[nc].pBoolVal := nil;
+      SelectCarNSMenu[nc].pIntVal := @def_ncar;
+      SelectCarNSMenu[nc].alphaKey := #13;
+      SelectCarNSMenu[nc].tag := i;
+
+      SelectCarNSDef[nc].numitems := 1; // # of menu items
+      SelectCarNSDef[nc].prevMenu := @NewGameSetupDef; // previous menu
+      if nc = 0 then
+        SelectCarNSDef[nc].leftMenu := @SelectCarNSDef[NUMCARINFO_STOCK - 1]
+      else
+        SelectCarNSDef[nc].leftMenu := @SelectCarNSDef[(nc - 1) mod NUMCARINFO_STOCK];
+      SelectCarNSDef[nc].rightMenu := @SelectCarNSDef[(nc + 1) mod NUMCARINFO_STOCK];
+      SelectCarNSDef[nc].menuitems := Pmenuitem_tArray(@SelectCarNSMenu[nc]);  // menu items
+      SelectCarNSDef[nc].drawproc := @M_DrawSelectCar;  // draw routine
+      SelectCarNSDef[nc].x := DEF_MENU_ITEMS_START_X;
+      SelectCarNSDef[nc].y := DEF_MENU_ITEMS_START_Y;
+      SelectCarNSDef[nc].lastOn := 0; // last item user was on in menu
+      SelectCarNSDef[nc].itemheight := 100;
+      SelectCarNSDef[nc].texturebk := false;
+
+      inc(nc);
+    end;
+
+  nc := 0;
+  for i := 0 to NUMCARINFO - 1 do
+  begin
+    SelectCarAnyMenu[nc].status := 1;
+    SelectCarAnyMenu[nc].name := itoa(nc);
+    SelectCarAnyMenu[nc].cmd := '';
+    SelectCarAnyMenu[nc].routine := @M_SelectCar;
+    SelectCarAnyMenu[nc].pBoolVal := nil;
+    SelectCarAnyMenu[nc].pIntVal := @def_anycar;
+    SelectCarAnyMenu[nc].alphaKey := #13;
+    SelectCarAnyMenu[nc].tag := i;
+
+    SelectCarAnyDef[nc].numitems := 1; // # of menu items
+    SelectCarAnyDef[nc].prevMenu := @NewGameSetupDef; // previous menu
+    if nc = 0 then
+      SelectCarAnyDef[nc].leftMenu := @SelectCarAnyDef[NUMCARINFO - 1]
+    else
+      SelectCarAnyDef[nc].leftMenu := @SelectCarAnyDef[(nc - 1) mod NUMCARINFO];
+    SelectCarAnyDef[nc].rightMenu := @SelectCarNSDef[(nc + 1) mod NUMCARINFO];
+    SelectCarAnyDef[nc].menuitems := Pmenuitem_tArray(@SelectCarAnyMenu[nc]);  // menu items
+    SelectCarAnyDef[nc].drawproc := @M_DrawSelectCar;  // draw routine
+    SelectCarAnyDef[nc].x := DEF_MENU_ITEMS_START_X;
+    SelectCarAnyDef[nc].y := DEF_MENU_ITEMS_START_Y;
+    SelectCarAnyDef[nc].lastOn := 0; // last item user was on in menu
+    SelectCarAnyDef[nc].itemheight := 100;
+    SelectCarAnyDef[nc].texturebk := false;
+
+    inc(nc);
+  end;
+
 ////////////////////////////////////////////////////////////////////////////////
 //EpisodeMenu
   pmi := @EpisodeMenu[0];
@@ -3647,7 +3841,9 @@ begin
   pmi.cmd := '';
   pmi.routine := @M_ChooseEpisode;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := '1';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -3655,7 +3851,9 @@ begin
   pmi.cmd := '';
   pmi.routine := @M_ChooseEpisode;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := '2';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -3663,7 +3861,9 @@ begin
   pmi.cmd := '';
   pmi.routine := @M_ChooseEpisode;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := '3';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -3671,7 +3871,9 @@ begin
   pmi.cmd := '';
   pmi.routine := @M_ChooseEpisode;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := '4';
+  pmi.tag := 0;
 
 ////////////////////////////////////////////////////////////////////////////////
 //EpiDef
@@ -3693,7 +3895,9 @@ begin
   pmi.cmd := '';
   pmi.routine := @M_OptionsGeneral;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'g';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -3701,7 +3905,9 @@ begin
   pmi.cmd := '';
   pmi.routine := @M_OptionsDisplay;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'd';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -3709,7 +3915,9 @@ begin
   pmi.cmd := '';
   pmi.routine := @M_OptionsSound;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 's';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -3717,7 +3925,9 @@ begin
   pmi.cmd := '';
   pmi.routine := @M_OptionsCompatibility;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'c';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -3725,7 +3935,9 @@ begin
   pmi.cmd := '';
   pmi.routine := @M_OptionsConrols;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'r';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -3733,7 +3945,9 @@ begin
   pmi.cmd := '';
   pmi.routine := @M_OptionsSystem;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'y';
+  pmi.tag := 0;
 
 ////////////////////////////////////////////////////////////////////////////////
 //OptionsDef
@@ -3755,7 +3969,9 @@ begin
   pmi.cmd := '';
   pmi.routine := @M_EndGame;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'e';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -3763,7 +3979,9 @@ begin
   pmi.cmd := '';
   pmi.routine := @M_ChangeMessages;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'm';
+  pmi.tag := 0;
 
 ////////////////////////////////////////////////////////////////////////////////
 //OptionsGeneralDef
@@ -3787,7 +4005,9 @@ begin
   pmi.cmd := '';
   pmi.routine := @M_OptionsDisplayOpenGL;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'o';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -3795,7 +4015,9 @@ begin
   pmi.cmd := '';
   pmi.routine := @M_OptionsDisplayAutomap;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'a';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -3803,7 +4025,9 @@ begin
   pmi.cmd := '';
   pmi.routine := @M_OptionsDisplayAppearance;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'a';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -3811,7 +4035,9 @@ begin
   pmi.cmd := '';
   pmi.routine := @M_OptionsDisplayAdvanced;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'v';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -3819,7 +4045,9 @@ begin
   pmi.cmd := '';
   pmi.routine := @M_OptionsDisplay32bit;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := '3';
+  pmi.tag := 0;
 
 ////////////////////////////////////////////////////////////////////////////////
 //OptionsDisplayDef
@@ -3843,7 +4071,9 @@ begin
   pmi.cmd := '';
   pmi.routine := @M_SetVideoMode;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 's';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -3851,7 +4081,9 @@ begin
   pmi.cmd := '';
   pmi.routine := @M_ChangeDetail;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'd';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -3859,7 +4091,9 @@ begin
   pmi.cmd := 'allowlowdetails';
   pmi.routine := @M_BoolCmd;
   pmi.pBoolVal := @allowlowdetails;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'l';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -3867,7 +4101,9 @@ begin
   pmi.cmd := 'allowhidetails';
   pmi.routine := @M_BoolCmd;
   pmi.pBoolVal := @allowhidetails;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'h';
+  pmi.tag := 0;
 
 ////////////////////////////////////////////////////////////////////////////////
 //OptionsDisplayDetailDef
@@ -3891,7 +4127,9 @@ begin
   pmi.cmd := '';
   pmi.routine := @M_ChangeFullScreen;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'f';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 2;
@@ -3899,7 +4137,9 @@ begin
   pmi.cmd := '';
   pmi.routine := @M_ChangeScreenSize;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 's';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := -1;
@@ -3907,7 +4147,9 @@ begin
   pmi.cmd := '';
   pmi.routine := nil;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := #0;
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := -1;
@@ -3915,7 +4157,9 @@ begin
   pmi.cmd := '';
   pmi.routine := nil;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := #0;
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -3923,7 +4167,9 @@ begin
   pmi.cmd := '';
   pmi.routine := @M_ApplyScreenSize;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'a';
+  pmi.tag := 0;
 
 ////////////////////////////////////////////////////////////////////////////////
 //OptionsDisplayVideoModeDef
@@ -3946,7 +4192,9 @@ begin
   pmi.cmd := 'allowautomapoverlay';
   pmi.routine := @M_BoolCmd;
   pmi.pBoolVal := @allowautomapoverlay;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'o';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -3954,7 +4202,9 @@ begin
   pmi.cmd := 'allowautomaprotate';
   pmi.routine := @M_BoolCmd;
   pmi.pBoolVal := @allowautomaprotate;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'r';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -3962,7 +4212,9 @@ begin
   pmi.cmd := 'texturedautomap';
   pmi.routine := @M_BoolCmd;
   pmi.pBoolVal := @texturedautomap;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 't';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -3970,7 +4222,9 @@ begin
   pmi.cmd := 'automapgrid';
   pmi.routine := @M_BoolCmd;
   pmi.pBoolVal := @automapgrid;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'g';
+  pmi.tag := 0;
 
 ////////////////////////////////////////////////////////////////////////////////
 //OptionsDisplayAutomapDef
@@ -3994,7 +4248,9 @@ begin
   pmi.cmd := 'drawfps';
   pmi.routine := @M_BoolCmd;
   pmi.pBoolVal := @drawfps;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'f';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -4002,7 +4258,9 @@ begin
   pmi.cmd := '';
   pmi.routine := @M_SwitchShadeMode;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'b';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -4010,7 +4268,9 @@ begin
   pmi.cmd := 'displaydiskbusyicon';
   pmi.routine := @M_BoolCmd;
   pmi.pBoolVal := @displaydiskbusyicon;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'd';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -4018,7 +4278,9 @@ begin
   pmi.cmd := 'displayendscreen';
   pmi.routine := @M_BoolCmd;
   pmi.pBoolVal := @displayendscreen;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'e';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -4026,7 +4288,9 @@ begin
   pmi.cmd := 'showdemoplaybackprogress';
   pmi.routine := @M_BoolCmd;
   pmi.pBoolVal := @showdemoplaybackprogress;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'p';
+  pmi.tag := 0;
 
 ////////////////////////////////////////////////////////////////////////////////
 //OptionsDisplayAppearanceDef
@@ -4050,7 +4314,9 @@ begin
   pmi.cmd := '';
   pmi.routine := @M_OptionAspectRatio;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'a';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -4058,7 +4324,9 @@ begin
   pmi.cmd := '';
   pmi.routine := @M_OptionCameraShift;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'c';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -4066,7 +4334,9 @@ begin
   pmi.cmd := 'usetransparentsprites';
   pmi.routine := @M_BoolCmd;
   pmi.pBoolVal := @usetransparentsprites;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 's';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -4074,7 +4344,9 @@ begin
   pmi.cmd := 'interpolate';
   pmi.routine := @M_BoolCmd;
   pmi.pBoolVal := @interpolate;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'u';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -4082,7 +4354,9 @@ begin
   pmi.cmd := 'interpolateoncapped';
   pmi.routine := @M_BoolCmd;
   pmi.pBoolVal := @interpolateoncapped;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'i';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -4090,7 +4364,9 @@ begin
   pmi.cmd := 'fixstallhack';
   pmi.routine := @M_BoolCmd;
   pmi.pBoolVal := @fixstallhack;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 's';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -4098,7 +4374,9 @@ begin
   pmi.cmd := 'autoadjustmissingtextures';
   pmi.routine := @M_BoolCmd;
   pmi.pBoolVal := @autoadjustmissingtextures;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'a';
+  pmi.tag := 0;
 
 ////////////////////////////////////////////////////////////////////////////////
 //OptionsDisplayAdvancedDef
@@ -4122,7 +4400,9 @@ begin
   pmi.cmd := 'widescreensupport';
   pmi.routine := @M_BoolCmdSetSize;
   pmi.pBoolVal := @widescreensupport;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'w';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -4130,7 +4410,9 @@ begin
   pmi.cmd := 'excludewidescreenplayersprites';
   pmi.routine := @M_BoolCmd;
   pmi.pBoolVal := @excludewidescreenplayersprites;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'p';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -4138,7 +4420,9 @@ begin
   pmi.cmd := '';
   pmi.routine := @M_SwitchForcedAspectRatio;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'f';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -4146,7 +4430,9 @@ begin
   pmi.cmd := 'intermissionstretch';
   pmi.routine := @M_BoolCmd;
   pmi.pBoolVal := @intermissionstretch;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'i';
+  pmi.tag := 0;
 
 ////////////////////////////////////////////////////////////////////////////////
 //OptionsDisplayAspectRatioDef
@@ -4169,7 +4455,9 @@ begin
   pmi.cmd := 'zaxisshift';
   pmi.routine := @M_BoolCmd;
   pmi.pBoolVal := @zaxisshift;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'z';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -4177,7 +4465,9 @@ begin
   pmi.cmd := 'chasecamera';
   pmi.routine := @M_BoolCmd;
   pmi.pBoolVal := @chasecamera;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'c';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 2;
@@ -4185,7 +4475,9 @@ begin
   pmi.cmd := '';
   pmi.routine := @M_ChangeCameraXY;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'x';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := -1;
@@ -4193,7 +4485,9 @@ begin
   pmi.cmd := '';
   pmi.routine := nil;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := #0;
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := -1;
@@ -4201,7 +4495,9 @@ begin
   pmi.cmd := '';
   pmi.routine := nil;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := #0;
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 2;
@@ -4209,7 +4505,9 @@ begin
   pmi.cmd := '';
   pmi.routine := @M_ChangeCameraZ;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'z';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := -1;
@@ -4217,7 +4515,9 @@ begin
   pmi.cmd := '';
   pmi.routine := nil;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := #0;
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := -1;
@@ -4225,7 +4525,9 @@ begin
   pmi.cmd := '';
   pmi.routine := nil;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := #0;
+  pmi.tag := 0;
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -4249,7 +4551,9 @@ begin
   pmi.cmd := 'uselightboost';
   pmi.routine := @M_BoolCmd;
   pmi.pBoolVal := @uselightboost;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'g';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -4257,7 +4561,9 @@ begin
   pmi.cmd := 'forcecolormaps';
   pmi.routine := @M_BoolCmd;
   pmi.pBoolVal := @forcecolormaps;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'c';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -4265,7 +4571,9 @@ begin
   pmi.cmd := '32bittexturepaletteeffects';
   pmi.routine := @M_BoolCmd;
   pmi.pBoolVal := @dc_32bittexturepaletteeffects;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'p';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -4273,7 +4581,9 @@ begin
   pmi.cmd := 'use32bitfuzzeffect';
   pmi.routine := @M_BoolCmd;
   pmi.pBoolVal := @use32bitfuzzeffect;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'f';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -4281,7 +4591,9 @@ begin
   pmi.cmd := 'useexternaltextures';
   pmi.routine := @M_BoolCmd;
   pmi.pBoolVal := @useexternaltextures;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'x';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -4289,7 +4601,9 @@ begin
   pmi.cmd := 'preferetexturesnamesingamedirectory';
   pmi.routine := @M_BoolCmd;
   pmi.pBoolVal := @preferetexturesnamesingamedirectory;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'p';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -4297,7 +4611,9 @@ begin
   pmi.cmd := '';
   pmi.routine := @M_ChangeFlatFiltering;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'f';
+  pmi.tag := 0;
 
 ////////////////////////////////////////////////////////////////////////////////
 //OptionsDisplay32bitDef
@@ -4321,7 +4637,9 @@ begin
   pmi.cmd := '';
   pmi.routine := @M_SetVideoMode;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 's';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -4329,7 +4647,9 @@ begin
   pmi.cmd := '';
   pmi.routine := @M_OptionsDisplayOpenGLModels;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'm';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -4337,7 +4657,9 @@ begin
   pmi.cmd := '';
   pmi.routine := @M_OptionsDisplayOpenGLVoxels;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'm';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -4345,7 +4667,9 @@ begin
   pmi.cmd := '';
   pmi.routine := @M_OptionsDisplayOpenGLFilter;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'f';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -4353,7 +4677,9 @@ begin
   pmi.cmd := 'use_fog';
   pmi.routine := @M_BoolCmd;
   pmi.pBoolVal := @use_fog;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'u';
+  pmi.tag := 0;
 
   {$IFDEF DEBUG}
   inc(pmi);
@@ -4362,7 +4688,9 @@ begin
   pmi.cmd := 'gl_drawsky';
   pmi.routine := @M_BoolCmd;
   pmi.pBoolVal := @gl_drawsky;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 's';
+  pmi.tag := 0;
   {$ENDIF}
 
   inc(pmi);
@@ -4371,7 +4699,9 @@ begin
   pmi.cmd := 'gl_stencilsky';
   pmi.routine := @M_BoolCmd;
   pmi.pBoolVal := @gl_stencilsky;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 's';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -4379,7 +4709,9 @@ begin
   pmi.cmd := 'gl_renderwireframe';
   pmi.routine := @M_BoolCmd;
   pmi.pBoolVal := @gl_renderwireframe;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'w';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -4387,7 +4719,9 @@ begin
   pmi.cmd := 'gl_uselightmaps';
   pmi.routine := @M_BoolCmd;
   pmi.pBoolVal := @gl_uselightmaps;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'l';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -4395,7 +4729,9 @@ begin
   pmi.cmd := 'gl_drawshadows';
   pmi.routine := @M_BoolCmd;
   pmi.pBoolVal := @gl_drawshadows;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 's';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -4403,7 +4739,9 @@ begin
   pmi.cmd := 'gl_add_all_lines';
   pmi.routine := @M_BoolCmd;
   pmi.pBoolVal := @gl_add_all_lines;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'l';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -4411,7 +4749,9 @@ begin
   pmi.cmd := 'useglnodesifavailable';
   pmi.routine := @M_BoolCmd;
   pmi.pBoolVal := @useglnodesifavailable;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'u';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -4419,7 +4759,9 @@ begin
   pmi.cmd := 'gl_screensync';
   pmi.routine := @M_BoolCmd;
   pmi.pBoolVal := @gl_screensync;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'y';
+  pmi.tag := 0;
 
 ////////////////////////////////////////////////////////////////////////////////
 //OptionsDisplayOpenGLDef
@@ -4443,7 +4785,9 @@ begin
   pmi.cmd := 'gl_smoothmodelmovement';
   pmi.routine := @M_BoolCmd;
   pmi.pBoolVal := @gl_smoothmodelmovement;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 's';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -4451,7 +4795,9 @@ begin
   pmi.cmd := 'gl_precachemodeltextures';
   pmi.routine := @M_BoolCmd;
   pmi.pBoolVal := @gl_precachemodeltextures;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'p';
+  pmi.tag := 0;
 
 ////////////////////////////////////////////////////////////////////////////////
 //OptionsDisplayOpenGLModelsDef
@@ -4474,7 +4820,9 @@ begin
   pmi.cmd := 'gl_drawvoxels';
   pmi.routine := @M_BoolCmd;
   pmi.pBoolVal := @gl_drawvoxels;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'd';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -4482,7 +4830,9 @@ begin
   pmi.cmd := '';
   pmi.routine := @M_ChangeVoxelOptimization;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'v';
+  pmi.tag := 0;
 
   {$IFDEF DEBUG}
   inc(pmi);
@@ -4491,7 +4841,9 @@ begin
   pmi.cmd := 'r_generatespritesfromvoxels';
   pmi.routine := @M_BoolCmd;
   pmi.pBoolVal := @r_generatespritesfromvoxels;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'g';
+  pmi.tag := 0;
   {$ENDIF}
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -4515,7 +4867,9 @@ begin
   pmi.cmd := '';
   pmi.routine := @M_ChangeTextureFiltering;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 't';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -4523,7 +4877,9 @@ begin
   pmi.cmd := 'gl_texture_filter_anisotropic';
   pmi.routine := @M_BoolCmd;
   pmi.pBoolVal := @gl_texture_filter_anisotropic;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'a';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -4531,7 +4887,9 @@ begin
   pmi.cmd := 'gl_linear_hud';
   pmi.routine := @M_BoolCmd;
   pmi.pBoolVal := @gl_linear_hud;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'l';
+  pmi.tag := 0;
 
 ////////////////////////////////////////////////////////////////////////////////
 //OptionsDisplayOpenGLFilterDef
@@ -4554,7 +4912,9 @@ begin
   pmi.cmd := '';
   pmi.routine := @M_ReadThis2;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := #0;
+  pmi.tag := 0;
 
 ////////////////////////////////////////////////////////////////////////////////
 //ReadDef1
@@ -4576,7 +4936,9 @@ begin
   pmi.cmd := '';
   pmi.routine := @M_FinishReadThis;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := #0;
+  pmi.tag := 0;
 
 ////////////////////////////////////////////////////////////////////////////////
 //ReadDef2
@@ -4599,7 +4961,9 @@ begin
   pmi.cmd := '';
   pmi.routine := @M_FinishReadExtThis;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := #0;
+  pmi.tag := 0;
 
 ////////////////////////////////////////////////////////////////////////////////
 //ReadDefExt
@@ -4621,7 +4985,9 @@ begin
   pmi.cmd := '';
   pmi.routine := @M_SoundVolume;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'v';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -4629,7 +4995,9 @@ begin
   pmi.cmd := 'usemp3';
   pmi.routine := @M_BoolCmd;
   pmi.pBoolVal := @usemp3;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'm';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -4637,7 +5005,9 @@ begin
   pmi.cmd := 'preferemp3namesingamedirectory';
   pmi.routine := @M_BoolCmd;
   pmi.pBoolVal := @preferemp3namesingamedirectory;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 's';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -4645,7 +5015,9 @@ begin
   pmi.cmd := 'useexternalwav';
   pmi.routine := @M_BoolCmd;
   pmi.pBoolVal := @useexternalwav;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'w';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -4653,7 +5025,9 @@ begin
   pmi.cmd := 'preferewavnamesingamedirectory';
   pmi.routine := @M_BoolCmd;
   pmi.pBoolVal := @preferewavnamesingamedirectory;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 's';
+  pmi.tag := 0;
 
 ////////////////////////////////////////////////////////////////////////////////
 //SoundDef
@@ -4677,7 +5051,9 @@ begin
   pmi.cmd := '';
   pmi.routine := @M_SfxVol;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 's';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := -1;
@@ -4685,7 +5061,9 @@ begin
   pmi.cmd := '';
   pmi.routine := nil;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := #0;
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := -1;
@@ -4693,7 +5071,9 @@ begin
   pmi.cmd := '';
   pmi.routine := nil;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := #0;
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 2;
@@ -4701,7 +5081,9 @@ begin
   pmi.cmd := '';
   pmi.routine := @M_MusicVol;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'm';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := -1;
@@ -4709,7 +5091,9 @@ begin
   pmi.cmd := '';
   pmi.routine := nil;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := #0;
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := -1;
@@ -4717,7 +5101,9 @@ begin
   pmi.cmd := '';
   pmi.routine := nil;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := #0;
+  pmi.tag := 0;
 
 ////////////////////////////////////////////////////////////////////////////////
 //SoundVolDef
@@ -4740,7 +5126,9 @@ begin
   pmi.cmd := 'allowplayerjumps';
   pmi.routine := @M_BoolCmd;
   pmi.pBoolVal := @allowplayerjumps;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'j';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -4748,7 +5136,9 @@ begin
   pmi.cmd := 'allowplayerbreath';
   pmi.routine := @M_BoolCmd;
   pmi.pBoolVal := @allowplayerbreath;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'b';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -4756,7 +5146,9 @@ begin
   pmi.cmd := 'keepcheatsinplayerreborn';
   pmi.routine := @M_BoolCmd;
   pmi.pBoolVal := @keepcheatsinplayerreborn;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'c';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -4764,7 +5156,9 @@ begin
   pmi.cmd := 'majorbossdeathendsdoom1level';
   pmi.routine := @M_BoolCmd;
   pmi.pBoolVal := @majorbossdeathendsdoom1level;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'd';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -4772,7 +5166,9 @@ begin
   pmi.cmd := 'spawnrandommonsters';
   pmi.routine := @M_BoolCmd;
   pmi.pBoolVal := @spawnrandommonsters;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 's';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -4780,7 +5176,9 @@ begin
   pmi.cmd := 'allowterrainsplashes';
   pmi.routine := @M_BoolCmd;
   pmi.pBoolVal := @allowterrainsplashes;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 't';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -4788,7 +5186,9 @@ begin
   pmi.cmd := 'continueafterplayerdeath';
   pmi.routine := @M_BoolCmd;
   pmi.pBoolVal := @continueafterplayerdeath;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'f';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -4796,7 +5196,9 @@ begin
   pmi.cmd := '';
   pmi.routine := @M_ChangeDogs;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'd';
+  pmi.tag := 0;
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -4821,7 +5223,9 @@ begin
   pmi.cmd := 'use_mouse';
   pmi.routine := @M_BoolCmd;
   pmi.pBoolVal := @usemouse;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'm';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -4829,7 +5233,9 @@ begin
   pmi.cmd := 'invertmouselook';
   pmi.routine := @M_BoolCmd;
   pmi.pBoolVal := @invertmouselook;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'i';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -4837,7 +5243,9 @@ begin
   pmi.cmd := 'invertmouseturn';
   pmi.routine := @M_BoolCmd;
   pmi.pBoolVal := @invertmouseturn;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'i';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -4845,7 +5253,9 @@ begin
   pmi.cmd := '';
   pmi.routine := @M_OptionsSensitivity;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 's';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -4853,7 +5263,9 @@ begin
   pmi.cmd := 'use_joystick';
   pmi.routine := @M_BoolCmd;
   pmi.pBoolVal := @usejoystick;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'j';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -4861,7 +5273,9 @@ begin
   pmi.cmd := 'autorunmode';
   pmi.routine := @M_BoolCmd;
   pmi.pBoolVal := @autorunmode;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'a';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -4869,7 +5283,9 @@ begin
   pmi.cmd := '';
   pmi.routine := @M_SwitchKeyboardMode;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'k';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -4877,7 +5293,9 @@ begin
   pmi.cmd := '';
   pmi.routine := @M_KeyBindings;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'b';
+  pmi.tag := 0;
 
 ////////////////////////////////////////////////////////////////////////////////
 //ControlsDef
@@ -4901,7 +5319,9 @@ begin
   pmi.cmd := '';
   pmi.routine := @M_ChangeSensitivity;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'x';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := -1;
@@ -4909,7 +5329,9 @@ begin
   pmi.cmd := '';
   pmi.routine := nil;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := #0;
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := -1;
@@ -4917,7 +5339,9 @@ begin
   pmi.cmd := '';
   pmi.routine := nil;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := #0;
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 2;
@@ -4925,7 +5349,9 @@ begin
   pmi.cmd := '';
   pmi.routine := @M_ChangeSensitivityX;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'x';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := -1;
@@ -4933,7 +5359,9 @@ begin
   pmi.cmd := '';
   pmi.routine := nil;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := #0;
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := -1;
@@ -4941,7 +5369,9 @@ begin
   pmi.cmd := '';
   pmi.routine := nil;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := #0;
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 2;
@@ -4949,7 +5379,9 @@ begin
   pmi.cmd := '';
   pmi.routine := @M_ChangeSensitivityY;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'y';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := -1;
@@ -4957,7 +5389,9 @@ begin
   pmi.cmd := '';
   pmi.routine := nil;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := #0;
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := -1;
@@ -4965,7 +5399,9 @@ begin
   pmi.cmd := '';
   pmi.routine := nil;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := #0;
+  pmi.tag := 0;
 
 ////////////////////////////////////////////////////////////////////////////////
 //SensitivityDef
@@ -4987,7 +5423,9 @@ begin
   pmi.cmd := 'safemode';
   pmi.routine := @M_BoolCmd;
   pmi.pBoolVal := @safemode;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 's';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -4995,7 +5433,9 @@ begin
   pmi.cmd := 'mmx';
   pmi.routine := @M_BoolCmd;
   pmi.pBoolVal := @usemmx;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'm';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -5003,7 +5443,9 @@ begin
   pmi.cmd := 'criticalcpupriority';
   pmi.routine := @M_BoolCmd;
   pmi.pBoolVal := @criticalcpupriority;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 'c';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -5011,7 +5453,9 @@ begin
   pmi.cmd := 'usemultithread';
   pmi.routine := @M_BoolCmd;
   pmi.pBoolVal := @usemultithread;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 't';
+  pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
@@ -5019,7 +5463,9 @@ begin
   pmi.cmd := '';
   pmi.routine := @M_ScreenShotCmd;
   pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
   pmi.alphaKey := 's';
+  pmi.tag := 0;
 
 ////////////////////////////////////////////////////////////////////////////////
 //SystemDef
@@ -5045,7 +5491,9 @@ begin
     pmi.cmd := '';
     pmi.routine := @M_KeyBindingSelect1;
     pmi.pBoolVal := nil;
+    pmi.pIntVal := nil;
     pmi.alphaKey := Chr(Ord('1') + i);
+    pmi.tag := 0;
     inc(pmi);
   end;
 
@@ -5073,7 +5521,9 @@ begin
     pmi.cmd := '';
     pmi.routine := @M_KeyBindingSelect2;
     pmi.pBoolVal := nil;
+    pmi.pIntVal := nil;
     pmi.alphaKey := Chr(Ord('1') + i);
+    pmi.tag := 0;
     inc(pmi);
   end;
 
@@ -5101,7 +5551,9 @@ begin
     pmi.cmd := '';
     pmi.routine := @M_LoadSelect;
     pmi.pBoolVal := nil;
+    pmi.pIntVal := nil;
     pmi.alphaKey := Chr(Ord('1') + i);
+    pmi.tag := 0;
     inc(pmi);
   end;
 
@@ -5126,8 +5578,10 @@ begin
     pmi.name := '';
     pmi.cmd := '';
     pmi.routine := @M_SaveSelect;
-    pmi.alphaKey := Chr(Ord('1') + i);
     pmi.pBoolVal := nil;
+    pmi.pIntVal := nil;
+    pmi.alphaKey := Chr(Ord('1') + i);
+    pmi.tag := 0;
     inc(pmi);
   end;
 
