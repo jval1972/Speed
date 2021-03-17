@@ -181,6 +181,14 @@ begin
     result := prev + round((next - prev) / FRACUNIT * frac);
 end;
 
+function R_InterpolationCalcDBL(const prev, next: double; const frac: fixed_t): double;
+begin
+  if next = prev then
+    result := prev
+  else
+    result := prev + ((next - prev) / FRACUNIT * frac);
+end;
+
 function R_InterpolationCalcSIF(const prev, next: smallint; const frac: fixed_t): smallint;
 begin
   if next = prev then
@@ -564,10 +572,10 @@ begin
       mo.y := R_InterpolationCalcIF(mo.prevy, mo.nexty, ticfrac);
       mo.z := R_InterpolationCalcIF(mo.prevz, mo.nextz, ticfrac);
       mo.angle := R_InterpolationCalcA(mo.prevangle, mo.nextangle, ticfrac);
-      mo.tiredistance[0] := R_InterpolationCalcIF(mo.prevtiredistance[0], mo.nexttiredistance[0], ticfrac);
-      mo.tiredistance[1] := R_InterpolationCalcIF(mo.prevtiredistance[1], mo.nexttiredistance[1], ticfrac);
-      mo.tiredistance[2] := R_InterpolationCalcIF(mo.prevtiredistance[2], mo.nexttiredistance[2], ticfrac);
-      mo.tiredistance[3] := R_InterpolationCalcIF(mo.prevtiredistance[3], mo.nexttiredistance[3], ticfrac);
+      mo.tiredistance[0] := R_InterpolationCalcDBL(mo.prevtiredistance[0], mo.nexttiredistance[0], ticfrac);
+      mo.tiredistance[1] := R_InterpolationCalcDBL(mo.prevtiredistance[1], mo.nexttiredistance[1], ticfrac);
+      mo.tiredistance[2] := R_InterpolationCalcDBL(mo.prevtiredistance[2], mo.nexttiredistance[2], ticfrac);
+      mo.tiredistance[3] := R_InterpolationCalcDBL(mo.prevtiredistance[3], mo.nexttiredistance[3], ticfrac);
       mo.tireangle := R_InterpolationCalcIF(mo.prevtireangle, mo.nexttireangle, ticfrac);
     end;
   end;
@@ -652,10 +660,10 @@ begin
           mo.y := R_InterpolationCalcIF(mo.prevy, mo.nexty, ticfrac);
           mo.z := R_InterpolationCalcIF(mo.prevz, mo.nextz, ticfrac);
           mo.angle := R_InterpolationCalcA(mo.prevangle, mo.nextangle, ticfrac);
-          mo.tiredistance[0] := R_InterpolationCalcIF(mo.prevtiredistance[0], mo.nexttiredistance[0], ticfrac);
-          mo.tiredistance[1] := R_InterpolationCalcIF(mo.prevtiredistance[1], mo.nexttiredistance[1], ticfrac);
-          mo.tiredistance[2] := R_InterpolationCalcIF(mo.prevtiredistance[2], mo.nexttiredistance[2], ticfrac);
-          mo.tiredistance[3] := R_InterpolationCalcIF(mo.prevtiredistance[3], mo.nexttiredistance[3], ticfrac);
+          mo.tiredistance[0] := R_InterpolationCalcDBL(mo.prevtiredistance[0], mo.nexttiredistance[0], ticfrac);
+          mo.tiredistance[1] := R_InterpolationCalcDBL(mo.prevtiredistance[1], mo.nexttiredistance[1], ticfrac);
+          mo.tiredistance[2] := R_InterpolationCalcDBL(mo.prevtiredistance[2], mo.nexttiredistance[2], ticfrac);
+          mo.tiredistance[3] := R_InterpolationCalcDBL(mo.prevtiredistance[3], mo.nexttiredistance[3], ticfrac);
           mo.tireangle := R_InterpolationCalcIF(mo.prevtireangle, mo.nexttireangle, ticfrac);
         end;
       end;
