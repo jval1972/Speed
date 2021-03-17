@@ -2116,7 +2116,7 @@ begin
   M_ClearMenus;
 end;
 
-procedure M_Episode(choice: integer);
+procedure M_ChooseEpisode(choice: integer);
 begin
   if (gamemode = shareware) and (choice <> 0) then
   begin
@@ -2134,7 +2134,9 @@ begin
 
   menu_episode := choice;
 
-  M_SetupNextMenu(@SelectSkillDef);
+  G_DeferedInitNew(skill_t(mgameskill), gametype_t(mgametype), menu_episode + 1, 1);
+  M_ClearMenus;
+//  M_SetupNextMenu(@SelectSkillDef);
 end;
 
 //
@@ -3702,7 +3704,7 @@ begin
   pmi.status := 1;
   pmi.name := 'Course #1';
   pmi.cmd := '';
-  pmi.routine := @M_Episode;
+  pmi.routine := @M_ChooseEpisode;
   pmi.pBoolVal := nil;
   pmi.alphaKey := '1';
 
@@ -3710,7 +3712,7 @@ begin
   pmi.status := 1;
   pmi.name := 'Course #2';
   pmi.cmd := '';
-  pmi.routine := @M_Episode;
+  pmi.routine := @M_ChooseEpisode;
   pmi.pBoolVal := nil;
   pmi.alphaKey := '2';
 
@@ -3718,7 +3720,7 @@ begin
   pmi.status := 1;
   pmi.name := 'Course #3';
   pmi.cmd := '';
-  pmi.routine := @M_Episode;
+  pmi.routine := @M_ChooseEpisode;
   pmi.pBoolVal := nil;
   pmi.alphaKey := '3';
 
@@ -3726,7 +3728,7 @@ begin
   pmi.status := 1;
   pmi.name := 'Course #4';
   pmi.cmd := '';
-  pmi.routine := @M_Episode;
+  pmi.routine := @M_ChooseEpisode;
   pmi.pBoolVal := nil;
   pmi.alphaKey := '4';
 
