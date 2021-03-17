@@ -265,10 +265,20 @@ begin
     Pmobj_t(addr).prevy := Pmobj_t(addr).nexty;
     Pmobj_t(addr).prevz := Pmobj_t(addr).nextz;
     Pmobj_t(addr).prevangle := Pmobj_t(addr).nextangle;
+    Pmobj_t(addr).prevtiredistance[0] := Pmobj_t(addr).nexttiredistance[0];
+    Pmobj_t(addr).prevtiredistance[1] := Pmobj_t(addr).nexttiredistance[1];
+    Pmobj_t(addr).prevtiredistance[2] := Pmobj_t(addr).nexttiredistance[2];
+    Pmobj_t(addr).prevtiredistance[3] := Pmobj_t(addr).nexttiredistance[3];
+    Pmobj_t(addr).prevtireangle := Pmobj_t(addr).nexttireangle;
     Pmobj_t(addr).nextx := Pmobj_t(addr).x;
     Pmobj_t(addr).nexty := Pmobj_t(addr).y;
     Pmobj_t(addr).nextz := Pmobj_t(addr).z;
     Pmobj_t(addr).nextangle := Pmobj_t(addr).angle;
+    Pmobj_t(addr).nexttiredistance[0] := Pmobj_t(addr).tiredistance[0];
+    Pmobj_t(addr).nexttiredistance[1] := Pmobj_t(addr).tiredistance[1];
+    Pmobj_t(addr).nexttiredistance[2] := Pmobj_t(addr).tiredistance[2];
+    Pmobj_t(addr).nexttiredistance[3] := Pmobj_t(addr).tiredistance[3];
+    Pmobj_t(addr).nexttireangle := Pmobj_t(addr).tireangle;
     inc(Pmobj_t(addr).intrplcnt);
     exit;
   end;
@@ -453,6 +463,11 @@ begin
     mo.y := mo.nexty;
     mo.z := mo.nextz;
     mo.angle := mo.nextangle;
+    mo.tiredistance[0] := mo.nexttiredistance[0];
+    mo.tiredistance[1] := mo.nexttiredistance[1];
+    mo.tiredistance[2] := mo.nexttiredistance[2];
+    mo.tiredistance[3] := mo.nexttiredistance[3];
+    mo.tireangle := mo.nexttireangle;
   end;
   result := 0;
 end;
@@ -482,6 +497,11 @@ begin
     mo.y := mo.nexty;
     mo.z := mo.nextz;
     mo.angle := mo.nextangle;
+    mo.tiredistance[0] := mo.nexttiredistance[0];
+    mo.tiredistance[1] := mo.nexttiredistance[1];
+    mo.tiredistance[2] := mo.nexttiredistance[2];
+    mo.tiredistance[3] := mo.nexttiredistance[3];
+    mo.tireangle := mo.nexttireangle;
   end;
 end;
 
@@ -544,6 +564,11 @@ begin
       mo.y := R_InterpolationCalcIF(mo.prevy, mo.nexty, ticfrac);
       mo.z := R_InterpolationCalcIF(mo.prevz, mo.nextz, ticfrac);
       mo.angle := R_InterpolationCalcA(mo.prevangle, mo.nextangle, ticfrac);
+      mo.tiredistance[0] := R_InterpolationCalcIF(mo.prevtiredistance[0], mo.nexttiredistance[0], ticfrac);
+      mo.tiredistance[1] := R_InterpolationCalcIF(mo.prevtiredistance[1], mo.nexttiredistance[1], ticfrac);
+      mo.tiredistance[2] := R_InterpolationCalcIF(mo.prevtiredistance[2], mo.nexttiredistance[2], ticfrac);
+      mo.tiredistance[3] := R_InterpolationCalcIF(mo.prevtiredistance[3], mo.nexttiredistance[3], ticfrac);
+      mo.tireangle := R_InterpolationCalcIF(mo.prevtireangle, mo.nexttireangle, ticfrac);
     end;
   end;
   result := 0;
@@ -627,6 +652,11 @@ begin
           mo.y := R_InterpolationCalcIF(mo.prevy, mo.nexty, ticfrac);
           mo.z := R_InterpolationCalcIF(mo.prevz, mo.nextz, ticfrac);
           mo.angle := R_InterpolationCalcA(mo.prevangle, mo.nextangle, ticfrac);
+          mo.tiredistance[0] := R_InterpolationCalcIF(mo.prevtiredistance[0], mo.nexttiredistance[0], ticfrac);
+          mo.tiredistance[1] := R_InterpolationCalcIF(mo.prevtiredistance[1], mo.nexttiredistance[1], ticfrac);
+          mo.tiredistance[2] := R_InterpolationCalcIF(mo.prevtiredistance[2], mo.nexttiredistance[2], ticfrac);
+          mo.tiredistance[3] := R_InterpolationCalcIF(mo.prevtiredistance[3], mo.nexttiredistance[3], ticfrac);
+          mo.tireangle := R_InterpolationCalcIF(mo.prevtireangle, mo.nexttireangle, ticfrac);
         end;
       end;
     end;
