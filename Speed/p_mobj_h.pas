@@ -494,6 +494,12 @@ type
     currPath: integer;
     carinfo: integer;
     nextparticle: integer;  // Next tic that allows particle
+    prevtiredistance: array[0..3] of integer;
+    nexttiredistance: array[0..3] of integer;
+    tiredistance: array[0..3] of integer; // Distance each tire has travel
+    prevtireangle: integer;
+    nexttireangle: integer;
+    tireangle: integer;
   end;
   Tmobj_tPArray = array[0..$FFFF] of Pmobj_t;
   Pmobj_tPArray = ^Tmobj_tPArray;
