@@ -835,7 +835,10 @@ begin
 
       glTranslatef(_glX(tirecenters[tireid].x), _glY(tirecenters[tireid].y), _glZ(tirecenters[tireid].z));
 
-      glRotatef(tirerotation[tireid], 1, 0, 0);
+      if tireid < 2 then
+        glRotatef(tireangle, 0.0, 1.0, 0.0);
+
+      glRotatef(tirerotation[tireid], 1.0, 0.0, 0.0);
 
       glTranslatef(-_glX(tirecenters[tireid].x), -_glY(tirecenters[tireid].y), -_glZ(tirecenters[tireid].z));
     end;
@@ -889,7 +892,7 @@ begin
       if tirerotation[i] > 0 then
         tirerotation[i] := tirerotation[i] - (trunc(tirerotation[1]) div 360) * 360;
     end;
-    tireangle := mo.tireangle / ANG1 * 360.0;
+    tireangle := mo.tireangle / ANG1;
   end
   else
   begin

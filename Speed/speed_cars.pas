@@ -782,6 +782,9 @@ begin
   end;
 end;
 
+const
+  TIRE_ANGLE_MAX = 20;
+
 procedure SH_ExecuteDrivingCmd(const mo: Pmobj_t; const cmd: Pdrivingcmd_t);
 var
   enginespeed: fixed_t;
@@ -826,6 +829,16 @@ begin
     else
       mo.angle := mo.angle + iSign(enginespeed) * cmd.turn;
   end;
+
+{  if cmd.turn < 0 then
+    mo.tireangle := mo.tireangle - ANG1
+  else if cmd.turn > 0 then
+    mo.tireangle := mo.tireangle + ANG1}
+  if cmd.turn <> 0 then
+    mo.tireangle := mo.tireangle + cmd.turn div 2
+  else
+    mo.tireangle := mo.tireangle * 15 div 16;
+  mo.tireangle := GetIntegerInRange(mo.tireangle, -ANG1 * TIRE_ANGLE_MAX, ANG1 * TIRE_ANGLE_MAX);
 
   // Adjust momentum
   an := mo.angle shr ANGLETOFINESHIFT;
