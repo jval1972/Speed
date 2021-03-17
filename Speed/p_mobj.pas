@@ -1165,8 +1165,8 @@ begin
   result := P_SpawnMobj(x, y, z, Ord(MT_PLAYER), @mthing);
 
   case racecartype of
-    Ord(ct_formula): result.carinfo := GetIntegerInRange(def_f1car, 0, NUMCARINFO - 1);
-    Ord(ct_stock): result.carinfo := GetIntegerInRange(def_ncar, 0, NUMCARINFO - 1);
+    Ord(ct_formula): result.carinfo := GetIntegerInRange(def_f1car, 0, NUMCARINFO_FORMULA - 1);
+    Ord(ct_stock): result.carinfo := GetIntegerInRange(def_ncar, NUMCARINFO_FORMULA, NUMCARINFO_FORMULA + NUMCARINFO_STOCK - 1);
   else
     result.carinfo := GetIntegerInRange(def_anycar, 0, NUMCARINFO - 1);
   end;
