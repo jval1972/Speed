@@ -971,7 +971,7 @@ begin
       if W_CheckNumForName(P_GetMapName(epsd, map)) > -1 then
       begin
         plyr._message := STSTR_CLEV;
-        G_DeferedInitNew(gameskill, epsd, map);
+        G_DeferedInitNew(gameskill, gametype, epsd, map);
       end;
     end;
   end;

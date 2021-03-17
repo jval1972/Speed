@@ -1983,11 +1983,20 @@ begin
     exit;
   end;
 
+  mgametype := Ord(gt_championship);
   M_SetupNextMenu(@EpiDef);
 end;
 
 procedure M_SingleRace;
 begin
+  mgametype := Ord(gt_singlerace);
+  menu_select_cource := GetIntegerInRange(menu_select_cource, 0, mapdatalst.Count - 1);
+  M_SetupNextMenu(@SelectCourseDef[menu_select_cource]);
+end;
+
+procedure M_PracticeRace;
+begin
+  mgametype := Ord(gt_practice);
   menu_select_cource := GetIntegerInRange(menu_select_cource, 0, mapdatalst.Count - 1);
   M_SetupNextMenu(@SelectCourseDef[menu_select_cource]);
 end;
@@ -2008,7 +2017,7 @@ begin
   mname := mapdatalst.Strings[idx];
   m_episode := atoi(mname[2]);
   m_map := atoi(mname[4]);
-  G_DeferedInitNew(skill_t(mgameskill), m_episode, m_map);
+  G_DeferedInitNew(skill_t(mgameskill), gametype_t(mgametype), m_episode, m_map);
   M_ClearMenus;
 end;
 
@@ -2091,7 +2100,7 @@ begin
   if ch <> Ord('y') then
     exit;
 
-  G_DeferedInitNew(sk_nightmare, menu_episode + 1, 1); // JVAL nightmare become sk_nightmare
+  G_DeferedInitNew(sk_nightmare, gametype_t(mgametype), menu_episode + 1, 1); // JVAL nightmare become sk_nightmare
   M_ClearMenus;
 end;
 
@@ -2103,7 +2112,7 @@ begin
     exit;
   end;
 
-  G_DeferedInitNew(skill_t(choice), menu_episode + 1, 1);
+  G_DeferedInitNew(skill_t(choice), gametype_t(mgametype), menu_episode + 1, 1);
   M_ClearMenus;
 end;
 
@@ -3620,7 +3629,7 @@ begin
   pmi.status := 1;
   pmi.name := 'Practice';
   pmi.cmd := '';
-  pmi.routine := nil;
+  pmi.routine := @M_PracticeRace;
   pmi.pBoolVal := nil;
   pmi.alphaKey := 'p';
 

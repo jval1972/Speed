@@ -174,6 +174,13 @@ type
     sk_nightmare
   );
 
+type
+  gametype_t = (
+    gt_championship,
+    gt_singlerace,
+    gt_practice
+  );
+
 //
 // Key cards.
 //

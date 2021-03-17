@@ -761,6 +761,14 @@ begin
     result := false;
     exit;
   end;
+
+  if gametype = gt_practice then
+    if doomdnum = _SHTH_STARPOSITION then
+    begin
+      result := false;
+      exit;
+    end;
+
   result := true;
 end;
 

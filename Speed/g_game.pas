@@ -44,12 +44,12 @@ uses
 
 procedure G_DeathMatchSpawnPlayer(playernum: integer);
 
-procedure G_InitNew(skill:skill_t; episode: integer; map: integer);
+procedure G_InitNew(skill:skill_t; gametyp: gametype_t; episode: integer; map: integer);
 
 // Can be called by the startup code or M_Responder.
 // A normal game starts at map 1,
 // but a warp test can start elsewhere
-procedure G_DeferedInitNew(skill:skill_t; episode: integer; map: integer);
+procedure G_DeferedInitNew(skill:skill_t; gametyp: gametype_t; episode: integer; map: integer);
 
 procedure G_CmdNewGame(const parm1, parm2: string);
 
@@ -182,6 +182,9 @@ var
 
   gameskill: skill_t;
   mgameskill: integer;
+
+  gametype: gametype_t;
+  mgametype: integer;
 
   bodyqueslot: integer;
 
@@ -1933,6 +1936,9 @@ begin
   gameskill := skill_t(save_p[0]);
   save_p := PByteArray(integer(save_p) + 1);
 
+  gametype := gametype_t(save_p[0]);
+  save_p := PByteArray(integer(save_p) + 1);
+
   gameepisode := save_p[0];
   save_p := PByteArray(integer(save_p) + 1);
 
@@ -1946,7 +1952,7 @@ begin
   end;
 
   // load a base level
-  G_InitNew(gameskill, gameepisode, gamemap);
+  G_InitNew(gameskill, gametype, gameepisode, gamemap);
 
   // get the times
   a := save_p[0];
@@ -2028,6 +2034,9 @@ begin
   save_p := PByteArray(integer(save_p) + VERSIONSIZE);
 
   save_p[0] := Ord(gameskill);
+  save_p := PByteArray(integer(save_p) + 1);
+
+  save_p[0] := Ord(gametype);
   save_p := PByteArray(integer(save_p) + 1);
 
   save_p[0] := gameepisode;
@@ -2119,7 +2128,6 @@ begin
   end;
 
   G_DoSaveGameInFile(name);
-
 end;
 
 procedure G_CmdSaveGame(const sname: string; const description: string);
@@ -2150,12 +2158,14 @@ end;
 //
 var
   d_skill: skill_t;
+  d_gametype: gametype_t;
   d_episode: integer;
   d_map: integer;
 
-procedure G_DeferedInitNew(skill: skill_t; episode, map: integer);
+procedure G_DeferedInitNew(skill:skill_t; gametyp: gametype_t; episode: integer; map: integer);
 begin
   d_skill := skill;
+  d_gametype := gametyp;
   d_episode := episode;
   d_map := map;
   gameaction := ga_newgame;
@@ -2188,7 +2198,7 @@ begin
   if W_CheckNumForName(P_GetMapName(epsd, map)) > -1 then
   begin
     players[consoleplayer]._message := STSTR_CLEV;
-    G_DeferedInitNew(gameskill, epsd, map);
+    G_DeferedInitNew(gameskill, gt_singlerace, epsd, map);
     C_ExecuteCmd('closeconsole', '1');
   end
   else
@@ -2211,7 +2221,7 @@ begin
   if W_CheckNumForName(P_GetMapName(epsd, map)) > -1 then
   begin
     players[consoleplayer]._message := STSTR_CLEV;
-    G_DeferedInitNew(gameskill, epsd, map);
+    G_DeferedInitNew(gameskill, gt_practice, epsd, map);
     C_ExecuteCmd('closeconsole', '1');
   end
   else
@@ -2232,11 +2242,11 @@ begin
   fastparm := false;
   nomonsters := false;
   consoleplayer := 0;
-  G_InitNew(d_skill, d_episode, d_map);
+  G_InitNew(d_skill, d_gametype, d_episode, d_map);
   gameaction := ga_nothing;
 end;
 
-procedure G_InitNew(skill: skill_t; episode, map: integer);
+procedure G_InitNew(skill:skill_t; gametyp: gametype_t; episode: integer; map: integer);
 var
   i: integer;
   levelinf: Plevelinfo_t;
@@ -2330,6 +2340,8 @@ begin
   gamemap := map;
   gameskill := skill;
   mgameskill := Ord(gameskill);
+  gametype := gametyp;
+  mgametype := Ord(gametype);
 
   viewactive := true;
   demostarttic := 0;
@@ -2567,6 +2579,9 @@ begin
   demo_p[0] := Ord(gameskill);
   demo_p := @demo_p[1];
 
+  demo_p[0] := Ord(gametype);
+  demo_p := @demo_p[1];
+
   demo_p[0] := gameepisode;
   demo_p := @demo_p[1];
 
@@ -2707,6 +2722,7 @@ var
 procedure G_DoPlayDemo;
 var
   skill: skill_t;
+  gtyp: gametype_t;
   i, episode, map: integer;
   lump: integer;
   len: integer;
@@ -2759,6 +2775,9 @@ begin
   demo_p := @demo_p[1];
 
   skill := skill_t(demo_p[0]);
+  demo_p := @demo_p[1];
+
+  gtyp := gametype_t(demo_p[0]);
   demo_p := @demo_p[1];
 
   episode := demo_p[0];
@@ -2838,7 +2857,7 @@ begin
   preparingdemoplayback := true;
   // don't spend a lot of time in loadlevel if not singledemo
   precache := singledemo; // JVAL original code: precache := false
-  G_InitNew(skill, episode, map);
+  G_InitNew(skill, gtyp, episode, map);
   preparingdemoplayback := false;
   spawnrandommonsters := oldspawnrandommonsters;  // Back to default
   dogs := olddogs;

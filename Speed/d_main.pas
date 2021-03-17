@@ -92,6 +92,7 @@ var
   singletics: boolean;          // debug flag to cancel adaptiveness
   autostart: boolean;
   startskill: skill_t;
+  starttype: gametype_t;
   respawnparm: boolean;         // checkparm of -respawn
 
   startepisode: integer;
@@ -1361,6 +1362,14 @@ begin
     autostart := true;
   end;
 
+  starttype := gt_singlerace;
+  p := M_CheckParm('-gametype');
+  if (p <> 0) and (p < myargc - 1) then
+  begin
+    starttype := gametype_t(Ord(myargv[p + 1][1]) - Ord('1'));
+    autostart := true;
+  end;
+
   p := M_CheckParm('-episode');
   if (p <> 0) and (p < myargc - 1) then
   begin
@@ -2097,7 +2106,7 @@ begin
   begin
     if autostart or netgame then
     begin
-      G_InitNew(startskill, startepisode, startmap);
+      G_InitNew(startskill, starttype, startepisode, startmap);
     end
     else
       D_StartTitle; // start up intro loop
