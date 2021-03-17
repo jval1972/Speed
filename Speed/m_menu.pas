@@ -3822,6 +3822,7 @@ begin
     else
       SelectCarAnyDef[nc].leftMenu := @SelectCarAnyDef[(nc - 1) mod NUMCARINFO];
     SelectCarAnyDef[nc].rightMenu := @SelectCarNSDef[(nc + 1) mod NUMCARINFO];
+    SelectCarAnyDef[nc].rightMenu := @SelectCarAnyDef[(nc + 1) mod NUMCARINFO];
     SelectCarAnyDef[nc].menuitems := Pmenuitem_tArray(@SelectCarAnyMenu[nc]);  // menu items
     SelectCarAnyDef[nc].drawproc := @M_DrawSelectCar;  // draw routine
     SelectCarAnyDef[nc].x := DEF_MENU_ITEMS_START_X;
