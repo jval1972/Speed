@@ -833,6 +833,20 @@ begin
   mo.momy := dy div 2 + FixedMul(enginespeed, finesine[an]) div 2;
 
   mo.carvelocity := enginespeed;
+
+  if carinfo[mo.carinfo].cartype = ct_formula then  // 2WD
+  begin
+    mo.tiredistance[0] := mo.tiredistance[0] + actualspeed / FRACUNIT;
+    mo.tiredistance[1] := mo.tiredistance[1] + actualspeed / FRACUNIT;
+  end
+  else // 4WD
+  begin
+    mo.tiredistance[0] := mo.tiredistance[0] + enginespeed / FRACUNIT;
+    mo.tiredistance[1] := mo.tiredistance[1] + enginespeed / FRACUNIT;
+  end;
+  mo.tiredistance[2] := mo.tiredistance[2] + enginespeed / FRACUNIT;
+  mo.tiredistance[3] := mo.tiredistance[3] + enginespeed / FRACUNIT;
+
 end;
 
 procedure SH_MoveCarAI(const mo: Pmobj_t);
