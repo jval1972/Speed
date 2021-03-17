@@ -156,6 +156,12 @@ var
   nx, ny: integer;
   g: byte;
 begin
+  if W_LumpLength(race.groundlump) <> 16384 * 1024 then
+  begin
+    Result := gt_asphalt;
+    Exit;
+  end;
+  
   race.ground := W_CacheLumpNum(race.groundlump, PU_LEVEL);
   nx := GetIntegerInRange((x div FRACUNIT) div SPEED_LEVEL_SCALE, 0, 4095);
   ny := GetIntegerInRange((y div FRACUNIT) div SPEED_LEVEL_SCALE, 0, 4095);
