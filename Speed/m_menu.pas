@@ -1979,6 +1979,9 @@ begin
   M_SetupNextMenu(@SelectCourseDef[menu_select_cource]);
 end;
 
+var
+  select_car_tic: integer;
+
 procedure M_SelectCarModel;
 var
   i, idx: integer;
@@ -1995,7 +1998,10 @@ begin
             break;
           end;
         if idx >= 0 then
+        begin
+          select_car_tic := gametic;
           M_SetupNextMenu(@SelectCarF1Def[idx]);
+        end;
       end;
     Ord(ct_stock):
       begin
@@ -2008,7 +2014,10 @@ begin
             break;
           end;
         if idx >= 0 then
+        begin
+          select_car_tic := gametic;
           M_SetupNextMenu(@SelectCarNSDef[idx]);
+        end;
       end;
   else
     def_anycar := GetIntegerInRange(def_anycar, 0, NUMCARINFO - 1);
@@ -2020,7 +2029,10 @@ begin
         break;
       end;
     if idx >= 0 then
+    begin
+      select_car_tic := gametic;
       M_SetupNextMenu(@SelectCarAnyDef[idx]);
+    end;
   end;
 end;
 
@@ -2040,6 +2052,8 @@ begin
 
   fcar := currentmenu.menuitems[0].tag;
   M_DrawHeadLine(30, 40, 'Car #' + itoa(fcar));
+
+  M_DrawCarModel(200, 70, 128, 128, fcar, 128.0, (select_car_tic - gametic) / 100, pi / 6);
 end;
 
 procedure M_SelectCourse;
@@ -3821,7 +3835,6 @@ begin
       SelectCarAnyDef[nc].leftMenu := @SelectCarAnyDef[NUMCARINFO - 1]
     else
       SelectCarAnyDef[nc].leftMenu := @SelectCarAnyDef[(nc - 1) mod NUMCARINFO];
-    SelectCarAnyDef[nc].rightMenu := @SelectCarNSDef[(nc + 1) mod NUMCARINFO];
     SelectCarAnyDef[nc].rightMenu := @SelectCarAnyDef[(nc + 1) mod NUMCARINFO];
     SelectCarAnyDef[nc].menuitems := Pmenuitem_tArray(@SelectCarAnyMenu[nc]);  // menu items
     SelectCarAnyDef[nc].drawproc := @M_DrawSelectCar;  // draw routine
