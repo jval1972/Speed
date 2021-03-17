@@ -39,7 +39,8 @@ uses
   mdl_base,
   i3d_model,
   r_soft3d,
-  speed_cars;
+  speed_cars,
+  p_mobj_h;
 
 type
   TI3DModel = class(TBaseModel)
@@ -57,7 +58,7 @@ type
     destructor Destroy; override;
     procedure Draw(const frm1, frm2: integer; const offset: float); override;
     procedure DrawSimple(const frm: integer); override;
-    procedure DrawCarGL(const car: Pcarinfo_t);
+    procedure DrawCarGL(const mo: Pmobj_t);
     procedure DrawCarSoft(const car: Pcarinfo_t; const device: Pdevice_t);
   end;
 
@@ -144,8 +145,11 @@ begin
   fmdl.RenderGL(fxscale, fyscale, fzscale, fxoffset, fyoffset, fzoffset);
 end;
 
-procedure TI3DModel.DrawCarGL(const car: Pcarinfo_t);
+procedure TI3DModel.DrawCarGL(const mo: Pmobj_t);
+var
+  car: Pcarinfo_t;
 begin
+  car := @carinfo[mo.carinfo];
   fmdl.RenderGLEx(
     fxscale, fyscale, fzscale,
     fxoffset, fyoffset, fzoffset,

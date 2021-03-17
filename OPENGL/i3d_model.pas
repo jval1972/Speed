@@ -73,10 +73,13 @@ type
     numcorrections: integer;
     defPos: R3D_TPosVector;
     defRot: R3D_TAngles;
+    tirecenters: array[0..3] of vec3i_t;
   protected
     function GetNumFaces: integer; virtual;
     function GetFace(Index: Integer): O3DM_TFace_p; virtual;
     procedure ApplyCorrection(const cor: PI3dModelCorrection); virtual;
+    function HasTires: boolean; virtual;
+    procedure FindTireCenters; virtual;
   public
     constructor Create; virtual;
     destructor Destroy; override;
@@ -160,6 +163,57 @@ begin
     Result := @objfaces[Index]
   else
     Result := nil;
+end;
+
+function TI3DModelLoader.HasTires: boolean;
+begin
+  Result := obj.flags and FLOF_HASTIRES <> 0;
+end;
+
+procedure TI3DModelLoader.FindTireCenters;
+var
+  i, j, k, n: integer;
+  xmin, xmax, ymin, ymax, zmin, zmax: integer;
+  x, y, z: integer;
+begin
+  if obj.nFaces < 64 then
+    Exit;
+
+  n := 0;
+  for i := 0 to 3 do
+  begin
+    xmin := MAXINT;
+    xmax := -MAXINT;
+    ymin := MAXINT;
+    ymax := -MAXINT;
+    zmin := MAXINT;
+    zmax := -MAXINT;
+    for j := 0 to 15 do
+    begin
+      for k := 0 to objfaces[n].h.nVerts - 1 do
+      begin
+        x := objfaces[n].verts[k].vert.x;
+        y := objfaces[n].verts[k].vert.y;
+        z := objfaces[n].verts[k].vert.z;
+        if x < xmin then
+          xmin := x;
+        if x > xmax then
+          xmax := x;
+        if y < ymin then
+          ymin := y;
+        if y > ymax then
+          ymax := y;
+        if z < zmin then
+          zmin := z;
+        if z > zmax then
+          zmax := z;
+      end;
+      inc(n);
+    end;
+    tirecenters[i].x := (xmin + xmax) div 2;
+    tirecenters[i].y := (ymin + ymax) div 2;
+    tirecenters[i].z := (zmin + zmax) div 2;
+  end;
 end;
 
 function TI3DModelLoader.LoadFromStream(const strm: TDStream): boolean;
@@ -284,6 +338,9 @@ begin
     materials[i] := objfaces[i].h.material^;
     objfaces[i].h.material := @materials[i];
   end;
+
+  if HasTires then
+    FindTireCenters;
 
   Result := True;
 end;
@@ -583,6 +640,10 @@ begin
   finally
     s.Free;
   end;
+
+  // Recalculate tire centers
+  if HasTires then
+    FindTireCenters;
 end;
 
 procedure TI3DModelLoader.LoadCorrectionsFromFile(const fname: string);
