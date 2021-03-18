@@ -2053,7 +2053,7 @@ begin
   fcar := currentmenu.menuitems[0].tag;
   M_DrawHeadLine(30, 40, 'Car #' + itoa(fcar));
 
-  M_DrawCarModel(200, 70, 128, 128, fcar, 128.0, (select_car_tic - gametic) / 100, pi / 6);
+  M_DrawCarModel(200, 70, 128, 128, fcar, 80.0, (select_car_tic - gametic) / 100, pi / 6);
 end;
 
 procedure M_SelectCourse;
