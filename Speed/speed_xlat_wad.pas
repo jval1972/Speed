@@ -1019,6 +1019,14 @@ begin
   transparentpix.Add('MSFBAR.PIX');
   transparentpix.Add('SALP0.PIX');
   transparentpix.Add('SALP1.PIX');
+  transparentpix.Add('MOUNT0.PIX');
+  transparentpix.Add('MOUNT1.PIX');
+  transparentpix.Add('MOUNT2.PIX');
+  transparentpix.Add('MOUNT3.PIX');
+  transparentpix.Add('MOUNT4.PIX');
+  transparentpix.Add('MOUNT5.PIX');
+  transparentpix.Add('MOUNT6.PIX');
+  transparentpix.Add('MOUNT7.PIX');
 
   wadwriter.AddSeparator('G_START');
 
