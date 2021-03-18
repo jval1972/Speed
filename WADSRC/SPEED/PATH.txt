@@ -8,6 +8,7 @@ ACTOR MT_PATH 512
   Health 100000
   Mass 100000
   +DONTDRAW
+  +PRECISESPAWNANGLE
   States
   {
     Spawn:

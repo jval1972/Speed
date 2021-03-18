@@ -1170,6 +1170,7 @@
     '  Health 100000'#13#10 +
     '  Mass 100000'#13#10 +
     '  +DONTDRAW'#13#10 +
+    '  +PRECISESPAWNANGLE'#13#10 +
     '  States'#13#10 +
     '  {'#13#10 +
     '    Spawn:'#13#10 +
