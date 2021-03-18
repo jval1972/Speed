@@ -802,7 +802,7 @@ begin
   // Retrieve current speed
   enginespeed := mo.carvelocity;
 
-  if (cmd.accelerate = 0) and (cmd.brake = 0) then
+  if cmd.accelerate = 0 then
     if enginespeed > actualspeed then
       enginespeed := actualspeed;
 
