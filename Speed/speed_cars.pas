@@ -655,6 +655,7 @@ implementation
 
 uses
   d_delphi,
+  doomdef,
   d_think,
   d_player,
   info_h,
@@ -724,6 +725,10 @@ begin
 end;
 
 procedure SH_BuildDrivingCmdAI(const mo: Pmobj_t; const cmd: Pdrivingcmd_t);
+// JVAL: 20210318 - Accelerator & turn factor depending on skill
+const
+  ACCELERATOR_FACTOR: array[skill_t] of fixed_t = (57344, 59392, 61440, 63488, 65536);
+  TURN_FACTOR: array[skill_t] of fixed_t = (63488, 64512, 65536, 66560, 67584);
 var
   actualspeed: fixed_t;
   curx, cury, destx, desty: integer;
@@ -731,6 +736,8 @@ var
   destan: angle_t;
   destspeed: fixed_t;
   diff: fixed_t;
+  maxaccel: fixed_t;
+  maxturn: angle_t;
 begin
   // Retrieve current speed
   dx := mo.x - mo.oldx;
@@ -754,10 +761,11 @@ begin
   // Destination angle
   destan := R_PointToAngle2(destx, desty, curx, cury) - mo.angle;
   // Turn car to reach destination angle
-  if destan < ANG180 - carinfo[mo.carinfo].turnspeed then
-    cmd.turn := -carinfo[mo.carinfo].turnspeed
-  else if destan > ANG180 + carinfo[mo.carinfo].turnspeed then
-    cmd.turn := carinfo[mo.carinfo].turnspeed
+  maxturn := (carinfo[mo.carinfo].turnspeed div TURN_FACTOR[gameskill]) * FRACUNIT;
+  if destan < ANG180 - maxturn then
+    cmd.turn := -maxturn
+  else if destan > ANG180 + maxturn then
+    cmd.turn := maxturn
   else
     cmd.turn := 0;
 
@@ -775,8 +783,10 @@ begin
   else if actualspeed < destspeed then // Accelerating
   begin
     diff := destspeed - actualspeed;
-    if diff > carinfo[mo.carinfo].baseaccel then
-      cmd.accelerate := carinfo[mo.carinfo].baseaccel
+    // JVAL: 20210318 - Accelerator factor depending on skill
+    maxaccel := FixedMul(carinfo[mo.carinfo].baseaccel, ACCELERATOR_FACTOR[gameskill]);
+    if diff > maxaccel then
+      cmd.accelerate := maxaccel
     else
       cmd.accelerate := diff;
   end;
@@ -876,15 +886,23 @@ begin
   SH_ExecuteDrivingCmd(mo, @cmd);
 end;
 
+const
+  MAX_SPEED_TURN_DECREASE = 40;
+
 procedure SH_BuildDrivingCmdPlayer(const mo: Pmobj_t; const cmd: Pdrivingcmd_t);
 var
   p: Pplayer_t;
   t: integer;
+  speedturndecrease: fixed_t;
 begin
   p := mo.player;
 
+  speedturndecrease := MinI(((mo.carvelocity div KMH_TO_FIXED) div 8) * FRACUNIT, MAX_SPEED_TURN_DECREASE * FRACUNIT);
+
   cmd.turn := p.cmd.angleturn * FRACUNIT;
-  t := carinfo[mo.carinfo].turnspeed - (8 + Ord(gameskill)) * 16 * FRACUNIT;
+  t := carinfo[mo.carinfo].turnspeed - 150 * FRACUNIT - speedturndecrease;
+  if t < 128 * FRACUNIT then
+    t := 128 * FRACUNIT;
   if cmd.turn < -t then
     cmd.turn := -t
   else if cmd.turn > t then
