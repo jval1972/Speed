@@ -958,8 +958,12 @@ begin
 
     if not solid then
       for i := 4 to lumps[lump].size + 3 do
+      begin
         if buf[i] = 0 then
-          buf[i] := 255;
+          buf[i] := 255
+        else if buf[i] = 191 then
+          buf[i] := 190;
+      end;
 
     SH_CreateDoomPatchFromLumpData(buf, solid, p, size);
   end;
