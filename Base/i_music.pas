@@ -91,13 +91,14 @@ uses
   i_sound,
   i_midi,
   i_mp3,
-  i_modmusic, 
+  i_s3mmusic,
+  i_modmusic,
   i_tmp,
   s_sound,
   z_zone;
 
 type
-  music_t = (m_none, m_mus, m_midi, m_mp3, m_mod);
+  music_t = (m_none, m_mus, m_midi, m_mp3, m_mod, m_s3m);
 
 const
   MAX_MIDI_EVENTS = 512;
@@ -445,8 +446,8 @@ begin
   I_InitMidi;
   I_InitMP3;
   I_InitMod;
+  I_InitS3M;
 end;
-
 
 //
 // I_StopMusic
@@ -493,6 +494,7 @@ begin
     m_mus: I_StopMusicMus(song);
     m_mp3: I_StopMP3;
     m_mod: I_StopMod;
+    m_s3m: I_StopS3M;
   end;
 end;
 
@@ -527,6 +529,8 @@ begin
   I_ShutDownMP3;
   I_StopMod;
   I_ShutDownMod;
+  I_StopS3M;
+  I_ShutDownS3M;
 end;
 
 //
@@ -562,6 +566,7 @@ begin
     m_mus: I_PauseSongMus(handle);
     m_mp3: I_PauseMP3;
     m_mod: I_PauseMod;
+    m_s3m: I_PauseS3M;
   end;
 end;
 
@@ -587,6 +592,7 @@ begin
     m_mus: I_ResumeSongMus(handle);
     m_mp3: I_ResumeMP3;
     m_mod: I_ResumeMod;
+    m_s3m: I_ResumeS3M;
   end;
 end;
 
@@ -645,7 +651,13 @@ begin
   else if m_type = m_mp3 then
     I_StopMP3;
 
-  if IsModMusicFile(data, size) then
+  if IsS3MMusicFile(data, size) then
+  begin
+    m_type := m_s3m;
+    I_PlayS3M(data, size);
+    I_SetMusicVolumeS3M(snd_MusicVolume);
+  end
+  else if IsModMusicFile(data, size) then
   begin
     m_type := m_mod;
     I_PlayMod(data, size);
@@ -771,6 +783,7 @@ begin
     m_midi: I_SetMusicVolumeMidi(volume);
     m_mp3: ; // unsupported :(
     m_mod: I_SetMusicVolumeMod(volume); // unsupported :(
+    m_s3m: I_SetMusicVolumeS3M(volume); // unsupported :(
   end;
 end;
 
@@ -839,6 +852,7 @@ begin
     m_midi: I_ProcessMidi;
     m_mp3: ; // nothing to do
     m_mod: I_ProcessMod; // nothing to do
+    m_s3m: I_ProcessS3M; // nothing to do
   end;
 end;
 

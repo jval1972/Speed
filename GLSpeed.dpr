@@ -371,7 +371,8 @@ uses
   speed_mapdata in 'Speed\speed_mapdata.pas',
   speed_string_format in 'Speed\speed_string_format.pas',
   libs3m in 'AUDIOLIB\libs3m.pas',
-  i_modmusic in 'Base\i_modmusic.pas';
+  i_modmusic in 'Base\i_modmusic.pas',
+  i_s3mmusic in 'Base\i_s3mmusic.pas';
 
 var
   Saved8087CW: Word;

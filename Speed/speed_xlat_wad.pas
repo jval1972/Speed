@@ -113,6 +113,7 @@ type
     function GenerateGraphics: boolean;
     function GenerateFonts: boolean;
     function GenerateSprites: boolean;
+    function GenerateMusic: boolean;
     function GenerateSounds: boolean;
     function GeneratePK3ModelEntries: boolean;
     procedure WritePK3Entry;
@@ -1403,6 +1404,48 @@ begin
   result := true;
 end;
 
+function TSpeedToWADConverter.GenerateMusic: boolean;
+var
+  i: integer;
+  mbuffer: pointer;
+  msize: integer;
+begin
+  result := ReadLump(lumps, numlumps, 'MENUS.S3M', mbuffer, msize);
+  if not result then
+    exit;
+
+  result := true;
+  wadwriter.AddData('D_INTRO', mbuffer, msize);
+  memfree(mbuffer, msize);
+
+  for i := 1 to 9 do
+  begin
+    if ReadLump(lumps, numlumps, 'HASTE' + itoa(i) +'.S3M', mbuffer, msize) then
+    begin
+      wadwriter.AddData('D_E1M' + itoa(i), mbuffer, msize);
+      memfree(mbuffer, msize);
+    end;
+  end;
+
+  if ReadLump(lumps, numlumps, 'SCIRCUIT.S3M', mbuffer, msize) then
+  begin
+    wadwriter.AddData('D_INTER', mbuffer, msize);
+    memfree(mbuffer, msize);
+  end;
+
+  if ReadLump(lumps, numlumps, 'FINAL.S3M', mbuffer, msize) then
+  begin
+    wadwriter.AddData('D_VICTOR', mbuffer, msize);
+    memfree(mbuffer, msize);
+  end;
+
+  if ReadLump(lumps, numlumps, 'FIN.S3M', mbuffer, msize) then
+  begin
+    wadwriter.AddData('D_FIN', mbuffer, msize);
+    memfree(mbuffer, msize);
+  end;
+end;
+
 function TSpeedToWADConverter.GenerateSounds: boolean;
 var
   i: integer;
@@ -1525,6 +1568,7 @@ begin
   GenerateGraphics;
   GenerateFonts;
   GenerateSprites;
+  GenerateMusic;
   GenerateSounds;
   GeneratePK3ModelEntries;
   WritePK3Entry;
