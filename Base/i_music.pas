@@ -85,18 +85,19 @@ uses
   Windows,
   messages,
   MMSystem,
-  m_argv, 
+  m_argv,
   m_base,
-  i_system, 
-  i_sound, 
-  i_midi, 
-  i_mp3, 
+  i_system,
+  i_sound,
+  i_midi,
+  i_mp3,
+  i_modmusic, 
   i_tmp,
   s_sound,
   z_zone;
 
 type
-  music_t = (m_none, m_mus, m_midi, m_mp3);
+  music_t = (m_none, m_mus, m_midi, m_mp3, m_mod);
 
 const
   MAX_MIDI_EVENTS = 512;
@@ -443,6 +444,7 @@ begin
   I_InitMus;
   I_InitMidi;
   I_InitMP3;
+  I_InitMod;
 end;
 
 
@@ -490,6 +492,7 @@ begin
     m_midi: I_StopMidi;
     m_mus: I_StopMusicMus(song);
     m_mp3: I_StopMP3;
+    m_mod: I_StopMod;
   end;
 end;
 
@@ -522,6 +525,8 @@ begin
   I_StopMidi;
   I_ShutDownMidi;
   I_ShutDownMP3;
+  I_StopMod;
+  I_ShutDownMod;
 end;
 
 //
@@ -556,6 +561,7 @@ begin
     m_midi: I_PauseMidi;
     m_mus: I_PauseSongMus(handle);
     m_mp3: I_PauseMP3;
+    m_mod: I_PauseMod;
   end;
 end;
 
@@ -580,6 +586,7 @@ begin
     m_midi: I_ResumeMidi;
     m_mus: I_ResumeSongMus(handle);
     m_mp3: I_ResumeMP3;
+    m_mod: I_ResumeMod;
   end;
 end;
 
@@ -638,7 +645,13 @@ begin
   else if m_type = m_mp3 then
     I_StopMP3;
 
-  if Pmp3header_t(data).ID = MP3MAGIC then
+  if IsModMusicFile(data, size) then
+  begin
+    m_type := m_mod;
+    I_PlayMod(data, size);
+    I_SetMusicVolumeMod(snd_MusicVolume);
+  end
+  else if Pmp3header_t(data).ID = MP3MAGIC then
   begin
     m_type := m_mp3;
     I_PlayMP3(Pmp3header_t(data).Stream);
@@ -757,6 +770,7 @@ begin
     m_mus: I_SetMusicVolumeMus(volume);
     m_midi: I_SetMusicVolumeMidi(volume);
     m_mp3: ; // unsupported :(
+    m_mod: I_SetMusicVolumeMod(volume); // unsupported :(
   end;
 end;
 
@@ -824,6 +838,7 @@ begin
     m_mus: I_ProcessMusicMus;
     m_midi: I_ProcessMidi;
     m_mp3: ; // nothing to do
+    m_mod: I_ProcessMod; // nothing to do
   end;
 end;
 
