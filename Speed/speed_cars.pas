@@ -849,8 +849,8 @@ begin
 
   if carinfo[mo.carinfo].cartype = ct_formula then  // 2WD
   begin
-    mo.tiredistance[0] := mo.tiredistance[0] + actualspeed / FRACUNIT;
-    mo.tiredistance[1] := mo.tiredistance[1] + actualspeed / FRACUNIT;
+    mo.tiredistance[0] := mo.tiredistance[0] + iSign(enginespeed) * actualspeed / FRACUNIT;
+    mo.tiredistance[1] := mo.tiredistance[1] + iSign(enginespeed) * actualspeed / FRACUNIT;
   end
   else // 4WD
   begin
