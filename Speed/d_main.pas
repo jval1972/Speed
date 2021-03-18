@@ -172,6 +172,7 @@ uses
   r_hires,
   r_intrpl,
   r_data,
+  r_defs,
   r_camera,
   r_lights,
   sounds,
@@ -555,9 +556,46 @@ end;
 // D_PageDrawer
 //
 procedure D_PageDrawer;
+var
+  p: Ppatch_t;
+  i: integer;
+  s: string;
+  x: integer;
 begin
   V_PageDrawer(pagename);
-  V_DrawPatch(160, 180, SCN_FG, 'MMCRED', true);
+
+  ZeroMemory(screens[SCN_TMP], 320 * 200);
+  if not menuactive then
+  begin
+    p := W_CacheLumpName('MMHELMET', PU_STATIC);
+    V_DrawPatch(200 + p.leftoffset, 20 + p.topoffset, SCN_TMP, p, false);
+    Z_ChangeTag(p, PU_CACHE);
+
+    x := 20;
+    for i := 0 to 4 do
+    begin
+      sprintf(s, 'SPHL%d', [i]);
+      p := W_CacheLumpName(s, PU_STATIC);
+      V_DrawPatch(x + p.leftoffset, 20 + p.topoffset, SCN_TMP, p, false);
+      x := x + p.width - 8;
+      Z_ChangeTag(p, PU_CACHE);
+    end;
+
+    x := 56;
+    for i := 5 to 9 do
+    begin
+      sprintf(s, 'SPHL%d', [i]);
+      p := W_CacheLumpName(s, PU_STATIC);
+      V_DrawPatch(x + p.leftoffset, 49 + p.topoffset, SCN_TMP, p, false);
+      x := x + p.width;
+      if i <> 6 then
+        if i <> 7 then
+          dec(x, 8);
+      Z_ChangeTag(p, PU_CACHE);
+    end;
+  end;
+  V_DrawPatch(160, 180, SCN_TMP, 'MMCRED', false);
+  V_CopyRectTransparent(0, 0, SCN_TMP, 320, 200, 0, 0, SCN_FG, true);
 end;
 
 //
