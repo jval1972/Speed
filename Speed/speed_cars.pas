@@ -793,6 +793,7 @@ var
   an: angle_t;
   turn64: int64;
   slipf: integer;
+  dan: fixed_t;
 begin
   // Calculate actual speed
   dx := mo.x - mo.oldx;
@@ -830,14 +831,19 @@ begin
       mo.angle := mo.angle + iSign(enginespeed) * cmd.turn;
   end;
 
-{  if cmd.turn < 0 then
-    mo.tireangle := mo.tireangle - ANG1
-  else if cmd.turn > 0 then
-    mo.tireangle := mo.tireangle + ANG1}
   if cmd.turn <> 0 then
     mo.tireangle := mo.tireangle + cmd.turn div 2
-  else
-    mo.tireangle := mo.tireangle * 15 div 16;
+  else if actualspeed > 0 then
+  begin
+    if actualspeed > carinfo[mo.carinfo].maxspeed div 2 then
+      dan := 2 * ANG1
+    else
+      dan := ANG1;
+    if mo.tireangle < 0 then
+      mo.tireangle := GetIntegerInRange(mo.tireangle + dan, -ANG1 * TIRE_ANGLE_MAX, 0)
+    else if mo.tireangle > 0 then
+      mo.tireangle := GetIntegerInRange(mo.tireangle - dan, 0, ANG1 * TIRE_ANGLE_MAX);
+  end;
   mo.tireangle := GetIntegerInRange(mo.tireangle, -ANG1 * TIRE_ANGLE_MAX, ANG1 * TIRE_ANGLE_MAX);
 
   // Adjust momentum
