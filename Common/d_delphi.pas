@@ -62,6 +62,9 @@ type
   TByteArray = packed array[0..$7FFF] of Byte;
   PByteArray = ^TByteArray;
 
+  TShortIntArray = packed array[0..$FFF] of shortint;
+  PShortIntArray = ^TShortIntArray;
+
   TBooleanArray = packed array[0..$7FFF] of boolean;
   PBooleanArray = ^TBooleanArray;
 
