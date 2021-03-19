@@ -792,22 +792,6 @@ const
     $C2, $B3, $80, $00, $00, $00, $00, $49, $45, $4E, $44, $AE, $42, $60, $82
   );
 
-function readablestring(const s: string): string;
-var
-  i: integer;
-  h: string;
-begin
-  result := '';
-  h := '0123456789ABCDEF';
-  for i := 1 to Length(s) do
-  begin
-    if Pos(toupper(s[i]), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789') > 0 then
-      result := result + toupper(s[i])
-    else
-      result := result + h[Ord(s[i]) div 16 + 1] + h[Ord(s[i]) mod 16 + 1];
-  end;
-end;
-
 procedure VX_VoxelToSprite;
 var
   wad: TWADWriter;
