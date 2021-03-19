@@ -372,7 +372,9 @@ uses
   speed_string_format in 'Speed\speed_string_format.pas',
   libs3m in 'AUDIOLIB\libs3m.pas',
   i_modmusic in 'Base\i_modmusic.pas',
-  i_s3mmusic in 'Base\i_s3mmusic.pas';
+  i_s3mmusic in 'Base\i_s3mmusic.pas',
+  mikmod in 'Base\mikmod.pas',
+  i_mikplay in 'Base\i_mikplay.pas';
 
 var
   Saved8087CW: Word;
