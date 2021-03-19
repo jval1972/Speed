@@ -86,7 +86,8 @@ end;
 
 procedure I_DeclareTempFile(const name: string);
 begin
-  tempfiles.Add(name);
+  if tempfiles.IndexOf(name) < 0 then
+    tempfiles.Add(name);
 end;
 
 end.
