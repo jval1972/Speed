@@ -374,7 +374,8 @@ uses
   i_modmusic in 'Base\i_modmusic.pas',
   i_s3mmusic in 'Base\i_s3mmusic.pas',
   mikmod in 'Base\mikmod.pas',
-  i_mikplay in 'Base\i_mikplay.pas';
+  i_mikplay in 'Base\i_mikplay.pas',
+  BTMemoryModule in 'Base\BTMemoryModule.pas';
 
 var
   Saved8087CW: Word;
