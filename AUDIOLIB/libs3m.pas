@@ -46,7 +46,7 @@ const
   S3M_MAX_CHANNELS = 32;
   S3M_VIBRATO_TABLE_SIZE = 64;
 
-type
+type  
   s3m_header_t = record
     songname    : array[0..S3M_MAX_SONG_NAME - 1] of char;
     hex1Ah      : byte;
