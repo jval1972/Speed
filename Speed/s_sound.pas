@@ -132,6 +132,7 @@ uses
   p_mobj,
   p_tick,
   sounds,
+  s_externalmusic,
   z_zone,
   w_folders,
   w_wad,
@@ -278,6 +279,8 @@ var
 begin
   printf('S_Init: default sfx volume %d'#13#10, [sfxVolume]);
 
+  S_ExternalMusicInit;
+
   // Whatever these did with DMX, these are rather dummies now.
   I_SetChannels;
 
@@ -318,6 +321,7 @@ end;
 procedure S_ShutDownSound;
 begin
   S_FreeRandomSoundLists;
+  S_ShutDownExternalMusic;
 end;
 
 function S_DefaultMusicForMap(const episode, map: integer): integer;
@@ -455,7 +459,10 @@ begin
   cnum := S_GetChannel(origin, sfx);
 
   if cnum < 0 then
+  begin
+    I_DevWarning('S_StartSoundAtVolume(): Can not find channel for sfx=%d'#13#10, [sfx_id]);
     exit;
+  end;
 
   //
   // This is supposed to handle the loading/caching.
@@ -738,12 +745,18 @@ begin
     mp3header.ID := MP3MAGIC;
     mp3header.Stream := music.mp3stream;
     music.data := mp3header;
+    music.handle := I_RegisterSong(music.data, W_LumpLength(music.lumpnum));
   end
   else
-    // load & register it
-    music.data := W_CacheLumpNum(music.lumpnum, PU_MUSIC);
+  begin
+    if not S_TryLoadExternalMusic(music) then
+    begin
+      // load & register it
+      music.data := W_CacheLumpNum(music.lumpnum, PU_MUSIC);
+      music.handle := I_RegisterSong(music.data, W_LumpLength(music.lumpnum));
+    end;
+  end;
 
-  music.handle := I_RegisterSong(music.data, W_LumpLength(music.lumpnum));
 
   // play it
   I_PlaySong(music.handle, looping);
@@ -830,7 +843,7 @@ end;
 // If the sound is not audible, returns a 0.
 // Otherwise, modifies parameters and returns 1.
 //
-function S_AdjustSoundParams(listener: Pmobj_t; source:Pmobj_t;
+function S_AdjustSoundParams(listener: Pmobj_t; source: Pmobj_t;
   vol: Pinteger; sep: Pinteger; pitch:Pinteger): boolean;
 var
   approx_dist: fixed_t;
