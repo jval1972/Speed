@@ -73,7 +73,9 @@ procedure I_InitMik;
 var
   errstr: string;
 begin
-  mik_init := MikWin_Init(MIK_FREQ, True, True, True, hMainWnd, 0);
+  mik_init := MikWin_LoadLibrary;
+  if mik_init then
+    mik_init := MikWin_Init(MIK_FREQ, True, True, True, hMainWnd, 0);
   if not mik_init then
   begin
     errstr := MikWin_GetErrorText;
@@ -84,6 +86,7 @@ end;
 procedure I_ShutDownMik;
 begin
   MikWin_Free;
+  MikWin_FreeLibrary;
 end;
 
 procedure I_PlayMik(const data: pointer; const size: integer);
