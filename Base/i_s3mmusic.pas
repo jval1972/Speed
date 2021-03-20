@@ -199,8 +199,9 @@ begin
       _s3m_play(@s3module);
 
     _s3m_sound_callback(nil, @s3mbuffer, 2 * BUFFER_SAMPLES * NUM_CHANNELS);
-    for i := 0 to BUFFER_SAMPLES * NUM_CHANNELS - 1 do
-      WaveBuffers[CurrentBuffer][i] := Trunc(s3mvolume / 65535 * s3mbuffer[i]);
+    if s3mvolume < 65535 then
+      for i := 0 to BUFFER_SAMPLES * NUM_CHANNELS - 1 do
+        WaveBuffers[CurrentBuffer][i] := Trunc(s3mvolume / 65535 * s3mbuffer[i]);
 
     { Submit buffer to audio system. }
     PWaveHeader := @WaveHeaders[CurrentBuffer];
