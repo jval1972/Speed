@@ -1448,28 +1448,34 @@ end;
 
 function TSpeedToWADConverter.GenerateSounds: boolean;
 var
-  i: integer;
+  i, j: integer;
   sbuffer, pcmbuffer: pointer;
   ssize, pcmsize: integer;
   wname, rname: string;
   sndinfo: TDStringList;
-  lst: TDStringList;
+  lst1, lst2: TDStringList;
+  sname, stmp: string;
 begin
-  lst := TDStringList.Create;
+  lst1 := TDStringList.Create;
+  lst2 := TDStringList.Create;
   for i := 0 to numlumps - 1 do
   begin
     rname := getjcllumpname(@lumps[i]);
     if strupper(RightStr(rname, 4)) = '.RAW' then
-      lst.Add(rname);
+      if (rname <> 'MOTOR0.RAW') and (rname <> 'MOTOR1.RAW') then
+        lst1.Add(rname)
+      else
+        lst2.Add(rname);
   end;
 
   sndinfo := TDStringList.Create;
   sndinfo.Add('// Speed Haste sounds');
   sndinfo.Add('');
+
   result := false;
-  for i := 0 to lst.Count - 1 do
+  for i := 0 to lst1.Count - 1 do
   begin
-    rname := lst.Strings[i];
+    rname := lst1.Strings[i];
     if ReadLump(lumps, numlumps, rname, sbuffer, ssize) then
     begin
       SH_RawToWAV(sbuffer, ssize, 13000, pcmbuffer, pcmsize);
@@ -1482,10 +1488,31 @@ begin
       result := true;
     end;
   end;
+
+  for i := 0 to lst2.Count - 1 do
+  begin
+    rname := lst2.Strings[i];
+    if ReadLump(lumps, numlumps, rname, sbuffer, ssize) then
+    begin
+      splitstring(rname, sname, stmp, '.');
+      for j := 0 to 9 do
+      begin
+        SH_RawToWAV(sbuffer, ssize, 4000 + j * 1000, pcmbuffer, pcmsize);
+        wname := sname + '_' + itoa(j);
+        wadwriter.AddData(wname, pcmbuffer, pcmsize);
+        memfree(pcmbuffer, pcmsize);
+//        pk3entry.Add(wname + '=' + rname);
+        sndinfo.Add('speedhaste/' + wname + ' ' + wname);
+        result := true;
+      end;
+      memfree(sbuffer, ssize);
+    end;
+  end;
+
   if result then
     wadwriter.AddString('SNDINFO', sndinfo.Text);
   sndinfo.Free;
-  lst.Free;
+  lst1.Free;
 end;
 
 function TSpeedToWADConverter.GeneratePK3ModelEntries: boolean;
