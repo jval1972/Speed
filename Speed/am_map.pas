@@ -205,6 +205,12 @@ const
 var
   quad_guy: array[0..NUMQUADGUYLINES - 1] of mline_t;
 
+const
+  NUMCARGUYLINES = 4;
+
+var
+  car_guy: array[0..NUMCARGUYLINES - 1] of mline_t;
+
 type
   automapstate_t = (am_inactive, am_only, am_overlay, AM_NUMSTATES);
 
@@ -1470,6 +1476,8 @@ var
   plra: angle_t;
   color: integer;
   radius: integer;
+  tlines: Pmline_tArray;
+  numtlines: integer;
 begin
   plrx := plr.mo.x div FRACTOMAPUNIT;
   plry := plr.mo.y div FRACTOMAPUNIT;
@@ -1487,17 +1495,39 @@ begin
         if allowautomaprotate then
           AM_rotate(@x, @y, plra, plrx, plry);
 
-        radius := t.info.radius;
-        if t.info.doomednum = _SHTH_STARPOSITION then
-          color := YELLOWS
+        radius := t.radius;
+        if t.flags2_ex and MF2_EX_DONTDRAW <> 0 then
+        begin
+          tlines := @thintriangle_guy;
+          numtlines := NUMTHINTRIANGLEGUYLINES;
+          color := GRAYS;
+        end
+        else if t.info.doomednum = _SHTH_STARPOSITION then
+        begin
+          tlines := @car_guy;
+          numtlines := NUMCARGUYLINES;
+          color := YELLOWS;
+        end
         else if (t.info.doomednum = _SHTH_MOVINGCAMERA) or (t.info.doomednum = _SHTH_PATH) then
-          color := GRAYS + 8
+        begin
+          tlines := @triangle_guy;
+          numtlines := NUMTRIANGLEGUYLINES;
+          color := GRAYS + 8;
+        end
         else if t.player <> nil then
+        begin
+          tlines := @car_guy;
+          numtlines := NUMCARGUYLINES;
           color := YELLOWS
+        end
         else
+        begin
+          tlines := @quad_guy;
+          numtlines := NUMQUADGUYLINES;
           color := WHITE;
+        end;
         AM_drawLineCharacter(
-          @quad_guy, NUMQUADGUYLINES,
+          tlines, numtlines,
           radius, t.angle, color, x, y);
       end;
       t := t.snext;
@@ -1734,6 +1764,32 @@ begin
   pl.a.x := round(-0.5 * MAPUNIT);
   pl.a.y := round(0.5 * MAPUNIT);
   pl.b.x := round(-0.5 * MAPUNIT);
+  pl.b.y := round(-0.5 * MAPUNIT);
+
+////////////////////////////////////////////////////////////////////////////////
+
+  pl := @car_guy[0];
+  pl.a.x := round(-0.7 * MAPUNIT);
+  pl.a.y := round(-0.5 * MAPUNIT);
+  pl.b.x := round(0.7 * MAPUNIT);
+  pl.b.y := round(-0.5 * MAPUNIT);
+
+  inc(pl);
+  pl.a.x := round(0.7 * MAPUNIT);
+  pl.a.y := round(-0.5 * MAPUNIT);
+  pl.b.x := round(0.7 * MAPUNIT);
+  pl.b.y := round(0.5 * MAPUNIT);
+
+  inc(pl);
+  pl.a.x := round(0.7 * MAPUNIT);
+  pl.a.y := round(0.5 * MAPUNIT);
+  pl.b.x := round(-0.7 * MAPUNIT);
+  pl.b.y := round(0.5 * MAPUNIT);
+
+  inc(pl);
+  pl.a.x := round(-0.7 * MAPUNIT);
+  pl.a.y := round(0.5 * MAPUNIT);
+  pl.b.x := round(-0.7 * MAPUNIT);
   pl.b.y := round(-0.5 * MAPUNIT);
 
 ////////////////////////////////////////////////////////////////////////////////
