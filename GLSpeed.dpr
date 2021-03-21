@@ -378,7 +378,8 @@ uses
   BTMemoryModule in 'Base\BTMemoryModule.pas',
   s_externalmusic in 'Base\s_externalmusic.pas',
   i_itmusic in 'Base\i_itmusic.pas',
-  i_xmmusic in 'Base\i_xmmusic.pas';
+  i_xmmusic in 'Base\i_xmmusic.pas',
+  speed_player in 'Speed\speed_player.pas';
 
 var
   Saved8087CW: Word;
