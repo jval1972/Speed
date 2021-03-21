@@ -1,0 +1,93 @@
+////////////////////////////////////////////////////////////////////////////////
+// MUSINFO SUPPORT
+ACTOR MusicChanger 14165
+{
+    HEALTH 1000
+    REACTIONTIME 8
+    RADIUS 16
+    HEIGHT 16
+    MASS 100
+    SPEED 0
+    +NOBLOCKMAP +DONTDRAW
+    States
+    {
+    Spawn:
+        TNT1 A 1 A_MusicChanger
+        Loop
+    }
+}
+   
+////////////////////////////////////////////////////////////////////////////////
+// AMBIENT SOUND
+ACTOR AMBIENTSOUND 1200
+{
+    HEALTH 1000
+    REACTIONTIME 8
+    RADIUS 16
+    HEIGHT 16
+    MASS 100
+    SPEED 0
+    +NOBLOCKMAP +DONTDRAW
+    States
+    {
+    Spawn:
+        TNT1 AAAAAAAAAA 35 // Nothing to do, the engine takes care of playing the sound
+        Stop
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// ENGINE SOUND
+ACTOR ENGINESOUND
+{
+    HEALTH 10000
+    REACTIONTIME 8
+    RADIUS 16
+    HEIGHT 16
+    MASS 100
+    SPEED 0
+    +NOBLOCKMAP +DONTDRAW +NOSECTOR
+    States
+    {
+    Spawn:
+        TNT1 A -1
+        Stop
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// MESSAGE SOUND
+ACTOR MESSAGESOUND
+{
+    HEALTH 10000
+    REACTIONTIME 8
+    RADIUS 16
+    HEIGHT 16
+    MASS 100
+    SPEED 0
+    +NOBLOCKMAP +DONTDRAW +NOSECTOR
+    States
+    {
+    Spawn:
+        TNT1 A -1
+        Stop
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// UNKNOWN EDITOR THING
+ACTOR Unknown
+{
+  Radius 32
+  Height 56
+  +NOBLOCKMAP
+  +NOHITFLOOR
+  DEFAULTTRANSPARENT
+  States
+  {
+  Spawn:
+    UNKN A -1
+    Stop
+  }
+}
+
