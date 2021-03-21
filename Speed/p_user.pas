@@ -619,45 +619,6 @@ begin
     player.playerstate := PST_REBORN;
 end;
 
-var
-  brsnd: integer = -1;
-  brsnd2: integer = -1;
-  rnd_breath: Integer = 0;
-
-procedure A_PlayerBreath(p: Pplayer_t);
-var
-  sndidx: integer;
-begin
-  if p.health <= 0 then
-    exit;
-
-  if p.playerstate = PST_DEAD then
-    exit;
-
-  if leveltime - p.lastbreath < 3 * TICRATE + (C_Random(rnd_breath) mod TICRATE) then
-    exit;
-
-  p.lastbreath := leveltime;
-
-  if allowplayerbreath then
-  begin
-    if p.hardbreathtics > 0 then
-    begin
-      if brsnd2 < 0 then
-        brsnd2 := S_GetSoundNumForName('player/breath2');
-      sndidx := brsnd2;
-    end
-    else
-    begin
-      if brsnd < 0 then
-        brsnd := S_GetSoundNumForName('player/breath');
-      sndidx := brsnd;
-    end;
-    if sndidx > 0 then
-      S_StartSound(p.mo, sndidx);
-  end;
-end;
-
 procedure P_AngleTarget(player: Pplayer_t);
 var
   ticks: LongWord;
@@ -860,9 +821,6 @@ begin
   end
   else
     player.fixedcolormap := 0;
-
-  if G_PlayingEngineVersion >= VERSION119 then
-    A_PlayerBreath(player);
 end;
 
 end.
