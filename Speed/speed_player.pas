@@ -31,12 +31,17 @@ unit speed_player;
 
 interface
 
+uses
+  d_player;
+
+procedure SH_PlayerThing(const p: Pplayer_t);
+
 implementation
 
 uses
-  d_player,
   info_common,
-  p_mobj;
+  p_mobj,
+  speed_cars;
 
 const
   STR_MESSAGESOUND = 'MESSAGESOUND';
@@ -44,7 +49,7 @@ const
 var
   messagesound_id: integer = -1;
 
-procedure SH_PlayerMessageSound(p: Pplayer_t);
+procedure SH_PlayerMessageSound(const p: Pplayer_t);
 begin
   if p.messagesoundtarget = nil then
   begin
@@ -59,6 +64,37 @@ begin
     p.messagesoundtarget.y := p.mo.y;
     p.messagesoundtarget.z := p.mo.z;
   end;
+end;
+
+const
+  STR_ENGINESOUND = 'ENGINESOUND';
+
+var
+  enginesound_id: integer = -1;
+
+procedure SH_PlayerEngineSound(p: Pplayer_t);
+begin
+  if p.enginesoundtarget = nil then
+  begin
+    if enginesound_id = -1 then
+      enginesound_id := Info_GetMobjNumForName(STR_ENGINESOUND);
+
+    p.enginesoundtarget := P_SpawnMobj(p.mo.x, p.mo.y, p.mo.z, enginesound_id);
+  end
+  else
+  begin
+    p.enginesoundtarget.x := p.mo.x;
+    p.enginesoundtarget.y := p.mo.y;
+    p.enginesoundtarget.z := p.mo.z;
+  end;
+
+  SH_EngineSound(p.mo, p.enginesoundtarget);
+end;
+
+procedure SH_PlayerThing(const p: Pplayer_t);
+begin
+  SH_PlayerMessageSound(p);
+  SH_PlayerEngineSound(p);
 end;
 
 end.

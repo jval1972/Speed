@@ -78,6 +78,7 @@ uses
   r_main,
   r_defs,
   speed_cars,
+  speed_player,
   sounds,
   s_sound,
   doomdef,
@@ -342,9 +343,9 @@ var
 begin
   SH_MoveCarPlayer(player.mo);
 
-(*  cmd := @player.cmd;
+  cmd := @player.cmd;
 
-  player.mo.angle := player.mo.angle + _SHLW(cmd.angleturn, 16);
+(*  player.mo.angle := player.mo.angle + _SHLW(cmd.angleturn, 16);
 
   // Do not let the player control movement
   //  if not onground.
@@ -663,6 +664,8 @@ begin
   // fixme: do this in the cheat code
   if player.mo = nil then
     exit;
+
+  SH_PlayerThing(player);
 
   if player.cheats and CF_NOCLIP <> 0 then
     player.mo.flags := player.mo.flags or MF_NOCLIP

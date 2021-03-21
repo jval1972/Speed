@@ -62,6 +62,7 @@ type
   drivingcmd_t = record
     turn: fixed_t;
     accelerate: fixed_t;
+    deccelerate: fixed_t;
     brake: fixed_t;
   end;
   Pdrivingcmd_t = ^drivingcmd_t;
@@ -82,7 +83,7 @@ const
       maxreversespeed: -50 * KMH_TO_FIXED;
       baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
-      turnspeed: 364 * FRACUNIT; // ~2 * ANG1
+      turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N0A.I3D';
       cartype: ct_formula;
     ),
@@ -96,7 +97,7 @@ const
       maxreversespeed: -50 * KMH_TO_FIXED;
       baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
-      turnspeed: 364 * FRACUNIT; // ~2 * ANG1
+      turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N0A.I3D';
       cartype: ct_formula;
     ),
@@ -110,7 +111,7 @@ const
       maxreversespeed: -50 * KMH_TO_FIXED;
       baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
-      turnspeed: 364 * FRACUNIT; // ~2 * ANG1
+      turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N0A.I3D';
       cartype: ct_formula;
     ),
@@ -124,7 +125,7 @@ const
       maxreversespeed: -50 * KMH_TO_FIXED;
       baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
-      turnspeed: 364 * FRACUNIT; // ~2 * ANG1
+      turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N0A.I3D';
       cartype: ct_formula;
     ),
@@ -139,7 +140,7 @@ const
       maxreversespeed: -50 * KMH_TO_FIXED;
       baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
-      turnspeed: 364 * FRACUNIT; // ~2 * ANG1
+      turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N1A.I3D';
       cartype: ct_formula;
     ),
@@ -153,7 +154,7 @@ const
       maxreversespeed: -50 * KMH_TO_FIXED;
       baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
-      turnspeed: 364 * FRACUNIT; // ~2 * ANG1
+      turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N1A.I3D';
       cartype: ct_formula;
     ),
@@ -167,7 +168,7 @@ const
       maxreversespeed: -50 * KMH_TO_FIXED;
       baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
-      turnspeed: 364 * FRACUNIT; // ~2 * ANG1
+      turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N1A.I3D';
       cartype: ct_formula;
     ),
@@ -182,7 +183,7 @@ const
       maxreversespeed: -50 * KMH_TO_FIXED;
       baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
-      turnspeed: 364 * FRACUNIT; // ~2 * ANG1
+      turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N2A.I3D';
       cartype: ct_formula;
     ),
@@ -196,7 +197,7 @@ const
       maxreversespeed: -50 * KMH_TO_FIXED;
       baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
-      turnspeed: 364 * FRACUNIT; // ~2 * ANG1
+      turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N2A.I3D';
       cartype: ct_formula;
     ),
@@ -210,7 +211,7 @@ const
       maxreversespeed: -50 * KMH_TO_FIXED;
       baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
-      turnspeed: 364 * FRACUNIT; // ~2 * ANG1
+      turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N2A.I3D';
       cartype: ct_formula;
     ),
@@ -224,7 +225,7 @@ const
       maxreversespeed: -50 * KMH_TO_FIXED;
       baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
-      turnspeed: 364 * FRACUNIT; // ~2 * ANG1
+      turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N2A.I3D';
       cartype: ct_formula;
     ),
@@ -239,7 +240,7 @@ const
       maxreversespeed: -50 * KMH_TO_FIXED;
       baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
-      turnspeed: 364 * FRACUNIT; // ~2 * ANG1
+      turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N3A.I3D';
       cartype: ct_formula;
     ),
@@ -253,7 +254,7 @@ const
       maxreversespeed: -50 * KMH_TO_FIXED;
       baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
-      turnspeed: 364 * FRACUNIT; // ~2 * ANG1
+      turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N3A.I3D';
       cartype: ct_formula;
     ),
@@ -267,7 +268,7 @@ const
       maxreversespeed: -50 * KMH_TO_FIXED;
       baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
-      turnspeed: 364 * FRACUNIT; // ~2 * ANG1
+      turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N3A.I3D';
       cartype: ct_formula;
     ),
@@ -281,7 +282,7 @@ const
       maxreversespeed: -50 * KMH_TO_FIXED;
       baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
-      turnspeed: 364 * FRACUNIT; // ~2 * ANG1
+      turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N3A.I3D';
       cartype: ct_formula;
     ),
@@ -295,7 +296,7 @@ const
       maxreversespeed: -50 * KMH_TO_FIXED;
       baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
-      turnspeed: 364 * FRACUNIT; // ~2 * ANG1
+      turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N4A.I3D';
       cartype: ct_formula;
     ),
@@ -309,7 +310,7 @@ const
       maxreversespeed: -50 * KMH_TO_FIXED;
       baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
-      turnspeed: 364 * FRACUNIT; // ~2 * ANG1
+      turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N4A.I3D';
       cartype: ct_formula;
     ),
@@ -323,7 +324,7 @@ const
       maxreversespeed: -50 * KMH_TO_FIXED;
       baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
-      turnspeed: 364 * FRACUNIT; // ~2 * ANG1
+      turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N4A.I3D';
       cartype: ct_formula;
     ),
@@ -338,7 +339,7 @@ const
       maxreversespeed: -50 * KMH_TO_FIXED;
       baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
-      turnspeed: 364 * FRACUNIT; // ~2 * ANG1
+      turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N5A.I3D';
       cartype: ct_formula;
     ),
@@ -352,7 +353,7 @@ const
       maxreversespeed: -50 * KMH_TO_FIXED;
       baseaccel: 16 * 1024;
       basedeccel: 64 * 1024;
-      turnspeed: 364 * FRACUNIT; // ~2 * ANG1
+      turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N5A.I3D';
       cartype: ct_formula;
     ),
@@ -368,7 +369,7 @@ const
       maxreversespeed: -45 * KMH_TO_FIXED;
       baseaccel: 12 * 1024;
       basedeccel: 48 * 1024;
-      turnspeed: 348 * FRACUNIT; // ~2 * ANG1
+      turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N0A.I3D';
       cartype: ct_stock;
     ),
@@ -382,7 +383,7 @@ const
       maxreversespeed: -45 * KMH_TO_FIXED;
       baseaccel: 12 * 1024;
       basedeccel: 48 * 1024;
-      turnspeed: 348 * FRACUNIT; // ~2 * ANG1
+      turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N0A.I3D';
       cartype: ct_stock;
     ),
@@ -396,7 +397,7 @@ const
       maxreversespeed: -45 * KMH_TO_FIXED;
       baseaccel: 12 * 1024;
       basedeccel: 48 * 1024;
-      turnspeed: 348 * FRACUNIT; // ~2 * ANG1
+      turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N0A.I3D';
       cartype: ct_stock;
     ),
@@ -410,7 +411,7 @@ const
       maxreversespeed: -45 * KMH_TO_FIXED;
       baseaccel: 12 * 1024;
       basedeccel: 48 * 1024;
-      turnspeed: 348 * FRACUNIT; // ~2 * ANG1
+      turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N0A.I3D';
       cartype: ct_stock;
     ),
@@ -424,7 +425,7 @@ const
       maxreversespeed: -45 * KMH_TO_FIXED;
       baseaccel: 12 * 1024;
       basedeccel: 48 * 1024;
-      turnspeed: 348 * FRACUNIT; // ~2 * ANG1
+      turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N1A.I3D';
       cartype: ct_stock;
     ),
@@ -438,7 +439,7 @@ const
       maxreversespeed: -45 * KMH_TO_FIXED;
       baseaccel: 12 * 1024;
       basedeccel: 48 * 1024;
-      turnspeed: 348 * FRACUNIT; // ~2 * ANG1
+      turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N1A.I3D';
       cartype: ct_stock;
     ),
@@ -452,7 +453,7 @@ const
       maxreversespeed: -45 * KMH_TO_FIXED;
       baseaccel: 12 * 1024;
       basedeccel: 48 * 1024;
-      turnspeed: 348 * FRACUNIT; // ~2 * ANG1
+      turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N1A.I3D';
       cartype: ct_stock;
     ),
@@ -466,7 +467,7 @@ const
       maxreversespeed: -45 * KMH_TO_FIXED;
       baseaccel: 12 * 1024;
       basedeccel: 48 * 1024;
-      turnspeed: 348 * FRACUNIT; // ~2 * ANG1
+      turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N2A.I3D';
       cartype: ct_stock;
     ),
@@ -480,7 +481,7 @@ const
       maxreversespeed: -45 * KMH_TO_FIXED;
       baseaccel: 12 * 1024;
       basedeccel: 48 * 1024;
-      turnspeed: 348 * FRACUNIT; // ~2 * ANG1
+      turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N2A.I3D';
       cartype: ct_stock;
     ),
@@ -494,7 +495,7 @@ const
       maxreversespeed: -45 * KMH_TO_FIXED;
       baseaccel: 12 * 1024;
       basedeccel: 48 * 1024;
-      turnspeed: 348 * FRACUNIT; // ~2 * ANG1
+      turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N2A.I3D';
       cartype: ct_stock;
     ),
@@ -508,7 +509,7 @@ const
       maxreversespeed: -45 * KMH_TO_FIXED;
       baseaccel: 12 * 1024;
       basedeccel: 48 * 1024;
-      turnspeed: 348 * FRACUNIT; // ~2 * ANG1
+      turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N2A.I3D';
       cartype: ct_stock;
     ),
@@ -522,7 +523,7 @@ const
       maxreversespeed: -45 * KMH_TO_FIXED;
       baseaccel: 12 * 1024;
       basedeccel: 48 * 1024;
-      turnspeed: 348 * FRACUNIT; // ~2 * ANG1
+      turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N3A.I3D';
       cartype: ct_stock;
     ),
@@ -536,7 +537,7 @@ const
       maxreversespeed: -45 * KMH_TO_FIXED;
       baseaccel: 12 * 1024;
       basedeccel: 48 * 1024;
-      turnspeed: 348 * FRACUNIT; // ~2 * ANG1
+      turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N3A.I3D';
       cartype: ct_stock;
     ),
@@ -550,7 +551,7 @@ const
       maxreversespeed: -45 * KMH_TO_FIXED;
       baseaccel: 12 * 1024;
       basedeccel: 48 * 1024;
-      turnspeed: 348 * FRACUNIT; // ~2 * ANG1
+      turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N3A.I3D';
       cartype: ct_stock;
     ),
@@ -564,7 +565,7 @@ const
       maxreversespeed: -45 * KMH_TO_FIXED;
       baseaccel: 12 * 1024;
       basedeccel: 48 * 1024;
-      turnspeed: 348 * FRACUNIT; // ~2 * ANG1
+      turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N4A.I3D';
       cartype: ct_stock;
     ),
@@ -578,7 +579,7 @@ const
       maxreversespeed: -45 * KMH_TO_FIXED;
       baseaccel: 12 * 1024;
       basedeccel: 48 * 1024;
-      turnspeed: 348 * FRACUNIT; // ~2 * ANG1
+      turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N4A.I3D';
       cartype: ct_stock;
     ),
@@ -592,7 +593,7 @@ const
       maxreversespeed: -45 * KMH_TO_FIXED;
       baseaccel: 12 * 1024;
       basedeccel: 48 * 1024;
-      turnspeed: 348 * FRACUNIT; // ~2 * ANG1
+      turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N4A.I3D';
       cartype: ct_stock;
     ),
@@ -606,7 +607,7 @@ const
       maxreversespeed: -45 * KMH_TO_FIXED;
       baseaccel: 12 * 1024;
       basedeccel: 48 * 1024;
-      turnspeed: 348 * FRACUNIT; // ~2 * ANG1
+      turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N5A.I3D';
       cartype: ct_stock;
     ),
@@ -620,7 +621,7 @@ const
       maxreversespeed: -45 * KMH_TO_FIXED;
       baseaccel: 12 * 1024;
       basedeccel: 48 * 1024;
-      turnspeed: 348 * FRACUNIT; // ~2 * ANG1
+      turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N5A.I3D';
       cartype: ct_stock;
     ),
@@ -634,7 +635,7 @@ const
       maxreversespeed: -45 * KMH_TO_FIXED;
       baseaccel: 12 * 1024;
       basedeccel: 48 * 1024;
-      turnspeed: 348 * FRACUNIT; // ~2 * ANG1
+      turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N5A.I3D';
       cartype: ct_stock;
     )
@@ -645,6 +646,8 @@ procedure SH_InitLevelCars;
 procedure SH_MoveCarPlayer(const mo: Pmobj_t);
 
 procedure SH_MoveCarAI(const mo: Pmobj_t);
+
+procedure SH_EngineSound(const caller: Pmobj_t; const soundtarg: Pmobj_t);
 
 var
   def_f1car: integer = 0;
@@ -668,6 +671,8 @@ uses
   speed_things,
   speed_race,
   speed_particles,
+  speed_sounds,
+  s_sound,
   z_zone;
 
 procedure SH_InitLevelCars;
@@ -738,6 +743,7 @@ var
   diff: fixed_t;
   maxaccel: fixed_t;
   maxturn: angle_t;
+  decelstep: fixed_t;
 begin
   // Retrieve current speed
   dx := mo.x - mo.oldx;
@@ -771,11 +777,15 @@ begin
 
   // Adjust speed
   cmd.accelerate := 0;
+  cmd.deccelerate := 0;
   cmd.brake := 0;
   if actualspeed > destspeed then  // Breaking
   begin
     diff := actualspeed - destspeed;
-    if diff > carinfo[mo.carinfo].basedeccel then
+    decelstep := diff div (TICRATE div 2);
+    if decelstep < carinfo[mo.carinfo].basedeccel then
+      cmd.brake := decelstep
+    else if diff > carinfo[mo.carinfo].basedeccel then
       cmd.brake := carinfo[mo.carinfo].basedeccel
     else
       cmd.brake := diff;
@@ -793,6 +803,66 @@ begin
 end;
 
 const
+  MAX_SPEED_TURN_DECREASE = 40;
+
+procedure SH_BuildDrivingCmdPlayer(const mo: Pmobj_t; const cmd: Pdrivingcmd_t);
+var
+  p: Pplayer_t;
+  t: integer;
+  speedturndecrease: fixed_t;
+begin
+  p := mo.player;
+
+  speedturndecrease := MinI(((mo.carvelocity div KMH_TO_FIXED) div 8) * FRACUNIT, MAX_SPEED_TURN_DECREASE * FRACUNIT);
+
+  cmd.turn := p.cmd.angleturn * FRACUNIT;
+  t := carinfo[mo.carinfo].turnspeed - 150 * FRACUNIT - speedturndecrease;
+  if t < 128 * FRACUNIT then
+    t := 128 * FRACUNIT;
+  if cmd.turn < -t then
+    cmd.turn := -t
+  else if cmd.turn > t then
+    cmd.turn := t;
+
+  if p.cmd.forwardmove > 0 then
+  begin
+    cmd.brake := 0;
+    cmd.deccelerate := 0;
+    cmd.accelerate := carinfo[mo.carinfo].baseaccel;
+  end
+  else if p.cmd.forwardmove < 0 then
+  begin
+    if mo.carvelocity <= 0 then
+    begin
+      cmd.brake := 0;
+      cmd.deccelerate := 0;
+      cmd.accelerate := -carinfo[mo.carinfo].baseaccel div 6;
+    end
+    else
+    begin
+      cmd.brake := carinfo[mo.carinfo].basedeccel div 4;
+      cmd.deccelerate := 0;
+      cmd.accelerate := 0;
+    end;
+  end
+  else
+  begin
+    if mo.carvelocity > 0 then
+    begin
+      cmd.deccelerate := carinfo[mo.carinfo].basedeccel div 32;
+      cmd.brake := 0;
+      cmd.accelerate := 0;
+    end
+    else
+    begin
+      cmd.deccelerate := 0;
+      cmd.brake := 0;
+      cmd.accelerate := 0;
+    end;
+  end
+end;
+
+const
   TIRE_ANGLE_MAX = 20;
 
 procedure SH_ExecuteDrivingCmd(const mo: Pmobj_t; const cmd: Pdrivingcmd_t);
@@ -804,6 +874,7 @@ var
   turn64: int64;
   slipf: integer;
   dan: fixed_t;
+  force: fixed_t;
 begin
   // Calculate actual speed
   dx := mo.x - mo.oldx;
@@ -821,10 +892,11 @@ begin
 
   slipf := SH_SlipperFactorAtXY(mo.x, mo.y);
 
+  force := cmd.accelerate - cmd.brake - cmd.deccelerate;
   if cmd.accelerate < 0 then
-    enginespeed := GetIntegerInRange(enginespeed + SH_SlipCalculation(cmd.accelerate - cmd.brake, slipf), carinfo[mo.carinfo].maxreversespeed, carinfo[mo.carinfo].maxspeed)
+    enginespeed := GetIntegerInRange(enginespeed + SH_SlipCalculation(force, slipf), carinfo[mo.carinfo].maxreversespeed, carinfo[mo.carinfo].maxspeed)
   else
-    enginespeed := GetIntegerInRange(enginespeed + SH_SlipCalculation(cmd.accelerate - cmd.brake, slipf), 0, carinfo[mo.carinfo].maxspeed);
+    enginespeed := GetIntegerInRange(enginespeed + SH_SlipCalculation(force, slipf), 0, carinfo[mo.carinfo].maxspeed);
   if slipf < slipperinessinfo[gt_asphalt].smin then
     enginespeed := (7 * enginespeed + enginespeed * slipf div 255) div 8;
 
@@ -858,8 +930,10 @@ begin
 
   // Adjust momentum
   an := mo.angle shr ANGLETOFINESHIFT;
-  mo.momx := dx div 2 + FixedMul(enginespeed, finecosine[an]) div 2;
-  mo.momy := dy div 2 + FixedMul(enginespeed, finesine[an]) div 2;
+//  mo.momx := dx div 2 + FixedMul(enginespeed, finecosine[an]) div 2;
+//  mo.momy := dy div 2 + FixedMul(enginespeed, finesine[an]) div 2;
+  mo.momx := FixedMul(enginespeed, finecosine[an]);
+  mo.momy := FixedMul(enginespeed, finesine[an]);
 
   mo.carvelocity := enginespeed;
 
@@ -876,6 +950,13 @@ begin
   mo.tiredistance[2] := mo.tiredistance[2] + enginespeed / FRACUNIT;
   mo.tiredistance[3] := mo.tiredistance[3] + enginespeed / FRACUNIT;
 
+  mo.carturn := cmd.turn;
+  mo.caraccelerate := cmd.accelerate;
+  mo.cadeccelerate := cmd.deccelerate;
+  mo.carbrake := cmd.brake;
+
+  if mo.player = nil then
+    SH_EngineSound(mo, mo);
 end;
 
 procedure SH_MoveCarAI(const mo: Pmobj_t);
@@ -886,62 +967,45 @@ begin
   SH_ExecuteDrivingCmd(mo, @cmd);
 end;
 
-const
-  MAX_SPEED_TURN_DECREASE = 40;
-
-procedure SH_BuildDrivingCmdPlayer(const mo: Pmobj_t; const cmd: Pdrivingcmd_t);
-var
-  p: Pplayer_t;
-  t: integer;
-  speedturndecrease: fixed_t;
-begin
-  p := mo.player;
-
-  speedturndecrease := MinI(((mo.carvelocity div KMH_TO_FIXED) div 8) * FRACUNIT, MAX_SPEED_TURN_DECREASE * FRACUNIT);
-
-  cmd.turn := p.cmd.angleturn * FRACUNIT;
-  t := carinfo[mo.carinfo].turnspeed - 150 * FRACUNIT - speedturndecrease;
-  if t < 128 * FRACUNIT then
-    t := 128 * FRACUNIT;
-  if cmd.turn < -t then
-    cmd.turn := -t
-  else if cmd.turn > t then
-    cmd.turn := t;
-
-  if p.cmd.forwardmove > 0 then
-  begin
-    cmd.brake := 0;
-    cmd.accelerate := carinfo[mo.carinfo].baseaccel;
-  end
-  else if p.cmd.forwardmove < 0 then
-  begin
-    if mo.carvelocity <= 0 then
-    begin
-      cmd.brake := 0;
-      cmd.accelerate := -carinfo[mo.carinfo].baseaccel div 6;
-    end
-    else
-    begin
-      cmd.brake := carinfo[mo.carinfo].basedeccel div 4;
-      cmd.accelerate := 0;
-    end;
-  end
-  else
-  begin
-    if mo.carvelocity > 0 then
-      cmd.brake := carinfo[mo.carinfo].basedeccel div 32
-    else
-      cmd.brake := 0;
-    cmd.accelerate := 0;
-  end
-end;
-
 procedure SH_MoveCarPlayer(const mo: Pmobj_t);
 var
   cmd: drivingcmd_t;
 begin
   SH_BuildDrivingCmdPlayer(mo, @cmd);
   SH_ExecuteDrivingCmd(mo, @cmd);
+end;
+
+procedure SH_EngineSound(const caller: Pmobj_t; const soundtarg: Pmobj_t);
+var
+  frac: integer;
+  sndid: integer;
+  cinfo: Pcarinfo_t;
+  speed: fixed_t;
+begin
+  if soundtarg.soundcountdown <= 0 then
+  begin
+    cinfo := @carinfo[caller.carinfo];
+    speed := caller.carvelocity;
+    if (caller.player <> nil) and (caller.carbrake > 0) then
+      sndid := Ord(sfx_speedhaste_DERRAPE)
+    else
+    begin
+      if caller.caraccelerate <> 0 then
+        frac := GetIntegerInRange(speed * 10 div cinfo.maxspeed, 0, 9)
+      else
+        frac := 0;
+      if cinfo.cartype = ct_formula then
+        sndid := Ord(sfx_speedhaste_MOTOR0_0)
+      else
+        sndid := Ord(sfx_speedhaste_MOTOR1_0);
+      sndid := sndid + frac;
+    end;
+
+    S_StartSound(soundtarg, speedsounds[sndid].name);
+    soundtarg.soundcountdown := S_SpeedSoundDuration(sndid);
+  end;
+
+  dec(soundtarg.soundcountdown);
 end;
 
 end.

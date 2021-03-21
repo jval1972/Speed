@@ -1150,7 +1150,12 @@ begin
   p := @players[plnum];
 
   if p.playerstate = PST_REBORN then
-    G_PlayerReborn(plnum);
+    G_PlayerReborn(plnum)
+  else
+  begin
+    p.enginesoundtarget := nil;
+    p.messagesoundtarget := nil;
+  end;
 
   x := mthing.x * FRACUNIT;
   y := mthing.y * FRACUNIT;

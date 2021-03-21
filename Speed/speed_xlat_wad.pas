@@ -56,6 +56,7 @@ implementation
 
 uses
   Math,
+  m_fixed,
   speed_defs,
   speed_flatsize,
   speed_palette,
@@ -1478,7 +1479,7 @@ begin
     rname := lst1.Strings[i];
     if ReadLump(lumps, numlumps, rname, sbuffer, ssize) then
     begin
-      SH_RawToWAV(sbuffer, ssize, 13000, pcmbuffer, pcmsize);
+      SH_RawToWAV(sbuffer, ssize, 13000, FRACUNIT, pcmbuffer, pcmsize);
       wname := 'DS_' + IntToStrzFill(5, i);
       wadwriter.AddData(wname, pcmbuffer, pcmsize);
       memfree(sbuffer, ssize);
@@ -1497,11 +1498,10 @@ begin
       splitstring(rname, sname, stmp, '.');
       for j := 0 to 9 do
       begin
-        SH_RawToWAV(sbuffer, ssize, 4000 + j * 1000, pcmbuffer, pcmsize);
+        SH_RawToWAV(sbuffer, ssize, 11025 + j * 1000, FRACUNIT div 2, pcmbuffer, pcmsize);
         wname := sname + '_' + itoa(j);
         wadwriter.AddData(wname, pcmbuffer, pcmsize);
         memfree(pcmbuffer, pcmsize);
-//        pk3entry.Add(wname + '=' + rname);
         sndinfo.Add('speedhaste/' + wname + ' ' + wname);
         result := true;
       end;
@@ -1513,6 +1513,7 @@ begin
     wadwriter.AddString('SNDINFO', sndinfo.Text);
   sndinfo.Free;
   lst1.Free;
+  lst2.Free;
 end;
 
 function TSpeedToWADConverter.GeneratePK3ModelEntries: boolean;

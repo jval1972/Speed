@@ -55,13 +55,13 @@ procedure S_Start;
 // Start sound for thing at <origin>
 //  using <sound_id> from sounds.h
 //
-procedure S_StartSound(origin: pointer; sfx_id: integer); overload;
+procedure S_StartSound(origin: pointer; sfx_id: integer; const fullvolume: boolean = false); overload;
 
-procedure S_StartSound(origin: pointer; const sndname: string); overload;
+procedure S_StartSound(origin: pointer; const sndname: string; const fullvolume: boolean = false); overload;
 
 
 // Will start a sound at a given volume.
-procedure S_StartSoundAtVolume(origin_p: pointer; sfx_id: integer; volume: integer);
+procedure S_StartSoundAtVolume(origin_p: pointer; sfx_id: integer; volume: integer; const fullvolume: boolean = false);
 
 
 // Stop sound for thing at <origin>
@@ -156,15 +156,15 @@ const
 // Distance tp origin when sounds should be maxed out.
 // This should relate to movement clipping resolution
 // (see BLOCKMAP handling).
-// Originally: (200*0x10000).
-  S_CLOSE_DIST = 160 * $10000;
-//  S_CLOSE_DIST = 200 * $10000;
+  S_CLOSE_DIST = 128 * $10000;
+  S_FULLVOLUME_DIST = 8 * $10000;   // JVAL: 202000805 - Full volume distance threshold
 
   S_ATTENUATOR = (S_CLIPPING_DIST - S_CLOSE_DIST) div FRACUNIT;
 
 // Adjustable by menu.
   NORM_PITCH = 128;
   NORM_PRIORITY = 64;
+  FULLVOL_PRIORITY = 48;
   NORM_SEP = 128;
 
   S_PITCH_PERTURB = 1;
@@ -180,6 +180,9 @@ type
 
     // handle of the sound being played
     handle: integer;
+
+    // Do not adjust
+    fullvolume: boolean;
   end;
   Pchannel_t = ^channel_t;
   channel_tArray = packed array[0..$FFFF] of channel_t;
@@ -301,7 +304,10 @@ begin
 
   // Free all channels for use
   for i := 0 to numChannels - 1 do
+  begin
     channels[i].sfxinfo := nil;
+    channels[i].fullvolume := false;
+  end;
 
   // no sounds are playing, and they are not mus_paused
   mus_paused := false;
@@ -371,7 +377,7 @@ begin
   S_ChangeMusic(mnum, true);
 end;
 
-procedure S_StartSoundAtVolume(origin_p: pointer; sfx_id: integer; volume: integer);
+procedure S_StartSoundAtVolume(origin_p: pointer; sfx_id: integer; volume: integer; const fullvolume: boolean = false);
 var
   rc: boolean;
   sep: integer;
@@ -408,24 +414,44 @@ begin
   else
   begin
     pitch := NORM_PITCH;
-    priority := NORM_PRIORITY;
+    if fullvolume then
+      priority := FULLVOL_PRIORITY
+    else
+      priority := NORM_PRIORITY;
   end;
 
   // Check to see if it is audible,
   //  and if not, modify the params
   if (origin <> nil) and (origin <> players[consoleplayer].mo) then
   begin
-    rc := S_AdjustSoundParams(players[consoleplayer].mo, origin,
+    if not fullvolume then
+    begin
+      rc := S_AdjustSoundParams(players[consoleplayer].mo, origin,
            @volume,
            @sep,
            @pitch);
 
-    if (origin.x = players[consoleplayer].mo.x) and
-       (origin.y = players[consoleplayer].mo.y) then
-      sep := NORM_SEP;
+      if (origin.x = players[consoleplayer].mo.x) and
+         (origin.y = players[consoleplayer].mo.y) then
+        sep := NORM_SEP
+      else if players[consoleplayer].enginesoundtarget <> nil then
+      begin
+        if (origin.x = players[consoleplayer].enginesoundtarget.x) and
+           (origin.y = players[consoleplayer].enginesoundtarget.y) then
+          sep := NORM_SEP;
+      end
+      else if players[consoleplayer].messagesoundtarget <> nil then
+      begin
+        if (origin.x = players[consoleplayer].messagesoundtarget.x) and
+           (origin.y = players[consoleplayer].messagesoundtarget.y) then
+          sep := NORM_SEP;
+      end;
 
-    if not rc then
-      exit;
+      if not rc then
+        exit;
+    end
+    else
+      sep := NORM_SEP;
   end
   else
     sep := NORM_SEP;
@@ -492,16 +518,17 @@ begin
   // Assigns the handle to one of the channels in the
   //  mix/output buffer.
   channels[cnum].handle := I_StartSound(sfx_id, volume, sep, pitch, priority);
+  channels[cnum].fullvolume := fullvolume;
 end;
 
-procedure S_StartSound(origin: pointer; sfx_id: integer);
+procedure S_StartSound(origin: pointer; sfx_id: integer; const fullvolume: boolean = false);
 begin
-  S_StartSoundAtVolume(origin, sfx_id, snd_SfxVolume);
+  S_StartSoundAtVolume(origin, sfx_id, snd_SfxVolume, fullvolume);
 end;
 
-procedure S_StartSound(origin: pointer; const sndname: string);
+procedure S_StartSound(origin: pointer; const sndname: string; const fullvolume: boolean = false);
 begin
-  S_StartSoundAtVolume(origin, S_GetSoundNumForName(sndname), snd_SfxVolume);
+  S_StartSoundAtVolume(origin, S_GetSoundNumForName(sndname), snd_SfxVolume, fullvolume);
 end;
 
 procedure S_StopSound(origin: pointer);
@@ -588,14 +615,25 @@ begin
         //  or modify their params
         if (c.origin <> nil) and (integer(listener_p) <> integer(c.origin)) then
         begin
-          audible := S_AdjustSoundParams(listener, c.origin, @volume, @sep, @pitch);
-
-          if not audible then
+          if not c.fullvolume then
           begin
-            S_StopChannel(cnum);
+            audible := S_AdjustSoundParams(listener, c.origin, @volume, @sep, @pitch);
+
+            if (listener_p = players[consoleplayer].mo) then
+            begin
+              if c.origin = players[consoleplayer].enginesoundtarget then
+                sep := NORM_SEP
+              else if c.origin = players[consoleplayer].messagesoundtarget then
+                sep := NORM_SEP;
+            end;
+
+            if not audible then
+              S_StopChannel(cnum)
+            else
+              I_UpdateSoundParams(c.handle, volume, sep, pitch);
           end
           else
-            I_UpdateSoundParams(c.handle, volume, sep, pitch);
+            I_UpdateSoundParams(c.handle, snd_SfxVolume, NORM_SEP, pitch);
         end
       end
       else
@@ -881,11 +919,7 @@ begin
   else
     angle := angle + ($ffffffff - langle);
 
-  {$IFDEF FPC}
-  angle := angle div ANGLETOFINEUNIT;
-  {$ELSE}
   angle := angle shr ANGLETOFINESHIFT;
-  {$ENDIF}
 
   // stereo separation
   sep^ := NORM_SEP - (FixedMul(S_STEREO_SWING, finesine[angle]) div FRACUNIT);
@@ -893,7 +927,23 @@ begin
   // volume calculation
   if approx_dist < S_CLOSE_DIST then
   begin
-    vol^ := snd_SfxVolume;
+    if approx_dist < S_FULLVOLUME_DIST then
+    begin
+      if source = players[consoleplayer].messagesoundtarget then
+      begin
+        vol^ := snd_SfxVolume + 1;
+        if vol^ > 15 then
+          vol^ := 15;
+      end
+      else
+        vol^ := snd_SfxVolume
+    end
+    else
+    begin
+      vol^ := snd_SfxVolume - 1;
+      if vol^ = 0 then
+        vol^ := 1;
+    end;
   end
   else if gamemap = 8 then
   begin
@@ -902,12 +952,19 @@ begin
 
     vol^ := 15 + ((snd_SfxVolume - 15) *
       ((S_CLIPPING_DIST - approx_dist) div FRACUNIT)) div S_ATTENUATOR;
+    if vol^ > snd_SfxVolume - 1 then
+      vol^ := snd_SfxVolume - 1;
   end
   else
   begin
     // distance effect
     vol^ := (snd_SfxVolume * ((S_CLIPPING_DIST - approx_dist) div FRACUNIT)) div
               S_ATTENUATOR;
+    vol^ := vol^ - 1;
+    if vol^ < 1 then
+      vol^ := 1
+    else if vol^ > snd_SfxVolume - 1 then
+      vol^ := snd_SfxVolume - 1;
   end;
 
   result := vol^ > 0;

@@ -48,7 +48,7 @@ procedure DEH_Init;
 procedure DEH_ShutDown;
 
 const
-  DEHNUMACTIONS = 261;
+  DEHNUMACTIONS = 263;
 
 type
   deh_action_t = record
@@ -125,6 +125,7 @@ uses
   p_musinfo,
   r_renderstyle,
   sounds,
+  speed_sounds,
   sc_params,
   sc_engine,
   sc_states,
@@ -2671,6 +2672,12 @@ begin
   deh_actions[260].action.acp1 := @A_ChangeFlag;
   deh_actions[260].name := strupper('ChangeFlag');
   {$IFDEF DLL}deh_actions[260].decl := 'A_ChangeFlag(flag: string, onoff: boolean)';{$ENDIF}
+  deh_actions[261].action.acp1 := @A_AmbientSound;
+  deh_actions[261].name := strupper('AmbientSound');
+  {$IFDEF DLL}deh_actions[261].decl := 'A_AmbientSound(x: integer, y: integer, sound: string)';{$ENDIF}
+  deh_actions[262].action.acp1 := @A_AmbientSoundFV;
+  deh_actions[262].name := strupper('AmbientSoundFV');
+  {$IFDEF DLL}deh_actions[262].decl := 'A_AmbientSoundFV(x: integer, y: integer, sound: string)';{$ENDIF}
 
   deh_strings.numstrings := 0;
   deh_strings.realnumstrings := 0;

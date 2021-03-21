@@ -132,6 +132,11 @@ begin
     for j := 0 to Ord(NUMPSPRITES) - 1 do
       if dest.psprites[j].state <> nil then
         dest.psprites[j].state := Pstate_t(pDiff(dest.psprites[j].state, @states[0], SizeOf(dest.psprites[j].state^)));
+    if dest.enginesoundtarget <> nil then
+      dest.enginesoundtarget := Pmobj_t(dest.enginesoundtarget.key);
+    if dest.messagesoundtarget <> nil then
+      dest.messagesoundtarget := Pmobj_t(dest.messagesoundtarget.key);
+
   end;
 end;
 
@@ -458,6 +463,7 @@ var
   next: Pthinker_t;
   mobj: Pmobj_t;
   parm: mobjcustomparam_t;
+  i: integer;
 begin
   // remove all the current thinkers
   currentthinker := thinkercap.next;
@@ -481,7 +487,17 @@ begin
     save_p := @save_p[1];
     case tclass of
       Ord(tc_end):
-        exit; // end of list
+        begin
+          // Retrieve player's enginesoundtarget & messagesoundtarget
+          for i := 0 to MAXPLAYERS - 1 do
+            if playeringame[i] then
+            begin
+              players[i].enginesoundtarget := P_FindMobjFromKey(integer(players[i].enginesoundtarget));
+              players[i].messagesoundtarget := P_FindMobjFromKey(integer(players[i].messagesoundtarget));
+            end;
+
+          exit; // end of list
+        end;
 
       Ord(tc_mobj):
         begin
