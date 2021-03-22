@@ -167,6 +167,7 @@ uses
   speed_alias,
   speed_flatsize,
   speed_mapdata,
+  speed_hud,
   r_draw,
   r_main,
   r_hires,
@@ -468,6 +469,7 @@ begin
     if (amstate <> am_only) and (gametic <> 0) then
     begin
       D_RenderPlayerView(@players[displayplayer]);
+      SH_HudDrawer;
     end;
   end;
   if gamestate = GS_LEVEL then
@@ -2062,7 +2064,12 @@ begin
 
   SUC_Progress(92);
 
-  //    // check for a driver that wants intermission stats
+  printf('SH_InitSpeedHud: Init Speed Haste HUD.'#13#10);
+  SH_InitSpeedHud;
+
+  SUC_Progress(93);
+
+  // check for a driver that wants intermission stats
   p := M_CheckParm('-statcopy');
   if (p > 0) and (p < myargc - 1) then
   begin
@@ -2174,6 +2181,8 @@ begin
   T_ShutDown;
   printf('M_ShutDownMenus: Shut down menus.'#13#10);
   M_ShutDownMenus;
+  printf('SH_ShutDownSpeedHud: Shut down Speed Haste HUD.'#13#10);
+  SH_ShutDownSpeedHud;
   printf('SC_ShutDown: Shut down script engine.'#13#10);
   SC_ShutDown;
   // JVAL: PascalScript

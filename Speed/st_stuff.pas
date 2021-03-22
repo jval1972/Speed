@@ -1413,6 +1413,10 @@ begin
 
   // Do red-/gold-shifts from damage/items
   ST_DoPaletteStuff;
+
+// SOS - Speed Haste until palette stuff  
+  Exit;
+
   if dopt <> stdo_small then
   begin
     if firstinterpolation or (menuactive and (shademenubackground >= 1)) then
