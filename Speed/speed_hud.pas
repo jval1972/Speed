@@ -54,12 +54,16 @@ uses
 
 var
   bluedigitbig: array[0..9] of Ppatch_t;
+  blueslashbig: Ppatch_t;
   bluedigitsmall: array[0..9] of Ppatch_t;
+  blueslashsmall: Ppatch_t;
   whitedigitbig: array[0..9] of Ppatch_t;
   whitedigitsmall: array[0..9] of Ppatch_t;
   gearbox: Ppatch_t;
   gears: array[0..6] of Ppatch_t;
   speedometer: array[0..1] of Ppatch_t;
+  mpals: Ppatch_t;
+  mposbar: Ppatch_t;
 
 procedure SH_InitSpeedHud;
 var
@@ -74,11 +78,15 @@ begin
     whitedigitbig[i] := W_CacheLumpName('MFBW' + sn, PU_STATIC);
     whitedigitsmall[i] := W_CacheLumpName('MFMW' + sn, PU_STATIC);
   end;
+  blueslashbig := W_CacheLumpName('MFBGB', PU_STATIC);
+  blueslashsmall := W_CacheLumpName('MFMGB', PU_STATIC);
   gearbox := W_CacheLumpName('MGEAR', PU_STATIC);
   for i := 0 to 6 do
     gears[i] := W_CacheLumpName('MG' + itoa(i), PU_STATIC);
   for i := 0 to 1 do
     speedometer[i] := W_CacheLumpName('MREVO' + itoa(i), PU_STATIC);
+  mlaps := W_CacheLumpName('MLAPS', PU_STATIC);
+  mposbar := W_CacheLumpName('MPOSBAR', PU_STATIC);
 end;
 
 var
