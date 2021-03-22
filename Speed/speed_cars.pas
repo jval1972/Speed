@@ -815,6 +815,8 @@ var
 begin
   p := mo.player;
 
+  mo.currPath := SH_GetNextPath(mo).id;
+
   speedturndecrease := MinI(((mo.enginespeed div KMH_TO_FIXED) div 8) * FRACUNIT, MAX_SPEED_TURN_DECREASE * FRACUNIT);
 
   cmd.turn := p.cmd.angleturn * FRACUNIT;
