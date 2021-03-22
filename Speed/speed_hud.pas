@@ -89,6 +89,8 @@ begin
 end;
 
 procedure SH_DrawSpeed;
+const
+  S_XPOS: array[0..1] of integer = (265, 262);
 var
   sspeed: string;
   i: integer;
@@ -96,14 +98,14 @@ var
   xpos: integer;
 begin
   V_DrawPatch(260, 195, SCN_HUD, speedometer[Ord(carinfo[hud_player.mo.carinfo].cartype)], false);
-  sspeed := itoa(hud_player.mo.carvelocity div KMH_TO_FIXED);
-  xpos := 267;
+  sspeed := itoa(hud_player.mo.enginespeed div KMH_TO_FIXED);
+  xpos := S_XPOS[Ord(carinfo[hud_player.mo.carinfo].cartype)];
   for i := 1 to length(sspeed) do
   begin
     id := Ord(sspeed[i]) - Ord('0');
     if IsIntegerInRange(id, 0, 9) then
     begin
-      V_DrawPatch(xpos, 196, SCN_HUD, whitedigitsmall[id], false);
+      V_DrawPatch(xpos, 192, SCN_HUD, whitedigitsmall[id], false);
       xpos := xpos + whitedigitsmall[id].width + 1;
     end;
   end;

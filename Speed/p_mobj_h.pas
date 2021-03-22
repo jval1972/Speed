@@ -488,7 +488,7 @@ type
     rendervalidcount: integer;
     // Speed
     carid: integer;
-    carvelocity: fixed_t;
+    enginespeed: fixed_t;
     destAngle: angle_t;
     destSpeed: fixed_t;
     currPath: integer;

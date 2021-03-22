@@ -813,7 +813,7 @@ var
 begin
   p := mo.player;
 
-  speedturndecrease := MinI(((mo.carvelocity div KMH_TO_FIXED) div 8) * FRACUNIT, MAX_SPEED_TURN_DECREASE * FRACUNIT);
+  speedturndecrease := MinI(((mo.enginespeed div KMH_TO_FIXED) div 8) * FRACUNIT, MAX_SPEED_TURN_DECREASE * FRACUNIT);
 
   cmd.turn := p.cmd.angleturn * FRACUNIT;
   t := carinfo[mo.carinfo].turnspeed - 150 * FRACUNIT - speedturndecrease;
@@ -832,7 +832,7 @@ begin
   end
   else if p.cmd.forwardmove < 0 then
   begin
-    if mo.carvelocity <= 0 then
+    if mo.enginespeed <= 0 then
     begin
       cmd.brake := 0;
       cmd.deccelerate := 0;
@@ -847,7 +847,7 @@ begin
   end
   else
   begin
-    if mo.carvelocity > 0 then
+    if mo.enginespeed > 0 then
     begin
       cmd.deccelerate := carinfo[mo.carinfo].basedeccel div 32;
       cmd.brake := 0;
@@ -882,7 +882,7 @@ begin
   actualspeed := FixedSqrt(FixedMul(dx, dx) + FixedMul(dy, dy));
 
   // Retrieve current speed
-  enginespeed := mo.carvelocity;
+  enginespeed := mo.enginespeed;
 
   if cmd.accelerate = 0 then
     if enginespeed > actualspeed then
@@ -935,7 +935,7 @@ begin
   mo.momx := FixedMul(enginespeed, finecosine[an]);
   mo.momy := FixedMul(enginespeed, finesine[an]);
 
-  mo.carvelocity := enginespeed;
+  mo.enginespeed := enginespeed;
 
   if carinfo[mo.carinfo].cartype = ct_formula then  // 2WD
   begin
@@ -985,7 +985,7 @@ begin
   if soundtarg.soundcountdown <= 0 then
   begin
     cinfo := @carinfo[caller.carinfo];
-    speed := caller.carvelocity;
+    speed := caller.enginespeed;
     if (caller.player <> nil) and (caller.carbrake > 0) then
       sndid := Ord(sfx_speedhaste_DERRAPE)
     else
