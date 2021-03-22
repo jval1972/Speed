@@ -67,6 +67,10 @@ procedure P_ArchiveOverlay;
 
 procedure P_UnArchiveOverlay;
 
+procedure P_ArchivePaths;
+
+procedure P_UnArchivePaths;
+
 var
   save_p: PByteArray;
   savegameversion: integer;
@@ -105,6 +109,7 @@ uses
   ps_main,
   psi_globals,
   psi_overlay,
+  speed_path,
   r_defs,
   r_data,
   r_colormaps,
@@ -990,6 +995,37 @@ end;
 procedure P_UnArchiveOverlay;
 begin
   overlay.LoadFromBuffer(Pointer(save_p));
+end;
+
+procedure P_ArchivePaths;
+var
+  i, sz: integer;
+begin
+  sz := numpaths;
+  PInteger(save_p)^ := sz;
+  incp(pointer(save_p), SizeOf(integer));
+  for i := 0 to sz - 1 do
+  begin
+    Prtlpath_t(save_p)^ := rtlpaths[i];
+    Prtlpath_t(save_p).mo := Pmobj_t(rtlpaths[i].mo.key);
+    incp(pointer(save_p), SizeOf(rtlpath_t));
+  end;
+end;
+
+procedure P_UnArchivePaths;
+var
+  i, sz: integer;
+begin
+  sz := PInteger(save_p)^;
+  incp(pointer(save_p), SizeOf(integer));
+  if sz <> numpaths then
+    I_Error('P_UnArchivePaths(): Path is has invalid size %d, instead of %d', [sz, numpaths]);
+  for i := 0 to sz - 1 do
+  begin
+    rtlpaths[i] := Prtlpath_t(save_p)^;
+    rtlpaths[i].mo := P_FindMobjFromKey(integer(rtlpaths[i].mo));
+    incp(pointer(save_p), SizeOf(rtlpath_t));
+  end;
 end;
 
 end.
