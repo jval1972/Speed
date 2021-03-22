@@ -379,7 +379,8 @@ uses
   s_externalmusic in 'Base\s_externalmusic.pas',
   i_itmusic in 'Base\i_itmusic.pas',
   i_xmmusic in 'Base\i_xmmusic.pas',
-  speed_player in 'Speed\speed_player.pas';
+  speed_player in 'Speed\speed_player.pas',
+  speed_hud in 'Speed\speed_hud.pas';
 
 var
   Saved8087CW: Word;
