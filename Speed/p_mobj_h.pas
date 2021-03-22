@@ -501,6 +501,7 @@ type
     nexttireangle: integer;
     tireangle: integer;
     soundcountdown: integer;
+    cargear: integer;
     carturn: fixed_t;
     caraccelerate: fixed_t;
     cadeccelerate: fixed_t;
