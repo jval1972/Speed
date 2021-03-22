@@ -81,7 +81,7 @@ const
       number: 27;
       maxspeed: 305 * KMH_TO_FIXED;
       maxreversespeed: -50 * KMH_TO_FIXED;
-      baseaccel: 16 * 1024;
+      baseaccel: 8 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N0A.I3D';
@@ -95,7 +95,7 @@ const
       number: 3;
       maxspeed: 310 * KMH_TO_FIXED;
       maxreversespeed: -50 * KMH_TO_FIXED;
-      baseaccel: 16 * 1024;
+      baseaccel: 8 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N0A.I3D';
@@ -109,7 +109,7 @@ const
       number: 56;
       maxspeed: 315 * KMH_TO_FIXED;
       maxreversespeed: -50 * KMH_TO_FIXED;
-      baseaccel: 16 * 1024;
+      baseaccel: 8 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N0A.I3D';
@@ -123,7 +123,7 @@ const
       number: 30;
       maxspeed: 320 * KMH_TO_FIXED;
       maxreversespeed: -50 * KMH_TO_FIXED;
-      baseaccel: 16 * 1024;
+      baseaccel: 8 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N0A.I3D';
@@ -138,7 +138,7 @@ const
       number: 1;
       maxspeed: 325 * KMH_TO_FIXED;
       maxreversespeed: -50 * KMH_TO_FIXED;
-      baseaccel: 16 * 1024;
+      baseaccel: 8 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N1A.I3D';
@@ -152,7 +152,7 @@ const
       number: 33;
       maxspeed: 330 * KMH_TO_FIXED;
       maxreversespeed: -50 * KMH_TO_FIXED;
-      baseaccel: 16 * 1024;
+      baseaccel: 8 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N1A.I3D';
@@ -166,7 +166,7 @@ const
       number: 12;
       maxspeed: 305 * KMH_TO_FIXED;
       maxreversespeed: -50 * KMH_TO_FIXED;
-      baseaccel: 16 * 1024;
+      baseaccel: 8 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N1A.I3D';
@@ -181,7 +181,7 @@ const
       number: 4;
       maxspeed: 310 * KMH_TO_FIXED;
       maxreversespeed: -50 * KMH_TO_FIXED;
-      baseaccel: 16 * 1024;
+      baseaccel: 8 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N2A.I3D';
@@ -195,7 +195,7 @@ const
       number: 9;
       maxspeed: 315 * KMH_TO_FIXED;
       maxreversespeed: -50 * KMH_TO_FIXED;
-      baseaccel: 16 * 1024;
+      baseaccel: 8 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N2A.I3D';
@@ -209,7 +209,7 @@ const
       number: 22;
       maxspeed: 320 * KMH_TO_FIXED;
       maxreversespeed: -50 * KMH_TO_FIXED;
-      baseaccel: 16 * 1024;
+      baseaccel: 8 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N2A.I3D';
@@ -223,7 +223,7 @@ const
       number: 62;
       maxspeed: 325 * KMH_TO_FIXED;
       maxreversespeed: -50 * KMH_TO_FIXED;
-      baseaccel: 16 * 1024;
+      baseaccel: 8 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N2A.I3D';
@@ -238,7 +238,7 @@ const
       number: 7;
       maxspeed: 330 * KMH_TO_FIXED;
       maxreversespeed: -50 * KMH_TO_FIXED;
-      baseaccel: 16 * 1024;
+      baseaccel: 8 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N3A.I3D';
@@ -252,7 +252,7 @@ const
       number: 18;
       maxspeed: 305 * KMH_TO_FIXED;
       maxreversespeed: -50 * KMH_TO_FIXED;
-      baseaccel: 16 * 1024;
+      baseaccel: 8 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N3A.I3D';
@@ -266,7 +266,7 @@ const
       number: 54;
       maxspeed: 310 * KMH_TO_FIXED;
       maxreversespeed: -50 * KMH_TO_FIXED;
-      baseaccel: 16 * 1024;
+      baseaccel: 8 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N3A.I3D';
@@ -280,7 +280,7 @@ const
       number: 88;
       maxspeed: 315 * KMH_TO_FIXED;
       maxreversespeed: -50 * KMH_TO_FIXED;
-      baseaccel: 16 * 1024;
+      baseaccel: 8 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N3A.I3D';
@@ -294,7 +294,7 @@ const
       number: 6;
       maxspeed: 320 * KMH_TO_FIXED;
       maxreversespeed: -50 * KMH_TO_FIXED;
-      baseaccel: 16 * 1024;
+      baseaccel: 8 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N4A.I3D';
@@ -308,7 +308,7 @@ const
       number: 23;
       maxspeed: 325 * KMH_TO_FIXED;
       maxreversespeed: -50 * KMH_TO_FIXED;
-      baseaccel: 16 * 1024;
+      baseaccel: 8 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N4A.I3D';
@@ -322,7 +322,7 @@ const
       number: 45;
       maxspeed: 330 * KMH_TO_FIXED;
       maxreversespeed: -50 * KMH_TO_FIXED;
-      baseaccel: 16 * 1024;
+      baseaccel: 8 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N4A.I3D';
@@ -337,7 +337,7 @@ const
       number: 73;
       maxspeed: 305 * KMH_TO_FIXED;
       maxreversespeed: -50 * KMH_TO_FIXED;
-      baseaccel: 16 * 1024;
+      baseaccel: 8 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N5A.I3D';
@@ -351,7 +351,7 @@ const
       number: 99;
       maxspeed: 310 * KMH_TO_FIXED;
       maxreversespeed: -50 * KMH_TO_FIXED;
-      baseaccel: 16 * 1024;
+      baseaccel: 8 * 1024;
       basedeccel: 64 * 1024;
       turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N5A.I3D';
@@ -367,7 +367,7 @@ const
       number: 15;
       maxspeed: 245 * KMH_TO_FIXED;
       maxreversespeed: -45 * KMH_TO_FIXED;
-      baseaccel: 12 * 1024;
+      baseaccel: 6 * 1024;
       basedeccel: 48 * 1024;
       turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N0A.I3D';
@@ -381,7 +381,7 @@ const
       number: 17;
       maxspeed: 250 * KMH_TO_FIXED;
       maxreversespeed: -45 * KMH_TO_FIXED;
-      baseaccel: 12 * 1024;
+      baseaccel: 6 * 1024;
       basedeccel: 48 * 1024;
       turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N0A.I3D';
@@ -395,7 +395,7 @@ const
       number: 19;
       maxspeed: 255 * KMH_TO_FIXED;
       maxreversespeed: -45 * KMH_TO_FIXED;
-      baseaccel: 12 * 1024;
+      baseaccel: 6 * 1024;
       basedeccel: 48 * 1024;
       turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N0A.I3D';
@@ -409,7 +409,7 @@ const
       number: 4;
       maxspeed: 260 * KMH_TO_FIXED;
       maxreversespeed: -45 * KMH_TO_FIXED;
-      baseaccel: 12 * 1024;
+      baseaccel: 6 * 1024;
       basedeccel: 48 * 1024;
       turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N0A.I3D';
@@ -423,7 +423,7 @@ const
       number: 77;
       maxspeed: 245 * KMH_TO_FIXED;
       maxreversespeed: -45 * KMH_TO_FIXED;
-      baseaccel: 12 * 1024;
+      baseaccel: 6 * 1024;
       basedeccel: 48 * 1024;
       turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N1A.I3D';
@@ -437,7 +437,7 @@ const
       number: 94;
       maxspeed: 250 * KMH_TO_FIXED;
       maxreversespeed: -45 * KMH_TO_FIXED;
-      baseaccel: 12 * 1024;
+      baseaccel: 6 * 1024;
       basedeccel: 48 * 1024;
       turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N1A.I3D';
@@ -451,7 +451,7 @@ const
       number: 87;
       maxspeed: 255 * KMH_TO_FIXED;
       maxreversespeed: -45 * KMH_TO_FIXED;
-      baseaccel: 12 * 1024;
+      baseaccel: 6 * 1024;
       basedeccel: 48 * 1024;
       turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N1A.I3D';
@@ -465,7 +465,7 @@ const
       number: 6;
       maxspeed: 260 * KMH_TO_FIXED;
       maxreversespeed: -45 * KMH_TO_FIXED;
-      baseaccel: 12 * 1024;
+      baseaccel: 6 * 1024;
       basedeccel: 48 * 1024;
       turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N2A.I3D';
@@ -479,7 +479,7 @@ const
       number: 83;
       maxspeed: 245 * KMH_TO_FIXED;
       maxreversespeed: -45 * KMH_TO_FIXED;
-      baseaccel: 12 * 1024;
+      baseaccel: 6 * 1024;
       basedeccel: 48 * 1024;
       turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N2A.I3D';
@@ -493,7 +493,7 @@ const
       number: 7;
       maxspeed: 250 * KMH_TO_FIXED;
       maxreversespeed: -45 * KMH_TO_FIXED;
-      baseaccel: 12 * 1024;
+      baseaccel: 6 * 1024;
       basedeccel: 48 * 1024;
       turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N2A.I3D';
@@ -507,7 +507,7 @@ const
       number: 32;
       maxspeed: 255 * KMH_TO_FIXED;
       maxreversespeed: -45 * KMH_TO_FIXED;
-      baseaccel: 12 * 1024;
+      baseaccel: 6 * 1024;
       basedeccel: 48 * 1024;
       turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N2A.I3D';
@@ -521,7 +521,7 @@ const
       number: 43;
       maxspeed: 260 * KMH_TO_FIXED;
       maxreversespeed: -45 * KMH_TO_FIXED;
-      baseaccel: 12 * 1024;
+      baseaccel: 6 * 1024;
       basedeccel: 48 * 1024;
       turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N3A.I3D';
@@ -535,7 +535,7 @@ const
       number: 48;
       maxspeed: 245 * KMH_TO_FIXED;
       maxreversespeed: -45 * KMH_TO_FIXED;
-      baseaccel: 12 * 1024;
+      baseaccel: 6 * 1024;
       basedeccel: 48 * 1024;
       turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N3A.I3D';
@@ -549,7 +549,7 @@ const
       number: 78;
       maxspeed: 250 * KMH_TO_FIXED;
       maxreversespeed: -45 * KMH_TO_FIXED;
-      baseaccel: 12 * 1024;
+      baseaccel: 6 * 1024;
       basedeccel: 48 * 1024;
       turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N3A.I3D';
@@ -563,7 +563,7 @@ const
       number: 18;
       maxspeed: 255 * KMH_TO_FIXED;
       maxreversespeed: -45 * KMH_TO_FIXED;
-      baseaccel: 12 * 1024;
+      baseaccel: 6 * 1024;
       basedeccel: 48 * 1024;
       turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N4A.I3D';
@@ -577,7 +577,7 @@ const
       number: 9;
       maxspeed: 260 * KMH_TO_FIXED;
       maxreversespeed: -45 * KMH_TO_FIXED;
-      baseaccel: 12 * 1024;
+      baseaccel: 6 * 1024;
       basedeccel: 48 * 1024;
       turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N4A.I3D';
@@ -591,7 +591,7 @@ const
       number: 11;
       maxspeed: 245 * KMH_TO_FIXED;
       maxreversespeed: -45 * KMH_TO_FIXED;
-      baseaccel: 12 * 1024;
+      baseaccel: 6 * 1024;
       basedeccel: 48 * 1024;
       turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N4A.I3D';
@@ -605,7 +605,7 @@ const
       number: 23;
       maxspeed: 250 * KMH_TO_FIXED;
       maxreversespeed: -45 * KMH_TO_FIXED;
-      baseaccel: 12 * 1024;
+      baseaccel: 6 * 1024;
       basedeccel: 48 * 1024;
       turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N5A.I3D';
@@ -619,7 +619,7 @@ const
       number: 54;
       maxspeed: 255 * KMH_TO_FIXED;
       maxreversespeed: -45 * KMH_TO_FIXED;
-      baseaccel: 12 * 1024;
+      baseaccel: 6 * 1024;
       basedeccel: 48 * 1024;
       turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N5A.I3D';
@@ -633,7 +633,7 @@ const
       number: 92;
       maxspeed: 260 * KMH_TO_FIXED;
       maxreversespeed: -45 * KMH_TO_FIXED;
-      baseaccel: 12 * 1024;
+      baseaccel: 6 * 1024;
       basedeccel: 48 * 1024;
       turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N5A.I3D';
