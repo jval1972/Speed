@@ -47,6 +47,7 @@ uses
   m_fixed,
   r_defs,
   speed_cars,
+  speed_race,
   v_data,
   v_video,
   w_wad,
@@ -62,7 +63,7 @@ var
   gearbox: Ppatch_t;
   gears: array[0..6] of Ppatch_t;
   speedometer: array[0..1] of Ppatch_t;
-  mpals: Ppatch_t;
+  mlaps: Ppatch_t;
   mposbar: Ppatch_t;
 
 procedure SH_InitSpeedHud;
@@ -134,6 +135,88 @@ begin
   end;
 end;
 
+function _big_blue_string_width(const s: string): integer;
+var
+  i, id: integer;
+begin
+  Result := 0;
+  for i := 1 to Length(s) do
+  begin
+    id := Ord(s[i]) - Ord('0');
+    if IsIntegerInRange(id, 0, 9) then
+      Result := Result + bluedigitbig[id].width + 1;
+  end;
+end;
+
+function _big_blue_string_offset(const ch: char): integer;
+var
+  id: integer;
+begin
+  Result := 0;
+  id := Ord(ch) - Ord('0');
+  if IsIntegerInRange(id, 0, 9) then
+    Result := bluedigitbig[id].leftoffset;
+end;
+
+function _small_blue_string_width(const s: string): integer;
+var
+  i, id: integer;
+begin
+  Result := 0;
+  for i := 1 to Length(s) do
+  begin
+    id := Ord(s[i]) - Ord('0');
+    if IsIntegerInRange(id, 0, 9) then
+      Result := Result + bluedigitsmall[id].width + 1;
+  end;
+end;
+
+function _small_blue_string_offset(const ch: char): integer;
+var
+  id: integer;
+begin
+  Result := 0;
+  id := Ord(ch) - Ord('0');
+  if IsIntegerInRange(id, 0, 9) then
+    Result := bluedigitsmall[id].leftoffset;
+end;
+
+procedure SH_DrawNumLaps;
+var
+  l, t: integer;
+  sl, st: string;
+  wl, wt: integer;
+  i, id: integer;
+  xpos: integer;
+begin
+  V_DrawPatch(160, 14, SCN_HUD, mlaps, false);
+  l := GetIntegerInRange(hud_player.mo.lapscompleted + 1, 1, race.numlaps);
+  t := race.numlaps;
+  sl := itoa(l);
+  st := itoa(t);
+  wl := _big_blue_string_width(sl);
+  wt := _small_blue_string_width(st);
+
+  V_DrawPatch(160, 48, SCN_HUD, blueslashbig, false);
+
+  xpos := 160 - (blueslashbig.width div 2 + 1 + wl) + _big_blue_string_offset(sl[1]);
+  for i := 1 to Length(sl) do
+  begin
+    id := Ord(sl[i]) - Ord('0');
+    if IsIntegerInRange(id, 0, 9) then
+      V_DrawPatch(xpos, 48, SCN_HUD, bluedigitbig[id], false);
+  end;
+
+  xpos := 160 + (blueslashbig.width div 2 + 1) + _small_blue_string_offset(st[1]);
+  for i := 1 to Length(st) do
+  begin
+    id := Ord(st[i]) - Ord('0');
+    if IsIntegerInRange(id, 0, 9) then
+      V_DrawPatch(xpos, 48, SCN_HUD, bluedigitsmall[id], false);
+  end;
+
+end;
+
 procedure SH_HudDrawer;
 begin
   hud_player := @players[consoleplayer];
@@ -147,6 +230,9 @@ begin
 
     // Draw speed
     SH_DrawSpeed;
+
+    // Elapsed laps
+    SH_DrawNumLaps;
   end;
 
   V_CopyRectTransparent(0, 0, SCN_HUD, 320, 200, 0, 0, SCN_FG, true);
