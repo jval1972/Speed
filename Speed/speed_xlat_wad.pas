@@ -1498,7 +1498,7 @@ begin
       splitstring(rname, sname, stmp, '.');
       for j := 0 to 9 do
       begin
-        SH_RawToWAV(sbuffer, ssize, 11025 + j * 1000, FRACUNIT div 2, pcmbuffer, pcmsize);
+        SH_RawToWAV(sbuffer, ssize, 11025 + j * 100, FRACUNIT div 2, pcmbuffer, pcmsize);
         wname := sname + '_' + itoa(j);
         wadwriter.AddData(wname, pcmbuffer, pcmsize);
         memfree(pcmbuffer, pcmsize);
