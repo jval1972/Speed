@@ -663,6 +663,7 @@ uses
   doomdef,
   d_think,
   d_player,
+  i_system,
   info_h,
   info,
   g_game,
@@ -701,6 +702,9 @@ begin
       lst.Add(mo);
     think := think.next;
   end;
+
+  if lst.Count > NUMCARINFO then
+    I_Error('SH_InitLevelCars(): Too many cars (%d)', [lst.Count]);
 
   carids := TDNumberList.Create;
   for i := 0 to NUMCARINFO - 1 do
