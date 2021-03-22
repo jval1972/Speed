@@ -225,9 +225,9 @@ begin
   else
     n := is2.w;
 
-  offsets := malloc(n * SizeOf(integer));
+  offsets := malloc((n + 1) * SizeOf(integer));
 
-  for i := 0 to n - 1 do
+  for i := 0 to n do
     offsets[i] := is2.len;
 
   i := 0;
@@ -248,7 +248,7 @@ begin
     inc(rawcnt);
   end;
 
-  for ni := 0 to n - 2 do
+  for ni := 0 to n - 1 do
   begin
     rawcnt := offsets[ni];
     x := _read_byte;
@@ -277,7 +277,7 @@ begin
         break;
     end;
   end;
-  memfree(pointer(offsets), n * SizeOf(integer));
+  memfree(pointer(offsets), (n + 1) * SizeOf(integer));
 
   for i := 0 to fwidth - 1 do
     for j := 0 to fheight - 1 do
