@@ -92,20 +92,6 @@ type
   vertex_tArray = packed array[0..$FFFF] of vertex_t;
   Pvertex_tArray = ^vertex_tArray;
 
-// Each sector has a degenmobj_t in its center
-//  for sound origin purposes.
-// I suppose this does not handle sound from
-//  moving objects (doppler), because
-//  position is prolly just buffered, not
-//  updated.
-  degenmobj_t = packed record
-    thinker: thinker_t; // not used for anything
-    x: fixed_t;
-    y: fixed_t;
-    z: fixed_t;
-  end;
-  Pdegenmobj_t = ^degenmobj_t;
-
   Pline_t = ^line_t;
   Pline_tArray = ^line_tArray;
   Pline_tPArray = ^line_tPArray;

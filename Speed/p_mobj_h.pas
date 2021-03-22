@@ -43,6 +43,22 @@ uses
   tables, // angle_t
   d_think; // We need the thinker_t stuff.
 
+type
+// Each sector has a degenmobj_t in its center
+//  for sound origin purposes.
+// I suppose this does not handle sound from
+//  moving objects (doppler), because
+//  position is prolly just buffered, not
+//  updated.
+  degenmobj_t = packed record
+    thinker: thinker_t; // not used for anything
+    x: fixed_t;
+    y: fixed_t;
+    z: fixed_t;
+  end;
+  Pdegenmobj_t = ^degenmobj_t;
+
+
 //
 // NOTES: mobj_t
 //
@@ -506,6 +522,8 @@ type
     caraccelerate: fixed_t;
     cadeccelerate: fixed_t;
     carbrake: fixed_t;
+    brakesoundcountdown: integer;
+    brakesoundorg: degenmobj_t;
   end;
   Tmobj_tPArray = array[0..$FFFF] of Pmobj_t;
   Pmobj_tPArray = ^Tmobj_tPArray;

@@ -649,6 +649,8 @@ procedure SH_MoveCarAI(const mo: Pmobj_t);
 
 procedure SH_EngineSound(const caller: Pmobj_t; const soundtarg: Pmobj_t);
 
+procedure SH_BrakeSound(const caller: Pmobj_t);
+
 var
   def_f1car: integer = 0;
   def_ncar: integer = 20;
@@ -930,10 +932,16 @@ begin
 
   // Adjust momentum
   an := mo.angle shr ANGLETOFINESHIFT;
-//  mo.momx := dx div 2 + FixedMul(enginespeed, finecosine[an]) div 2;
-//  mo.momy := dy div 2 + FixedMul(enginespeed, finesine[an]) div 2;
-  mo.momx := FixedMul(enginespeed, finecosine[an]);
-  mo.momy := FixedMul(enginespeed, finesine[an]);
+  if actualspeed < enginespeed then
+  begin
+    mo.momx := dx div 2 + FixedMul(enginespeed, finecosine[an]) div 2;
+    mo.momy := dy div 2 + FixedMul(enginespeed, finesine[an]) div 2;
+  end
+  else
+  begin
+    mo.momx := FixedMul(enginespeed, finecosine[an]);
+    mo.momy := FixedMul(enginespeed, finesine[an]);
+  end;
 
   mo.enginespeed := enginespeed;
 
@@ -957,6 +965,7 @@ begin
 
   if mo.player = nil then
     SH_EngineSound(mo, mo);
+  SH_BrakeSound(mo);
 end;
 
 procedure SH_MoveCarAI(const mo: Pmobj_t);
@@ -986,26 +995,39 @@ begin
   begin
     cinfo := @carinfo[caller.carinfo];
     speed := caller.enginespeed;
-    if (caller.player <> nil) and (caller.carbrake > 0) then
-      sndid := Ord(sfx_speedhaste_DERRAPE)
+    if caller.caraccelerate <> 0 then
+      frac := GetIntegerInRange(speed * 10 div cinfo.maxspeed, 0, 9)
     else
-    begin
-      if caller.caraccelerate <> 0 then
-        frac := GetIntegerInRange(speed * 10 div cinfo.maxspeed, 0, 9)
-      else
-        frac := 0;
-      if cinfo.cartype = ct_formula then
-        sndid := Ord(sfx_speedhaste_MOTOR0_0)
-      else
-        sndid := Ord(sfx_speedhaste_MOTOR1_0);
-      sndid := sndid + frac;
-    end;
+      frac := 0;
+    if cinfo.cartype = ct_formula then
+      sndid := Ord(sfx_speedhaste_MOTOR0_0)
+    else
+      sndid := Ord(sfx_speedhaste_MOTOR1_0);
+    sndid := sndid + frac;
 
     S_StartSound(soundtarg, speedsounds[sndid].name);
     soundtarg.soundcountdown := S_SpeedSoundDuration(sndid);
   end;
 
   dec(soundtarg.soundcountdown);
+end;
+
+procedure SH_BrakeSound(const caller: Pmobj_t);
+var
+  sndid: integer;
+begin
+  caller.brakesoundorg.x := caller.x;
+  caller.brakesoundorg.y := caller.y;
+  caller.brakesoundorg.z := caller.z;
+  if caller.brakesoundcountdown <= 0 then
+    if caller.carbrake > 0 then
+    begin
+      sndid := Ord(sfx_speedhaste_DERRAPE);
+      S_StartSound(@caller.brakesoundorg, speedsounds[sndid].name);
+      caller.brakesoundcountdown := S_SpeedSoundDuration(sndid);
+    end;
+
+  dec(caller.brakesoundcountdown);
 end;
 
 end.
