@@ -1019,15 +1019,18 @@ begin
   caller.brakesoundorg.x := caller.x;
   caller.brakesoundorg.y := caller.y;
   caller.brakesoundorg.z := caller.z;
+
   if caller.brakesoundcountdown <= 0 then
+  begin
     if caller.carbrake > 0 then
     begin
       sndid := Ord(sfx_speedhaste_DERRAPE);
       S_StartSound(@caller.brakesoundorg, speedsounds[sndid].name);
       caller.brakesoundcountdown := S_SpeedSoundDuration(sndid);
     end;
-
-  dec(caller.brakesoundcountdown);
+  end
+  else
+    dec(caller.brakesoundcountdown);
 end;
 
 end.
