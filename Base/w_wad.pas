@@ -428,12 +428,12 @@ begin
   if isspeedjcl then
   begin
     handle.Free;
-    // xlat radix data
+    // xlat speed haste data file
     handle := TDMemoryStream.Create;
     Speed2Stream_Game(filename, handle);
-//    {$IFDEF DEBUG}
+    {$IFDEF DEBUG}
     Speed2Wad_Game(filename, 'speedh.wad');
-//    {$ENDIF}
+    {$ENDIF}
     handle.Seek(0, sFromBeginning);
 
   end;
