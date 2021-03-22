@@ -239,13 +239,16 @@ begin
       mo.prevPath := mo.currPath;
     end;
 
-  path := @rtlpaths[mo.currPath];
+  if IsIntegerInRange(mo.lapscompleted, 0, race.numlaps) then
+  begin
+    path := @rtlpaths[mo.currPath];
 
-  cpinfo := @path.cardata[mo.carinfo];
+    cpinfo := @path.cardata[mo.carinfo];
 
-  if cpinfo.entertime[mo.lapscompleted] = 0 then
-    cpinfo.entertime[mo.lapscompleted] := leveltime;
-  cpinfo.exittime[mo.lapscompleted] := leveltime;
+    if cpinfo.entertime[mo.lapscompleted] = 0 then
+      cpinfo.entertime[mo.lapscompleted] := leveltime;
+    cpinfo.exittime[mo.lapscompleted] := leveltime;
+  end;
 end;
 
 end.
