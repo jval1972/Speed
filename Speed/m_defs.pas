@@ -102,30 +102,6 @@ var
   lightmapcolorintensity: integer = 128;
   lightwidthfactor: integer = 5;
   r_bltasync: boolean = true;
-{$ELSE}
-  tran_filter_pct: integer;
-  use_fog: boolean;
-  fog_density: integer;
-  gl_nearclip: integer;
-  gl_tex_filter_string: string;
-  gl_texture_filter_anisotropic: boolean;
-  gl_drawsky: boolean;
-  gl_stencilsky: boolean;
-  gl_screensync: boolean;
-  gl_linear_hud: boolean;
-  gl_add_all_lines: boolean;
-  gl_reflectsky: boolean;
-  gl_SCREENWIDTH,
-  gl_SCREENHEIGHT: integer;
-  gl_drawvoxels: boolean;
-  gl_smoothmodelmovement: boolean;
-  gl_precachemodeltextures: boolean;
-  gl_uselightmaps: boolean;
-  gl_drawshadows: boolean;
-  gl_renderwireframe: boolean;
-  gl_no_glfinish_hack: boolean = true;
-  gl_fullscreen: boolean = true;
-  vx_maxoptimizerpasscount: integer;
 {$ENDIF}
 
 type
@@ -143,7 +119,7 @@ type
   Pdefault_t = ^default_t;
 
 const
-  NUMDEFAULTS = 197;
+  NUMDEFAULTS = 198;
 
 // JVAL
 // Note: All setable defaults must be in lowercase, don't ask why. Just do it. :)
@@ -876,6 +852,14 @@ const
      setable: DFS_NEVER;
      defaultsvalue: '';
      defaultivalue: 0;
+     defaultbvalue: true;
+     _type: tInteger),
+
+    (name: 'numlaps';
+     location: @numlaps;
+     setable: DFS_NEVER;
+     defaultsvalue: '';
+     defaultivalue: 5;
      defaultbvalue: true;
      _type: tInteger),
 

@@ -59,6 +59,7 @@ type
     skytex: string[8];
     mountaintex: string[8];
     groundtex: string[8];
+    numlaps: integer;
   end;
 
   slipperinessinfo_t = record
@@ -81,6 +82,11 @@ const
 var
   race: race_t;
   racecartype: integer = 0;
+  numlaps: integer = 5;
+
+const
+  MINLAPS = 2;
+  MAXLAPS = 10;
 
 procedure SH_InitRace(const lump: integer);
 
@@ -118,6 +124,7 @@ begin
   race.skytex := '';
   race.mountaintex := '';
   race.groundtex := '';
+  race.numlaps := GetIntegerInRange(numlaps, MINLAPS, MAXLAPS);
 
   sl := TDStringList.Create;
   try
