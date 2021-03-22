@@ -670,6 +670,7 @@ uses
   info,
   g_game,
   p_tick,
+  p_maputl,
   p_mobj,
   m_rnd,
   r_main,
@@ -897,6 +898,9 @@ end;
 const
   TIRE_ANGLE_MAX = 20;
 
+const
+  MAX_SOUND_DISTANCE = 192 * FRACUNIT;
+
 procedure SH_ExecuteDrivingCmd(const mo: Pmobj_t; const cmd: Pdrivingcmd_t);
 var
   enginespeed: fixed_t;
@@ -993,9 +997,12 @@ begin
   mo.cadeccelerate := cmd.deccelerate;
   mo.carbrake := cmd.brake;
 
-  if mo.player = nil then
-    SH_EngineSound(mo, mo);
-  SH_BrakeSound(mo);
+  if P_AproxDistance(viewx - mo.x, viewy - mo.y) < MAX_SOUND_DISTANCE then
+  begin
+    if mo.player = nil then
+      SH_EngineSound(mo, mo);
+    SH_BrakeSound(mo);
+  end;
 
   SH_NotifyPath(mo);
 end;
