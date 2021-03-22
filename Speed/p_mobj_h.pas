@@ -508,6 +508,8 @@ type
     destAngle: angle_t;
     destSpeed: fixed_t;
     currPath: integer;
+    prevPath: integer;
+    lapscompleted: integer;
     carinfo: integer;
     nextparticle: integer;  // Next tic that allows particle
     prevtiredistance: array[0..3] of double;

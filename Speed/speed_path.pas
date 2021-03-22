@@ -34,16 +34,25 @@ interface
 uses
   m_fixed,
   p_mobj_h,
+  speed_cars,
   speed_level,
+  speed_race,
   speed_things;
 
 type
+  rtlcarpathinfo_t = record
+    entertime: array[0..MAXLAPS - 1] of integer;
+    exittime: array[0..MAXLAPS - 1] of integer;
+  end;
+  Prtlcarpathinfo_t = ^rtlcarpathinfo_t;
+
   rtlpath_t = record
     mo: Pmobj_t;
     id: integer;
     speed: fixed_t;
     prev: integer;
     next: integer;
+    cardata: array[0..NUMCARINFO - 1] of rtlcarpathinfo_t;
   end;
   Prtlpath_t = ^rtlpath_t;
   rtlpath_tArray = array[0..$FF] of rtlpath_t;
@@ -52,6 +61,8 @@ type
 function SH_LoadPath(const lmpthings, lmppath: integer): boolean;
 
 function SH_GetNextPath(const mo: Pmobj_t): Prtlpath_t;
+
+procedure SH_NotifyPath(const mo: Pmobj_t);
 
 var
   numpaths: integer;
@@ -65,6 +76,7 @@ uses
   tables,
   p_maputl,
   p_mobj,
+  p_tick,
   r_main,
   w_wad,
   z_zone;
@@ -133,6 +145,7 @@ begin
   numpaths := W_LumpLength(lmppath) div SizeOf(mapspeedpathpoint_t);
   rtlpaths := Z_Malloc(numpaths * SizeOf(rtlpath_t), PU_LEVEL, nil);
   ZeroMemory(rtlpaths, numpaths * SizeOf(rtlpath_t));
+
   mappaths := W_CacheLumpNum(lmppath, PU_STATIC);
 
   data := W_CacheLumpNum(lmpthings, PU_STATIC);
@@ -203,6 +216,36 @@ begin
 
   tmppaths.Free;
   Result := @rtlpaths[best];
+end;
+
+procedure SH_NotifyPath(const mo: Pmobj_t);
+var
+  path: Prtlpath_t;
+  cpinfo: Prtlcarpathinfo_t;
+begin
+  // Crossed the finish line
+  if mo.currPath = 0 then
+    if mo.prevPath = rtlpaths[0].prev then
+    begin
+      inc(mo.lapscompleted);
+      mo.prevPath := mo.currPath;
+    end;
+
+  // Crossed the finish line the wrong way;
+  if mo.currPath = rtlpaths[0].prev then
+    if mo.prevPath = 0 then
+    begin
+      dec(mo.lapscompleted);
+      mo.prevPath := mo.currPath;
+    end;
+
+  path := @rtlpaths[mo.currPath];
+
+  cpinfo := @path.cardata[mo.carinfo];
+
+  if cpinfo.entertime[mo.lapscompleted] = 0 then
+    cpinfo.entertime[mo.lapscompleted] := leveltime;
+  cpinfo.exittime[mo.lapscompleted] := leveltime;
 end;
 
 end.

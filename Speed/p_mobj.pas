@@ -878,6 +878,9 @@ begin
     mobj.bob := N_Random and FLOATBOBMASK;
   mobj.health := info.spawnhealth;
   mobj.carid := -1;
+  mobj.currPath := -1;
+  mobj.prevPath := -1;
+  mobj.lapscompleted := -1;
 
   if gameskill <> sk_nightmare then
     mobj.reactiontime := info.reactiontime;
@@ -1176,7 +1179,7 @@ begin
     result.carinfo := GetIntegerInRange(def_anycar, 0, NUMCARINFO - 1);
   end;
   result.carid := result.carinfo;
-  
+
   // set color translations for player sprites
   if mthing._type > 1 then
     result.flags := result.flags or _SHL(plnum, MF_TRANSSHIFT);

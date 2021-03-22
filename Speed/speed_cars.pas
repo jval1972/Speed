@@ -34,11 +34,13 @@ interface
 uses
   p_mobj_h,
   m_fixed,
-  speed_path,
   tables;
 
 const
   KMH_TO_FIXED = 4370; // Speed in fixed point arithmetic
+
+const
+  MAX_RACE_CARS = 20;
 
 type
   cartype_t = (ct_formula, ct_stock, ct_any);
@@ -673,6 +675,7 @@ uses
   r_main,
   speed_things,
   speed_race,
+  speed_path,
   speed_particles,
   speed_sounds,
   s_sound,
@@ -703,7 +706,7 @@ begin
     think := think.next;
   end;
 
-  if lst.Count > NUMCARINFO then
+  if lst.Count >= MAX_RACE_CARS then  // Keep 1 for player
     I_Error('SH_InitLevelCars(): Too many cars (%d)', [lst.Count]);
 
   carids := TDNumberList.Create;
@@ -714,7 +717,8 @@ begin
   for i := 0 to lst.Count - 1 do
   begin
     mo := lst.Pointers[i];
-    mo.currPath := SH_GetNextPath(lst.Pointers[i]).id;
+    mo.currPath := SH_GetNextPath(mo).id;
+    mo.prevPath := rtlpaths[mo.currPath].prev;
     mo.destAngle := rtlpaths[mo.currPath].mo.angle;
     mo.destSpeed := rtlpaths[mo.currPath].speed;
     if carids.Count > 0 then
@@ -730,6 +734,13 @@ begin
     mo.carid := i;
     P_SetMobjState(mo, statenum_t(mo.info.spawnstate + id));
   end;
+
+  for i := 0 to MAXPLAYERS - 1 do
+    if playeringame[i] then
+    begin
+      players[i].mo.currPath := SH_GetNextPath(players[i].mo).id;
+      players[i].mo.prevPath := rtlpaths[players[i].mo.currPath].prev;
+    end;
 
   carids.Free;
   lst.Free;
@@ -750,6 +761,7 @@ var
   maxaccel: fixed_t;
   maxturn: angle_t;
   decelstep: fixed_t;
+  pth: integer;
 begin
   // Retrieve current speed
   dx := mo.x - mo.oldx;
@@ -757,7 +769,13 @@ begin
   actualspeed := FixedSqrt(FixedMul(dx, dx) + FixedMul(dy, dy));
 
   // Find next target (path)
-  mo.currPath := SH_GetNextPath(mo).id;
+  pth := SH_GetNextPath(mo).id;
+  if pth <> mo.currPath then
+  begin
+    mo.prevPath := mo.currPath;
+    mo.currPath := pth;
+  end;
+
   curx := mo.x;
   cury := mo.y;
   destx := rtlpaths[mo.currPath].mo.x;
@@ -816,10 +834,16 @@ var
   p: Pplayer_t;
   t: integer;
   speedturndecrease: fixed_t;
+  pth: integer;
 begin
   p := mo.player;
 
-  mo.currPath := SH_GetNextPath(mo).id;
+  pth := SH_GetNextPath(mo).id;
+  if pth <> mo.currPath then
+  begin
+    mo.prevPath := mo.currPath;
+    mo.currPath := pth;
+  end;
 
   speedturndecrease := MinI(((mo.enginespeed div KMH_TO_FIXED) div 8) * FRACUNIT, MAX_SPEED_TURN_DECREASE * FRACUNIT);
 
@@ -972,6 +996,8 @@ begin
   if mo.player = nil then
     SH_EngineSound(mo, mo);
   SH_BrakeSound(mo);
+
+  SH_NotifyPath(mo);
 end;
 
 procedure SH_MoveCarAI(const mo: Pmobj_t);
