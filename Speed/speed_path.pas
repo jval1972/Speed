@@ -95,6 +95,7 @@ var
   an: angle_t;
   dist, mindist: fixed_t;
   best: integer;
+  savertlpaths: Prtlpath_tArray;
 begin
   aheadpaths := TDNumberList.Create;
 
@@ -124,6 +125,15 @@ begin
     rtlpaths[i].dist_to_next := mindist;
     rtlpaths[best].prev := i;
   end;
+
+  savertlpaths := malloc(numpaths * SizeOf(rtlpath_t));
+
+  savertlpaths[0] := rtlpaths[0];
+  for i := 1 to numpaths - 1 do
+    savertlpaths[i] := rtlpaths[savertlpaths[i - 1].next];
+  memcpy(rtlpaths, savertlpaths, numpaths * SizeOf(rtlpath_t));
+
+  memfree(pointer(savertlpaths), numpaths * SizeOf(rtlpath_t));
 
   aheadpaths.Free;
 end;
