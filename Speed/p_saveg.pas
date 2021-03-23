@@ -67,6 +67,10 @@ procedure P_ArchiveOverlay;
 
 procedure P_UnArchiveOverlay;
 
+procedure P_ArchiveRace;
+
+procedure P_UnArchiveRace;
+
 procedure P_ArchivePaths;
 
 procedure P_UnArchivePaths;
@@ -110,6 +114,7 @@ uses
   psi_globals,
   psi_overlay,
   speed_path,
+  speed_race,
   r_defs,
   r_data,
   r_colormaps,
@@ -995,6 +1000,18 @@ end;
 procedure P_UnArchiveOverlay;
 begin
   overlay.LoadFromBuffer(Pointer(save_p));
+end;
+
+procedure P_ArchiveRace;
+begin
+  Prace_t(save_p)^ := race;
+  incp(pointer(save_p), SizeOf(race_t));
+end;
+
+procedure P_UnArchiveRace;
+begin
+  race := Prace_t(save_p)^;
+  incp(pointer(save_p), SizeOf(race_t));
 end;
 
 procedure P_ArchivePaths;

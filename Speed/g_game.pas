@@ -1974,7 +1974,8 @@ begin
   P_UnArchiveVariables;
   P_UnArchivePSMapScript;
   P_UnArchiveOverlay;
-  P_ArchivePaths;
+  P_UnArchiveRace;
+  P_UnArchivePaths;
 
   if save_p[0] <> $1d then
     I_Error('G_DoLoadGame(): Bad savegame');
@@ -2102,6 +2103,12 @@ begin
   save_p := savebuffer;
 
   P_ArchiveOverlay;
+
+  len := integer(save_p) - integer(savebuffer);
+  M_AppendFile(name, savebuffer, len);
+  save_p := savebuffer;
+
+  P_ArchiveRace;
 
   len := integer(save_p) - integer(savebuffer);
   M_AppendFile(name, savebuffer, len);

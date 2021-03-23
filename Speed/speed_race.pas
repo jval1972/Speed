@@ -61,6 +61,7 @@ type
     groundtex: string[8];
     numlaps: integer;
   end;
+  Prace_t = ^race_t;
 
   slipperinessinfo_t = record
     smin, smax: byte;
