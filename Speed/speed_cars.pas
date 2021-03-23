@@ -715,6 +715,14 @@ begin
     if (race.cartype = carinfo[i].cartype) or (race.cartype = ct_any) or (carinfo[i].cartype = ct_any) then
       carids.Add(i);
 
+  for i := 0 to MAXPLAYERS - 1 do
+    if playeringame[i] then
+    begin
+      idx := carids.IndexOf(players[i].mo.carinfo);
+      if idx >= 0 then
+        carids.Delete(idx);
+    end;
+  
   for i := 0 to lst.Count - 1 do
   begin
     mo := lst.Pointers[i];
@@ -767,7 +775,6 @@ begin
   // Retrieve current speed
   dx := mo.x - mo.oldx;
   dy := mo.y - mo.oldy;
-  actualspeed := FixedSqrt(FixedMul(dx, dx) + FixedMul(dy, dy));
 
   // Find next target (path)
   pth := SH_GetNextPath(mo).id;
