@@ -518,7 +518,7 @@ end;
 
 procedure HUlib_eraseIText(it: Phu_itext_t);
 begin
-  if it.laston and (not it._on^) then
+  if it.laston and not it._on^ then
     it.line.needsupdate := 4;
   HUlib_eraseTextLine(@it.line);
   it.laston := it._on^;
