@@ -75,6 +75,26 @@ type
 
 procedure SH_GetTimeLaps(const mo: Pmobj_t; const tl: Ptimelaps_t);
 
+type
+  racepositionitem_t = record
+    mo: Pmobj_t;
+    totaldistance: fixed64_t;
+    finishtime: integer;
+  end;
+  Pracepositionitem_t = ^racepositionitem_t;
+
+  racepositions_t = record
+    numracepositions: integer;
+    items: array[0..MAXLAPS - 1] of racepositionitem_t;
+  end;
+
+  Pracepositions_t = ^racepositions_t;
+
+var
+  racepositions: Pracepositions_t;
+
+procedure SH_CalculatePositions;
+
 var
   numpaths: integer;
   rtlpaths: Prtlpath_tArray;
@@ -84,6 +104,7 @@ implementation
 uses
   d_delphi,
   doomdata,
+  d_think,
   tables,
   p_maputl,
   p_mobj,
@@ -304,6 +325,93 @@ begin
     else
       Break;
   end;
+end;
+
+procedure SH_CalculatePositions;
+var
+  think: Pthinker_t;
+  mo: Pmobj_t;
+  inf: Pracepositionitem_t;
+  prev: Prtlpath_t;
+  lapsize: fixed64_t;
+
+  function _compareP(const p1, p2: Pracepositionitem_t): int64;
+  begin
+    Result := p2.finishtime - p1.finishtime;
+    if Result = 0 then
+      Result := p1.totaldistance - p2.totaldistance;
+  end;
+
+  procedure qsortP(l, r: Integer);
+  var
+    i, j: integer;
+    t: racepositionitem_t;
+    f: Pracepositionitem_t;
+  begin
+    repeat
+      i := l;
+      j := r;
+      f := @racepositions.items[(l + r) shr 1];
+      repeat
+        while _compareP(@racepositions.items[i], f) < 0 do
+          inc(i);
+        while _compareP(@racepositions.items[j], f) > 0 do
+          dec(j);
+        if i <= j then
+        begin
+          t := racepositions.items[i];
+          racepositions.items[i] := racepositions.items[j];
+          racepositions.items[j] := t;
+          inc(i);
+          dec(j);
+        end;
+      until i > j;
+      if l < j then
+        qsortP(l, j);
+      l := i;
+    until i >= r;
+  end;
+
+begin
+  racepositions.numracepositions := 0;
+  inf := @racepositions.items[0];
+  lapsize := rtlpaths[numpaths - 1].dist_to_here;
+
+  think := thinkercap.next;
+  while think <> @thinkercap do
+  begin
+    if @think._function.acp1 <> @P_MobjThinker then
+    begin
+      think := think.next;
+      continue;
+    end;
+
+    mo := Pmobj_t(think);
+
+    if mo.carinfo >= 0 then
+    begin
+      inf.mo := mo;
+      if mo.lapscompleted >= race.numlaps then
+      begin
+        inf.finishtime := rtlpaths[0].cardata[mo.carinfo][race.numlaps].entertime;
+        inf.totaldistance := 0;
+      end
+      else
+      begin
+        inf.finishtime := 0;
+        prev := @rtlpaths[rtlpaths[mo.currPath].prev];
+        inf.totaldistance :=
+          mo.lapscompleted * lapsize + // Completed laps
+          prev.dist_to_here +   // Prev path
+          P_Distance(mo.x - prev.mo.x, mo.y - prev.mo.y); // Distance in current path
+      end;
+      inc(racepositions.numracepositions);
+      inc(inf);
+    end;
+    think := think.next;
+  end;
+
+  qsortP(0, racepositions.numracepositions - 1);
 end;
 
 end.
