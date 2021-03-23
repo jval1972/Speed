@@ -41,8 +41,8 @@ uses
 
 type
   rtlcarpathinfo_t = record
-    entertime: array[0..MAXLAPS - 1] of integer;
-    exittime: array[0..MAXLAPS - 1] of integer;
+    entertime: array[0..MAXLAPS] of integer;
+    exittime: array[0..MAXLAPS] of integer;
   end;
   Prtlcarpathinfo_t = ^rtlcarpathinfo_t;
 
