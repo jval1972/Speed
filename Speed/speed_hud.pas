@@ -280,11 +280,11 @@ begin
     for i := 0 to numcompletedlaps - 1 do
       if tl[i] < best then
         best := tl[i];
-    V_DrawPatch(38, ypos, SCN_HUD, mbest, false);
+    V_DrawPatch(35, ypos, SCN_HUD, mbest, false);
     _draw_lap_time(66, ypos + 10, best, @timedigitwhite);
   end;
   ypos := ypos + 20;
-  V_DrawPatch(38, ypos, SCN_HUD, mlap, false);
+  V_DrawPatch(36, ypos, SCN_HUD, mlap, false);
   if numcompletedlaps < race.numlaps then
   begin
     ypos := ypos + 10;
