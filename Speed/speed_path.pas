@@ -40,10 +40,13 @@ uses
   speed_things;
 
 type
-  rtlcarpathinfo_t = record
-    entertime: array[0..MAXLAPS] of integer;
-    exittime: array[0..MAXLAPS] of integer;
+  rtlcarpathinfoitem_t = record
+    entertime: integer;
+    exittime: integer;
+    visitlap: integer;
   end;
+
+  rtlcarpathinfo_t = array[0..MAXLAPS] of rtlcarpathinfoitem_t;
   Prtlcarpathinfo_t = ^rtlcarpathinfo_t;
 
   rtlpath_t = record
@@ -53,7 +56,6 @@ type
     prev: integer;
     next: integer;
     dist_to_next: fixed_t;
-    dist_to_here: fixed_t;
     cardata: array[0..NUMCARINFO - 1] of rtlcarpathinfo_t;
   end;
   Prtlpath_t = ^rtlpath_t;
@@ -229,7 +231,7 @@ begin
   mindist := MAXINT;
   for i := 0 to tmppaths.Count - 1 do
   begin
-    dist := P_AproxDistance(mo.x - rtlpaths[tmppaths.Numbers[i]].mo.x, mo.y - rtlpaths[tmppaths.Numbers[i]].mo.y);
+    dist := P_Distance(mo.x - rtlpaths[tmppaths.Numbers[i]].mo.x, mo.y - rtlpaths[tmppaths.Numbers[i]].mo.y);
     if dist < mindist then
     begin
       mindist := dist;
@@ -268,10 +270,12 @@ begin
 
     cpinfo := @path.cardata[mo.carinfo];
 
-    if cpinfo.entertime[mo.lapscompleted] = 0 then
-      cpinfo.entertime[mo.lapscompleted] := GetIntegerInRange(leveltime, 1, MAXINT);
-    if (mo.currPath <> 0) or (cpinfo.exittime[mo.lapscompleted] = 0) then
-      cpinfo.exittime[mo.lapscompleted] := leveltime;
+    if cpinfo[mo.lapscompleted].visitlap <= mo.lapscompleted then
+    begin
+      cpinfo[mo.lapscompleted].visitlap := mo.lapscompleted + 1;
+      cpinfo[mo.lapscompleted].entertime := GetIntegerInRange(leveltime, 1, MAXINT);
+    end;
+    cpinfo[mo.lapscompleted].exittime := leveltime;
   end;
 end;
 
@@ -292,8 +296,8 @@ begin
     if i = 0 then
       timestartlap := 0
     else
-      timestartlap := cpinfo.exittime[i];
-    timeendlap := cpinfo.exittime[i + 1];
+      timestartlap := cpinfo[i].exittime;
+    timeendlap := cpinfo[i + 1].exittime;
     if timeendlap > timestartlap then
       tl[i] := timeendlap - timestartlap
     else
