@@ -837,6 +837,13 @@ var
   speedturndecrease: fixed_t;
   pth: integer;
 begin
+  // If race completed use AI driving
+  if mo.lapscompleted >= race.numlaps then
+  begin
+    SH_BuildDrivingCmdAI(mo, cmd);
+    Exit;
+  end;
+
   p := mo.player;
 
   pth := SH_GetNextPath(mo).id;
