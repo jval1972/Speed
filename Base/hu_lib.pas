@@ -447,7 +447,7 @@ var
 begin
   for i := 0 to s.height - 1 do
   begin
-    if (s.laston) and (not s._on^) then
+    if s.laston and not s._on^ then
       s.lines[i].needsupdate := 4;
     HUlib_eraseTextLine(@s.lines[i]);
   end;
