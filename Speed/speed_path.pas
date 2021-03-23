@@ -56,6 +56,7 @@ type
     prev: integer;
     next: integer;
     dist_to_next: fixed_t;
+    dist_to_here: fixed64_t;
     cardata: array[0..NUMCARINFO - 1] of rtlcarpathinfo_t;
   end;
   Prtlpath_t = ^rtlpath_t;
