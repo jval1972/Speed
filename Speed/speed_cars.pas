@@ -775,6 +775,7 @@ begin
   // Retrieve current speed
   dx := mo.x - mo.oldx;
   dy := mo.y - mo.oldy;
+  actualspeed := P_Distance(dx, dy);
 
   // Find next target (path)
   pth := SH_GetNextPath(mo).id;
