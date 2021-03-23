@@ -510,6 +510,7 @@ type
     currPath: integer;
     prevPath: integer;
     lapscompleted: integer;
+    raceposition: integer;
     carinfo: integer;
     nextparticle: integer;  // Next tic that allows particle
     prevtiredistance: array[0..3] of double;

@@ -304,7 +304,7 @@ end;
 
 procedure SH_DrawRacePositions;
 begin
-  SH_CalculatePositions
+//  SH_CalculatePositions
 end;
 
 procedure SH_HudDrawer;

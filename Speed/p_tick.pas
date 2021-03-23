@@ -78,6 +78,7 @@ uses
   p_mobj_h,
   p_mobjlist,
   ps_main,  // JVAL: Script Events
+  speed_path,
   z_zone;
 
 procedure P_InitThinkers;
@@ -216,6 +217,7 @@ begin
     isgamefreezed := false;
 
   P_RunThinkers;
+  SH_CalculatePositions;
   if not isgamefreezed then
   begin
     P_UpdateSpecials;

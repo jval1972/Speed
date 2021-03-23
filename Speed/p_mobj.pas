@@ -878,6 +878,7 @@ begin
     mobj.bob := N_Random and FLOATBOBMASK;
   mobj.health := info.spawnhealth;
   mobj.carid := -1;
+  mobj.carinfo := -1;
   mobj.currPath := -1;
   mobj.prevPath := -1;
   mobj.lapscompleted := -1;

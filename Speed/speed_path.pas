@@ -85,7 +85,7 @@ type
 
   racepositions_t = record
     numracepositions: integer;
-    items: array[0..MAXLAPS - 1] of racepositionitem_t;
+    items: array[0..NUMCARINFO - 1] of racepositionitem_t;
   end;
 
   Pracepositions_t = ^racepositions_t;
@@ -334,12 +334,13 @@ var
   inf: Pracepositionitem_t;
   prev: Prtlpath_t;
   lapsize: fixed64_t;
+  p: integer;
 
   function _compareP(const p1, p2: Pracepositionitem_t): int64;
   begin
-    Result := p2.finishtime - p1.finishtime;
+    Result := p1.finishtime - p2.finishtime;
     if Result = 0 then
-      Result := p1.totaldistance - p2.totaldistance;
+      Result := p2.totaldistance - p1.totaldistance;
   end;
 
   procedure qsortP(l, r: Integer);
@@ -412,6 +413,10 @@ begin
   end;
 
   qsortP(0, racepositions.numracepositions - 1);
+
+  // Cache race position
+  for p := 0 to racepositions.numracepositions - 1 do
+    racepositions.items[p].mo.raceposition := p + 1;
 end;
 
 end.
