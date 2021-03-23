@@ -302,6 +302,11 @@ begin
     _draw_lap_time(66, ypos + (i + 1) * 10, tl[numcompletedlaps - 1 - i], @timedigityellow);
 end;
 
+procedure SH_DrawRacePositions;
+begin
+  SH_CalculatePositions
+end;
+
 procedure SH_HudDrawer;
 begin
   hud_player := @players[consoleplayer];
@@ -321,6 +326,9 @@ begin
 
     // Lap times
     SH_DrawLapTime;
+
+    // Positions
+    SH_DrawRacePositions;
   end;
 
   V_CopyRectTransparent(0, 0, SCN_HUD, 320, 200, 0, 0, SCN_FG, true);

@@ -91,7 +91,7 @@ type
   Pracepositions_t = ^racepositions_t;
 
 var
-  racepositions: Pracepositions_t;
+  racepositions: racepositions_t;
 
 procedure SH_CalculatePositions;
 
