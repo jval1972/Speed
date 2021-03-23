@@ -405,7 +405,7 @@ begin
         inf.totaldistance :=
           int64(mo.lapscompleted) * lapsize + // Completed laps
           prev.dist_to_here +   // Prev path
-          P_Distance(mo.x - curr.mo.x, mo.y - curr.mo.y); // Distance in current path
+          P_Distance(mo.x - prev.mo.x, mo.y - prev.mo.y); // Distance in current path
       end;
       inc(racepositions.numracepositions);
       inc(inf);
