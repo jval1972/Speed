@@ -2260,7 +2260,7 @@ begin
   gameaction := ga_nothing;
 end;
 
-procedure G_InitNew(skill:skill_t; gametyp: gametype_t; episode: integer; map: integer);
+procedure G_InitNew(skill: skill_t; gametyp: gametype_t; episode: integer; map: integer);
 var
   i: integer;
   levelinf: Plevelinfo_t;
