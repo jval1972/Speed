@@ -33,10 +33,13 @@ interface
 
 function SH_Meters2KM(const x: integer): string;
 
+function SH_TicsToTimeStr(const t: integer): string;
+
 implementation
 
 uses
-  d_delphi;
+  d_delphi,
+  doomdef;
 
 function SH_Meters2KM(const x: integer): string;
 var
@@ -63,5 +66,29 @@ begin
   Result := Result + 'km';
 end;
 
+function SH_TicsToTimeStr(const t: integer): string;
+var
+  shour, smin, ssec, smsec: string;
+  t1: integer;
+  tmp: integer;
+begin
+  t1 := t * 100 div TICRATE;
+  tmp := t1 mod 100;
+  t1 := (t1 - tmp) div 100;
+  smsec := IntToStrzFill(2, tmp);
+  tmp := t1 mod 60;
+  t1 := t1 div 60;
+  ssec := IntToStrzFill(2, tmp);
+  tmp := t1 mod 60;
+  t1 := t1 div 60;
+  smin := IntToStrzFill(2, tmp);
+  if t1 <> 0 then
+  begin
+    shour := itoa(t1);
+    Result := shour + '''' + smin + '''' + ssec + '"' + smsec;
+  end
+  else
+    Result := smin + '''' + ssec + '"' + smsec;
+end;
+
 end.
- 

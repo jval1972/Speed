@@ -42,12 +42,15 @@ implementation
 uses
   d_delphi,
   d_player,
+  p_tick,
   d_net,
   g_game,
   m_fixed,
   r_defs,
   speed_cars,
   speed_race,
+  speed_path,
+  speed_string_format,
   v_data,
   v_video,
   w_wad,
@@ -65,6 +68,12 @@ var
   speedometer: array[0..1] of Ppatch_t;
   mlaps: Ppatch_t;
   mposbar: Ppatch_t;
+  mbest, mlap: Ppatch_t;
+  timedigityellow: array[0..11] of Ppatch_t;
+  timedigitwhite: array[0..11] of Ppatch_t;
+
+const
+  TIMEDIGITLOOKUP = '0123456789"''';
 
 procedure SH_InitSpeedHud;
 var
@@ -78,9 +87,15 @@ begin
     bluedigitsmall[i] := W_CacheLumpName('MFMG' + sn, PU_STATIC);
     whitedigitbig[i] := W_CacheLumpName('MFBW' + sn, PU_STATIC);
     whitedigitsmall[i] := W_CacheLumpName('MFMW' + sn, PU_STATIC);
+    timedigityellow[i] := W_CacheLumpName('MFLG' + sn, PU_STATIC);
+    timedigitwhite[i] := W_CacheLumpName('MFLW' + sn, PU_STATIC);
   end;
   blueslashbig := W_CacheLumpName('MFBGB', PU_STATIC);
   blueslashsmall := W_CacheLumpName('MFMGB', PU_STATIC);
+  timedigityellow[10] := W_CacheLumpName('MGDQUOTE', PU_STATIC);
+  timedigityellow[11] := W_CacheLumpName('MGQUOTE', PU_STATIC);
+  timedigitwhite[10] := W_CacheLumpName('MWDQUOTE', PU_STATIC);
+  timedigitwhite[11] := W_CacheLumpName('MWQUOTE', PU_STATIC);
   gearbox := W_CacheLumpName('MGEAR', PU_STATIC);
   for i := 0 to 6 do
     gears[i] := W_CacheLumpName('MG' + itoa(i), PU_STATIC);
@@ -88,6 +103,8 @@ begin
     speedometer[i] := W_CacheLumpName('MREVO' + itoa(i), PU_STATIC);
   mlaps := W_CacheLumpName('MLAPS', PU_STATIC);
   mposbar := W_CacheLumpName('MPOSBAR', PU_STATIC);
+  mbest := W_CacheLumpName('MBEST', PU_STATIC);
+  mlap := W_CacheLumpName('MLAP', PU_STATIC);
 end;
 
 var
@@ -217,6 +234,74 @@ begin
 
 end;
 
+procedure _draw_lap_time(const x, y: integer; const tm: integer; const fnt: Ppatch_tPArray);
+var
+  i: integer;
+  stmp: string;
+  p, xpos: integer;
+begin
+  stmp := SH_TicsToTimeStr(tm);
+  xpos := x;
+  for i := Length(stmp) downto 1 do
+  begin
+    p := Pos(stmp[i], TIMEDIGITLOOKUP) - 1;
+    if p >= 0 then
+    begin
+      V_DrawPatch(xpos - fnt[p].leftoffset, y - 8 + fnt[p].topoffset, SCN_HUD, fnt[p], false);
+      xpos := xpos - fnt[p].width;
+    end;
+  end;
+end;
+
+procedure SH_DrawLapTime;
+var
+  i: integer;
+  numcompletedlaps: integer;
+  tl: timelaps_t;
+  best: integer;
+  ypos: integer;
+  curlaptime: integer;
+begin
+  SH_GetTimeLaps(hud_player.mo, @tl);
+
+  numcompletedlaps := 0;
+  for i := 0 to MAXLAPS do
+    if tl[i] <> 0 then
+      numcompletedlaps := i + 1
+    else
+      break;
+
+  ypos := 122 - race.numlaps * 10;
+  if ypos > 72 then
+    ypos := 72;
+  if numcompletedlaps > 0 then
+  begin
+    best := MAXINT;
+    for i := 0 to numcompletedlaps - 1 do
+      if tl[i] < best then
+        best := tl[i];
+    V_DrawPatch(38, ypos, SCN_HUD, mbest, false);
+    _draw_lap_time(66, ypos + 10, best, @timedigitwhite);
+  end;
+  ypos := ypos + 20;
+  V_DrawPatch(38, ypos, SCN_HUD, mlap, false);
+  if numcompletedlaps < race.numlaps then
+  begin
+    ypos := ypos + 10;
+    if numcompletedlaps = 0 then
+      curlaptime := leveltime
+    else
+    begin
+      curlaptime := leveltime;
+      for i := 0 to numcompletedlaps - 1 do
+        curlaptime := curlaptime - tl[i];
+    end;
+    _draw_lap_time(66, ypos, curlaptime, @timedigityellow);
+  end;
+  for i := numcompletedlaps - 1 downto 0 do
+    _draw_lap_time(66, ypos + (i + 1) * 10, tl[numcompletedlaps - 1 - i], @timedigityellow);
+end;
+
 procedure SH_HudDrawer;
 begin
   hud_player := @players[consoleplayer];
@@ -233,6 +318,9 @@ begin
 
     // Elapsed laps
     SH_DrawNumLaps;
+
+    // Lap times
+    SH_DrawLapTime;
   end;
 
   V_CopyRectTransparent(0, 0, SCN_HUD, 320, 200, 0, 0, SCN_FG, true);

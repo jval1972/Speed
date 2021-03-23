@@ -64,6 +64,12 @@ function SH_GetNextPath(const mo: Pmobj_t): Prtlpath_t;
 
 procedure SH_NotifyPath(const mo: Pmobj_t);
 
+type
+  timelaps_t = array[0..MAXLAPS - 1] of integer;
+  Ptimelaps_t = ^timelaps_t;
+
+procedure SH_GetTimeLaps(const mo: Pmobj_t; const tl: Ptimelaps_t);
+
 var
   numpaths: integer;
   rtlpaths: Prtlpath_tArray;
@@ -246,8 +252,35 @@ begin
     cpinfo := @path.cardata[mo.carinfo];
 
     if cpinfo.entertime[mo.lapscompleted] = 0 then
-      cpinfo.entertime[mo.lapscompleted] := leveltime;
-    cpinfo.exittime[mo.lapscompleted] := leveltime;
+      cpinfo.entertime[mo.lapscompleted] := GetIntegerInRange(leveltime, 1, MAXINT);
+    if (mo.currPath <> 0) or (cpinfo.exittime[mo.lapscompleted] = 0) then
+      cpinfo.exittime[mo.lapscompleted] := leveltime;
+  end;
+end;
+
+procedure SH_GetTimeLaps(const mo: Pmobj_t; const tl: Ptimelaps_t);
+var
+  i: integer;
+  path: Prtlpath_t;
+  cpinfo: Prtlcarpathinfo_t;
+  timestartlap, timeendlap: integer;
+begin
+  for i := 0 to MAXLAPS - 1 do
+    tl[i] := 0;
+
+  path := @rtlpaths[0];
+  cpinfo := @path.cardata[mo.carinfo];
+  for i := 0 to race.numlaps - 1 do
+  begin
+    if i = 0 then
+      timestartlap := 0
+    else
+      timestartlap := cpinfo.exittime[i];
+    timeendlap := cpinfo.exittime[i + 1];
+    if timeendlap > timestartlap then
+      tl[i] := timeendlap - timestartlap
+    else
+      Break;
   end;
 end;
 
