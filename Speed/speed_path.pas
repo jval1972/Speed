@@ -53,6 +53,7 @@ type
     prev: integer;
     next: integer;
     dist_to_next: fixed_t;
+    dist_to_here: fixed_t;
     cardata: array[0..NUMCARINFO - 1] of rtlcarpathinfo_t;
   end;
   Prtlpath_t = ^rtlpath_t;
@@ -134,6 +135,10 @@ begin
   memcpy(rtlpaths, savertlpaths, numpaths * SizeOf(rtlpath_t));
 
   memfree(pointer(savertlpaths), numpaths * SizeOf(rtlpath_t));
+
+  rtlpaths[0].dist_to_here := rtlpaths[numpaths - 1].dist_to_next;
+  for i := 1 to numpaths - 1 do
+    rtlpaths[i].dist_to_here := rtlpaths[i - 1].dist_to_here + rtlpaths[i - 1].dist_to_next;
 
   aheadpaths.Free;
 end;
