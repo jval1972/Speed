@@ -71,6 +71,7 @@ var
   mbest, mlap: Ppatch_t;
   timedigityellow: array[0..11] of Ppatch_t;
   timedigitwhite: array[0..11] of Ppatch_t;
+  mpos: Ppatch_t;
 
 const
   TIMEDIGITLOOKUP = '0123456789"''';
@@ -105,6 +106,7 @@ begin
   mposbar := W_CacheLumpName('MPOSBAR', PU_STATIC);
   mbest := W_CacheLumpName('MBEST', PU_STATIC);
   mlap := W_CacheLumpName('MLAP', PU_STATIC);
+  mpos := W_CacheLumpName('MPOS', PU_STATIC);
 end;
 
 var
@@ -221,7 +223,10 @@ begin
   begin
     id := Ord(sl[i]) - Ord('0');
     if IsIntegerInRange(id, 0, 9) then
+    begin
       V_DrawPatch(xpos, 48, SCN_HUD, bluedigitbig[id], false);
+      xpos := xpos + bluedigitbig[id].width + 1;
+    end;
   end;
 
   xpos := 160 + (blueslashbig.width div 2 + 1) + _small_blue_string_offset(st[1]);
@@ -229,7 +234,10 @@ begin
   begin
     id := Ord(st[i]) - Ord('0');
     if IsIntegerInRange(id, 0, 9) then
+    begin
       V_DrawPatch(xpos, 48, SCN_HUD, bluedigitsmall[id], false);
+      xpos := xpos + bluedigitsmall[id].width + 1;
+    end;
   end;
 
 end;
@@ -302,9 +310,88 @@ begin
     _draw_lap_time(66, ypos + (i + 1) * 10, tl[numcompletedlaps - 1 - i], @timedigityellow);
 end;
 
-procedure SH_DrawRacePositions;
+function _big_white_string_width(const s: string): integer;
+var
+  i, id: integer;
 begin
-//  SH_CalculatePositions
+  Result := 0;
+  for i := 1 to Length(s) do
+  begin
+    id := Ord(s[i]) - Ord('0');
+    if IsIntegerInRange(id, 0, 9) then
+      Result := Result + whitedigitbig[id].width + 1;
+  end;
+end;
+
+function _big_white_string_offset(const ch: char): integer;
+var
+  id: integer;
+begin
+  Result := 0;
+  id := Ord(ch) - Ord('0');
+  if IsIntegerInRange(id, 0, 9) then
+    Result := whitedigitbig[id].leftoffset;
+end;
+
+function _small_white_string_width(const s: string): integer;
+var
+  i, id: integer;
+begin
+  Result := 0;
+  for i := 1 to Length(s) do
+  begin
+    id := Ord(s[i]) - Ord('0');
+    if IsIntegerInRange(id, 0, 9) then
+      Result := Result + whitedigitsmall[id].width + 1;
+  end;
+end;
+
+function _small_white_string_offset(const ch: char): integer;
+var
+  id: integer;
+begin
+  Result := 0;
+  id := Ord(ch) - Ord('0');
+  if IsIntegerInRange(id, 0, 9) then
+    Result := whitedigitsmall[id].leftoffset;
+end;
+
+procedure SH_DrawRacePositions;
+var
+  wp, wt: integer;
+  sp, st: string;
+  i, id, xpos: integer;
+begin
+  V_DrawPatch(44, 164, SCN_HUD, mpos, false);
+  V_DrawPatch(44, 196, SCN_HUD, mposbar, false);
+
+  sp := itoa(hud_player.mo.raceposition);
+  st := itoa(racepositions.numracepositions);
+
+  wp := _big_white_string_width(sp);
+  wt := _small_blue_string_width(st);
+
+  xpos := 44 - (mposbar.width div 2 + 1 + wp) + _big_white_string_offset(sp[1]);
+  for i := 1 to Length(sp) do
+  begin
+    id := Ord(sp[i]) - Ord('0');
+    if IsIntegerInRange(id, 0, 9) then
+    begin
+      V_DrawPatch(xpos, 196, SCN_HUD, whitedigitbig[id], false);
+      xpos := whitedigitbig[id].width + 1;
+    end;
+  end;
+
+  xpos := 44 + (mposbar.width div 2 + 1) + _small_white_string_offset(st[1]);
+  for i := 1 to Length(st) do
+  begin
+    id := Ord(st[i]) - Ord('0');
+    if IsIntegerInRange(id, 0, 9) then
+    begin
+      V_DrawPatch(xpos, 196, SCN_HUD, whitedigitsmall[id], false);
+      xpos := xpos + whitedigitsmall[id].width + 1;
+    end;
+  end;
 end;
 
 procedure SH_HudDrawer;

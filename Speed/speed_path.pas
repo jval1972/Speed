@@ -332,7 +332,7 @@ var
   think: Pthinker_t;
   mo: Pmobj_t;
   inf: Pracepositionitem_t;
-  prev: Prtlpath_t;
+  prev, curr: Prtlpath_t;
   lapsize: fixed64_t;
   p: integer;
 
@@ -400,11 +400,12 @@ begin
       else
       begin
         inf.finishtime := 0;
-        prev := @rtlpaths[rtlpaths[mo.currPath].prev];
+        curr := @rtlpaths[mo.currPath];
+        prev := @rtlpaths[curr.prev];
         inf.totaldistance :=
-          mo.lapscompleted * lapsize + // Completed laps
+          int64(mo.lapscompleted) * lapsize + // Completed laps
           prev.dist_to_here +   // Prev path
-          P_Distance(mo.x - prev.mo.x, mo.y - prev.mo.y); // Distance in current path
+          P_Distance(mo.x - curr.mo.x, mo.y - curr.mo.y); // Distance in current path
       end;
       inc(racepositions.numracepositions);
       inc(inf);
