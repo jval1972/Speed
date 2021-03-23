@@ -52,6 +52,7 @@ type
     speed: fixed_t;
     prev: integer;
     next: integer;
+    dist_to_next: fixed_t;
     cardata: array[0..NUMCARINFO - 1] of rtlcarpathinfo_t;
   end;
   Prtlpath_t = ^rtlpath_t;
@@ -111,7 +112,7 @@ begin
     mindist := MAXINT;
     for j := 0 to aheadpaths.Count - 1 do
     begin
-      dist := P_AproxDistance(rtlpaths[i].mo.x - rtlpaths[aheadpaths.Numbers[j]].mo.x, rtlpaths[i].mo.y - rtlpaths[aheadpaths.Numbers[j]].mo.y);
+      dist := P_Distance(rtlpaths[i].mo.x - rtlpaths[aheadpaths.Numbers[j]].mo.x, rtlpaths[i].mo.y - rtlpaths[aheadpaths.Numbers[j]].mo.y);
       if dist < mindist then
       begin
         mindist := dist;
@@ -120,6 +121,7 @@ begin
     end;
     rtlpaths[i].id := i;
     rtlpaths[i].next := best;
+    rtlpaths[i].dist_to_next := mindist;
     rtlpaths[best].prev := i;
   end;
 

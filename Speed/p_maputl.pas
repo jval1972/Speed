@@ -46,6 +46,8 @@ uses
 
 function P_AproxDistance(dx: fixed_t; dy: fixed_t): fixed_t;
 
+function P_Distance(dx: fixed_t; dy: fixed_t): fixed_t;
+
 function P_PointOnLineSide(x: fixed_t; y: fixed_t; line: Pline_t): integer;
 
 function P_BoxOnLineSide(tmbox: Pfixed_tArray; ld: Pline_t): integer;
@@ -100,6 +102,15 @@ begin
     result := dx + dy - _SHR1(dx)
   else
     result := dx + dy - _SHR1(dy);
+end;
+
+function P_Distance(dx: fixed_t; dy: fixed_t): fixed_t;
+var
+  ddx, ddy: double;
+begin
+  ddx := dx / FRACUNIT;
+  ddy := dy / FRACUNIT;
+  Result := Round(Sqrt(ddx * ddx + ddy * ddy) * FRACUNIT);
 end;
 
 //
