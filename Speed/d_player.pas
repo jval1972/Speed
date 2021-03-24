@@ -74,6 +74,13 @@ const
   // Low gravity cheat
   CF_LOWGRAVITY = 8;
 
+const
+  PILOTNAMESIZE = 16;
+
+var
+  pilotNameString: string[PILOTNAMESIZE] = '';
+  pilotname: string;
+
 type
 //
 // Extended player object info: player_t
@@ -191,6 +198,7 @@ type
     enginesoundtarget: Pmobj_t; // JVAL: 20200501 - Engine sound target
     messagesoundtarget: Pmobj_t; // JVAL: 20200508 - Messages sound target
     cmd: ticcmd_t;      // JVAL Smooth Look Up/Down
+    playername: string[PILOTNAMESIZE];
   end;
   Pplayer_t = ^player_t;
 

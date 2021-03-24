@@ -1153,6 +1153,9 @@ begin
   plnum := mthing._type - 1;
   p := @players[plnum];
 
+  if plnum = consoleplayer then
+    p.playername := pilotname;
+    
   if p.playerstate = PST_REBORN then
     G_PlayerReborn(plnum)
   else

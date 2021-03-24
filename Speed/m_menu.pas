@@ -405,6 +405,23 @@ var
   EpiDef: menu_t;
 
 type
+  pilotname_e = (
+    pilotname1,
+    pn_end
+  );
+
+var
+  PilotNameMenu: array[0..Ord(pn_end) - 1] of menuitem_t;
+  PilotNameDef: menu_t;
+
+var
+// we are going to be entering the pilot's name
+  pilotStringEnter: integer = 0;
+  pilotCharIndex: integer = 0; // which char we're editing
+// old pilot name before edit
+  pilotOldString: string;
+
+type
 //
 // NEW GAME
 //
@@ -1950,7 +1967,10 @@ end;
 //
 procedure M_NewGame(choice: integer);
 begin
-  M_SetupNextMenu(@NewGameSetupDef);
+  pilotStringEnter := 1;
+  pilotOldString := pilotNameString;
+  pilotCharIndex := Length(pilotNameString);
+  M_SetupNextMenu(@PilotNameDef);
 end;
 
 procedure M_EpisodeMenu(choice: integer);
@@ -2156,6 +2176,22 @@ begin
   end;
 end;
 
+procedure M_DrawPilotName;
+begin
+  V_DrawPatch(0, 0, SCN_TMP, 'MBG_RECO', false);
+
+  M_DrawHeadLine(20, 15, 'Driver ''s Name');
+
+  M_Frame3d(PilotNameDef.x, PilotNameDef.y, 320 - PilotNameDef.x, PilotNameDef.y + 11, 121, 123, 118);
+
+  M_WriteText(PilotNameDef.x + 4, PilotNameDef.y + 2, pilotNameString, ma_left, @hu_fontY, @hu_fontB);
+
+  if pilotStringEnter <> 0 then
+    if Length(pilotNameString) < PILOTNAMESIZE then
+      if (gametic div 18) mod 2 = 0 then
+        M_WriteText(PilotNameDef.x + 4 + M_StringWidth(pilotNameString, @hu_fontY), PilotNameDef.y + 2, '_', ma_left, @hu_fontY, @hu_fontB);
+end;
+
 procedure M_ChooseEpisode(choice: integer);
 begin
   if (gamemode = shareware) and (choice <> 0) then
@@ -2177,6 +2213,11 @@ begin
   G_DeferedInitNew(skill_t(mgameskill), gametype_t(mgametype), menu_episode + 1, 1);
   M_ClearMenus;
 //  M_SetupNextMenu(@SelectSkillDef);
+end;
+
+procedure M_PilotName(choice: integer);
+begin
+  M_SetupNextMenu(@NewGameSetupDef);
 end;
 
 //
@@ -2846,6 +2887,54 @@ begin
   if ch = -1 then
   begin
     result := false;
+    exit;
+  end;
+
+  if pilotStringEnter <> 0 then
+  begin
+    case ch of
+      KEY_BACKSPACE:
+        begin
+          if pilotCharIndex > 0 then
+          begin
+            dec(pilotCharIndex);
+            SetLength(pilotNameString, pilotCharIndex);
+            pilotname := pilotNameString;
+          end;
+        end;
+      KEY_ESCAPE:
+        begin
+          pilotStringEnter := 0;
+          pilotNameString := pilotOldString;
+          pilotname := pilotNameString;
+          M_PilotName(0);
+        end;
+      KEY_ENTER:
+        begin
+          pilotStringEnter := 0;
+          players[consoleplayer].playername := pilotNameString;
+          pilotname := pilotNameString;
+          M_PilotName(0);
+        end
+    else
+      begin
+        ch := Ord(toupper(Chr(ch)));
+        if ch <> 32 then
+        if (ch - Ord(HU_FONTSTART) < 0) or (ch - Ord(HU_FONTSTART) >= HU_FONTSIZE) then
+        else
+        begin
+          if (ch >= 32) and (ch <= 127) and
+             (pilotCharIndex < PILOTNAMESIZE - 1) {and
+             (M_SmallStringWidth(savegamestrings[saveSlot]) < (SAVESTRINGSIZE - 2) * 8)} then
+          begin
+            inc(pilotCharIndex);
+            pilotNameString := pilotNameString + Chr(ch);
+            pilotname := pilotNameString;
+          end;
+        end;
+      end;
+    end;
+    result := true;
     exit;
   end;
 
@@ -3906,6 +3995,30 @@ begin
   EpiDef.lastOn := Ord(mn_ep1); // last item user was on in menu
   EpiDef.itemheight := LINEHEIGHT;
   EpiDef.texturebk := true;
+
+////////////////////////////////////////////////////////////////////////////////
+//PilotNameMenu
+  pmi := @PilotNameMenu[0];
+  pmi.status := 1;
+  pmi.name := 'Pilot name';
+  pmi.cmd := '';
+  pmi.routine := @M_PilotName;
+  pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
+  pmi.alphaKey := 'P';
+  pmi.tag := 0;
+
+////////////////////////////////////////////////////////////////////////////////
+//PilotNameDef
+  PilotNameDef.numitems := Ord(pn_end); // # of menu items
+  PilotNameDef.prevMenu := @MainDef; // previous menu
+  PilotNameDef.menuitems := Pmenuitem_tArray(@PilotNameMenu);  // menu items
+  PilotNameDef.drawproc := @M_DrawPilotName;  // draw routine
+  PilotNameDef.x := 108;
+  PilotNameDef.y := 80;
+  PilotNameDef.lastOn := Ord(pilotname1); // last item user was on in menu
+  PilotNameDef.itemheight := LINEHEIGHT;
+  EpiDef.texturebk := false;
 
 ////////////////////////////////////////////////////////////////////////////////
 //OptionsMenu

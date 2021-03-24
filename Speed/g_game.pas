@@ -1511,12 +1511,14 @@ var
   itemcount: integer;
   secretcount: integer;
   cheats: integer;
+  oldplayername: string;
 begin
   p := @players[player];
   memcpy(@frags, @p.frags, SizeOf(frags));
   killcount := p.killcount;
   itemcount := p.itemcount;
   secretcount := p.secretcount;
+  oldplayername := p.playername;
 
   // JVAL: added option to keep cheats
   if keepcheatsinplayerreborn and not preparingdemoplayback then
@@ -1542,6 +1544,7 @@ begin
   p.weaponowned[Ord(wp_fist)] := 1;
   p.weaponowned[Ord(wp_pistol)] := 1;
   p.ammo[Ord(am_clip)] := p_initialbullets;
+  p.playername := oldplayername;
 
   for i := 0 to Ord(NUMAMMO) - 1 do
     p.maxammo[i] := maxammo[i];

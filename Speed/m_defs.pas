@@ -35,6 +35,7 @@ uses
   am_map,
   c_con,
   doomdef,
+  d_player,
   d_englsh,
   d_main,
   g_game,
@@ -119,7 +120,7 @@ type
   Pdefault_t = ^default_t;
 
 const
-  NUMDEFAULTS = 198;
+  NUMDEFAULTS = 199;
 
 // JVAL
 // Note: All setable defaults must be in lowercase, don't ask why. Just do it. :)
@@ -862,6 +863,14 @@ const
      defaultivalue: 5;
      defaultbvalue: true;
      _type: tInteger),
+
+    (name: 'pilotname';
+     location: @pilotname;
+     setable: DFS_ALWAYS;
+     defaultsvalue: '';
+     defaultivalue: 0;
+     defaultbvalue: false;
+     _type: tString),
 
      // Compatibility
     (name: 'Compatibility';
