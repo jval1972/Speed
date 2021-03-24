@@ -79,6 +79,7 @@ type
   racepositionitem_t = record
     mo: Pmobj_t;
     totaldistance: fixed64_t;
+    lapscompleted: integer;
     finishtime: integer;
   end;
   Pracepositionitem_t = ^racepositionitem_t;
@@ -338,17 +339,21 @@ var
 
   function _compareP(const p1, p2: Pracepositionitem_t): int64;
   begin
-    Result := p2.totaldistance - p1.totaldistance;
+    Result := p2.lapscompleted - p1.lapscompleted;
     if Result = 0 then
     begin
-      if p1.finishtime = p2.finishtime then
-        Result := 0
-      else if p1.finishtime = 0 then
-        Result := 1
-      else if p2.finishtime = 0 then
-        Result := -1
-      else
-        Result := p1.finishtime - p2.finishtime;
+      Result := p2.totaldistance - p1.totaldistance;
+      if Result = 0 then
+      begin
+        if p1.finishtime = p2.finishtime then
+          Result := p1.mo.key - p2.mo.key // Do not make uncertain positions sorting (qsort is not stable sort)
+        else if p1.finishtime = 0 then
+          Result := 1
+        else if p2.finishtime = 0 then
+          Result := -1
+        else
+          Result := p1.finishtime - p2.finishtime;
+      end;
     end;
   end;
 
@@ -412,6 +417,7 @@ begin
         inf.finishtime := 0;
         curr := @rtlpaths[mo.currPath];
         prev := @rtlpaths[curr.prev];
+        inf.lapscompleted := mo.lapscompleted;
         inf.totaldistance :=
           int64(mo.lapscompleted) * lapsize + // Completed laps
           prev.dist_to_here +   // Prev path
