@@ -41,6 +41,7 @@ implementation
 
 uses
   d_delphi,
+  doomdef,
   d_player,
   p_tick,
   d_net,
@@ -72,6 +73,10 @@ var
   timedigityellow: array[0..11] of Ppatch_t;
   timedigitwhite: array[0..11] of Ppatch_t;
   mpos: Ppatch_t;
+  rfinlap: Ppatch_t;
+
+var
+  timelaps: timelaps_t;
 
 const
   TIMEDIGITLOOKUP = '0123456789"''';
@@ -107,6 +112,7 @@ begin
   mbest := W_CacheLumpName('MBEST', PU_STATIC);
   mlap := W_CacheLumpName('MLAP', PU_STATIC);
   mpos := W_CacheLumpName('MPOS', PU_STATIC);
+  rfinlap := W_CacheLumpName('RFINLAP', PU_STATIC);
 end;
 
 var
@@ -265,16 +271,13 @@ procedure SH_DrawLapTime;
 var
   i: integer;
   numcompletedlaps: integer;
-  tl: timelaps_t;
   best: integer;
   ypos: integer;
   curlaptime: integer;
 begin
-  SH_GetTimeLaps(hud_player.mo, @tl);
-
   numcompletedlaps := 0;
   for i := 0 to MAXLAPS do
-    if tl[i] <> 0 then
+    if timelaps[i] <> 0 then
       numcompletedlaps := i + 1
     else
       break;
@@ -286,8 +289,8 @@ begin
   begin
     best := MAXINT;
     for i := 0 to numcompletedlaps - 1 do
-      if tl[i] < best then
-        best := tl[i];
+      if timelaps[i] < best then
+        best := timelaps[i];
     V_DrawPatch(35, ypos, SCN_HUD, mbest, false);
     _draw_lap_time(66, ypos + 10, best, @timedigitwhite);
   end;
@@ -302,12 +305,12 @@ begin
     begin
       curlaptime := leveltime;
       for i := 0 to numcompletedlaps - 1 do
-        curlaptime := curlaptime - tl[i];
+        curlaptime := curlaptime - timelaps[i];
     end;
     _draw_lap_time(66, ypos, curlaptime, @timedigityellow);
   end;
   for i := numcompletedlaps - 1 downto 0 do
-    _draw_lap_time(66, ypos + (i + 1) * 10, tl[numcompletedlaps - 1 - i], @timedigityellow);
+    _draw_lap_time(66, ypos + (i + 1) * 10, timelaps[numcompletedlaps - 1 - i], @timedigityellow);
 end;
 
 function _big_white_string_width(const s: string): integer;
@@ -394,6 +397,32 @@ begin
   end;
 end;
 
+procedure SH_DrawLastLap;
+const
+  TICS_SHOW_LAST_LAP = 5 * TICRATE; // 5 seconds
+var
+  tics: integer;
+  tottime: integer;
+  i: integer;
+begin
+  if not IsIntegerInRange(race.numlaps, 2, MAXLAPS) then
+    Exit;
+
+  if timelaps[race.numlaps - 2] = 0 then
+    Exit;
+
+  tottime := 0;
+  for i := 0 to race.numlaps - 2 do
+    tottime := tottime + timelaps[i];
+
+  tics := leveltime - tottime;
+  if tics >= TICS_SHOW_LAST_LAP then
+    Exit;
+
+  if tics mod TICRATE < 20 then
+    V_DrawPatch(160, 68, SCN_HUD, rfinlap, false);
+end;
+
 procedure SH_HudDrawer;
 begin
   hud_player := @players[consoleplayer];
@@ -402,6 +431,7 @@ begin
   begin
     ZeroMemory(screens[SCN_HUD], screendimentions[SCN_HUD].width * screendimentions[SCN_HUD].height);
 
+    SH_GetTimeLaps(hud_player.mo, @timelaps);
     // Draw grears
     SH_DrawGears;
 
@@ -416,6 +446,9 @@ begin
 
     // Positions
     SH_DrawRacePositions;
+
+    // Last Lap
+    SH_DrawLastLap;
   end;
 
   V_CopyRectTransparent(0, 0, SCN_HUD, 320, 200, 0, 0, SCN_FG, true);
