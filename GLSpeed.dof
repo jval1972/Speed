@@ -100,7 +100,7 @@ Conditionals=OPENGL;DOOM;
 DebugSourceDirs=
 UsePackages=0
 [Parameters]
-RunParams=-geom 1280x800 -nofullscreen DOOM_ASSETS.WAD
+RunParams=-geom 1280x800 -nofullscreen DOOM_ASSETS.WAD 
 HostApplication=
 Launcher=
 UseLauncher=0
