@@ -91,7 +91,7 @@ var
   gl_paletted_texture: boolean = false;
   gl_shared_texture_palette: boolean = false;
   gl_linear_hud: boolean = true;
-  gl_add_all_lines: boolean = false;
+  gl_add_all_lines: boolean = true;
   gl_renderwireframe: Boolean = false;
   // Hack to avoid Intel HD4000 problem with Win10
   // https://communities.intel.com/thread/117626
