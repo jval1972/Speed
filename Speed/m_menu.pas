@@ -2090,8 +2090,7 @@ var
   mdata: mapdata_t;
 begin
   V_DrawPatch(0, 0, SCN_TMP, 'MBG_CIRC', false);
-
-  M_DrawHeadLine(20, 15, 'Select Course');
+  V_DrawPatch(0, 8, SCN_TMP, 'MSCBAR', false);
 
   idx := currentmenu.menuitems[0].tag;
   menu_select_cource := idx;
@@ -2099,7 +2098,7 @@ begin
   mname := mapdatalst.Strings[idx];
   mdata := SH_MapData(mname);
 
-  M_DrawHeadLine(30, 40, mdata.lname);
+  M_WriteText(160, 45, mdata.lname, ma_center, @hu_fontR, @hu_fontB);
 
   M_WriteText(80, 66, mdata.name, ma_center, @hu_fontY, @hu_fontB);
 
