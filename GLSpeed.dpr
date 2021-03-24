@@ -37,7 +37,7 @@
 {$ENDIF}
 
 {$I speed.inc}
-{$D Speed}
+{$D Speed: Engine remake of the game Speed Haste}
 
 program GLSpeed;
 

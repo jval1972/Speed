@@ -125,7 +125,7 @@ Locale=1033
 CodePage=1252
 [Version Info Keys]
 CompanyName=Jim Valavanis
-FileDescription=Doom to Delphi Total Conversion
+FileDescription=Engine remake of the game Speed Haste
 FileVersion=1.0.1.732
 InternalName=GLSpeed
 LegalCopyright=Copyright 2005 - 2021, Jim Valavanis
