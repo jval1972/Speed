@@ -218,24 +218,24 @@ begin
 
   V_DrawPatch(160, 48, SCN_HUD, blueslashbig, false);
 
-  xpos := 160 - (blueslashbig.width div 2 + 1 + wl) + _big_blue_string_offset(sl[1]);
+  xpos := 160 - (blueslashbig.width div 2 + 1 + wl);
   for i := 1 to Length(sl) do
   begin
     id := Ord(sl[i]) - Ord('0');
     if IsIntegerInRange(id, 0, 9) then
     begin
-      V_DrawPatch(xpos, 48, SCN_HUD, bluedigitbig[id], false);
+      V_DrawPatch(xpos + bluedigitbig[id].leftoffset, 48, SCN_HUD, bluedigitbig[id], false);
       xpos := xpos + bluedigitbig[id].width + 1;
     end;
   end;
 
-  xpos := 160 + (blueslashbig.width div 2 + 1) + _small_blue_string_offset(st[1]);
+  xpos := 160 + (blueslashbig.width div 2 + 1);
   for i := 1 to Length(st) do
   begin
     id := Ord(st[i]) - Ord('0');
     if IsIntegerInRange(id, 0, 9) then
     begin
-      V_DrawPatch(xpos, 48, SCN_HUD, bluedigitsmall[id], false);
+      V_DrawPatch(xpos + bluedigitsmall[id].leftoffset, 48, SCN_HUD, bluedigitsmall[id], false);
       xpos := xpos + bluedigitsmall[id].width + 1;
     end;
   end;
@@ -362,8 +362,8 @@ var
   sp, st: string;
   i, id, xpos: integer;
 begin
-  V_DrawPatch(44, 164, SCN_HUD, mpos, false);
-  V_DrawPatch(44, 196, SCN_HUD, mposbar, false);
+  V_DrawPatch(54, 164, SCN_HUD, mpos, false);
+  V_DrawPatch(54, 196, SCN_HUD, mposbar, false);
 
   sp := itoa(hud_player.mo.raceposition);
   st := itoa(racepositions.numracepositions);
@@ -371,24 +371,24 @@ begin
   wp := _big_white_string_width(sp);
   wt := _small_blue_string_width(st);
 
-  xpos := 44 - (mposbar.width div 2 + 1 + wp) + _big_white_string_offset(sp[1]);
+  xpos := 54 - (mposbar.width div 2 + 1 + wp);
   for i := 1 to Length(sp) do
   begin
     id := Ord(sp[i]) - Ord('0');
     if IsIntegerInRange(id, 0, 9) then
     begin
-      V_DrawPatch(xpos, 196, SCN_HUD, whitedigitbig[id], false);
-      xpos := whitedigitbig[id].width + 1;
+      V_DrawPatch(xpos + whitedigitbig[id].leftoffset, 196, SCN_HUD, whitedigitbig[id], false);
+      xpos := xpos + whitedigitbig[id].width + 1;
     end;
   end;
 
-  xpos := 44 + (mposbar.width div 2 + 1) + _small_white_string_offset(st[1]);
+  xpos := 54 + (mposbar.width div 2 + 1);
   for i := 1 to Length(st) do
   begin
     id := Ord(st[i]) - Ord('0');
     if IsIntegerInRange(id, 0, 9) then
     begin
-      V_DrawPatch(xpos, 196, SCN_HUD, whitedigitsmall[id], false);
+      V_DrawPatch(xpos + whitedigitsmall[id].leftoffset, 196, SCN_HUD, whitedigitsmall[id], false);
       xpos := xpos + whitedigitsmall[id].width + 1;
     end;
   end;
