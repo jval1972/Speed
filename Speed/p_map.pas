@@ -114,6 +114,10 @@ var
   tmx: fixed_t; // JVAL: Slopes - move from implementation section to interface
   tmy: fixed_t; // JVAL: Slopes - move from implementation section to interface
 
+var
+  p_crashsoundonwall: boolean = true;
+  p_crashsoundoncar: boolean = true;
+
 implementation
 
 uses
@@ -617,7 +621,8 @@ begin
       thing.momx := thing.momx + FixedMul(tmthing.momx, pushfactor);
       thing.momy := thing.momy + FixedMul(tmthing.momy, pushfactor);
     end;
-    P_CrashSound(tmthing);
+    if p_crashsoundoncar then
+      P_CrashSound(tmthing);
   end;
 
   // check for special pickup
@@ -736,7 +741,8 @@ begin
       if not P_BlockLinesIterator(bx, by, PIT_CheckLineTM) then // JVAL: Slopes
       begin
         result := false;
-        P_CrashSound(tmthing);
+        if p_crashsoundonwall then
+          P_CrashSound(tmthing);
         exit;
       end;
 
