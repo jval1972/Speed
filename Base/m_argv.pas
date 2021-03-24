@@ -59,19 +59,10 @@ procedure M_CmdShowCmdline(const parm: string);
 
 function M_SaveFileName(const filename: string): string;
 
+function M_GetSaveGamePath(const ssav: string): string;
+
 const
-{$IFDEF DOOM}
-  CD_WORKDIR = 'c:\doomdata\';
-{$ENDIF}
-{$IFDEF HERETIC}
-  CD_WORKDIR = 'c:\heretic.cd\';
-{$ENDIF}
-{$IFDEF HEXEN}
-  CD_WORKDIR = 'c:\hexen.cd\';
-{$ENDIF}
-{$IFDEF STRIFE}
-  CD_WORKDIR = 'c:\strife.cd\';
-{$ENDIF}
+  CD_WORKDIR = 'c:\speed\';
 
 implementation
 
@@ -246,6 +237,23 @@ begin
     result := CD_WORKDIR + filename
   else
     result := filename;
+end;
+
+function M_GetSaveGamePath(const ssav: string): string;
+var
+  s: string;
+begin
+  if Pos('DATA\SAVES\', strupper(ssav)) > 0 then
+  begin
+    Result := ssav;
+    Exit;
+  end;
+
+  s := 'DATA';
+  MkDir(M_SaveFileName(s));
+  s := s + '\SAVES';
+  MkDir(M_SaveFileName(s));
+  result := M_SaveFileName(s + '\' + ssav);
 end;
 
 initialization
