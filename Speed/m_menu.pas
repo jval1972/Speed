@@ -2212,7 +2212,6 @@ begin
 
   G_DeferedInitNew(skill_t(mgameskill), gametype_t(mgametype), menu_episode + 1, 1);
   M_ClearMenus;
-//  M_SetupNextMenu(@SelectSkillDef);
 end;
 
 procedure M_PilotName(choice: integer);
