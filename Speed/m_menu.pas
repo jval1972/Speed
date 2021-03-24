@@ -127,6 +127,7 @@ uses
   gl_shadows,
   gl_tex,
   e_endoom,
+  p_map,
   p_setup,
   p_mobj_h,
   p_terrain,
@@ -765,9 +766,9 @@ type
 // COMPATIBILITY MENU
 //
   compatibility_e = (
-    cmp_allowplayerjumps,
-    cmp_allowplayerbreath,
-    cmp_keepcheatsinplayerrebord,
+    cmp_crashsoundonwall,
+    cmp_crashsoundoncar,
+    cmp_drawposindicators,
     cmp_majorbossdeathendsdoom1level,
     cmp_spawnrandommonsters,
     cmp_allowterrainsplashes,
@@ -5254,32 +5255,32 @@ begin
 //CompatibilityMenu
   pmi := @CompatibilityMenu[0];
   pmi.status := 1;
-  pmi.name := '!Allow player jumps';
-  pmi.cmd := 'allowplayerjumps';
+  pmi.name := '!Crash sound when hit a wall';
+  pmi.cmd := 'p_crashsoundonwall';
   pmi.routine := @M_BoolCmd;
-  pmi.pBoolVal := @allowplayerjumps;
+  pmi.pBoolVal := @p_crashsoundonwall;
   pmi.pIntVal := nil;
-  pmi.alphaKey := 'j';
+  pmi.alphaKey := 'w';
   pmi.tag := 0;
 
   inc(pmi);
   pmi.status := 1;
-  pmi.name := '!Allow player breath';
-  pmi.cmd := 'allowplayerbreath';
+  pmi.name := '!Crash sound when hit a car';
+  pmi.cmd := 'p_crashsoundoncar';
   pmi.routine := @M_BoolCmd;
-  pmi.pBoolVal := @allowplayerbreath;
-  pmi.pIntVal := nil;
-  pmi.alphaKey := 'b';
-  pmi.tag := 0;
-
-  inc(pmi);
-  pmi.status := 1;
-  pmi.name := '!Keep cheats when reborn';
-  pmi.cmd := 'keepcheatsinplayerreborn';
-  pmi.routine := @M_BoolCmd;
-  pmi.pBoolVal := @keepcheatsinplayerreborn;
+  pmi.pBoolVal := @p_crashsoundoncar;
   pmi.pIntVal := nil;
   pmi.alphaKey := 'c';
+  pmi.tag := 0;
+
+  inc(pmi);
+  pmi.status := 1;
+  pmi.name := '!Draw position indicators';
+  pmi.cmd := 'gl_drawposindicators';
+  pmi.routine := @M_BoolCmd;
+  pmi.pBoolVal := @gl_drawposindicators;
+  pmi.pIntVal := nil;
+  pmi.alphaKey := 'i';
   pmi.tag := 0;
 
   inc(pmi);
