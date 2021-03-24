@@ -92,10 +92,11 @@ var
   gl_shared_texture_palette: boolean = false;
   gl_linear_hud: boolean = true;
   gl_add_all_lines: boolean = true;
-  gl_renderwireframe: Boolean = false;
+  gl_renderwireframe: boolean = false;
   // Hack to avoid Intel HD4000 problem with Win10
   // https://communities.intel.com/thread/117626
-  gl_no_glfinish_hack: Boolean = true;
+  gl_no_glfinish_hack: boolean = true;
+  gl_drawposindicators: boolean = true;
 
 type
   lp3DFXFUNC = procedure(i1, i2, i3, i4, i5: integer; const p: pointer);

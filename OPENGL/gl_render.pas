@@ -4225,28 +4225,29 @@ var
   sz, offs: float;
 begin
   // Draw position indicators (not for player)
-  if sprite.mo.player = nil then
-    if gld_BindPositionIndicatorTex(sprite.mo.raceposition) then
-    begin
-      gld_StaticLight(sprite.light);
+  if gl_drawposindicators then
+    if sprite.mo.player = nil then
+      if gld_BindPositionIndicatorTex(sprite.mo.raceposition) then
+      begin
+        gld_StaticLight(sprite.light);
 
-      glMatrixMode(GL_MODELVIEW);
-      glPushMatrix;
-      glTranslatef(sprite.x, sprite.y, sprite.z);
-      glRotatef(inv_yaw, 0.0, 1.0, 0.0);
+        glMatrixMode(GL_MODELVIEW);
+        glPushMatrix;
+        glTranslatef(sprite.x, sprite.y, sprite.z);
+        glRotatef(inv_yaw, 0.0, 1.0, 0.0);
 
-      sz := POS_INDICATOR_SIZE / MAP_COEFF;
-      offs := POS_INDICATOR_OFFS / MAP_COEFF;
+        sz := POS_INDICATOR_SIZE / MAP_COEFF;
+        offs := POS_INDICATOR_OFFS / MAP_COEFF;
 
-      glBegin(GL_QUADS);
-        glTexCoord2f(1.0, 0.0); glVertex3f(-2.0 * sz, 2.0 * sz + offs,  0.0);
-        glTexCoord2f(0.0, 0.0); glVertex3f( 0.0     , 2.0 * sz + offs,  0.0);
-        glTexCoord2f(0.0, 1.0); glVertex3f( 0.0     , offs,             0.0);
-        glTexCoord2f(1.0, 1.0); glVertex3f(-2.0 * sz, offs,             0.0);
-      glEnd;
+        glBegin(GL_QUADS);
+          glTexCoord2f(1.0, 0.0); glVertex3f(-2.0 * sz, 2.0 * sz + offs,  0.0);
+          glTexCoord2f(0.0, 0.0); glVertex3f( 0.0     , 2.0 * sz + offs,  0.0);
+          glTexCoord2f(0.0, 1.0); glVertex3f( 0.0     , offs,             0.0);
+          glTexCoord2f(1.0, 1.0); glVertex3f(-2.0 * sz, offs,             0.0);
+        glEnd;
 
-      glPopMatrix;
-    end;
+        glPopMatrix;
+      end;
 
   if sprite.models <> nil then
   begin
