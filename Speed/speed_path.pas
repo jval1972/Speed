@@ -333,14 +333,23 @@ var
   mo: Pmobj_t;
   inf: Pracepositionitem_t;
   prev, curr: Prtlpath_t;
-  lapsize: fixed64_t;
+  lapsize, racelen: fixed64_t;
   p: integer;
 
   function _compareP(const p1, p2: Pracepositionitem_t): int64;
   begin
-    Result := p1.finishtime - p2.finishtime;
+    Result := p2.totaldistance - p1.totaldistance;
     if Result = 0 then
-      Result := p2.totaldistance - p1.totaldistance;
+    begin
+      if p1.finishtime = p2.finishtime then
+        Result := 0
+      else if p1.finishtime = 0 then
+        Result := 1
+      else if p2.finishtime = 0 then
+        Result := -1
+      else
+        Result := p1.finishtime - p2.finishtime;
+    end;
   end;
 
   procedure qsortP(l, r: Integer);
@@ -377,6 +386,7 @@ begin
   racepositions.numracepositions := 0;
   inf := @racepositions.items[0];
   lapsize := rtlpaths[numpaths - 1].dist_to_here;
+  racelen := lapsize * int64(race.numlaps);
 
   think := thinkercap.next;
   while think <> @thinkercap do
@@ -395,7 +405,7 @@ begin
       if mo.lapscompleted >= race.numlaps then
       begin
         inf.finishtime := rtlpaths[0].cardata[mo.carinfo][race.numlaps].entertime;
-        inf.totaldistance := 0;
+        inf.totaldistance := racelen;
       end
       else
       begin
@@ -406,6 +416,17 @@ begin
           int64(mo.lapscompleted) * lapsize + // Completed laps
           prev.dist_to_here +   // Prev path
           P_Distance(mo.x - prev.mo.x, mo.y - prev.mo.y); // Distance in current path
+
+        // Crossed the finished line at least once
+        if mo.lapscompleted >= 0 then
+        // If we are excactly at the finish line, we subtrack the previous path
+        // distance, since we've changed lap
+          if mo.currPath = 0 then
+            inf.totaldistance := inf.totaldistance - prev.dist_to_here;
+
+        // Limit calculated distance to race length
+        if inf.totaldistance > racelen then
+          inf.totaldistance := racelen;
       end;
       inc(racepositions.numracepositions);
       inc(inf);
@@ -417,7 +438,7 @@ begin
 
   // Cache race position
   for p := 0 to racepositions.numracepositions - 1 do
-    racepositions.items[p].mo.raceposition := p + 1;
+    racepositions.items[p].mo.raceposition := p + 1; // Positions start from 1
 end;
 
 end.
