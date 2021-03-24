@@ -56,6 +56,7 @@ type
     turnspeed: angle_t; // angle to turn per TIC
     model3d: string[64];
     cartype: cartype_t;
+    name: string[32];
   end;
   Pcarinfo_t = ^carinfo_t;
   carinfo_tArray = array[0..$FF] of carinfo_t;
@@ -88,6 +89,7 @@ const
       turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N0A.I3D';
       cartype: ct_formula;
+      name: 'PHOENIX ENGINE';
     ),
     (
       tex1old: 'f_1_4';
@@ -102,6 +104,7 @@ const
       turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N0A.I3D';
       cartype: ct_formula;
+      name: 'SPEED-X';
     ),
     (
       tex1old: 'f_1_4';
@@ -116,6 +119,7 @@ const
       turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N0A.I3D';
       cartype: ct_formula;
+      name: 'BAM BAM';
     ),
     (
       tex1old: 'f_1_4';
@@ -130,6 +134,7 @@ const
       turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N0A.I3D';
       cartype: ct_formula;
+      name: 'SNAP';
     ),
 
     (
@@ -145,6 +150,7 @@ const
       turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N1A.I3D';
       cartype: ct_formula;
+      name: 'BLUE STEEL';
     ),
     (
       tex1old: 'f_2_4';
@@ -159,6 +165,7 @@ const
       turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N1A.I3D';
       cartype: ct_formula;
+      name: 'SONIC';
     ),
     (
       tex1old: 'f_2_4';
@@ -173,6 +180,7 @@ const
       turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N1A.I3D';
       cartype: ct_formula;
+      name: 'DORY';
     ),
 
     (
@@ -188,6 +196,7 @@ const
       turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N2A.I3D';
       cartype: ct_formula;
+      name: 'DREAM MAKER';
     ),
     (
       tex1old: 'f_3_4';
@@ -202,6 +211,7 @@ const
       turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N2A.I3D';
       cartype: ct_formula;
+      name: 'DARK KNIGHT';
     ),
     (
       tex1old: 'f_3_4';
@@ -216,6 +226,7 @@ const
       turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N2A.I3D';
       cartype: ct_formula;
+      name: 'PANTHER';
     ),
     (
       tex1old: 'f_3_4';
@@ -230,6 +241,7 @@ const
       turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N2A.I3D';
       cartype: ct_formula;
+      name: 'ZORRO';
     ),
 
     (
@@ -245,6 +257,7 @@ const
       turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N3A.I3D';
       cartype: ct_formula;
+      name: 'FROZEN SKY';
     ),
     (
       tex1old: 'f_4_4';
@@ -259,6 +272,7 @@ const
       turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N3A.I3D';
       cartype: ct_formula;
+      name: 'DIABLO';
     ),
     (
       tex1old: 'f_4_4';
@@ -273,6 +287,7 @@ const
       turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N3A.I3D';
       cartype: ct_formula;
+      name: 'HERCULES';
     ),
     (
       tex1old: 'f_4_4';
@@ -287,6 +302,7 @@ const
       turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N3A.I3D';
       cartype: ct_formula;
+      name: 'VAPOR';
     ),
     (
       tex1old: 'f_5_4';
@@ -301,6 +317,7 @@ const
       turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N4A.I3D';
       cartype: ct_formula;
+      name: 'SPEED DEMON';
     ),
     (
       tex1old: 'f_5_4';
@@ -315,6 +332,7 @@ const
       turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N4A.I3D';
       cartype: ct_formula;
+      name: 'BIG MAN';
     ),
     (
       tex1old: 'f_5_4';
@@ -329,6 +347,7 @@ const
       turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N4A.I3D';
       cartype: ct_formula;
+      name: 'GREAT ZEUS';
     ),
 
     (
@@ -344,6 +363,7 @@ const
       turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N5A.I3D';
       cartype: ct_formula;
+      name: 'BLACK BULLET';
     ),
     (
       tex1old: 'f_6_4';
@@ -358,6 +378,7 @@ const
       turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N5A.I3D';
       cartype: ct_formula;
+      name: 'ICE CUBE';
     ),
 
 
@@ -374,6 +395,7 @@ const
       turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N0A.I3D';
       cartype: ct_stock;
+      name: 'ROAD STAR';
     ),
     (
       tex1old: 'd_1_5';
@@ -388,6 +410,7 @@ const
       turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N0A.I3D';
       cartype: ct_stock;
+      name: 'LEMON STAR';
     ),
     (
       tex1old: 'd_1_5';
@@ -402,6 +425,7 @@ const
       turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N0A.I3D';
       cartype: ct_stock;
+      name: 'BUMBLE BEE';
     ),
     (
       tex1old: 'd_1_5';
@@ -416,6 +440,7 @@ const
       turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N0A.I3D';
       cartype: ct_stock;
+      name: 'SUNSHINE';
     ),
     (
       tex1old: 'd_2_5';
@@ -430,6 +455,7 @@ const
       turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N1A.I3D';
       cartype: ct_stock;
+      name: 'THE FLAME';
     ),
     (
       tex1old: 'd_2_5';
@@ -444,6 +470,7 @@ const
       turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N1A.I3D';
       cartype: ct_stock;
+      name: 'ROAD FROG';
     ),
     (
       tex1old: 'd_2_5';
@@ -458,6 +485,7 @@ const
       turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N1A.I3D';
       cartype: ct_stock;
+      name: 'THE HULK';
     ),
     (
       tex1old: 'd_3_5';
@@ -472,6 +500,7 @@ const
       turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N2A.I3D';
       cartype: ct_stock;
+      name: 'SKEIN';
     ),
     (
       tex1old: 'd_3_5';
@@ -486,6 +515,7 @@ const
       turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N2A.I3D';
       cartype: ct_stock;
+      name: '';
     ),
     (
       tex1old: 'd_3_5';
@@ -500,6 +530,7 @@ const
       turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N2A.I3D';
       cartype: ct_stock;
+      name: 'BIG BIRD';
     ),
     (
       tex1old: 'd_3_5';
@@ -514,6 +545,7 @@ const
       turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N2A.I3D';
       cartype: ct_stock;
+      name: 'TORCH';
     ),
     (
       tex1old: 'd_4_5';
@@ -528,6 +560,7 @@ const
       turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N3A.I3D';
       cartype: ct_stock;
+      name: 'BLACK FURY';
     ),
     (
       tex1old: 'd_4_5';
@@ -542,6 +575,7 @@ const
       turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N3A.I3D';
       cartype: ct_stock;
+      name: 'BURNER';
     ),
     (
       tex1old: 'd_4_5';
@@ -556,6 +590,7 @@ const
       turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N3A.I3D';
       cartype: ct_stock;
+      name: 'SHADOW';
     ),
     (
       tex1old: 'd_5_5';
@@ -570,6 +605,7 @@ const
       turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N4A.I3D';
       cartype: ct_stock;
+      name: 'LUCKY HORSE';
     ),
     (
       tex1old: 'd_5_5';
@@ -584,6 +620,7 @@ const
       turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N4A.I3D';
       cartype: ct_stock;
+      name: 'DIAMOND';
     ),
     (
       tex1old: 'd_5_5';
@@ -598,6 +635,7 @@ const
       turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N4A.I3D';
       cartype: ct_stock;
+      name: 'POLAR BEAR';
     ),
     (
       tex1old: 'd_6_5';
@@ -612,6 +650,7 @@ const
       turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N5A.I3D';
       cartype: ct_stock;
+      name: 'THE MIRACLE';
     ),
     (
       tex1old: 'd_6_5';
@@ -626,6 +665,7 @@ const
       turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N5A.I3D';
       cartype: ct_stock;
+      name: 'BLUEBERRY';
     ),
     (
       tex1old: 'd_6_5';
@@ -640,6 +680,7 @@ const
       turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N5A.I3D';
       cartype: ct_stock;
+      name: 'BOOM BOOM';
     )
   );
 
