@@ -135,6 +135,7 @@ uses
   p_tick,
   p_terrain,
   ps_main,  // JVAL: Script Events
+  speed_sounds,
   r_main,
   r_sky,
   r_intrpl,
@@ -272,99 +273,6 @@ end;
 // MOVEMENT ITERATOR FUNCTIONS
 //
 
-
-//
-// PIT_CheckLine
-// Adjusts tmfloorz and tmceilingz as lines are contacted
-//
-function PIT_CheckLine(ld: Pline_t): boolean;
-begin
-  if (tmbbox[BOXRIGHT] <= ld.bbox[BOXLEFT]) or
-     (tmbbox[BOXLEFT] >= ld.bbox[BOXRIGHT]) or
-     (tmbbox[BOXTOP] <= ld.bbox[BOXBOTTOM]) or
-     (tmbbox[BOXBOTTOM] >= ld.bbox[BOXTOP]) then
-  begin
-    result := true;
-    exit;
-  end;
-
-  if P_BoxOnLineSide(@tmbbox, ld) <> -1 then
-  begin
-    result := true;
-    exit;
-  end;
-
-  // A line has been hit
-
-  // The moving thing's destination position will cross
-  // the given line.
-  // If this should not be allowed, return false.
-  // If the line is special, keep track of it
-  // to process later if the move is proven ok.
-  // NOTE: specials are NOT sorted by order,
-  // so two special lines that are only 8 pixels apart
-  // could be crossed in either order.
-
-  if ld.backsector = nil then
-  begin
-    result := false;  // one sided line
-    exit;
-  end;
-
-  if tmthing.flags and MF_MISSILE = 0 then
-  begin
-    if ld.flags and ML_BLOCKING <> 0 then
-    begin
-      result := false;  // explicitly blocking everything
-      exit;
-    end;
-
-    // killough 8/9/98: monster-blockers don't affect friends
-    if ((tmthing.player = nil) or (tmthing.flags2_ex and MF2_EX_FRIEND <> 0)) and ((ld.flags and ML_BLOCKMONSTERS) <> 0) then
-    begin
-      result := false;  // block monsters only
-      exit;
-    end;
-  end;
-
-  // set openrange, opentop, openbottom
-  P_LineOpening(ld, true);
-
-  // adjust floor / ceiling heights
-  if opentop < tmceilingz then
-  begin
-    tmceilingz := opentop;
-    ceilingline := ld;
-  end;
-
-  if openbottom > tmfloorz then
-    tmfloorz := openbottom;
-
-  if lowfloor < tmdropoffz then
-    tmdropoffz := lowfloor;
-
-  // if contacted a special line, add it to the list
-  if (ld.special <> 0) or (ld.flags and ML_TRIGGERSCRIPTS <> 0) then
-  begin
-    if maxspechit = 0 then
-    begin
-      maxspechit := 64;
-      spechit := Z_Malloc(64 * SizeOf(Pline_t), PU_STATIC, nil);
-    end
-    else if numspechit = maxspechit then
-    begin
-      maxspechit := maxspechit + 8;
-      spechit := Z_ReAlloc(spechit, maxspechit * SizeOf(Pline_t), PU_STATIC, nil)
-    end;
-
-    spechit[numspechit] := ld;
-    inc(numspechit);
-
-  end;
-
-  result := true;
-end;
-
 // JVAL: Slopes
 function PIT_CheckLineTM(ld: Pline_t): boolean;
 begin
@@ -493,6 +401,15 @@ begin
     IsIntegerInRange(Bz2, Az1, Az2);
 end;
 
+procedure P_CrashSound(const mo: Pmobj_t);
+begin
+  if leveltime - mo.lastcrashsound > 3 * TICRATE then
+    if P_AproxDistance(viewx - mo.x, viewy - mo.y) < 128 * FRACUNIT then
+    begin
+      S_AmbientSound(mo.x, mo.y, 'speedhaste/CRASH.RAW');
+      mo.lastcrashsound := leveltime;
+    end;
+end;
 //
 // PIT_CheckThing
 //
@@ -700,6 +617,7 @@ begin
       thing.momx := thing.momx + FixedMul(tmthing.momx, pushfactor);
       thing.momy := thing.momy + FixedMul(tmthing.momy, pushfactor);
     end;
+    P_CrashSound(tmthing);
   end;
 
   // check for special pickup
@@ -813,27 +731,14 @@ begin
   yl := MapBlockInt(tmbbox[BOXBOTTOM] - bmaporgy);
   yh := MapBlockInt(tmbbox[BOXTOP] - bmaporgy);
 
-  // JVAL: Slopes
-  if G_PlayingEngineVersion >= VERSION122 then
-  begin
-    for bx := xl to xh do
-      for by := yl to yh do
-        if not P_BlockLinesIterator(bx, by, PIT_CheckLineTM) then // JVAL: Slopes
-        begin
-          result := false;
-          exit;
-        end;
-  end
-  else
-  begin
-    for bx := xl to xh do
-      for by := yl to yh do
-        if not P_BlockLinesIterator(bx, by, PIT_CheckLine) then
-        begin
-          result := false;
-          exit;
-        end;
-  end;
+  for bx := xl to xh do
+    for by := yl to yh do
+      if not P_BlockLinesIterator(bx, by, PIT_CheckLineTM) then // JVAL: Slopes
+      begin
+        result := false;
+        P_CrashSound(tmthing);
+        exit;
+      end;
 
   result := true;
 end;

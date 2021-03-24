@@ -1463,7 +1463,7 @@ begin
   begin
     rname := getjcllumpname(@lumps[i]);
     if strupper(RightStr(rname, 4)) = '.RAW' then
-      if (rname <> 'MOTOR0.RAW') and (rname <> 'MOTOR1.RAW') then
+      if (rname <> 'MOTOR0.RAW') and (rname <> 'MOTOR1.RAW') or (rname = 'CRASH.RAW') then
         lst1.Add(rname)
       else
         lst2.Add(rname);
