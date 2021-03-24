@@ -1931,7 +1931,7 @@ begin
       else
         fcar := GetIntegerInRange(def_anycar, 0, NUMCARINFO - 1);
       end;
-      stmp := stmp + ': ' + '#' + itoa(fcar)
+      stmp := stmp + ': ' + carinfo[fcar].name;
     end
     else if i = Ord(news_difficultylevel) then
       stmp := stmp + ': ' + str_skill[skill_t(mgameskill)]
@@ -2045,15 +2045,22 @@ end;
 procedure M_DrawSelectCar;
 var
   fcar: integer;
+  mpos: menupos_t;
 begin
   V_DrawPatch(0, 0, SCN_TMP, 'MBG_CAR', false);
-
-  M_DrawHeadLine(20, 15, 'Select Car');
+  V_DrawPatch(0, 8, SCN_TMP, 'MSFBAR', false);
 
   fcar := currentmenu.menuitems[0].tag;
-  M_DrawHeadLine(30, 40, 'Car #' + itoa(fcar));
 
-  M_DrawCarModel(200, 70, 128, 128, fcar, 72.0, (select_car_tic - gametic) / 100, pi / 6);
+  M_WriteText(160, 45, carinfo[fcar].name, ma_center, @hu_fontR, @hu_fontB);
+
+  mpos := M_WriteText(20, 80, 'MAX SPEED: ', ma_left, @hu_fontW, @hu_fontB);
+  M_WriteText(mpos.x, mpos.y, itoa(carinfo[fcar].maxspeed div KMH_TO_FIXED) + ' KMH', ma_left, @hu_fontY, @hu_fontB);
+
+  mpos := M_WriteText(20, 100, 'NUMBER: ', ma_left, @hu_fontw, @hu_fontB);
+  M_WriteText(mpos.x, mpos.y, itoa(carinfo[fcar].number), ma_left, @hu_fontY, @hu_fontB);
+
+  M_DrawCarModel(180, 50, 144, 144, fcar, 80.0, (select_car_tic - gametic) / 100, pi / 6);
 end;
 
 procedure M_SelectCourse;
@@ -3684,7 +3691,7 @@ begin
 
   inc(pmi);
   pmi.status := 1;
-  pmi.name := 'Select Car';
+  pmi.name := 'Select Vehicle';
   pmi.cmd := '';
   pmi.routine := @M_SelectCarModel;
   pmi.pBoolVal := nil;
