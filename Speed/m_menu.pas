@@ -1918,7 +1918,7 @@ const
     'Easy',
     'Medium',
     'Hard',
-    'Super-human'
+    'Veteran'
   );
 
   str_cartype: array[0..Ord(ct_any)] of string = (
