@@ -879,6 +879,28 @@ end;
 const
   MAX_SPEED_TURN_DECREASE = 40;
 
+procedure SH_StorePlayerLapTimes(const p: Pplayer_t);
+var
+  score: Pplayerscore_t;
+  i: integer;
+  tl: timelaps_t;
+begin
+  score := @p.currentscore;
+  ZeroMemory(score, SizeOf(playerscore_t));
+
+  score.episode := gameepisode;
+  score.map := gamemap;
+  score.carinfo := p.mo.carinfo;
+  score.numlaps := race.numlaps;
+  SH_GetTimeLaps(p.mo, @tl);
+  score.totaltime := 0;
+  for i := 0 to score.numlaps - 1 do
+  begin
+    score.laptimes[i] := tl[i];
+    score.totaltime := score.totaltime + tl[i];
+  end;
+end;
+
 procedure SH_BuildDrivingCmdPlayer(const mo: Pmobj_t; const cmd: Pdrivingcmd_t);
 var
   p: Pplayer_t;
@@ -889,6 +911,7 @@ begin
   // If race completed use AI driving
   if mo.lapscompleted >= race.numlaps then
   begin
+    SH_StorePlayerLapTimes(mo.player);
     SH_BuildDrivingCmdAI(mo, cmd);
     Exit;
   end;

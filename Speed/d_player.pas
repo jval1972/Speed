@@ -45,6 +45,7 @@ uses
 // as commands per game tick.
   d_ticcmd,
   m_fixed,
+  speed_race,
   doomdef;
 
 //
@@ -73,6 +74,17 @@ const
   CF_NOMOMENTUM = 4;
   // Low gravity cheat
   CF_LOWGRAVITY = 8;
+
+type
+  playerscore_t = record
+    episode: integer;
+    map: integer;
+    numlaps: integer;
+    carinfo: integer;
+    laptimes: array[0..MAXLAPS - 1] of integer;
+    totaltime: integer;
+  end;
+  Pplayerscore_t = ^playerscore_t;
 
 const
   PILOTNAMESIZE = 16;
@@ -199,6 +211,8 @@ type
     messagesoundtarget: Pmobj_t; // JVAL: 20200508 - Messages sound target
     cmd: ticcmd_t;      // JVAL Smooth Look Up/Down
     playername: string[PILOTNAMESIZE];
+    score: array[1..4] of array[1..9] of playerscore_t;
+    currentscore: playerscore_t;
   end;
   Pplayer_t = ^player_t;
 
@@ -216,7 +230,7 @@ type
     ssecret: integer;
     stime: integer;
     frags: array[0..3] of integer;
-    score: integer; // current score on entry, modified on return
+    score: playerscore_t; // current score on entry, modified on return
   end;
   Pwbplayerstruct_t = ^wbplayerstruct_t;
   wbplayerstruct_tArray = packed array[0..$FFFF] of wbplayerstruct_t;

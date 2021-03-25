@@ -381,6 +381,7 @@ uses
   i_xmmusic in 'Base\i_xmmusic.pas',
   speed_player in 'Speed\speed_player.pas',
   speed_hud in 'Speed\speed_hud.pas';
+  speed_intermission in 'Speed\speed_intermission.pas',
 
 var
   Saved8087CW: Word;
