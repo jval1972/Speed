@@ -53,7 +53,7 @@ type
   end;
 
 const
-  NUMINDICATORS = 38;
+  NUMINDICATORS = 39;
   IND_FLOOR = 1;
   IND_SPRITE = 2;
   IND_PATCH = 3;
@@ -103,6 +103,7 @@ const
     (_START: 'P9_START'; _END: 'P9_END';   _type: IND_PATCH),
     (_START: 'P0_START'; _END: 'P0_END';   _type: IND_PATCH),
     (_START: 'PP_START'; _END: 'PP_END';   _type: IND_PATCH),
+    (_START: 'G_START';  _END: 'G_END';    _type: IND_PATCH),
     (_START: 'VX_START'; _END: 'VX_END';   _type: IND_VOXEL),
     (_START: 'HI_START'; _END: 'HI_END';   _type: IND_HIRES)
   );
