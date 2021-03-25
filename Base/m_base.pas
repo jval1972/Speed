@@ -45,7 +45,7 @@ const
   _GAME = 'Strife';
 {$ENDIF}
 
-  APPNAME = 'Delphi' + _GAME;
+  APPNAME = _GAME;
   DEFARGVFILENAME = _GAME + '32.cmd';
   WINCLASSNAME = _GAME + '32';
 
