@@ -4224,9 +4224,9 @@ var
   cinfo: Pcarinfo_t;
   sz, offs: float;
 begin
-  // Draw position indicators (not for player)
+  // Draw position indicators (not for displayplayer)
   if gl_drawposindicators then
-    if sprite.mo.player = nil then
+    if sprite.mo.player <> @players[displayplayer] then
       if gld_BindPositionIndicatorTex(sprite.mo.raceposition) then
       begin
         gld_StaticLight(sprite.light);
