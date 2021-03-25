@@ -645,6 +645,8 @@ begin
   if originalspeedlevel then
     _do_fixes;
 
+  AddDoomThingToWad(0, 0, 0, 500, 7); // MT_RACESTART (Start Race CountDown)
+
   wadwriter.AddSeparator(levelname);
   wadwriter.AddData('THINGS', doomthings, numdoomthings * SizeOf(mapthing_t));
   wadwriter.AddData('LINEDEFS', doomlinedefs, numdoomlinedefs * SizeOf(maplinedef_t));

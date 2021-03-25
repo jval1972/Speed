@@ -1969,6 +1969,17 @@ begin
 
   leveltime := _SHL(a, 16) + _SHL(b, 8) + c;
 
+  a := save_p[0];
+  save_p := PByteArray(integer(save_p) + 1);
+
+  b := save_p[0];
+  save_p := PByteArray(integer(save_p) + 1);
+
+  c := save_p[0];
+  save_p := PByteArray(integer(save_p) + 1);
+
+  racetime := _SHL(a, 16) + _SHL(b, 8) + c;
+
   // dearchive all the modifications
   P_UnArchivePlayers;
   P_UnArchiveWorld;
@@ -2063,6 +2074,15 @@ begin
   save_p := PByteArray(integer(save_p) + 1);
 
   save_p[0] := leveltime;
+  save_p := PByteArray(integer(save_p) + 1);
+
+  save_p[0] := _SHR(racetime, 16);
+  save_p := PByteArray(integer(save_p) + 1);
+
+  save_p[0] := _SHR(racetime, 8);
+  save_p := PByteArray(integer(save_p) + 1);
+
+  save_p[0] := racetime;
   save_p := PByteArray(integer(save_p) + 1);
 
   len := integer(save_p) - integer(savebuffer);

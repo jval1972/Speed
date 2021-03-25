@@ -60,6 +60,7 @@ procedure P_Ticker;
 
 var
   leveltime: integer;
+  racetime: integer;
   isgamesuspended: boolean = true;
   isgamefreezed: boolean = false;
 
@@ -79,6 +80,7 @@ uses
   p_mobjlist,
   ps_main,  // JVAL: Script Events
   speed_path,
+  speed_race,
   z_zone;
 
 procedure P_InitThinkers;
@@ -237,6 +239,8 @@ begin
 
   // for par times
   inc(leveltime);
+  if race.racestatus <> rs_waiting then
+    inc(racetime);
 end;
 
 end.

@@ -118,6 +118,8 @@ begin
   race.groundlump := R_GetLumpForFlat(sectors[0].floorpic);
   race.ground := W_CacheLumpNum(race.groundlump, PU_LEVEL);
 
+  race.racestatus := rs_waiting;
+
   race.name := '';
   race.best := 0;
   race.level := 0;

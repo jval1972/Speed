@@ -296,9 +296,9 @@ begin
     if cpinfo[mo.lapscompleted].visitlap <= mo.lapscompleted then
     begin
       cpinfo[mo.lapscompleted].visitlap := mo.lapscompleted + 1;
-      cpinfo[mo.lapscompleted].entertime := GetIntegerInRange(leveltime, 1, MAXINT);
+      cpinfo[mo.lapscompleted].entertime := GetIntegerInRange(racetime, 1, MAXINT);
     end;
-    cpinfo[mo.lapscompleted].exittime := leveltime;
+    cpinfo[mo.lapscompleted].exittime := racetime;
   end;
 end;
 

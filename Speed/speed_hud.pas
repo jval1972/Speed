@@ -300,10 +300,10 @@ begin
   begin
     ypos := ypos + 10;
     if numcompletedlaps = 0 then
-      curlaptime := leveltime
+      curlaptime := racetime
     else
     begin
-      curlaptime := leveltime;
+      curlaptime := racetime;
       for i := 0 to numcompletedlaps - 1 do
         curlaptime := curlaptime - timelaps[i];
     end;
@@ -415,7 +415,7 @@ begin
   for i := 0 to race.numlaps - 2 do
     tottime := tottime + timelaps[i];
 
-  tics := leveltime - tottime;
+  tics := racetime - tottime;
   if tics >= TICS_SHOW_LAST_LAP then
     Exit;
 

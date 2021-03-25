@@ -1721,6 +1721,7 @@ begin
 {$ENDIF}
 
   leveltime := 0;
+  racetime := 0;
 
   gwa := nil;
   if not gwaloaded then

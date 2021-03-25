@@ -48,7 +48,7 @@ procedure DEH_Init;
 procedure DEH_ShutDown;
 
 const
-  DEHNUMACTIONS = 273;
+  DEHNUMACTIONS = 275;
 
 type
   deh_action_t = record
@@ -126,6 +126,7 @@ uses
   psi_overlay,
   r_renderstyle,
   sounds,
+  speed_actions,
   speed_sounds,
   sc_params,
   sc_engine,
@@ -2709,6 +2710,13 @@ begin
   deh_actions[272].action.acp1 := @A_OverlayDrawCenterText;
   deh_actions[272].name := strupper('OverlayDrawCenterText');
   {$IFDEF DLL}deh_actions[272].decl := 'A_OverlayDrawCenterText(ticks: Integer; txt: string; x, y: Integer ;)';{$ENDIF}
+  deh_actions[273].action.acp1 := @A_PlaysoundFullVolume;
+  deh_actions[273].name := strupper('PlaysoundFullVolume');
+  {$IFDEF DLL}deh_actions[273].decl := 'A_PlaysoundFullVolume(sound: string)';{$ENDIF}
+  deh_actions[274].action.acp1 := @A_StartRace;
+  deh_actions[274].name := strupper('StartRace');
+  {$IFDEF DLL}deh_actions[274].decl := 'A_StartRace';{$ENDIF}
+
 
   deh_strings.numstrings := 0;
   deh_strings.realnumstrings := 0;

@@ -991,6 +991,9 @@ var
   dan: fixed_t;
   force: fixed_t;
 begin
+  if race.racestatus = rs_waiting then
+    Exit;
+
   // Calculate actual speed
   dx := mo.x - mo.oldx;
   dy := mo.y - mo.oldy;
