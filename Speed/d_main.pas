@@ -168,6 +168,7 @@ uses
   speed_mapdata,
   speed_hud,
   speed_intermission,
+  speed_score,
   r_draw,
   r_main,
   r_hires,
@@ -335,7 +336,7 @@ procedure D_Display;
               AM_Drawer;
             if (viewheight <> SCREENHEIGHT) and viewfullscreen then
               redrawsbar := true;
-            if inhelpscreensstate and (not inhelpscreens) then
+            if inhelpscreensstate and not inhelpscreens then
               redrawsbar := true; // just put away the help screen
             viewfullscreen := viewheight = SCREENHEIGHT;
             if viewfullscreen then
@@ -375,7 +376,7 @@ procedure D_Display;
       begin
         if scaledviewwidth <> SCREENWIDTH then
         begin
-          if menuactive or menuactivestate or (not viewactivestate) or C_IsConsoleActive then
+          if menuactive or menuactivestate or not viewactivestate or C_IsConsoleActive then
             borderdrawcount := 3;
           if borderdrawcount > 0 then
           begin
@@ -1935,7 +1936,7 @@ begin
   // Check for -file in shareware
   // JVAL
   // Allow modified games if -devparm is specified, for debuging reasons
-  if modifiedgame and (not devparm) then
+  if modifiedgame and not devparm then
   begin
     err_shown := false;
     if gamemode = shareware then
@@ -2043,6 +2044,11 @@ begin
   P_Init;
 
   SUC_Progress(81);
+
+  printf('SH_LoadScoreTable: Loading score table.'#13#10);
+  SH_LoadScoreTable;
+
+  SUC_Progress(82);
 
   printf('D_CheckNetGame: Checking network game status.'#13#10);
   D_CheckNetGame;
@@ -2183,6 +2189,8 @@ begin
   M_ShutDownMenus;
   printf('SH_ShutDownSpeedHud: Shut down Speed Haste HUD.'#13#10);
   SH_ShutDownSpeedHud;
+  printf('SH_SaveScoreTable: Saving score table.'#13#10);
+  SH_SaveScoreTable;
   printf('SC_ShutDown: Shut down script engine.'#13#10);
   SC_ShutDown;
   // JVAL: PascalScript
