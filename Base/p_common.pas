@@ -178,6 +178,8 @@ procedure A_RandomMeleeSound(actor: Pmobj_t);
 
 procedure A_Playsound(actor: Pmobj_t);
 
+procedure A_PlaysoundFullVolume(actor: Pmobj_t);
+
 procedure A_PlayWeaponsound(actor: Pmobj_t);
 
 procedure A_RandomSound(actor: Pmobj_t);
@@ -1757,6 +1759,29 @@ begin
   end;
 
   S_StartSound(actor, sndidx);
+end;
+
+//
+// JVAL
+// Play a sound at full volume
+// A_PlaysoundFullVolume(soundname)
+//
+procedure A_PlaysoundFullVolume(actor: Pmobj_t);
+var
+  sndidx: integer;
+begin
+  if not P_CheckStateParams(actor, 1) then
+    exit;
+
+  if actor.state.params.IsComputed[0] then
+    sndidx := actor.state.params.IntVal[0]
+  else
+  begin
+    sndidx := S_GetSoundNumForName(actor.state.params.StrVal[0]);
+    actor.state.params.IntVal[0] := sndidx;
+  end;
+
+  S_StartSound(nil, sndidx);
 end;
 
 procedure A_PlayWeaponsound(actor: Pmobj_t);
