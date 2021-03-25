@@ -157,11 +157,47 @@ begin
 end;
 
 procedure SH_Intermission_Drawer1;
+var
+  stmp: string;
 begin
+  V_DrawPatchFullScreenTMP320x200('MBG_RECO');
+
+  V_DrawPatch(160, 50, SCN_TMP, 'REC_TXT', false);
+
+  if CARINFO[players[consoleplayer].currentscore.carinfo].cartype = ct_formula then
+    stmp := 'Formula car lap records'
+  else if CARINFO[players[consoleplayer].currentscore.carinfo].cartype = ct_stock then
+    stmp := 'Stock car lap records'
+  else
+    Exit;
+
+  M_WriteText(160, 50, stmp, ma_center, @hu_fontY, @hu_fontB);
+
+  V_CopyRect(0, 0, SCN_TMP, 320, 200, 0, 0, SCN_FG, true);
+
+  V_FullScreenStretch;
 end;
 
 procedure SH_Intermission_Drawer2;
+var
+  stmp: string;
 begin
+  V_DrawPatchFullScreenTMP320x200('MBG_RECO');
+
+  V_DrawPatch(160, 50, SCN_TMP, 'REC_TXT', false);
+
+  if CARINFO[players[consoleplayer].currentscore.carinfo].cartype = ct_formula then
+    stmp := 'Formula car track records'
+  else if CARINFO[players[consoleplayer].currentscore.carinfo].cartype = ct_stock then
+    stmp := 'Stock car track records'
+  else
+    Exit;
+
+  M_WriteText(160, 50, stmp, ma_center, @hu_fontY, @hu_fontB);
+
+  V_CopyRect(0, 0, SCN_TMP, 320, 200, 0, 0, SCN_FG, true);
+
+  V_FullScreenStretch;
 end;
 
 procedure SH_Intermission_Drawer;
