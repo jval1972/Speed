@@ -362,59 +362,6 @@ begin
   gld_Finish;
 end;
 
-{$IFNDEF HEXEN}
-var
-  enterendoom: boolean = false;
-
-procedure I_FinishUpdateENDOOM;
-begin
-  glPushAttrib(GL_ALL_ATTRIB_BITS);
-  gld_Enable2D;
-
-  glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT or GL_STENCIL_BUFFER_BIT);
-
-  if endoom_tex = 0 then
-    glGenTextures(1, @endoom_tex);
-
-  glBindTexture(GL_TEXTURE_2D, endoom_tex);
-
-  if gl_linear_hud then
-  begin
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-  end
-  else
-  begin
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-  end;
-
-  glTexImage2D(GL_TEXTURE_2D, 0, 4, ESCREENWIDTH, ESCREENHEIGHT, 0, GL_BGRA, GL_UNSIGNED_BYTE, e_screen32);
-
-  glColor4f(1.0, 1.0, 1.0, 1.0);
-  glEnable(GL_ALPHA_TEST);
-  glAlphaFunc(GL_NOTEQUAL, 0);
-
-  glBegin(GL_QUADS);
-    glTexCoord2f(0.0, 200 / ESCREENHEIGHT);
-    glVertex2f(0, 0);
-    glTexCoord2f(640 / ESCREENWIDTH, 200 / ESCREENHEIGHT);
-    glVertex2f(SCREENWIDTH, 0);
-    glTexCoord2f(640 / ESCREENWIDTH, 0.0);
-    glVertex2f(SCREENWIDTH, SCREENHEIGHT);
-    glTexCoord2f(0.0, 0.0);
-    glVertex2f(0, SCREENHEIGHT);
-  glEnd;
-
-  glDisable(GL_BLEND);
-
-  gld_Disable2D;
-  glPopAttrib;
-
-  gld_Finish;
-end;
-{$ENDIF}
-
 procedure I_FinishUpdateOverlay(const doflush: boolean);
 {$IFDEF DOOM}
 var
@@ -556,15 +503,6 @@ var
 begin
   if (hMainWnd = 0) or (screens[SCN_FG] = nil) or (screen32 = nil) then
     exit;
-
-  {$IFNDEF HEXEN}
-  if (gamestate = GS_ENDOOM) or enterendoom then
-  begin
-    enterendoom := true;
-    I_FinishUpdateENDOOM;
-    exit;
-  end;
-  {$ENDIF}
 
   I_FinishUpdateOverlay(not wipe);  // Will also flush
 
