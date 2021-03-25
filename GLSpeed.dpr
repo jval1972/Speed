@@ -231,7 +231,6 @@ uses
   w_pak in 'Base\w_pak.pas',
   w_utils in 'Base\w_utils.pas',
   w_wad in 'Base\w_wad.pas',
-  wi_stuff in 'Speed\wi_stuff.pas',
   z_zone in 'Base\z_zone.pas',
   dglOpenGL in 'OPENGL\dglOpenGL.pas',
   p_genlin in 'Speed\p_genlin.pas',

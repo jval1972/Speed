@@ -156,7 +156,6 @@ uses
   nd_main,
   g_game,
   hu_stuff,
-  wi_stuff,
   st_stuff,
   am_map,
   p_setup,
@@ -168,6 +167,7 @@ uses
   speed_flatsize,
   speed_mapdata,
   speed_hud,
+  speed_intermission,
   r_draw,
   r_main,
   r_hires,
@@ -345,7 +345,7 @@ procedure D_Display;
           end;
         end;
       GS_INTERMISSION:
-        WI_Drawer;
+        SH_Intermission_Drawer;
       GS_FINALE:
         F_Drawer;
       GS_DEMOSCREEN:

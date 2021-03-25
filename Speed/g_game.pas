@@ -293,7 +293,7 @@ uses
   p_map,
   p_levelinfo,
   ps_main,
-  wi_stuff,
+  speed_intermission,
   hu_stuff,
   st_stuff,
   w_wad,
@@ -1398,7 +1398,7 @@ begin
       end;
     GS_INTERMISSION:
       begin
-        WI_Ticker;
+        SH_Intermission_Ticker;
       end;
     GS_FINALE:
       begin
@@ -1801,7 +1801,7 @@ begin
   if statcopy <> nil then
     memcpy(statcopy, @wminfo, SizeOf(wminfo));
 
-  WI_Start(@wminfo);
+  SH_Intermission_Start;
 end;
 
 //
