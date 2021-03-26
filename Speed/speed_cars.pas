@@ -515,7 +515,7 @@ const
       turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N2A.I3D';
       cartype: ct_stock;
-      name: '';
+      name: 'ROAD FAME';
     ),
     (
       tex1old: 'd_3_5';
