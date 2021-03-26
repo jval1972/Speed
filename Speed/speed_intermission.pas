@@ -69,6 +69,7 @@ uses
 var
   in_tic: integer;
   in_stage: integer;
+  in_stage_tic: integer; // tics in stage
   in_struct: Pwbstartstruct_t;
 
 procedure SH_CheckForInput;
@@ -76,6 +77,9 @@ var
   i: integer;
   player: Pplayer_t;
 begin
+  if in_stage_tic < TICRATE div 2 then // Do not allow very fast screen change
+    Exit;
+
   // check for button presses to skip delays
   for i := 0 to MAXPLAYERS - 1 do
   begin
@@ -85,6 +89,7 @@ begin
       if (player.cmd.buttons and BT_ATTACK <> 0) or (player.cmd.buttons and BT_USE <> 0) then
       begin
         inc(in_stage);
+        in_stage_tic := 0;
         if in_stage = 3 then
         begin
           if gametype = gt_championship then
@@ -100,6 +105,7 @@ end;
 procedure SH_Intermission_Ticker;
 begin
   inc(in_tic);
+  inc(in_stage_tic);
 
   if in_tic = 1 then
   begin
@@ -147,7 +153,7 @@ begin
 
   for i := 0 to players[consoleplayer].currentscore.numlaps - 1 do
   begin
-    mpos := M_WriteText(30, 70, 'Lap #' + itoa(i + 1) + ': ', ma_left, @hu_fontY, @hu_fontB);
+    mpos := M_WriteText(30, 80 + 10 * i, 'Lap #' + itoa(i + 1) + ': ', ma_left, @hu_fontY, @hu_fontB);
     M_WriteText(mpos.x, mpos.y, SH_TicsToTimeStr(players[consoleplayer].currentscore.laptimes[i]), ma_left, @hu_fontW, @hu_fontB);
   end;
 
@@ -171,7 +177,7 @@ begin
   else
     Exit;
 
-  M_WriteText(160, 50, stmp, ma_center, @hu_fontY, @hu_fontB);
+  M_WriteText(160, 51, stmp, ma_center, @hu_fontY, @hu_fontB);
 
   V_CopyRect(0, 0, SCN_TMP, 320, 200, 0, 0, SCN_FG, true);
 
@@ -193,7 +199,7 @@ begin
   else
     Exit;
 
-  M_WriteText(160, 50, stmp, ma_center, @hu_fontY, @hu_fontB);
+  M_WriteText(160, 51, stmp, ma_center, @hu_fontY, @hu_fontB);
 
   V_CopyRect(0, 0, SCN_TMP, 320, 200, 0, 0, SCN_FG, true);
 
@@ -212,6 +218,8 @@ end;
 procedure SH_Intermission_Start;
 begin
   in_struct := @wminfo;
+  in_tic := 0;
+  in_stage_tic := 0;
   in_stage := 0;
   SH_StorePlayerScore;
 end;

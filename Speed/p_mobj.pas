@@ -1164,6 +1164,10 @@ begin
     p.messagesoundtarget := nil;
   end;
 
+  ZeroMemory(@p.currentscore, SizeOf(p.currentscore));
+  ZeroMemory(@p.laprecordchecked, SizeOf(p.laprecordchecked));
+  ZeroMemory(@p.didlaprecord, SizeOf(p.didlaprecord));
+
   x := mthing.x * FRACUNIT;
   y := mthing.y * FRACUNIT;
   z := ONFLOORZ;

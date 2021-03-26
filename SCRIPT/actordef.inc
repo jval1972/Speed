@@ -1457,10 +1457,132 @@
     '      TNT1 A 1'#13#10 +
     '      TNT1 A 10'#13#10 +
     '      TNT1 A 1 A_CheckLapRecord'#13#10 +
+    '      TNT1 A 35'#13#10 +
+    '      TNT1 A 1 A_CheckRaceOver'#13#10 +
     '      Stop'#13#10 +
     '    }'#13#10 +
     '  }'#13#10 +
     '}'#13#10 +
+    ''#13#10 +
+    ''#13#10 +
+    '///////////////////////////////'#13#10 +
+    '// MT_GAMEOVER'#13#10 +
+    '///////////////////////////////'#13#10 +
+    'ACTOR MT_GAMEOVER'#13#10 +
+    '{'#13#10 +
+    '  Radius 1'#13#10 +
+    '  Height 1'#13#10 +
+    '  Health 100000'#13#10 +
+    '  Mass 100000'#13#10 +
+    '  +DONTDRAW'#13#10 +
+    '  States'#13#10 +
+    '  {'#13#10 +
+    '    Spawn:'#13#10 +
+    '    {'#13#10 +
+    '      TNT1 A 1'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''GAMEOVER'', 160, 100, 160, 100)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''GAMEOVER'', 157, 99, 162, 100)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''GAMEOVER'', 154, 99, 165, 101)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''GAMEOVER'', 151, 98, 168, 101)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''GAMEOVER'', 148, 98, 171, 102)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''GAMEOVER'', 145, 97, 174, 102)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''GAMEOVER'', 142, 97, 177, 103)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''GAMEOVER'', 139, 96, 180, 103)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''GAMEOVER'', 136, 96, 183, 104)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''GAMEOVER'', 133, 95, 186, 104)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''GAMEOVER'', 130, 95, 189, 105)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''GAMEOVER'', 127, 94, 192, 105)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''GAMEOVER'', 124, 94, 195, 106)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''GAMEOVER'', 122, 93, 198, 106)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''GAMEOVER'', 119, 93, 201, 107)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''GAMEOVER'', 116, 92, 204, 107)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''GAMEOVER'', 113, 92, 207, 108)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''GAMEOVER'', 110, 91, 210, 108)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''GAMEOVER'', 107, 91, 213, 109)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''GAMEOVER'', 104, 90, 216, 109)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''GAMEOVER'', 101, 90, 219, 110)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''GAMEOVER'', 98, 89, 222, 110)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''GAMEOVER'', 95, 89, 225, 111)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''GAMEOVER'', 92, 88, 228, 111)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''GAMEOVER'', 89, 88, 231, 112)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''GAMEOVER'', 86, 87, 233, 112)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''GAMEOVER'', 83, 87, 236, 113)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''GAMEOVER'', 80, 86, 239, 113)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''GAMEOVER'', 77, 86, 242, 114)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''GAMEOVER'', 74, 85, 245, 114)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''GAMEOVER'', 71, 85, 248, 115)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''GAMEOVER'', 68, 84, 251, 115)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''GAMEOVER'', 65, 84, 254, 116)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''GAMEOVER'', 62, 83, 257, 116)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''GAMEOVER'', 59, 83, 260, 117)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''GAMEOVER'', 56, 82, 263, 117)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1000, ''GAMEOVER'', 53, 82, 266, 118)'#13#10 +
+    '      TNT1 A 70'#13#10 +
+    '      TNT1 A 1 A_ExitLevel'#13#10 +
+    '      Stop'#13#10 +
+    '    }'#13#10 +
+    '  }'#13#10 +
+    '}'#13#10 +
+    ''#13#10 +
+    ''#13#10 +
+    '///////////////////////////////'#13#10 +
+    '// MT_YOUWIN'#13#10 +
+    '///////////////////////////////'#13#10 +
+    'ACTOR MT_YOUWIN'#13#10 +
+    '{'#13#10 +
+    '  Radius 1'#13#10 +
+    '  Height 1'#13#10 +
+    '  Health 100000'#13#10 +
+    '  Mass 100000'#13#10 +
+    '  +DONTDRAW'#13#10 +
+    '  States'#13#10 +
+    '  {'#13#10 +
+    '    Spawn:'#13#10 +
+    '    {'#13#10 +
+    '      TNT1 A 1'#13#10 +
+    '      TNT1 A 0 A_PlaysoundFullVolume("speedhaste/UNBELI.RAW")'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''YOUWIN'', 160, 100, 160, 100)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''YOUWIN'', 158, 99, 162, 100)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''YOUWIN'', 155, 99, 164, 101)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''YOUWIN'', 153, 98, 167, 101)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''YOUWIN'', 150, 98, 169, 102)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''YOUWIN'', 148, 97, 172, 102)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''YOUWIN'', 145, 97, 174, 103)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''YOUWIN'', 143, 96, 177, 103)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''YOUWIN'', 140, 96, 179, 104)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''YOUWIN'', 138, 95, 182, 104)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''YOUWIN'', 135, 95, 184, 105)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''YOUWIN'', 133, 94, 187, 105)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''YOUWIN'', 130, 94, 189, 106)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''YOUWIN'', 128, 93, 192, 106)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''YOUWIN'', 125, 93, 194, 107)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''YOUWIN'', 123, 92, 197, 107)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''YOUWIN'', 120, 92, 199, 108)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''YOUWIN'', 118, 91, 202, 108)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''YOUWIN'', 115, 91, 204, 109)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''YOUWIN'', 113, 90, 207, 109)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''YOUWIN'', 110, 90, 209, 110)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''YOUWIN'', 108, 89, 212, 110)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''YOUWIN'', 105, 89, 214, 111)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''YOUWIN'', 103, 88, 217, 111)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''YOUWIN'', 100, 88, 219, 112)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''YOUWIN'', 98, 87, 222, 112)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''YOUWIN'', 95, 87, 224, 113)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''YOUWIN'', 93, 86, 227, 113)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''YOUWIN'', 90, 86, 229, 114)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''YOUWIN'', 88, 85, 232, 114)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''YOUWIN'', 85, 85, 234, 115)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''YOUWIN'', 83, 84, 237, 115)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''YOUWIN'', 80, 84, 239, 116)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''YOUWIN'', 78, 83, 242, 116)'#13#10 +
+    '      TNT1 A 1 A_OverlayDrawPatchStretched(1000, ''YOUWIN'', 75, 83, 244, 117)'#13#10 +
+    '      TNT1 A 70'#13#10 +
+    '      TNT1 A 1 A_ExitLevel'#13#10 +
+    '      Stop'#13#10 +
+    '    }'#13#10 +
+    '  }'#13#10 +
+    '}'#13#10 +
+    ''#13#10 +
     '////////////////////////////////////////'#13#10 +
     '// SPEEDALIAS.txt'#13#10 +
     '////////////////////////////////////////'#13#10 +

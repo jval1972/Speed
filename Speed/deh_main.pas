@@ -48,7 +48,7 @@ procedure DEH_Init;
 procedure DEH_ShutDown;
 
 const
-  DEHNUMACTIONS = 277;
+  DEHNUMACTIONS = 279;
 
 type
   deh_action_t = record
@@ -2722,6 +2722,12 @@ begin
   deh_actions[276].action.acp1 := @A_CheckLapRecord;
   deh_actions[276].name := strupper('CheckLapRecord');
   {$IFDEF DLL}deh_actions[276].decl := 'A_CheckLapRecord';{$ENDIF}
+  deh_actions[277].action.acp1 := @A_CheckRaceOver;
+  deh_actions[277].name := strupper('CheckRaceOver');
+  {$IFDEF DLL}deh_actions[277].decl := 'A_CheckRaceOver';{$ENDIF}
+  deh_actions[278].action.acp1 := @A_ExitLevel;
+  deh_actions[278].name := strupper('ExitLevel');
+  {$IFDEF DLL}deh_actions[278].decl := 'A_ExitLevel';{$ENDIF}
 
 
   deh_strings.numstrings := 0;

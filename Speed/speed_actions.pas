@@ -40,6 +40,10 @@ procedure A_StartRace(mo: Pmobj_t);
 
 procedure A_CheckLapRecord(actor: Pmobj_t);
 
+procedure A_CheckRaceOver(actor: Pmobj_t);
+
+procedure A_ExitLevel(actor: Pmobj_t);
+
 implementation
 
 uses
@@ -47,6 +51,8 @@ uses
   doomdef,
   d_player,
   g_game,
+  info_common,
+  p_mobj,
   psi_overlay,
   speed_cars,
   speed_race,
@@ -58,7 +64,7 @@ var
   pname: string;
 begin
   S_StartSound(nil, 'speedhaste/STARTECH.RAW');
-  
+
   if race.cartype = ct_stock then
     pname := 'RLOAD10'
   else
@@ -91,6 +97,47 @@ begin
       p.didlaprecord[mo.lapscompleted - 1] := True;
       S_StartSound(nil, 'speedhaste/LAPREC.RAW');
     end;
+end;
+
+var
+  MT_YOUWIN: integer = -1;
+  MT_GAMEOVER: integer = -1;
+
+procedure A_CheckRaceOver(actor: Pmobj_t);
+var
+  mo: Pmobj_t;
+  p: Pplayer_t;
+begin
+  mo := actor.target;
+  if mo = nil then
+    Exit;
+
+  p := mo.player;
+  if p = nil then
+    Exit;
+
+  if mo.lapscompleted >= race.numlaps then
+  begin
+    if mo.raceposition = 1 then
+    begin
+      if MT_YOUWIN < 0 then
+        MT_YOUWIN := Info_GetMobjNumForName('MT_YOUWIN');
+      if MT_YOUWIN >= 0 then
+        P_SpawnMobj(0, 0, 0, MT_YOUWIN);
+    end
+    else
+    begin
+      if MT_GAMEOVER < 0 then
+        MT_GAMEOVER := Info_GetMobjNumForName('MT_GAMEOVER');
+      if MT_GAMEOVER >= 0 then
+        P_SpawnMobj(0, 0, 0, MT_GAMEOVER);
+    end;
+  end;
+end;
+
+procedure A_ExitLevel(actor: Pmobj_t);
+begin
+  G_ExitLevel;
 end;
 
 end.
