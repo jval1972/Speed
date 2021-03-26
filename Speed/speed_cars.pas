@@ -56,7 +56,7 @@ type
     turnspeed: angle_t; // angle to turn per TIC
     model3d: string[64];
     cartype: cartype_t;
-    name: string[32];
+    name: string[16];
   end;
   Pcarinfo_t = ^carinfo_t;
   carinfo_tArray = array[0..$FF] of carinfo_t;
