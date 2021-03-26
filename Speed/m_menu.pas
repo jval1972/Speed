@@ -4012,7 +4012,7 @@ begin
   PilotNameDef.prevMenu := @MainDef; // previous menu
   PilotNameDef.menuitems := Pmenuitem_tArray(@PilotNameMenu);  // menu items
   PilotNameDef.drawproc := @M_DrawPilotName;  // draw routine
-  PilotNameDef.x := 108;
+  PilotNameDef.x := 92;
   PilotNameDef.y := 80;
   PilotNameDef.lastOn := Ord(pilotname1); // last item user was on in menu
   PilotNameDef.itemheight := LINEHEIGHT;
