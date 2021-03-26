@@ -74,6 +74,7 @@ var
   timedigitwhite: array[0..11] of Ppatch_t;
   mpos: Ppatch_t;
   rfinlap: Ppatch_t;
+  pendrace: Ppatch_t;
 
 var
   timelaps: timelaps_t;
@@ -113,6 +114,7 @@ begin
   mlap := W_CacheLumpName('MLAP', PU_STATIC);
   mpos := W_CacheLumpName('MPOS', PU_STATIC);
   rfinlap := W_CacheLumpName('RFINLAP', PU_STATIC);
+  pendrace := W_CacheLumpName('ENDRACE', PU_STATIC);
 end;
 
 var
@@ -423,6 +425,28 @@ begin
     V_DrawPatch(160, 68, SCN_HUD, rfinlap, false);
 end;
 
+procedure SH_DrawEndOfRace;
+var
+  tics: integer;
+  tottime: integer;
+  i: integer;
+begin
+  if not IsIntegerInRange(race.numlaps, 2, MAXLAPS) then
+    Exit;
+
+  if timelaps[race.numlaps - 1] = 0 then
+    Exit;
+
+  tottime := 0;
+  for i := 0 to race.numlaps - 1 do
+    tottime := tottime + timelaps[i];
+
+  tics := racetime - tottime;
+
+  if tics mod TICRATE < 20 then
+    V_DrawPatch(160, 68, SCN_HUD, pendrace, false);
+end;
+
 procedure SH_HudDrawer;
 begin
   hud_player := @players[consoleplayer];
@@ -449,6 +473,9 @@ begin
 
     // Last Lap
     SH_DrawLastLap;
+
+    // End of Race
+    SH_DrawEndOfRace;
   end;
 
   V_CopyRectTransparent(0, 0, SCN_HUD, 320, 200, 0, 0, SCN_FG, true);
