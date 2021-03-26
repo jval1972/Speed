@@ -178,7 +178,7 @@ procedure A_RandomMeleeSound(actor: Pmobj_t);
 
 procedure A_Playsound(actor: Pmobj_t);
 
-procedure A_PlaysoundFullVolume(actor: Pmobj_t);
+procedure A_PlaySoundFullVolume(actor: Pmobj_t);
 
 procedure A_PlayWeaponsound(actor: Pmobj_t);
 
@@ -1764,9 +1764,9 @@ end;
 //
 // JVAL
 // Play a sound at full volume
-// A_PlaysoundFullVolume(soundname)
+// A_PlaySoundFullVolume(soundname)
 //
-procedure A_PlaysoundFullVolume(actor: Pmobj_t);
+procedure A_PlaySoundFullVolume(actor: Pmobj_t);
 var
   sndidx: integer;
 begin

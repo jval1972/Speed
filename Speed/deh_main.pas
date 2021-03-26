@@ -2710,6 +2710,9 @@ begin
   deh_actions[272].action.acp1 := @A_OverlayDrawCenterText;
   deh_actions[272].name := strupper('OverlayDrawCenterText');
   {$IFDEF DLL}deh_actions[272].decl := 'A_OverlayDrawCenterText(ticks: Integer; txt: string; x, y: Integer ;)';{$ENDIF}
+  deh_actions[273].action.acp1 := @A_PlaySoundFullVolume;
+  deh_actions[273].name := strupper('PlaySoundFullVolume');
+  {$IFDEF DLL}deh_actions[273].decl := 'A_PlaySoundFullVolume(sound: string)';{$ENDIF}
   deh_actions[274].action.acp1 := @A_StartRace;
   deh_actions[274].name := strupper('StartRace');
   {$IFDEF DLL}deh_actions[274].decl := 'A_StartRace';{$ENDIF}
