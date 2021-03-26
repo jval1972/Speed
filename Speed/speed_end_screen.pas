@@ -22,7 +22,7 @@
 //  02111-1307, USA.
 //
 // DESCRIPTION:
-// Game completion, end screen
+//  Game completion, end screen
 //
 //------------------------------------------------------------------------------
 //  Site  : https://sourceforge.net/projects/speed-game/
