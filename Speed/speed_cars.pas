@@ -922,6 +922,7 @@ begin
         MT_CHECKLAPRECORD := Info_GetMobjNumForName('MT_CHECKLAPRECORD');
       if MT_CHECKLAPRECORD >= 0 then
       begin
+        SH_StorePlayerLapTimes(mo.player);
         lcheck := P_SpawnMobj(0, 0, 0, MT_CHECKLAPRECORD);
         lcheck.target := mo;
       end;
