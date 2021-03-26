@@ -5,5 +5,5 @@
 #include "SPEED\MODELDECORATIONS.txt"
 #include "SPEED\PARTICLES.txt"
 #include "SPEED\PATH.txt"
-#include "SPEED\RACESTART.txt"
+#include "SPEED\RACE.txt"
 #include "SPEED\SPEEDALIAS.txt"
