@@ -57,7 +57,7 @@ uses
   gl_voxels,
   gl_lightmaps,
   gl_shadows,
-  e_endoom,
+  speed_end_screen,
   m_menu,
   m_misc,
   r_aspect,

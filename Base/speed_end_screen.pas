@@ -21,13 +21,16 @@
 //  Foundation, inc., 59 Temple Place - Suite 330, Boston, MA
 //  02111-1307, USA.
 //
+// DESCRIPTION:
+// Game completion, end screen
+//
 //------------------------------------------------------------------------------
 //  Site  : https://sourceforge.net/projects/speed-game/
 //------------------------------------------------------------------------------
 
 {$I speed.inc}
 
-unit e_endoom;
+unit speed_end_screen;
 
 interface
 
@@ -35,12 +38,6 @@ uses
   d_delphi,
   d_event;
 
-//-----------------------------------------------------------------------------
-//
-// DESCRIPTION:
-// Game completion, endoom screen
-//
-//-----------------------------------------------------------------------------
 var
   EndLumpName: string = 'SPHLOGO';
   displayendscreen: boolean;

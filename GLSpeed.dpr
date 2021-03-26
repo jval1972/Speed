@@ -322,7 +322,6 @@ uses
   sc_utils in 'Base\sc_utils.pas',
   w_folders in 'Base\w_folders.pas',
   r_subsectors in 'Base\r_subsectors.pas',
-  e_endoom in 'Base\e_endoom.pas',
   speed_wipe in 'Speed\speed_wipe.pas',
   r_renderstyle in 'Base\r_renderstyle.pas',
   vx_voxelsprite in 'Base\vx_voxelsprite.pas',
@@ -382,7 +381,8 @@ uses
   speed_hud in 'Speed\speed_hud.pas',
   speed_intermission in 'Speed\speed_intermission.pas',
   speed_score in 'Speed\speed_score.pas',
-  speed_actions in 'Speed\speed_actions.pas';
+  speed_actions in 'Speed\speed_actions.pas',
+  speed_end_screen in 'Speed\speed_end_screen.pas';
 
 var
   Saved8087CW: Word;

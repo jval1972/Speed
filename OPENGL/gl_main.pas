@@ -96,9 +96,6 @@ uses
   r_draw,
   st_stuff,
   {$ENDIF}
-  {$IFNDEF HEXEN}
-  e_endoom,
-  {$ENDIF}
   speed_wipe,
   r_main,
   mt_utils,

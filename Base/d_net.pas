@@ -142,9 +142,6 @@ implementation
 
 uses
   m_menu,
-{$IFNDEF HEXEN}
-  e_endoom,
-{$ENDIF}
   c_con,
   i_startup,
   i_system,
@@ -155,12 +152,8 @@ uses
   r_intrpl,
   r_main,
   p_mobj_h,
-{$IFDEF DOOM_OR_STRIFE}
   p_terrain,
-{$ENDIF}
-{$IFDEF HEXEN}
-  g_demo,
-{$ENDIF}
+  speed_end_screen,
   g_game;
 
 const
