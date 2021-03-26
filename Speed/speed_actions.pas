@@ -34,12 +34,32 @@ interface
 uses
   p_mobj_h;
 
+procedure A_StartYourEngines(mo: Pmobj_t);
+
 procedure A_StartRace(mo: Pmobj_t);
 
 implementation
 
 uses
-  speed_race;
+  doomdef,
+  psi_overlay,
+  speed_cars,
+  speed_race,
+  s_sound;
+
+procedure A_StartYourEngines(mo: Pmobj_t);
+var
+  pname: string;
+begin
+  S_StartSound(nil, 'speedhaste/STARTECH.RAW');
+  
+  if race.cartype = ct_stock then
+    pname := 'RLOAD10'
+  else
+    pname := 'RLOAD00';
+
+  overlay.AddPatch(50, pname, 0, 0);
+end;
 
 procedure A_StartRace(mo: Pmobj_t);
 begin
@@ -47,4 +67,3 @@ begin
 end;
 
 end.
- 

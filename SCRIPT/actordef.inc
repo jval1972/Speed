@@ -1288,7 +1288,7 @@
     '    Spawn:'#13#10 +
     '    {'#13#10 +
     '      TNT1 A 1'#13#10 +
-    '      TNT1 A 10'#13#10 +
+    '      TNT1 A 60 A_StartYourEngines'#13#10 +
     '      TNT1 A 0 A_PlaysoundFullVolume("speedhaste/THREE.RAW")'#13#10 +
     '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''RACE_3'', 159, 99, 160, 101)'#13#10 +
     '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''RACE_3'', 159, 98, 161, 102)'#13#10 +

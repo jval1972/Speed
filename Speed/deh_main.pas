@@ -48,7 +48,7 @@ procedure DEH_Init;
 procedure DEH_ShutDown;
 
 const
-  DEHNUMACTIONS = 275;
+  DEHNUMACTIONS = 276;
 
 type
   deh_action_t = record
@@ -2710,12 +2710,12 @@ begin
   deh_actions[272].action.acp1 := @A_OverlayDrawCenterText;
   deh_actions[272].name := strupper('OverlayDrawCenterText');
   {$IFDEF DLL}deh_actions[272].decl := 'A_OverlayDrawCenterText(ticks: Integer; txt: string; x, y: Integer ;)';{$ENDIF}
-  deh_actions[273].action.acp1 := @A_PlaysoundFullVolume;
-  deh_actions[273].name := strupper('PlaysoundFullVolume');
-  {$IFDEF DLL}deh_actions[273].decl := 'A_PlaysoundFullVolume(sound: string)';{$ENDIF}
   deh_actions[274].action.acp1 := @A_StartRace;
   deh_actions[274].name := strupper('StartRace');
   {$IFDEF DLL}deh_actions[274].decl := 'A_StartRace';{$ENDIF}
+  deh_actions[275].action.acp1 := @A_StartYourEngines;
+  deh_actions[275].name := strupper('StartYourEngines');
+  {$IFDEF DLL}deh_actions[275].decl := 'A_StartYourEngines';{$ENDIF}
 
 
   deh_strings.numstrings := 0;
