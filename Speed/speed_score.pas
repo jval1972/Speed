@@ -73,6 +73,8 @@ procedure SH_LoadScoreTable;
 
 procedure SH_SaveScoreTable;
 
+function SH_CheckLapRecord(const epi, map: integer; const ctyp: cartype_t; const t: integer): boolean;
+
 implementation
 
 uses
@@ -245,6 +247,16 @@ begin
       I_Warning('SH_SaveScoreTable(): Wrote %d bytes instead of %d bytes'#13#10, [count, size]);
     close(handle);
   end;
+end;
+
+function SH_CheckLapRecord(const epi, map: integer; const ctyp: cartype_t; const t: integer): boolean;
+begin
+  SH_SortScoreTable(0, epi, map, ctyp);
+  if (recordtable.laprecords[epi, map, ctyp][NUMSCORES - 1].time = 0) or
+     (recordtable.laprecords[epi, map, ctyp][NUMSCORES - 1].time > t) then
+    Result := True
+  else
+    Result := False;
 end;
 
 end.
