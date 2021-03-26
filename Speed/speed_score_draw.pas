@@ -59,7 +59,7 @@ begin
   ypos := 64;
   M_WriteText(18, ypos, 'NAME', ma_left, @hu_fontY, @hu_fontB);
   M_WriteText(143, ypos, 'CAR', ma_left, @hu_fontY, @hu_fontB);
-  M_WriteText(253, ypos, 'TIME', ma_left, @hu_fontY, @hu_fontB);
+  M_WriteText(254, ypos, 'TIME', ma_left, @hu_fontY, @hu_fontB);
 
   ypos := 80;
   for i := 0 to NUMSCORES - 1 do
@@ -69,7 +69,7 @@ begin
     begin
       M_WriteText(18, ypos, si[i].drivername, ma_left, @hu_fontW, @hu_fontB);
       M_WriteText(143, ypos, CARINFO[si[i].carid].name, ma_left, @hu_fontW, @hu_fontB);
-      M_WriteText(253, ypos, SH_TicsToTimeStr(si[i].time), ma_left, @hu_fontW, @hu_fontB);
+      M_WriteText(254, ypos, SH_TicsToTimeStr(si[i].time), ma_left, @hu_fontW, @hu_fontB);
     end;
     ypos := ypos + 10;
   end;
