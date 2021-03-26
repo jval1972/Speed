@@ -784,6 +784,8 @@ function iSign(const x: integer): integer;
 
 function readablestring(const s: string): string;
 
+function maxlength(const l: integer; const s: string): string;
+
 implementation
 
 uses
@@ -4520,6 +4522,13 @@ begin
     else
       result := result + h[Ord(s[i]) div 16 + 1] + h[Ord(s[i]) mod 16 + 1];
   end;
+end;
+
+function maxlength(const l: integer; const s: string): string;
+begin
+  Result := s;
+  if Length(Result) > l then
+    SetLength(Result, l);
 end;
 
 end.
