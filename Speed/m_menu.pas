@@ -191,8 +191,6 @@ var
   saveOldString: string;
 
 const
-  SKULLXOFF = -32;
-  SKULLYOFF = -5;
   ARROWXOFF = -8;
   LINEHEIGHT = 16;
   LINEHEIGHT2 = 8;
