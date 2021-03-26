@@ -213,6 +213,8 @@ type
     playername: string[PILOTNAMESIZE];
     score: array[1..4] of array[1..9] of playerscore_t;
     currentscore: playerscore_t;
+    laprecordchecked: array[0..MAXLAPS - 1] of boolean;
+    didlaprecord: array[0..MAXLAPS - 1] of boolean;
   end;
   Pplayer_t = ^player_t;
 

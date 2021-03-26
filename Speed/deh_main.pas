@@ -48,7 +48,7 @@ procedure DEH_Init;
 procedure DEH_ShutDown;
 
 const
-  DEHNUMACTIONS = 276;
+  DEHNUMACTIONS = 277;
 
 type
   deh_action_t = record
@@ -2719,6 +2719,9 @@ begin
   deh_actions[275].action.acp1 := @A_StartYourEngines;
   deh_actions[275].name := strupper('StartYourEngines');
   {$IFDEF DLL}deh_actions[275].decl := 'A_StartYourEngines';{$ENDIF}
+  deh_actions[276].action.acp1 := @A_CheckLapRecord;
+  deh_actions[276].name := strupper('CheckLapRecord');
+  {$IFDEF DLL}deh_actions[276].decl := 'A_CheckLapRecord';{$ENDIF}
 
 
   deh_strings.numstrings := 0;

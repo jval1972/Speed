@@ -709,6 +709,7 @@ uses
   i_system,
   info_h,
   info,
+  info_common,
   g_game,
   p_tick,
   p_maputl,
@@ -901,13 +902,31 @@ begin
   end;
 end;
 
+var
+  MT_CHECKLAPRECORD: integer = -1;
+
 procedure SH_BuildDrivingCmdPlayer(const mo: Pmobj_t; const cmd: Pdrivingcmd_t);
 var
   p: Pplayer_t;
   t: integer;
   speedturndecrease: fixed_t;
   pth: integer;
+  lcheck: Pmobj_t;
 begin
+  p := mo.player;
+  if IsIntegerInRange(mo.lapscompleted, 1, race.numlaps) then
+    if not p.laprecordchecked[mo.lapscompleted - 1] then
+    begin
+      p.laprecordchecked[mo.lapscompleted - 1] := True;
+      if MT_CHECKLAPRECORD < 0 then
+        MT_CHECKLAPRECORD := Info_GetMobjNumForName('MT_CHECKLAPRECORD');
+      if MT_CHECKLAPRECORD >= 0 then
+      begin
+        lcheck := P_SpawnMobj(0, 0, 0, MT_CHECKLAPRECORD);
+        lcheck.target := mo;
+      end;
+    end;
+
   // If race completed use AI driving
   if mo.lapscompleted >= race.numlaps then
   begin

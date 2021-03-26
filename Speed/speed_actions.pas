@@ -38,13 +38,19 @@ procedure A_StartYourEngines(mo: Pmobj_t);
 
 procedure A_StartRace(mo: Pmobj_t);
 
+procedure A_CheckLapRecord(actor: Pmobj_t);
+
 implementation
 
 uses
+  d_delphi,
   doomdef,
+  d_player,
+  g_game,
   psi_overlay,
   speed_cars,
   speed_race,
+  speed_score,
   s_sound;
 
 procedure A_StartYourEngines(mo: Pmobj_t);
@@ -64,6 +70,27 @@ end;
 procedure A_StartRace(mo: Pmobj_t);
 begin
   race.racestatus := rs_racing;
+end;
+
+procedure A_CheckLapRecord(actor: Pmobj_t);
+var
+  mo: Pmobj_t;
+  p: Pplayer_t;
+begin
+  mo := actor.target;
+  if mo = nil then
+    Exit;
+
+  p := mo.player;
+  if p = nil then
+    Exit;
+
+  if IsIntegerInRange(mo.lapscompleted, 1, race.numlaps) then
+    if SH_CheckLapRecord(p.currentscore.episode, p.currentscore.map, CARINFO[p.currentscore.carinfo].cartype, p.currentscore.laptimes[mo.lapscompleted - 1]) then
+    begin
+      p.didlaprecord[mo.lapscompleted - 1] := True;
+      S_StartSound(nil, 'speedhaste/LAPREC.RAW');
+    end;
 end;
 
 end.

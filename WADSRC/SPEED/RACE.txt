@@ -164,3 +164,25 @@ ACTOR MT_RACESTART 500
   }
 }
 
+
+///////////////////////////////
+// MT_CHECKLAPRECORD
+///////////////////////////////
+ACTOR MT_CHECKLAPRECORD 
+{
+  Radius 1
+  Height 1
+  Health 100000
+  Mass 100000
+  +DONTDRAW
+  States
+  {
+    Spawn:
+    {
+      TNT1 A 1
+      TNT1 A 10
+      TNT1 A 1 A_CheckLapRecord
+      Stop
+    }
+  }
+}
