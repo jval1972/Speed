@@ -60,6 +60,7 @@ uses
   s_sound,
   speed_cars,
   speed_score,
+  speed_score_draw,
   speed_race,
   speed_path,
   speed_string_format,
@@ -158,8 +159,6 @@ begin
   end;
 
   V_CopyRect(0, 0, SCN_TMP, 320, 200, 0, 0, SCN_FG, true);
-
-  V_FullScreenStretch;
 end;
 
 procedure SH_Intermission_Drawer1;
@@ -168,10 +167,10 @@ var
 begin
   V_DrawPatchFullScreenTMP320x200('MBG_RECO');
 
-  V_DrawPatch(160, 50, SCN_TMP, 'REC_TXT', false);
+  V_DrawPatch(161, 50, SCN_TMP, 'REC_TXT', false);
 
   if CARINFO[players[consoleplayer].currentscore.carinfo].cartype = ct_formula then
-    stmp := 'Formula car lap records'
+    stmp := 'Formula 1 lap records'
   else if CARINFO[players[consoleplayer].currentscore.carinfo].cartype = ct_stock then
     stmp := 'Stock car lap records'
   else
@@ -179,9 +178,13 @@ begin
 
   M_WriteText(160, 51, stmp, ma_center, @hu_fontY, @hu_fontB);
 
-  V_CopyRect(0, 0, SCN_TMP, 320, 200, 0, 0, SCN_FG, true);
+  SH_DrawScoreTableItems(
+    @recordtable.laprecords[
+      players[consoleplayer].currentscore.episode,
+      players[consoleplayer].currentscore.map,
+      CARINFO[players[consoleplayer].currentscore.carinfo].cartype]);
 
-  V_FullScreenStretch;
+  V_CopyRect(0, 0, SCN_TMP, 320, 200, 0, 0, SCN_FG, true);
 end;
 
 procedure SH_Intermission_Drawer2;
@@ -190,10 +193,10 @@ var
 begin
   V_DrawPatchFullScreenTMP320x200('MBG_RECO');
 
-  V_DrawPatch(160, 50, SCN_TMP, 'REC_TXT', false);
+  V_DrawPatch(161, 50, SCN_TMP, 'REC_TXT', false);
 
   if CARINFO[players[consoleplayer].currentscore.carinfo].cartype = ct_formula then
-    stmp := 'Formula car track records'
+    stmp := 'Formula 1 track records'
   else if CARINFO[players[consoleplayer].currentscore.carinfo].cartype = ct_stock then
     stmp := 'Stock car track records'
   else
@@ -201,9 +204,14 @@ begin
 
   M_WriteText(160, 51, stmp, ma_center, @hu_fontY, @hu_fontB);
 
-  V_CopyRect(0, 0, SCN_TMP, 320, 200, 0, 0, SCN_FG, true);
+  SH_DrawScoreTableItems(
+    @recordtable.courserecord[
+      players[consoleplayer].currentscore.numlaps,
+      players[consoleplayer].currentscore.episode,
+      players[consoleplayer].currentscore.map,
+      CARINFO[players[consoleplayer].currentscore.carinfo].cartype]);
 
-  V_FullScreenStretch;
+  V_CopyRect(0, 0, SCN_TMP, 320, 200, 0, 0, SCN_FG, true);
 end;
 
 procedure SH_Intermission_Drawer;

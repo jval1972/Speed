@@ -382,7 +382,8 @@ uses
   speed_intermission in 'Speed\speed_intermission.pas',
   speed_score in 'Speed\speed_score.pas',
   speed_actions in 'Speed\speed_actions.pas',
-  speed_end_screen in 'Speed\speed_end_screen.pas';
+  speed_end_screen in 'Speed\speed_end_screen.pas',
+  speed_score_draw in 'Speed\speed_score_draw.pas';
 
 var
   Saved8087CW: Word;

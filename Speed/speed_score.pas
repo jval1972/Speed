@@ -102,7 +102,7 @@ var
       repeat
         while items[i].time < f.time do
           inc(i);
-        while f.time > items[j].time do
+        while items[j].time > f.time  do
           dec(j);
         if i <= j then
         begin
@@ -197,7 +197,6 @@ var
   handle: file;
   size: integer;
   count: integer;
-  x: integer;
 begin
   ZeroMemory(@recordtable, SizeOf(speedrecordtable_t));
   fname := M_SaveFileName(APPNAME + '.lap');
@@ -234,7 +233,6 @@ var
   handle: file;
   size: integer;
   count: integer;
-  x: integer;
 begin
   fname := M_SaveFileName(APPNAME + '.lap');
   if not fopen(handle, fname, fCreate) then
