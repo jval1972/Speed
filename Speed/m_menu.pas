@@ -2131,6 +2131,8 @@ begin
   M_WriteText(20, 114, 'LENGTH', ma_left, @hu_fontW, @hu_fontB);
   M_WriteText(100, 114, SH_Meters2KM(mdata.len), ma_left, @hu_fontY, @hu_fontB);
 
+  M_WriteText(20, 124, 'LAP RECORD', ma_left, @hu_fontW, @hu_fontB);
+
   V_DrawPatch(250, 150, SCN_TMP, SH_MapData(mname).mapsprite, false);
 end;
 
