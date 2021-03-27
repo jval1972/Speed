@@ -249,7 +249,7 @@ begin
   mpos := M_WriteText(mpos.x, mpos.y, 'course records ', _MA_LEFT or _MC_UPPER, @hu_fontW, @hu_fontB);
   mpos := M_WriteText(mpos.x, mpos.y, '(', _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
   mpos := M_WriteText(mpos.x, mpos.y, itoa(score.numlaps) + ' Laps', _MA_LEFT or _MC_NOCASE, @hu_fontW, @hu_fontB);
-  mpos := M_WriteText(mpos.x, mpos.y, ')', _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
+  M_WriteText(mpos.x, mpos.y, ')', _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
 
   SH_DrawScoreTableItems(
     @recordtable.courserecord[
