@@ -48,7 +48,7 @@ procedure DEH_Init;
 procedure DEH_ShutDown;
 
 const
-  DEHNUMACTIONS = 279;
+  DEHNUMACTIONS = 280;
 
 type
   deh_action_t = record
@@ -2728,6 +2728,9 @@ begin
   deh_actions[278].action.acp1 := @A_ExitLevel;
   deh_actions[278].name := strupper('ExitLevel');
   {$IFDEF DLL}deh_actions[278].decl := 'A_ExitLevel';{$ENDIF}
+  deh_actions[279].action.acp1 := @A_ConsolePlayerMessage;
+  deh_actions[279].name := strupper('ConsolePlayerMessage');
+  {$IFDEF DLL}deh_actions[279].decl := 'A_ConsolePlayerMessage';{$ENDIF}
 
 
   deh_strings.numstrings := 0;

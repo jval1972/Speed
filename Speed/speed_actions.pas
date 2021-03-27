@@ -44,6 +44,8 @@ procedure A_CheckRaceOver(actor: Pmobj_t);
 
 procedure A_ExitLevel(actor: Pmobj_t);
 
+procedure A_ConsolePlayerMessage(actor: Pmobj_t);
+
 implementation
 
 uses
@@ -53,6 +55,7 @@ uses
   g_game,
   info_common,
   p_mobj,
+  p_common,
   psi_overlay,
   speed_cars,
   speed_race,
@@ -143,6 +146,14 @@ end;
 procedure A_ExitLevel(actor: Pmobj_t);
 begin
   G_ExitLevel;
+end;
+
+procedure A_ConsolePlayerMessage(actor: Pmobj_t);
+begin
+  if not P_CheckStateParams(actor, 1) then
+    Exit;
+
+  players[consoleplayer]._message := actor.state.params.StrVal[0];
 end;
 
 end.
