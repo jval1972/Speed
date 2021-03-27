@@ -442,7 +442,7 @@ begin
   // create the message widget
   HUlib_initSText(@w_message,
     HU_MSGX, HU_MSGY, HU_MSGHEIGHT,
-    @hu_fontY,
+    @hu_fontR,
     Ord(HU_FONTSTART), @message_on);
 
   // create the map title widget
@@ -505,7 +505,7 @@ begin
     if m_fps[i] <> ' ' then
     begin
       c := Ord(toupper(m_fps[i])) - Ord(HU_FONTSTART);
-      V_DrawPatch(x, y, SCN_FG, hu_fontY[c], false);
+      V_DrawPatch(x, y, SCN_FG, hu_fontR[c], false);
       x := x - 8;
     end
     else
