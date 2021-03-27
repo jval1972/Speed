@@ -160,16 +160,19 @@ begin
   M_WriteText(mpos.x, mpos.y, ')', _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
 
   mpos := M_WriteText(18, 65, 'Player: ', _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
-  M_WriteText(mpos.x, mpos.y, players[consoleplayer].playername, _MA_LEFT or _MC_UPPER, @hu_fontW, @hu_fontB);
+  mpos := M_WriteText(mpos.x, mpos.y, players[consoleplayer].playername, _MA_LEFT or _MC_UPPER, @hu_fontW, @hu_fontB);
 
-  mpos := M_WriteText(208, 65, 'Rank: ', _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
+  mpos := M_WriteText(mpos.x, mpos.y, '  Rank: ', _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
   M_WriteText(mpos.x, mpos.y, SH_FmtRacePostion(score.raceposition), _MA_LEFT or _MC_NOCASE, @hu_fontW, @hu_fontB);
 
   mpos := M_WriteText(18, 75, 'Car: ', _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
   M_WriteText(mpos.x, mpos.y, CARINFO[score.carinfo].name, _MA_LEFT or _MC_UPPER, @hu_fontW, @hu_fontB);
 
   mpos := M_WriteText(18, 85, 'Total time: ', _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
-  M_WriteText(mpos.x, mpos.y, SH_TicsToTimeStr(score.totaltime), _MA_LEFT or _MC_UPPER, @hu_fontW, @hu_fontB);
+  mpos := M_WriteText(mpos.x, mpos.y, SH_TicsToTimeStr(score.totaltime), _MA_LEFT or _MC_UPPER, @hu_fontW, @hu_fontB);
+  mpos := M_WriteText(mpos.x, mpos.y, ' (', _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
+  mpos := M_WriteText(mpos.x, mpos.y, itoa(score.numlaps) + ' Laps', _MA_LEFT or _MC_NOCASE, @hu_fontW, @hu_fontB);
+  M_WriteText(mpos.x, mpos.y, ')', _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
 
   for i := 0 to players[consoleplayer].currentscore.numlaps - 1 do
   begin
