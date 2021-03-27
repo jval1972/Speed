@@ -1480,6 +1480,7 @@
     '    Spawn:'#13#10 +
     '    {'#13#10 +
     '      TNT1 A 1'#13#10 +
+    '      TNT1 A 0 A_PlaysoundFullVolume("speedhaste/GAMEOVER.RAW")'#13#10 +
     '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''GAMEOVER'', 160, 100, 160, 100)'#13#10 +
     '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''GAMEOVER'', 157, 99, 162, 100)'#13#10 +
     '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''GAMEOVER'', 154, 99, 165, 101)'#13#10 +

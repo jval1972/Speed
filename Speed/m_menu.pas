@@ -294,18 +294,6 @@ begin
   M_WriteText(x, y, str, ma_left, @big_fontW, @big_fontB);
 end;
 
-procedure M_DrawSmallLine(const y: integer; const str: string);
-var
-  i: integer;
-begin
-  M_HorzLine(0, 319, y, 121);
-  M_HorzLine(0, 319, y + 9, 123);
-  for i := y + 1 to y + 8 do
-    M_HorzLine(0, 319, i, 118);
-
-  M_WriteText(160, y + 2, str, ma_center, @hu_fontW, @big_fontB);
-end;
-
 const
   DEF_MENU_ITEMS_START_X = 32;
   DEF_MENU_ITEMS_START_Y = 65;
@@ -868,8 +856,8 @@ type
 
 const
   KeyBindingsInfo: array [0..Ord(kb_end) - 1] of bindinginfo_t = (
-    (text: 'Move forward'; pkey: @key_up),
-    (text: 'Move backward'; pkey: @key_down),
+    (text: 'Accelerate'; pkey: @key_up),
+    (text: 'Brake'; pkey: @key_down),
     (text: 'Turn left'; pkey: @key_left),
     (text: 'Turn right'; pkey: @key_right),
     (text: 'Strafe left'; pkey: @key_strafeleft),
@@ -915,10 +903,10 @@ begin
 
   case k of
     32: result := 'SPACE';
-    KEY_RIGHTARROW: result := 'RIGHTARROW';
-    KEY_LEFTARROW: result := 'LEFTARROW';
-    KEY_UPARROW: result := 'UPARROW';
-    KEY_DOWNARROW: result := 'DOWNARROW';
+    KEY_RIGHTARROW: result := 'R-ARROW';
+    KEY_LEFTARROW: result := 'L-ARROW';
+    KEY_UPARROW: result := 'U-ARROW';
+    KEY_DOWNARROW: result := 'D-ARROW';
     KEY_ESCAPE: result := 'ESCAPE';
     KEY_ENTER: result := 'ENTER';
     KEY_TAB: result := 'TAB';
@@ -1335,34 +1323,139 @@ begin
 end;
 
 //
-// Read This Menus
-// Had a "quick hack to fix romero bug"
+// Help Menus
 //
+function M_WriteHelpText(const x, y: integer; const s1, s2: string): menupos_t;
+var
+  mp: menupos_t;
+begin
+  mp := M_WriteText(x, y, s1 + ': ', ma_left, @hu_fontY, @hu_fontB);
+  result := M_WriteText(mp.x, mp.y, s2, ma_left, @hu_fontW, @hu_fontB);
+end;
+
+procedure M_DrawSmallLine(const y: integer; const str: string);
+var
+  i: integer;
+begin
+  M_HorzLine(0, 319, y, 64);
+  M_HorzLine(0, 319, y + 11, 80);
+  for i := y + 1 to y + 10 do
+    M_HorzLine(0, 319, i, 63);
+
+  M_WriteText(160, y + 2, str, ma_center, @hu_fontW, @hu_fontB);
+end;
+
 procedure M_DrawReadThis1;
+var
+  y: integer;
 begin
   inhelpscreens := true;
-  case gamemode of
-    shareware,
-    registered,
-    retail:
-      V_PageDrawer(pg_HELP1);
-  end;
+
+  V_DrawPatch(0, 0, SCN_TMP, 'MBG_RECO', false);
+
+  M_DrawHeadLine(20, 15, 'HELP');
+
+  y := 34;
+  M_DrawSmallLine(y, 'MISCELLANIOUS OPTIONS');
+
+  y := y + 14;
+  M_WriteHelpText(10, y, 'F1', 'HELP');
+  M_WriteHelpText(160, y, 'F2', 'LOAD');
+
+  y := y + 10;
+  M_WriteHelpText(10, y, 'F3', 'SAVE');
+  M_WriteHelpText(160, y, 'F4', 'SOUND VOLUME');
+
+  y := y + 10;
+  M_WriteHelpText(10, y, 'F5', 'TOGGLE DETAIL');
+  M_WriteHelpText(160, y, 'F6', 'QUICKSAVE');
+
+  y := y + 10;
+  M_WriteHelpText(10, y, 'F7', 'END GAME');
+  M_WriteHelpText(160, y, 'F8', 'MESSAGES');
+
+  y := y + 10;
+  M_WriteHelpText(10, y, 'F9', 'QUICKLOAD');
+  M_WriteHelpText(160, y, 'F10', 'QUIT GAME');
+
+  y := y + 10;
+  M_WriteHelpText(10, y, 'F11', 'GAMMA');
+  M_WriteHelpText(160, y, 'TAB', 'AUTOMAP');
+
+  y := y + 10;
+  M_WriteHelpText(10, y, 'ESC', 'MENU');
+  M_WriteHelpText(160, y, 'PRTSC', 'SCREENSHOT');
+
+  y := y + 10;
+  M_WriteHelpText(160, y, 'PAUSE', 'PAUSE GAME');
+
+  y := y + 14;
+  M_DrawSmallLine(y, 'AUTOMAP');
+
+  y := y + 14;
+  M_WriteHelpText(10, y, 'F', 'FOLLOW MODE');
+  M_WriteHelpText(160, y, 'M', 'ADD MARK');
+
+  y := y + 10;
+  M_WriteHelpText(10, y, 'C', 'CLEAR MARKS');
+  M_WriteHelpText(160, y, 'G', 'TOGGLE GRID');
+
+  y := y + 10;
+  M_WriteHelpText(10, y, 'T', 'TOGGLE TEXTURES');
+  M_WriteHelpText(160, y, '+/-', 'ZOOM SIZE');
+
 end;
 
 //
-// Read This Menus - optional second page.
+// Help menu second page.
 //
+function M_WriteHelpControlText(const x, y: integer; const control: PInteger): menupos_t;
+var
+  i: integer;
+begin
+  for i := 0 to Ord(kb_end) - 1 do
+    if KeyBindingsInfo[i].pkey = control then
+    begin
+      result := M_WriteText(x, y, KeyBindingsInfo[i].text + ': ', ma_left, @hu_fontY, @hu_fontB);
+      result := M_WriteText(result.x, result.y, M_KeyToString(control^), ma_left, @hu_fontW, @hu_fontB);
+      exit;
+    end;
+
+  result.x := x;
+  result.y := y;
+end;
+
 procedure M_DrawReadThis2;
+var
+  y: integer;
 begin
   inhelpscreens := true;
-  case gamemode of
-    retail:
-      // This hack keeps us from having to change menus.
-      V_PageDrawer(pg_CREDIT);
-    shareware,
-    registered:
-      V_PageDrawer(pg_HELP2);
-  end;
+
+  V_DrawPatch(0, 0, SCN_TMP, 'MBG_RECO', false);
+
+  M_DrawHeadLine(20, 15, 'HELP');
+
+  y := 34;
+  M_DrawSmallLine(y, 'DRIVING CONTROLS');
+
+  y := y + 14;
+  M_WriteHelpControlText(10, y, @key_up);
+  M_WriteHelpControlText(160, y, @key_down);
+
+  y := y + 10;
+  M_WriteHelpControlText(10, y, @key_left);
+  M_WriteHelpControlText(160, y, @key_right);
+
+  y := y + 14;
+  M_DrawSmallLine(y, 'MENU');
+
+  y := y + 14;
+  M_WriteHelpText(10, y, 'ARROWS', 'NAVIGATE');
+  M_WriteHelpText(160, y, 'ENTER', 'SELECT');
+
+  y := y + 10;
+  M_WriteHelpText(10, y, 'BACKSPACE', 'GO BACK');
+  M_WriteHelpText(160, y, 'ESC', 'EXIT MENU');
 end;
 
 procedure M_DrawReadThisExt;
@@ -3736,12 +3829,12 @@ begin
   // Another hickup with Special edition.
   inc(pmi);
   pmi.status := 1;
-  pmi.name := 'Ordering Info';
+  pmi.name := 'Help';
   pmi.cmd := '';
   pmi.routine := @M_ReadThis;
   pmi.pBoolVal := nil;
   pmi.pIntVal := nil;
-  pmi.alphaKey := 'r';
+  pmi.alphaKey := 'h';
   pmi.tag := 0;
 
   inc(pmi);
