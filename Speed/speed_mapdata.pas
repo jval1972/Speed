@@ -40,6 +40,8 @@ procedure SH_ShutDownMapData;
 
 type
   mapdata_t = record
+    episode: integer;
+    map: integer;
     lname: string[8];
     name: string[64];
     best: integer;
@@ -113,6 +115,8 @@ begin
         end;
         if mlump >= 0 then
         begin
+          mrec.episode := i;
+          mrec.map := j;
           mrec.lname := lname;
           mrec.name := '';
           mrec.best := 0;

@@ -145,6 +145,7 @@ uses
   speed_end_screen,
   speed_race,
   speed_mapdata,
+  speed_score,
   speed_string_format,
   t_main,
   vx_voxelsprite,
@@ -2107,6 +2108,9 @@ var
   idx: integer;
   mname: string;
   mdata: mapdata_t;
+  ypos: integer;
+  best_f1, best_stock: integer;
+  mpos: menupos_t;
 begin
   V_DrawPatch(0, 0, SCN_TMP, 'MBG_CIRC', false);
   V_DrawPatch(0, 8, SCN_TMP, 'MSCBAR', false);
@@ -2128,10 +2132,27 @@ begin
     V_DrawPatch(80, 100, SCN_TMP, 'MSFPRO', false);
   end;
 
-  M_WriteText(20, 114, 'LENGTH', ma_left, @hu_fontW, @hu_fontB);
-  M_WriteText(100, 114, SH_Meters2KM(mdata.len), ma_left, @hu_fontY, @hu_fontB);
+  ypos := 114;
+  M_WriteText(20, ypos, 'LENGTH', ma_left, @hu_fontW, @hu_fontB);
+  M_WriteText(104, ypos, SH_Meters2KM(mdata.len), ma_left, @hu_fontY, @hu_fontB);
 
-  M_WriteText(20, 124, 'LAP RECORD', ma_left, @hu_fontW, @hu_fontB);
+  best_f1 := recordtable.laprecords[mdata.episode, mdata.map, ct_formula][0].time;
+  if best_f1 > 0 then
+  begin
+    inc(ypos, 20);
+    M_WriteText(20, ypos, 'LAP RECORD', ma_left, @hu_fontW, @hu_fontB);
+    mpos := M_WriteText(104, ypos, SH_TicsToTimeStr(best_f1), ma_left, @hu_fontY, @hu_fontB);
+    M_WriteText(mpos.x, mpos.y, ' F1', ma_left, @hu_fontW, @hu_fontB);
+  end;
+
+  best_stock := recordtable.laprecords[mdata.episode, mdata.map, ct_stock][0].time;
+  if best_stock > 0 then
+  begin
+    inc(ypos, 20);
+    M_WriteText(20, ypos, 'LAP RECORD', ma_left, @hu_fontW, @hu_fontB);
+    mpos := M_WriteText(104, ypos, SH_TicsToTimeStr(best_stock), ma_left, @hu_fontY, @hu_fontB);
+    M_WriteText(mpos.x, mpos.y, ' stock', ma_left, @hu_fontW, @hu_fontB);
+  end;
 
   V_DrawPatch(250, 150, SCN_TMP, SH_MapData(mname).mapsprite, false);
 end;
