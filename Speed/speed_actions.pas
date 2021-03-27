@@ -71,6 +71,8 @@ begin
     pname := 'RLOAD00';
 
   overlay.AddPatch(50, pname, 0, 0);
+
+  players[consoleplayer]._message := 'Start your engines';
 end;
 
 procedure A_StartRace(mo: Pmobj_t);
@@ -96,6 +98,7 @@ begin
     begin
       p.didlaprecord[mo.lapscompleted - 1] := True;
       S_StartSound(nil, 'speedhaste/LAPREC.RAW');
+      p._message := 'Lap Record';
     end;
 end;
 
@@ -124,6 +127,7 @@ begin
         MT_YOUWIN := Info_GetMobjNumForName('MT_YOUWIN');
       if MT_YOUWIN >= 0 then
         P_SpawnMobj(0, 0, 0, MT_YOUWIN);
+      p._message := 'You win';
     end
     else
     begin
@@ -131,6 +135,7 @@ begin
         MT_GAMEOVER := Info_GetMobjNumForName('MT_GAMEOVER');
       if MT_GAMEOVER >= 0 then
         P_SpawnMobj(0, 0, 0, MT_GAMEOVER);
+      p._message := 'Game over';
     end;
   end;
 end;
