@@ -417,6 +417,7 @@ type
     news_championship,
     news_singlerace,
     news_practice,
+    news_numlaps,
     news_carselect,
     news_difficultylevel,
     news_carmodel,
@@ -2032,7 +2033,9 @@ begin
   for i := 0 to Ord(news_end) - 1 do
   begin
     stmp := NewGameSetupMenu[i].name;
-    if i = Ord(news_carselect) then
+    if i = Ord(news_numlaps) then
+      stmp := stmp + ': ' + itoa(numlaps)
+    else if i = Ord(news_carselect) then
     begin
       racecartype := GetIntegerInRange(racecartype, 0, Ord(ct_any));
       case racecartype of
@@ -2090,6 +2093,13 @@ begin
   mgametype := Ord(gt_practice);
   menu_select_cource := GetIntegerInRange(menu_select_cource, 0, mapdatalst.Count - 1);
   M_SetupNextMenu(@SelectCourseDef[menu_select_cource]);
+end;
+
+procedure M_ChangeLapNumber;
+begin
+  inc(numlaps);
+  if numlaps = MAXLAPS + 1 then
+    numlaps := MINLAPS;
 end;
 
 var
@@ -3886,6 +3896,17 @@ begin
   pmi.name := 'Practice';
   pmi.cmd := '';
   pmi.routine := @M_PracticeRace;
+  pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
+  pmi.alphaKey := 'p';
+  pmi.tag := 0;
+
+
+  inc(pmi);
+  pmi.status := 1;
+  pmi.name := 'Lap Count';
+  pmi.cmd := '';
+  pmi.routine := @M_ChangeLapNumber;
   pmi.pBoolVal := nil;
   pmi.pIntVal := nil;
   pmi.alphaKey := 'p';
