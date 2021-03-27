@@ -165,6 +165,7 @@ end;
 
 procedure SH_Intermission_Drawer1;
 var
+  score: Pplayerscore_t;
   stmp: string;
   mname: string;
   mpos: menupos_t;
@@ -173,31 +174,34 @@ begin
 
   V_DrawPatch(161, 50, SCN_TMP, 'REC_TXT', false);
 
-  if CARINFO[players[consoleplayer].currentscore.carinfo].cartype = ct_formula then
-    stmp := 'Formula 1 lap records'
-  else if CARINFO[players[consoleplayer].currentscore.carinfo].cartype = ct_stock then
-    stmp := 'Stock car lap records'
+  score := @players[consoleplayer].currentscore;
+
+  mname := P_GetMapName(score.episode, score.map);
+  mpos := M_WriteText(18, 55, 'Course: ', ma_left, @hu_fontY, @hu_fontB);
+  M_WriteText(mpos.x, mpos.y, SH_MapData(mname).name, ma_left, @hu_fontW, @hu_fontB);
+
+  if CARINFO[score.carinfo].cartype = ct_formula then
+    stmp := 'Formula 1: '
+  else if CARINFO[score.carinfo].cartype = ct_stock then
+    stmp := 'Stock car: '
   else
     Exit;
 
-  M_WriteText(160, 51, stmp, ma_center, @hu_fontY, @hu_fontB);
-
-  mname := P_GetMapName(players[consoleplayer].currentscore.episode, players[consoleplayer].currentscore.map);
-
-  mpos := M_WriteText(18, 64, 'Course: ', ma_left, @hu_fontY, @hu_fontB);
-  M_WriteText(mpos.x, mpos.y, SH_MapData(mname).name, ma_left, @hu_fontW, @hu_fontB);
+  mpos := M_WriteText(18, 65, stmp, ma_left, @hu_fontY, @hu_fontB);
+  M_WriteText(mpos.x, mpos.y, 'lap records', ma_left, @hu_fontW, @hu_fontB);
 
   SH_DrawScoreTableItems(
     @recordtable.laprecords[
-      players[consoleplayer].currentscore.episode,
-      players[consoleplayer].currentscore.map,
-      CARINFO[players[consoleplayer].currentscore.carinfo].cartype]);
+      score.episode,
+      score.map,
+      CARINFO[score.carinfo].cartype]);
 
   V_CopyRect(0, 0, SCN_TMP, 320, 200, 0, 0, SCN_FG, true);
 end;
 
 procedure SH_Intermission_Drawer2;
 var
+  score: Pplayerscore_t;
   stmp: string;
   mname: string;
   mpos: menupos_t;
@@ -206,26 +210,31 @@ begin
 
   V_DrawPatch(161, 50, SCN_TMP, 'REC_TXT', false);
 
-  if CARINFO[players[consoleplayer].currentscore.carinfo].cartype = ct_formula then
-    stmp := 'Formula 1 track records'
-  else if CARINFO[players[consoleplayer].currentscore.carinfo].cartype = ct_stock then
-    stmp := 'Stock car track records'
+  score := @players[consoleplayer].currentscore;
+
+  mname := P_GetMapName(score.episode, score.map);
+  mpos := M_WriteText(18, 55, 'Course: ', ma_left, @hu_fontY, @hu_fontB);
+  M_WriteText(mpos.x, mpos.y, SH_MapData(mname).name, ma_left, @hu_fontW, @hu_fontB);
+
+  if CARINFO[score.carinfo].cartype = ct_formula then
+    stmp := 'Formula 1: '
+  else if CARINFO[score.carinfo].cartype = ct_stock then
+    stmp := 'Stock car: '
   else
     Exit;
 
-  M_WriteText(160, 51, stmp, ma_center, @hu_fontY, @hu_fontB);
-
-  mname := P_GetMapName(players[consoleplayer].currentscore.episode, players[consoleplayer].currentscore.map);
-
-  mpos := M_WriteText(18, 64, 'Course: ', ma_left, @hu_fontY, @hu_fontB);
-  M_WriteText(mpos.x, mpos.y, SH_MapData(mname).name, ma_left, @hu_fontW, @hu_fontB);
+  mpos := M_WriteText(18, 65, stmp, ma_left, @hu_fontY, @hu_fontB);
+  mpos := M_WriteText(mpos.x, mpos.y, 'course records ', ma_left, @hu_fontW, @hu_fontB);
+  mpos := M_WriteText(mpos.x, mpos.y, '(', ma_left, @hu_fontY, @hu_fontB);
+  mpos := M_WriteText(mpos.x, mpos.y, itoa(score.numlaps) + ' laps', ma_left, @hu_fontW, @hu_fontB);
+  mpos := M_WriteText(mpos.x, mpos.y, ')', ma_left, @hu_fontY, @hu_fontB);
 
   SH_DrawScoreTableItems(
     @recordtable.courserecord[
-      players[consoleplayer].currentscore.numlaps,
-      players[consoleplayer].currentscore.episode,
-      players[consoleplayer].currentscore.map,
-      CARINFO[players[consoleplayer].currentscore.carinfo].cartype]);
+      score.numlaps,
+      score.episode,
+      score.map,
+      CARINFO[score.carinfo].cartype]);
 
   V_CopyRect(0, 0, SCN_TMP, 320, 200, 0, 0, SCN_FG, true);
 end;
