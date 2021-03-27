@@ -134,7 +134,8 @@ begin
 
   if not netgame then
     if not demoplayback then
-      SH_UpdateScoreTable(@players[consoleplayer], score.episode, score.map, gameskill);
+      if race.gametype <> gt_practice then
+        SH_UpdateScoreTable(@players[consoleplayer], score.episode, score.map, gameskill);
 end;
 
 // Race results

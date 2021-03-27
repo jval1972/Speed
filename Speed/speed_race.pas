@@ -48,6 +48,7 @@ type
   race_t = record
     cartype: cartype_t;
     racestatus: racestatus_t;
+    gametype: gametype_t;
     completed: boolean;
     ground: Pground_t;
     groundlump: integer;
@@ -101,6 +102,7 @@ implementation
 
 uses
   m_rnd,
+  g_game,
   p_setup,
   r_data,
   speed_xlat_wad,
@@ -114,6 +116,7 @@ var
 begin
   racecartype := GetIntegerInRange(racecartype, 0, Ord(ct_any));
   race.cartype := cartype_t(racecartype);
+  race.gametype := gametype;
 
   race.groundlump := R_GetLumpForFlat(sectors[0].floorpic);
   race.ground := W_CacheLumpNum(race.groundlump, PU_LEVEL);
