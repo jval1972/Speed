@@ -597,7 +597,7 @@ begin
       Z_ChangeTag(p, PU_CACHE);
     end;
   end;
-  V_DrawPatch(160, 180, SCN_TMP, 'MMCRED', false);
+  V_DrawPatch(160, 190, SCN_TMP, 'MMCRED', false);
   V_CopyRectTransparent(0, 0, SCN_TMP, 320, 200, 0, 0, SCN_FG, true);
 end;
 
