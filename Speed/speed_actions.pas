@@ -116,7 +116,7 @@ begin
   if p = nil then
     Exit;
 
-  if mo.lapscompleted >= race.numlaps then
+  if (mo.lapscompleted >= race.numlaps) and (race.gametype <> gt_practice) then
   begin
     if mo.raceposition = 1 then
     begin
