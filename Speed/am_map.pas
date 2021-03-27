@@ -669,7 +669,7 @@ begin
   f_x := 0;
   f_y := 0;
   f_w := SCREENWIDTH;
-  f_h := ST_Y * SCREENHEIGHT div 200;
+  f_h := SCREENHEIGHT;
 
   AM_clearMarks;
 
