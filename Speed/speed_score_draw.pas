@@ -56,12 +56,12 @@ var
   ypos: integer;
   i: integer;
 begin
-  ypos := 64;
+  ypos := 80;
   M_WriteText(18, ypos, 'NAME', ma_left, @hu_fontY, @hu_fontB);
   M_WriteText(143, ypos, 'CAR', ma_left, @hu_fontY, @hu_fontB);
   M_WriteText(254, ypos, 'TIME', ma_left, @hu_fontY, @hu_fontB);
 
-  ypos := 80;
+  ypos := 95;
   for i := 0 to NUMSCORES - 1 do
   begin
     M_WriteText(16, ypos, itoa(i + 1), ma_right, @hu_fontY, @hu_fontB);

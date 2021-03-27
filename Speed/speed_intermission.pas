@@ -56,9 +56,11 @@ uses
   g_game,
   hu_stuff,
   mn_textwrite,
+  p_setup,
   sounds,
   s_sound,
   speed_cars,
+  speed_mapdata,
   speed_score,
   speed_score_draw,
   speed_race,
@@ -164,6 +166,8 @@ end;
 procedure SH_Intermission_Drawer1;
 var
   stmp: string;
+  mname: string;
+  mpos: menupos_t;
 begin
   V_DrawPatchFullScreenTMP320x200('MBG_RECO');
 
@@ -178,6 +182,11 @@ begin
 
   M_WriteText(160, 51, stmp, ma_center, @hu_fontY, @hu_fontB);
 
+  mname := P_GetMapName(players[consoleplayer].currentscore.episode, players[consoleplayer].currentscore.map);
+
+  mpos := M_WriteText(18, 64, 'Course: ', ma_left, @hu_fontY, @hu_fontB);
+  M_WriteText(mpos.x, mpos.y, SH_MapData(mname).name, ma_left, @hu_fontW, @hu_fontB);
+
   SH_DrawScoreTableItems(
     @recordtable.laprecords[
       players[consoleplayer].currentscore.episode,
@@ -190,6 +199,8 @@ end;
 procedure SH_Intermission_Drawer2;
 var
   stmp: string;
+  mname: string;
+  mpos: menupos_t;
 begin
   V_DrawPatchFullScreenTMP320x200('MBG_RECO');
 
@@ -203,6 +214,11 @@ begin
     Exit;
 
   M_WriteText(160, 51, stmp, ma_center, @hu_fontY, @hu_fontB);
+
+  mname := P_GetMapName(players[consoleplayer].currentscore.episode, players[consoleplayer].currentscore.map);
+
+  mpos := M_WriteText(18, 64, 'Course: ', ma_left, @hu_fontY, @hu_fontB);
+  M_WriteText(mpos.x, mpos.y, SH_MapData(mname).name, ma_left, @hu_fontW, @hu_fontB);
 
   SH_DrawScoreTableItems(
     @recordtable.courserecord[
