@@ -146,6 +146,7 @@ uses
   speed_race,
   speed_mapdata,
   speed_score,
+  speed_score_draw,
   speed_string_format,
   t_main,
   vx_voxelsprite,
@@ -367,13 +368,14 @@ type
     mm_options,
     mm_loadgame,
     mm_savegame,
+    mn_laprecords,
     mm_readthis,
     mm_quitspeed,
     main_end
   );
 
 var
-  MainMenu: array[0..5] of menuitem_t;
+  MainMenu: array[0..Ord(main_end) - 1] of menuitem_t;
   MainDef: menu_t;
 
 type
@@ -3698,6 +3700,154 @@ begin
   M_CmdSetupNextMenu(@SaveDef);
 end;
 
+type
+  laprecords_e = (
+    lrecs_course,
+    lrecs_typ,
+    laprecords_end
+  );
+
+var
+  LapRecordsMenu: array[0..Ord(laprecords_end) - 1] of menuitem_t;
+  LapRecordsDef: menu_t;
+
+var
+  menu_lap_records_course: integer = 0;
+  menu_lap_records_lap: integer = 0;
+
+procedure M_ChangeLapRecordsCourse(choice: integer);
+begin
+  menu_lap_records_course := GetIntegerInRange(menu_lap_records_course, 0, mapdatalst.Count - 1);
+  if choice = 0 then
+  begin
+    dec(menu_lap_records_course);
+    if menu_lap_records_course < 0 then
+      menu_lap_records_course := mapdatalst.Count - 1;
+  end
+  else
+  begin
+    inc(menu_lap_records_course);
+    if menu_lap_records_course >= mapdatalst.Count then
+      menu_lap_records_course := 0;
+  end;
+end;
+
+const
+  NUM_LAP_RECORDS_TBL = 20;
+
+type
+  menu_lap_typ_t = record
+    laps: integer;
+    ctyp: cartype_t;
+  end;
+  Pmenu_lap_typ_t = ^menu_lap_typ_t;
+
+const
+  MENU_LAP_RECORDS_TBL: array[0..NUM_LAP_RECORDS_TBL - 1] of menu_lap_typ_t = (
+    (laps: 0; ctyp: ct_formula),
+    (laps: 2; ctyp: ct_formula),
+    (laps: 3; ctyp: ct_formula),
+    (laps: 4; ctyp: ct_formula),
+    (laps: 5; ctyp: ct_formula),
+    (laps: 6; ctyp: ct_formula),
+    (laps: 7; ctyp: ct_formula),
+    (laps: 8; ctyp: ct_formula),
+    (laps: 9; ctyp: ct_formula),
+    (laps: 10; ctyp: ct_formula),
+    (laps: 0; ctyp: ct_stock),
+    (laps: 2; ctyp: ct_stock),
+    (laps: 3; ctyp: ct_stock),
+    (laps: 4; ctyp: ct_stock),
+    (laps: 5; ctyp: ct_stock),
+    (laps: 6; ctyp: ct_stock),
+    (laps: 7; ctyp: ct_stock),
+    (laps: 8; ctyp: ct_stock),
+    (laps: 9; ctyp: ct_stock),
+    (laps: 10; ctyp: ct_stock)
+  );
+
+procedure M_ChangeLapRecordsTyp(choice: integer);
+begin
+  menu_lap_records_lap := GetIntegerInRange(menu_lap_records_lap, 0, NUM_LAP_RECORDS_TBL - 1);
+  if choice = 0 then
+  begin
+    dec(menu_lap_records_lap);
+    if menu_lap_records_lap < 0 then
+      menu_lap_records_lap := NUM_LAP_RECORDS_TBL - 1;
+  end
+  else
+  begin
+    inc(menu_lap_records_lap);
+    if menu_lap_records_lap >= NUM_LAP_RECORDS_TBL then
+      menu_lap_records_lap := 0;
+  end;
+end;
+
+procedure M_DrawLapRecords;
+var
+  mdata: mapdata_t;
+  stmp: string;
+  mname: string;
+  mpos: menupos_t;
+  laptyp: Pmenu_lap_typ_t;
+begin
+  V_DrawPatchFullScreenTMP320x200('MBG_RECO');
+
+  V_DrawPatch(161, 50, SCN_TMP, 'REC_TXT', false);
+
+  mname := mapdatalst.Strings[menu_lap_records_course];
+  mdata := SH_MapData(mname);
+
+  mpos := M_WriteText(18, 55, 'Course: ', _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
+  mpos := M_WriteText(mpos.x, mpos.y, mdata.name, _MA_LEFT or _MC_UPPER, @hu_fontW, @hu_fontB);
+  mpos := M_WriteText(mpos.x, mpos.y, ' (', _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
+  mpos := M_WriteText(mpos.x, mpos.y, mname, _MA_LEFT or _MC_UPPER, @hu_fontW, @hu_fontB);
+  M_WriteText(mpos.x, mpos.y, ')', _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
+
+  laptyp := @MENU_LAP_RECORDS_TBL[menu_lap_records_lap];
+
+  if laptyp.ctyp = ct_formula then
+    stmp := 'Formula 1: '
+  else if laptyp.ctyp = ct_stock then
+    stmp := 'Stock car: '
+  else
+    Exit;
+
+  mpos := M_WriteText(18, 65, stmp, _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
+  if laptyp.laps = 0 then
+  begin
+    M_WriteText(mpos.x, mpos.y, 'lap records', _MA_LEFT or _MC_UPPER, @hu_fontW, @hu_fontB);
+
+    SH_DrawScoreTableItems(
+      @recordtable.laprecords[
+        mdata.episode,
+        mdata.map,
+        laptyp.ctyp]);
+  end
+  else
+  begin
+    mpos := M_WriteText(18, 65, stmp, _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
+    mpos := M_WriteText(mpos.x, mpos.y, 'course records ', _MA_LEFT or _MC_UPPER, @hu_fontW, @hu_fontB);
+    mpos := M_WriteText(mpos.x, mpos.y, '(', _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
+    mpos := M_WriteText(mpos.x, mpos.y, itoa(laptyp.laps) + ' Laps', _MA_LEFT or _MC_NOCASE, @hu_fontW, @hu_fontB);
+    M_WriteText(mpos.x, mpos.y, ')', _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
+
+    SH_DrawScoreTableItems(
+      @recordtable.courserecord[
+        laptyp.laps,
+        mdata.episode,
+        mdata.map,
+        laptyp.ctyp]);
+  end;
+
+  V_CopyRect(0, 0, SCN_TMP, 320, 200, 0, 0, SCN_FG, true);
+end;
+
+procedure M_ShowLapRecords(choice: integer);
+begin
+  M_SetupNextMenu(@LapRecordsDef);
+end;
+
 //
 // M_Init
 //
@@ -3836,6 +3986,16 @@ begin
   pmi.alphaKey := 's';
   pmi.tag := 0;
 
+  inc(pmi);
+  pmi.status := 1;
+  pmi.name := 'Lap Records';
+  pmi.cmd := '';
+  pmi.routine := @M_ShowLapRecords;
+  pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
+  pmi.alphaKey := 'r';
+  pmi.tag := 0;
+
   // Another hickup with Special edition.
   inc(pmi);
   pmi.status := 1;
@@ -3861,6 +4021,8 @@ begin
 //MainDef
   MainDef.numitems := Ord(main_end);
   MainDef.prevMenu := nil;
+  MainDef.leftMenu := nil;
+  MainDef.rightMenu := nil;
   MainDef.menuitems := Pmenuitem_tArray(@MainMenu);
   MainDef.drawproc := @M_DrawMainMenu;  // draw routine
   MainDef.x := DEF_MENU_ITEMS_START_X;
@@ -5682,6 +5844,42 @@ begin
   SensitivityDef.lastOn := 0; // last item user was on in menu
   SensitivityDef.itemheight := LINEHEIGHT2;
   SensitivityDef.texturebk := true;
+
+////////////////////////////////////////////////////////////////////////////////
+//LapRecordsMenu
+  pmi := @LapRecordsMenu[0];
+  pmi.status := 2;
+  pmi.name := '';
+  pmi.cmd := '';
+  pmi.routine := @M_ChangeLapRecordsCourse;
+  pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
+  pmi.alphaKey := 'c';
+  pmi.tag := 0;
+
+  inc(pmi);
+  pmi.status := 2;
+  pmi.name := '';
+  pmi.cmd := '';
+  pmi.routine := @M_ChangeLapRecordsTyp;
+  pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
+  pmi.alphaKey := 'l';
+  pmi.tag := 0;
+
+////////////////////////////////////////////////////////////////////////////////
+//LapRecordsDef
+  LapRecordsDef.numitems := Ord(laprecords_end); // # of menu items
+  LapRecordsDef.prevMenu := @MainDef; // previous menu
+  LapRecordsDef.leftMenu := nil; // left menu
+  LapRecordsDef.rightMenu := nil;  // right menu
+  LapRecordsDef.menuitems := Pmenuitem_tArray(@LapRecordsMenu);  // menu items
+  LapRecordsDef.drawproc := @M_DrawLapRecords;  // draw routine
+  LapRecordsDef.x := 18;
+  LapRecordsDef.y := 55;
+  LapRecordsDef.lastOn := 0; // last item user was on in menu
+  LapRecordsDef.itemheight := LINEHEIGHT2;
+  LapRecordsDef.texturebk := false;
 
 ////////////////////////////////////////////////////////////////////////////////
 //SystemMenu
