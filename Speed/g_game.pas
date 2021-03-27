@@ -44,12 +44,12 @@ uses
 
 procedure G_DeathMatchSpawnPlayer(playernum: integer);
 
-procedure G_InitNew(skill:skill_t; gametyp: gametype_t; episode: integer; map: integer);
+procedure G_InitNew(skill: skill_t; gametyp: gametype_t; episode: integer; map: integer);
 
 // Can be called by the startup code or M_Responder.
 // A normal game starts at map 1,
 // but a warp test can start elsewhere
-procedure G_DeferedInitNew(skill:skill_t; gametyp: gametype_t; episode: integer; map: integer);
+procedure G_DeferedInitNew(skill: skill_t; gametyp: gametype_t; episode: integer; map: integer);
 
 procedure G_CmdNewGame(const parm1, parm2: string);
 
@@ -260,6 +260,14 @@ var
   dogs, default_dogs: integer;                // killough 7/19/98: Marine's best friend :)
   dog_jumping, default_dog_jumping: integer;  // killough 10/98
 
+var
+  old_racecartype: integer = 0;
+  old_numlaps: integer = 5;
+  old_gametype: gametype_t;
+  old_def_f1car: integer = 0;
+  old_def_ncar: integer = 20;
+  old_def_anycar: integer = 0;
+
 implementation
 
 uses
@@ -292,8 +300,10 @@ uses
   p_map,
   p_levelinfo,
   ps_main,
+  speed_cars,
   speed_end_screen,
   speed_intermission,
+  speed_race,
   hu_stuff,
   st_stuff,
   w_wad,
@@ -331,6 +341,13 @@ begin
   demoplayback := false;
   // Restore old compatibility mode
   compatibilitymode := oldcompatibilitymode;
+  // Restore race params
+  racecartype := old_racecartype;
+  numlaps := old_numlaps;
+  gametype := old_gametype;
+  def_f1car := old_def_f1car;
+  def_ncar := old_def_ncar;
+  def_anycar := old_def_anycar;
 end;
 
 var
@@ -2199,7 +2216,7 @@ var
   d_episode: integer;
   d_map: integer;
 
-procedure G_DeferedInitNew(skill:skill_t; gametyp: gametype_t; episode: integer; map: integer);
+procedure G_DeferedInitNew(skill: skill_t; gametyp: gametype_t; episode: integer; map: integer);
 begin
   d_skill := skill;
   d_gametype := gametyp;
@@ -2616,9 +2633,6 @@ begin
   demo_p[0] := Ord(gameskill);
   demo_p := @demo_p[1];
 
-  demo_p[0] := Ord(gametype);
-  demo_p := @demo_p[1];
-
   demo_p[0] := gameepisode;
   demo_p := @demo_p[1];
 
@@ -2638,6 +2652,24 @@ begin
   demo_p := @demo_p[1];
 
   demo_p[0] := intval(compatibilitymode);
+  demo_p := @demo_p[1];
+
+  demo_p[0] := racecartype;
+  demo_p := @demo_p[1];
+
+  demo_p[0] := numlaps;
+  demo_p := @demo_p[1];
+
+  demo_p[0] := Ord(gametype);
+  demo_p := @demo_p[1];
+
+  demo_p[0] := def_f1car;
+  demo_p := @demo_p[1];
+
+  demo_p[0] := def_ncar;
+  demo_p := @demo_p[1];
+
+  demo_p[0] := def_anycar;
   demo_p := @demo_p[1];
 
   demo_p[0] := intval(spawnrandommonsters);
@@ -2759,7 +2791,6 @@ var
 procedure G_DoPlayDemo;
 var
   skill: skill_t;
-  gtyp: gametype_t;
   i, episode, map: integer;
   lump: integer;
   len: integer;
@@ -2814,9 +2845,6 @@ begin
   skill := skill_t(demo_p[0]);
   demo_p := @demo_p[1];
 
-  gtyp := gametype_t(demo_p[0]);
-  demo_p := @demo_p[1];
-
   episode := demo_p[0];
   demo_p := @demo_p[1];
 
@@ -2843,6 +2871,31 @@ begin
     compatibilitymode := demo_p[0] <> 0;
     demo_p := @demo_p[1];
   end;
+
+  old_racecartype := racecartype;
+  old_numlaps := numlaps;
+  old_gametype := gametype;
+  old_def_f1car := def_f1car;
+  old_def_ncar := def_ncar;
+  old_def_anycar := def_anycar;
+
+  racecartype := demo_p[0];
+  demo_p := @demo_p[1];
+
+  numlaps := demo_p[0];
+  demo_p := @demo_p[1];
+
+  gametype := gametype_t(demo_p[0]);
+  demo_p := @demo_p[1];
+
+  def_f1car := demo_p[0];
+  demo_p := @demo_p[1];
+
+  def_ncar := demo_p[0];
+  demo_p := @demo_p[1];
+
+  def_anycar := demo_p[0];
+  demo_p := @demo_p[1];
 
   oldspawnrandommonsters := spawnrandommonsters;
   if demoversion >= VERSION114 then
@@ -2894,7 +2947,7 @@ begin
   preparingdemoplayback := true;
   // don't spend a lot of time in loadlevel if not singledemo
   precache := singledemo; // JVAL original code: precache := false
-  G_InitNew(skill, gtyp, episode, map);
+  G_InitNew(skill, gametype, episode, map);
   preparingdemoplayback := false;
   spawnrandommonsters := oldspawnrandommonsters;  // Back to default
   dogs := olddogs;
