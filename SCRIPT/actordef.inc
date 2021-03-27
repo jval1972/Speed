@@ -1290,6 +1290,7 @@
     '      TNT1 A 1'#13#10 +
     '      TNT1 A 60 A_StartYourEngines'#13#10 +
     '      TNT1 A 0 A_PlaysoundFullVolume("speedhaste/THREE.RAW")'#13#10 +
+    '      TNT1 A 0 A_ConsolePlayerMessage("3")'#13#10 +
     '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''RACE_3'', 159, 99, 160, 101)'#13#10 +
     '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''RACE_3'', 159, 98, 161, 102)'#13#10 +
     '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''RACE_3'', 158, 97, 161, 103)'#13#10 +
@@ -1326,6 +1327,7 @@
     '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''RACE_3'', 52, -70, 267, 270)'#13#10 +
     ''#13#10 +
     '      TNT1 A 0 A_PlaysoundFullVolume("speedhaste/TWO.RAW")'#13#10 +
+    '      TNT1 A 0 A_ConsolePlayerMessage("2")'#13#10 +
     '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''RACE_2'', 159, 99, 160, 101)'#13#10 +
     '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''RACE_2'', 159, 98, 161, 102)'#13#10 +
     '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''RACE_2'', 158, 97, 161, 103)'#13#10 +
@@ -1362,6 +1364,7 @@
     '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''RACE_2'', 49, -70, 270, 270)'#13#10 +
     ''#13#10 +
     '      TNT1 A 0 A_PlaysoundFullVolume("speedhaste/ONE.RAW")'#13#10 +
+    '      TNT1 A 0 A_ConsolePlayerMessage("1")'#13#10 +
     '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''RACE_1'', 160, 99, 160, 101)'#13#10 +
     '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''RACE_1'', 159, 98, 160, 102)'#13#10 +
     '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''RACE_1'', 159, 97, 161, 103)'#13#10 +
@@ -1398,6 +1401,7 @@
     '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''RACE_1'', 88, -70, 232, 270)'#13#10 +
     ''#13#10 +
     '      TNT1 A 0 A_PlaysoundFullVolume("speedhaste/GO.RAW")'#13#10 +
+    '      TNT1 A 0 A_ConsolePlayerMessage("GO!")'#13#10 +
     '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''RACE_0'', 158, 99, 161, 101)'#13#10 +
     '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''RACE_0'', 157, 98, 163, 102)'#13#10 +
     '      TNT1 A 1 A_OverlayDrawPatchStretched(1, ''RACE_0'', 155, 97, 164, 103)'#13#10 +
