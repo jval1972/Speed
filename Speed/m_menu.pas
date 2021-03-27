@@ -196,6 +196,7 @@ const
   ARROWXOFF = -8;
   LINEHEIGHT = 16;
   LINEHEIGHT2 = 8;
+  LINEHEIGHT3 = 10;
 
 
 var
@@ -3598,7 +3599,7 @@ begin
     M_WriteText(315 - rlen, 44, rstr, _MA_LEFT or _MC_UPPER, @hu_fontG, @hu_fontB);
   end;
 
-  if currentMenu.itemheight <= LINEHEIGHT2 then
+  if currentMenu.itemheight <= LINEHEIGHT3 then
     M_WriteText(x + ARROWXOFF, currentMenu.y + itemOn * currentMenu.itemheight, '-', _MA_LEFT or _MC_UPPER, @hu_fontW, @hu_fontB);
 
   M_FinishUpdate(200);
@@ -3786,6 +3787,8 @@ end;
 procedure M_DrawLapRecords;
 var
   mdata: mapdata_t;
+  rstr: string;
+  rlen: integer;
   stmp: string;
   mname: string;
   mpos: menupos_t;
@@ -3798,7 +3801,19 @@ begin
   mname := mapdatalst.Strings[menu_lap_records_course];
   mdata := SH_MapData(mname);
 
-  mpos := M_WriteText(18, 55, 'Course: ', _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
+  M_WriteText(6, LapRecordsDef.y, '<<', _MA_LEFT or _MC_UPPER, @hu_fontB, @hu_fontB);
+  M_WriteText(5, LapRecordsDef.y, '<<', _MA_LEFT or _MC_UPPER, @hu_fontG, @hu_fontB);
+  M_WriteText(6, LapRecordsDef.y + LapRecordsDef.itemheight, '<<', _MA_LEFT or _MC_UPPER, @hu_fontB, @hu_fontB);
+  M_WriteText(5, LapRecordsDef.y + LapRecordsDef.itemheight, '<<', _MA_LEFT or _MC_UPPER, @hu_fontG, @hu_fontB);
+
+  rstr := '>>';
+  rlen := M_StringWidth(rstr, _MC_UPPER, @hu_fontY);
+  M_WriteText(315 - rlen + 1, LapRecordsDef.y, rstr, _MA_LEFT or _MC_UPPER, @hu_fontB, @hu_fontB);
+  M_WriteText(315 - rlen, LapRecordsDef.y, rstr, _MA_LEFT or _MC_UPPER, @hu_fontG, @hu_fontB);
+  M_WriteText(315 - rlen + 1, LapRecordsDef.y + LapRecordsDef.itemheight, rstr, _MA_LEFT or _MC_UPPER, @hu_fontB, @hu_fontB);
+  M_WriteText(315 - rlen, LapRecordsDef.y + LapRecordsDef.itemheight, rstr, _MA_LEFT or _MC_UPPER, @hu_fontG, @hu_fontB);
+
+  mpos := M_WriteText(LapRecordsDef.x, LapRecordsDef.y, 'Course: ', _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
   mpos := M_WriteText(mpos.x, mpos.y, mdata.name, _MA_LEFT or _MC_UPPER, @hu_fontW, @hu_fontB);
   mpos := M_WriteText(mpos.x, mpos.y, ' (', _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
   mpos := M_WriteText(mpos.x, mpos.y, mname, _MA_LEFT or _MC_UPPER, @hu_fontW, @hu_fontB);
@@ -3813,7 +3828,7 @@ begin
   else
     Exit;
 
-  mpos := M_WriteText(18, 65, stmp, _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
+  mpos := M_WriteText(LapRecordsDef.x, LapRecordsDef.y + LapRecordsDef.itemheight, stmp, _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
   if laptyp.laps = 0 then
   begin
     M_WriteText(mpos.x, mpos.y, 'lap records', _MA_LEFT or _MC_UPPER, @hu_fontW, @hu_fontB);
@@ -3826,7 +3841,6 @@ begin
   end
   else
   begin
-    mpos := M_WriteText(18, 65, stmp, _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
     mpos := M_WriteText(mpos.x, mpos.y, 'course records ', _MA_LEFT or _MC_UPPER, @hu_fontW, @hu_fontB);
     mpos := M_WriteText(mpos.x, mpos.y, '(', _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
     mpos := M_WriteText(mpos.x, mpos.y, itoa(laptyp.laps) + ' Laps', _MA_LEFT or _MC_NOCASE, @hu_fontW, @hu_fontB);
@@ -5875,10 +5889,10 @@ begin
   LapRecordsDef.rightMenu := nil;  // right menu
   LapRecordsDef.menuitems := Pmenuitem_tArray(@LapRecordsMenu);  // menu items
   LapRecordsDef.drawproc := @M_DrawLapRecords;  // draw routine
-  LapRecordsDef.x := 18;
+  LapRecordsDef.x := 28;
   LapRecordsDef.y := 55;
   LapRecordsDef.lastOn := 0; // last item user was on in menu
-  LapRecordsDef.itemheight := LINEHEIGHT2;
+  LapRecordsDef.itemheight := LINEHEIGHT3;
   LapRecordsDef.texturebk := false;
 
 ////////////////////////////////////////////////////////////////////////////////
