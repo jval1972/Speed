@@ -148,6 +148,7 @@ uses
   speed_score,
   speed_score_draw,
   speed_string_format,
+  speed_palette,
   t_main,
   vx_voxelsprite,
   v_data,
@@ -3797,6 +3798,7 @@ begin
   V_DrawPatchFullScreenTMP320x200('MBG_RECO');
 
   V_DrawPatch(161, 50, SCN_TMP, 'REC_TXT', false);
+  SH_FixBufferPalette(screens[SCN_TMP], 1, 50 * 320);
 
   mname := mapdatalst.Strings[menu_lap_records_course];
   mdata := SH_MapData(mname);

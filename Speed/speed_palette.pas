@@ -42,6 +42,8 @@ procedure SH_CreateDoomPalette(const inppal: PByteArray; const outpal: PByteArra
 // All arrays must be allocated in memory before calling it
 procedure SH_CreateTranslation(const frompal, topal: PByteArray; const trans: PByteArray);
 
+procedure SH_FixBufferPalette(const buf: PByteArray; const x1, x2: integer);
+
 implementation
 
 procedure	SH_ColorShiftPalette(const inpal: PByteArray; const outpal: PByteArray;
@@ -199,6 +201,19 @@ begin
     b := topal[i * 3 + 2];
     trans[i] := SH_BestColor(r, g, b, frompal, 0, 255);
   end;
+end;
+
+procedure SH_FixBufferPalette(const buf: PByteArray; const x1, x2: integer);
+var
+  i: integer;
+  x0: integer;
+begin
+  x0 := x1;
+  if x0 = 0 then
+    x0 := 1;
+  for i := x0 to x2 do
+    if (buf[i] < 16) or (buf[i] > 239) then
+      buf[i] := buf[i - 1];
 end;
 
 end.

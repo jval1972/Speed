@@ -66,6 +66,7 @@ uses
   speed_race,
   speed_path,
   speed_string_format,
+  speed_palette,
   v_data,
   v_video;
 
@@ -189,6 +190,7 @@ begin
   V_DrawPatchFullScreenTMP320x200('MBG_RECO');
 
   V_DrawPatch(161, 50, SCN_TMP, 'REC_TXT', false);
+  SH_FixBufferPalette(screens[SCN_TMP], 1, 50 * 320);
 
   score := @players[consoleplayer].currentscore;
 
@@ -228,6 +230,7 @@ begin
   V_DrawPatchFullScreenTMP320x200('MBG_RECO');
 
   V_DrawPatch(161, 50, SCN_TMP, 'REC_TXT', false);
+  SH_FixBufferPalette(screens[SCN_TMP], 1, 50 * 320);
 
   score := @players[consoleplayer].currentscore;
 
