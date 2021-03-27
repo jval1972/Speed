@@ -153,7 +153,10 @@ begin
   mname := P_GetMapName(score.episode, score.map);
 
   mpos := M_WriteText(18, 55, 'Course: ', _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
-  M_WriteText(mpos.x, mpos.y, SH_MapData(mname).name, _MA_LEFT or _MC_UPPER, @hu_fontW, @hu_fontB);
+  mpos := M_WriteText(mpos.x, mpos.y, SH_MapData(mname).name, _MA_LEFT or _MC_UPPER, @hu_fontW, @hu_fontB);
+  mpos := M_WriteText(mpos.x, mpos.y, ' (', _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
+  mpos := M_WriteText(mpos.x, mpos.y, mname, _MA_LEFT or _MC_UPPER, @hu_fontW, @hu_fontB);
+  M_WriteText(mpos.x, mpos.y, ')', _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
 
   mpos := M_WriteText(18, 65, 'Player: ', _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
   M_WriteText(mpos.x, mpos.y, players[consoleplayer].playername, _MA_LEFT or _MC_UPPER, @hu_fontW, @hu_fontB);
