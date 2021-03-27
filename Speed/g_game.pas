@@ -338,16 +338,19 @@ procedure G_DoSaveGame; forward;
 
 procedure G_FinishedDemoPlayback;
 begin
-  demoplayback := false;
-  // Restore old compatibility mode
-  compatibilitymode := oldcompatibilitymode;
-  // Restore race params
-  racecartype := old_racecartype;
-  numlaps := old_numlaps;
-  gametype := old_gametype;
-  def_f1car := old_def_f1car;
-  def_ncar := old_def_ncar;
-  def_anycar := old_def_anycar;
+  if demoplayback then
+  begin
+    demoplayback := false;
+    // Restore old compatibility mode
+    compatibilitymode := oldcompatibilitymode;
+    // Restore race params
+    racecartype := old_racecartype;
+    numlaps := old_numlaps;
+    gametype := old_gametype;
+    def_f1car := old_def_f1car;
+    def_ncar := old_def_ncar;
+    def_anycar := old_def_anycar;
+  end;
 end;
 
 var
