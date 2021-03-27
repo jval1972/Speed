@@ -291,7 +291,7 @@ begin
   for i := 0 to NUMHEADCOLORS - 1 do
     M_HorzLine(0, 319, y + 2 + i, HEADCOLORS[i]);
 
-  M_WriteText(x, y, str, ma_left, @big_fontW, @big_fontB);
+  M_WriteText(x, y, str, _MA_LEFT or _MC_UPPER, @big_fontW, @big_fontB);
 end;
 
 const
@@ -1001,15 +1001,15 @@ begin
   for i := 0 to stop - start - 1 do
   begin
     s := KeyBindingsInfo[start + i].text + ': ';
-    len := M_StringWidth(s, @hu_fontY);
-    M_WriteText(m.x, m.y + m.itemheight * i, s, ma_left, @hu_fontY, @hu_fontB);
+    len := M_StringWidth(s, _MC_UPPER, @hu_fontY);
+    M_WriteText(m.x, m.y + m.itemheight * i, s, _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
     drawkey := true;
     if bindkeyEnter then
       if i = bindkeySlot - start then
         if (gametic div 18) mod 2 <> 0 then
           drawkey := false;
     if drawkey then
-      M_WriteText(m.x + len, m.y + m.itemheight * i, M_KeyToString(KeyBindingsInfo[start + i].pkey^), ma_left, @hu_fontW, @hu_fontB);
+      M_WriteText(m.x + len, m.y + m.itemheight * i, M_KeyToString(KeyBindingsInfo[start + i].pkey^), _MA_LEFT or _MC_UPPER, @hu_fontW, @hu_fontB);
   end;
 end;
 
@@ -1123,9 +1123,9 @@ begin
   for i := 0 to Ord(load_end) - 1 do
   begin
     M_DrawSaveLoadBorder(LoadDef.x, LoadDef.y + LoadDef.itemheight * i);
-    M_WriteText(LoadDef.x + 4, LoadDef.y + LoadDef.itemheight * i, savegamestrings[i], ma_left, @hu_fontY, @hu_fontB);
+    M_WriteText(LoadDef.x + 4, LoadDef.y + LoadDef.itemheight * i, savegamestrings[i], _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
     if i = itemOn then
-      M_WriteText(LoadDef.x + ARROWXOFF, LoadDef.y + i * LoadDef.itemheight, '-', ma_left, @hu_fontW, @hu_fontB);
+      M_WriteText(LoadDef.x + ARROWXOFF, LoadDef.y + i * LoadDef.itemheight, '-', _MA_LEFT or _MC_UPPER, @hu_fontW, @hu_fontB);
   end;
 end;
 
@@ -1168,16 +1168,16 @@ begin
   for i := 0 to Ord(load_end) - 1 do
   begin
     M_DrawSaveLoadBorder(SaveDef.x, SaveDef.y + SaveDef.itemheight * i);
-    M_WriteText(SaveDef.x + 4, SaveDef.y + SaveDef.itemheight * i, savegamestrings[i], ma_left, @hu_fontY, @hu_fontB);
+    M_WriteText(SaveDef.x + 4, SaveDef.y + SaveDef.itemheight * i, savegamestrings[i], _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
     if i = itemOn then
-      M_WriteText(SaveDef.x + ARROWXOFF, SaveDef.y + i * SaveDef.itemheight, '-', ma_left, @hu_fontW, @hu_fontB);
+      M_WriteText(SaveDef.x + ARROWXOFF, SaveDef.y + i * SaveDef.itemheight, '-', _MA_LEFT or _MC_UPPER, @hu_fontW, @hu_fontB);
   end;
 
   if saveStringEnter <> 0 then
   begin
-    i := M_StringWidth(savegamestrings[saveSlot], @hu_fontY);
+    i := M_StringWidth(savegamestrings[saveSlot], _MC_UPPER, @hu_fontY);
     if (gametic div 18) mod 2 = 0 then
-      M_WriteText(SaveDef.x + i + 4, SaveDef.y + SaveDef.itemheight * saveSlot, '_', ma_left, @hu_fontY, @hu_fontB);
+      M_WriteText(SaveDef.x + i + 4, SaveDef.y + SaveDef.itemheight * saveSlot, '_', _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
   end;
 end;
 
@@ -1329,8 +1329,8 @@ function M_WriteHelpText(const x, y: integer; const s1, s2: string): menupos_t;
 var
   mp: menupos_t;
 begin
-  mp := M_WriteText(x, y, s1 + ': ', ma_left, @hu_fontY, @hu_fontB);
-  result := M_WriteText(mp.x, mp.y, s2, ma_left, @hu_fontW, @hu_fontB);
+  mp := M_WriteText(x, y, s1 + ': ', _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
+  result := M_WriteText(mp.x, mp.y, s2, _MA_LEFT or _MC_UPPER, @hu_fontW, @hu_fontB);
 end;
 
 procedure M_DrawSmallLine(const y: integer; const str: string);
@@ -1342,7 +1342,7 @@ begin
   for i := y + 1 to y + 10 do
     M_HorzLine(0, 319, i, 63);
 
-  M_WriteText(160, y + 2, str, ma_center, @hu_fontW, @hu_fontB);
+  M_WriteText(160, y + 2, str, _MA_CENTER or _MC_UPPER, @hu_fontW, @hu_fontB);
 end;
 
 procedure M_DrawReadThis1;
@@ -1416,8 +1416,8 @@ begin
   for i := 0 to Ord(kb_end) - 1 do
     if KeyBindingsInfo[i].pkey = control then
     begin
-      result := M_WriteText(x, y, KeyBindingsInfo[i].text + ': ', ma_left, @hu_fontY, @hu_fontB);
-      result := M_WriteText(result.x, result.y, M_KeyToString(control^), ma_left, @hu_fontW, @hu_fontB);
+      result := M_WriteText(x, y, KeyBindingsInfo[i].text + ': ', _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
+      result := M_WriteText(result.x, result.y, M_KeyToString(control^), _MA_LEFT or _MC_UPPER, @hu_fontW, @hu_fontB);
       exit;
     end;
 
@@ -1497,8 +1497,8 @@ begin
   dogs := GetIntegerInRange(dogs, 0, MAXPLAYERS - 1);
   ppos.x := CompatibilityDef.x;
   ppos.y := CompatibilityDef.y + CompatibilityDef.itemheight * Ord(cmp_dogs);
-  ppos := M_WriteText(ppos.x, ppos.y, 'Dogs (Marine Best Friend): ', ma_left, @hu_fontY, @hu_fontB);
-  M_WriteText(ppos.x, ppos.y, itoa(dogs), ma_left, @hu_fontW, @hu_fontB);
+  ppos := M_WriteText(ppos.x, ppos.y, 'Dogs (Marine Best Friend): ', _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
+  M_WriteText(ppos.x, ppos.y, itoa(dogs), _MA_LEFT or _MC_UPPER, @hu_fontW, @hu_fontB);
 end;
 
 const
@@ -1757,8 +1757,8 @@ begin
 
   ppos.x := ControlsDef.x;
   ppos.y := ControlsDef.y + ControlsDef.itemheight * Ord(ctrl_keyboardmode);
-  ppos := M_WriteText(ppos.x, ppos.y, 'Keyboard preset: ', ma_left, @hu_fontY, @hu_fontB);
-  M_WriteText(ppos.x, ppos.y, mkeyboardmodes[M_GetKeyboardMode], ma_left, @hu_fontW, @hu_fontB);
+  ppos := M_WriteText(ppos.x, ppos.y, 'Keyboard preset: ', _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
+  M_WriteText(ppos.x, ppos.y, mkeyboardmodes[M_GetKeyboardMode], _MA_LEFT or _MC_UPPER, @hu_fontW, @hu_fontB);
 end;
 
 procedure M_DrawSound;
@@ -1777,8 +1777,8 @@ begin
   M_FixScreenshotFormat;
   ppos.x := SystemDef.x;
   ppos.y := SystemDef.y + SystemDef.itemheight * Ord(sys_screenshottype);
-  ppos := M_WriteText(ppos.x, ppos.y, 'Screenshot format: ', ma_left, @hu_fontY, @hu_fontB);
-  M_WriteText(ppos.x, ppos.y, screenshotformat, ma_left, @hu_fontW, @hu_fontB);
+  ppos := M_WriteText(ppos.x, ppos.y, 'Screenshot format: ', _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
+  M_WriteText(ppos.x, ppos.y, screenshotformat, _MA_LEFT or _MC_UPPER, @hu_fontW, @hu_fontB);
 end;
 
 procedure M_OptionsSound(choice: integer);
@@ -1997,9 +1997,9 @@ begin
   for i := Ord(mm_newgame) to Ord(mm_quitspeed) do
   begin
     if itemOn = i then
-      M_WriteText(160, y, MainMenu[i].name, ma_center, @big_fontY, @big_fontB)
+      M_WriteText(160, y, MainMenu[i].name, _MA_CENTER or _MC_UPPER, @big_fontY, @big_fontB)
     else
-      M_WriteText(160, y, MainMenu[i].name, ma_center, @big_fontW, @big_fontB);
+      M_WriteText(160, y, MainMenu[i].name, _MA_CENTER or _MC_UPPER, @big_fontW, @big_fontB);
     y := y + 14;
   end;
 end;
@@ -2048,9 +2048,9 @@ begin
     else if i = Ord(news_carmodel) then
       stmp := stmp + ': ' + str_cartype[racecartype];
     if itemOn = i then
-      M_WriteText(160, y, stmp, ma_center, @big_fontY, @big_fontB)
+      M_WriteText(160, y, stmp, _MA_CENTER or _MC_UPPER, @big_fontY, @big_fontB)
     else
-      M_WriteText(160, y, stmp, ma_center, @big_fontW, @big_fontB);
+      M_WriteText(160, y, stmp, _MA_CENTER or _MC_UPPER, @big_fontW, @big_fontB);
     y := y + 14;
   end;
 end;
@@ -2165,13 +2165,13 @@ begin
 
   fcar := currentmenu.menuitems[0].tag;
 
-  M_WriteText(160, 45, carinfo[fcar].name, ma_center, @hu_fontR, @hu_fontB);
+  M_WriteText(160, 45, carinfo[fcar].name, _MA_CENTER or _MC_UPPER, @hu_fontR, @hu_fontB);
 
-  mpos := M_WriteText(20, 80, 'MAX SPEED: ', ma_left, @hu_fontW, @hu_fontB);
-  M_WriteText(mpos.x, mpos.y, itoa(carinfo[fcar].maxspeed div KMH_TO_FIXED) + ' KMH', ma_left, @hu_fontY, @hu_fontB);
+  mpos := M_WriteText(20, 80, 'MAX SPEED: ', _MA_LEFT or _MC_UPPER, @hu_fontW, @hu_fontB);
+  M_WriteText(mpos.x, mpos.y, itoa(carinfo[fcar].maxspeed div KMH_TO_FIXED) + ' KMH', _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
 
-  mpos := M_WriteText(20, 100, 'NUMBER: ', ma_left, @hu_fontw, @hu_fontB);
-  M_WriteText(mpos.x, mpos.y, itoa(carinfo[fcar].number), ma_left, @hu_fontY, @hu_fontB);
+  mpos := M_WriteText(20, 100, 'NUMBER: ', _MA_LEFT or _MC_UPPER, @hu_fontw, @hu_fontB);
+  M_WriteText(mpos.x, mpos.y, itoa(carinfo[fcar].number), _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
 
   M_DrawCarModel(180, 50, 144, 144, fcar, 80.0, (select_car_tic - gametic) / 100, pi / 6);
 end;
@@ -2214,9 +2214,9 @@ begin
   mname := mapdatalst.Strings[idx];
   mdata := SH_MapData(mname);
 
-  M_WriteText(160, 45, mdata.lname, ma_center, @hu_fontR, @hu_fontB);
+  M_WriteText(160, 45, mdata.lname, _MA_CENTER or _MC_UPPER, @hu_fontR, @hu_fontB);
 
-  M_WriteText(80, 66, mdata.name, ma_center, @hu_fontY, @hu_fontB);
+  M_WriteText(80, 66, mdata.name, _MA_CENTER or _MC_UPPER, @hu_fontY, @hu_fontB);
 
   case mdata.level of
     0: V_DrawPatch(80, 100, SCN_TMP, 'MSFAMA', false);
@@ -2226,25 +2226,25 @@ begin
   end;
 
   ypos := 114;
-  M_WriteText(20, ypos, 'LENGTH', ma_left, @hu_fontW, @hu_fontB);
-  M_WriteText(104, ypos, SH_Meters2KM(mdata.len), ma_left, @hu_fontY, @hu_fontB);
+  M_WriteText(20, ypos, 'LENGTH', _MA_LEFT or _MC_UPPER, @hu_fontW, @hu_fontB);
+  M_WriteText(104, ypos, SH_Meters2KM(mdata.len), _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
 
   best_f1 := recordtable.laprecords[mdata.episode, mdata.map, ct_formula][0].time;
   if best_f1 > 0 then
   begin
     inc(ypos, 20);
-    M_WriteText(20, ypos, 'LAP RECORD', ma_left, @hu_fontW, @hu_fontB);
-    mpos := M_WriteText(104, ypos, SH_TicsToTimeStr(best_f1), ma_left, @hu_fontY, @hu_fontB);
-    M_WriteText(mpos.x, mpos.y, ' F1', ma_left, @hu_fontW, @hu_fontB);
+    M_WriteText(20, ypos, 'LAP RECORD', _MA_LEFT or _MC_UPPER, @hu_fontW, @hu_fontB);
+    mpos := M_WriteText(104, ypos, SH_TicsToTimeStr(best_f1), _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
+    M_WriteText(mpos.x, mpos.y, ' F1', _MA_LEFT or _MC_UPPER, @hu_fontW, @hu_fontB);
   end;
 
   best_stock := recordtable.laprecords[mdata.episode, mdata.map, ct_stock][0].time;
   if best_stock > 0 then
   begin
     inc(ypos, 20);
-    M_WriteText(20, ypos, 'LAP RECORD', ma_left, @hu_fontW, @hu_fontB);
-    mpos := M_WriteText(104, ypos, SH_TicsToTimeStr(best_stock), ma_left, @hu_fontY, @hu_fontB);
-    M_WriteText(mpos.x, mpos.y, ' stock', ma_left, @hu_fontW, @hu_fontB);
+    M_WriteText(20, ypos, 'LAP RECORD', _MA_LEFT or _MC_UPPER, @hu_fontW, @hu_fontB);
+    mpos := M_WriteText(104, ypos, SH_TicsToTimeStr(best_stock), _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
+    M_WriteText(mpos.x, mpos.y, ' stock', _MA_LEFT or _MC_UPPER, @hu_fontW, @hu_fontB);
   end;
 
   V_DrawPatch(250, 150, SCN_TMP, SH_MapData(mname).mapsprite, false);
@@ -2284,9 +2284,9 @@ begin
   for i := Ord(mn_ep1) to Ord(ep_end) - 1 do
   begin
     if itemOn = i then
-      M_WriteText(160, y, EpisodeMenu[i].name, ma_center, @big_fontY, @big_fontB)
+      M_WriteText(160, y, EpisodeMenu[i].name, _MA_CENTER or _MC_UPPER, @big_fontY, @big_fontB)
     else
-      M_WriteText(160, y, EpisodeMenu[i].name, ma_center, @big_fontW, @big_fontB);
+      M_WriteText(160, y, EpisodeMenu[i].name, _MA_CENTER or _MC_UPPER, @big_fontW, @big_fontB);
     y := y + 14;
   end;
 end;
@@ -2299,12 +2299,12 @@ begin
 
   M_Frame3d(PilotNameDef.x, PilotNameDef.y, 320 - PilotNameDef.x, PilotNameDef.y + 11, 121, 123, 118);
 
-  M_WriteText(PilotNameDef.x + 4, PilotNameDef.y + 2, pilotNameString, ma_left, @hu_fontY, @hu_fontB);
+  M_WriteText(PilotNameDef.x + 4, PilotNameDef.y + 2, pilotNameString, _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
 
   if pilotStringEnter <> 0 then
     if Length(pilotNameString) < PILOTNAMESIZE then
       if (gametic div 18) mod 2 = 0 then
-        M_WriteText(PilotNameDef.x + 4 + M_StringWidth(pilotNameString, @hu_fontY), PilotNameDef.y + 2, '_', ma_left, @hu_fontY, @hu_fontB);
+        M_WriteText(PilotNameDef.x + 4 + M_StringWidth(pilotNameString, _MC_UPPER, @hu_fontY), PilotNameDef.y + 2, '_', _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
 end;
 
 procedure M_ChooseEpisode(choice: integer);
@@ -2347,9 +2347,9 @@ begin
   for i := 0 to Ord(opt_end) - 1 do
   begin
     if itemOn = i then
-      M_WriteText(160, y, OptionsMenu[i].name, ma_center, @big_fontY, @big_fontB)
+      M_WriteText(160, y, OptionsMenu[i].name, _MA_CENTER or _MC_UPPER, @big_fontY, @big_fontB)
     else
-      M_WriteText(160, y, OptionsMenu[i].name, ma_center, @big_fontW, @big_fontB);
+      M_WriteText(160, y, OptionsMenu[i].name, _MA_CENTER or _MC_UPPER, @big_fontW, @big_fontB);
     y := y + 14;
   end;
 end;
@@ -2372,9 +2372,9 @@ begin
       else
         str := str + ': OFF';
     if itemOn = i then
-      M_WriteText(160, y, str, ma_center, @big_fontY, @big_fontB)
+      M_WriteText(160, y, str, _MA_CENTER or _MC_UPPER, @big_fontY, @big_fontB)
     else
-      M_WriteText(160, y, str, ma_center, @big_fontW, @big_fontB);
+      M_WriteText(160, y, str, _MA_CENTER or _MC_UPPER, @big_fontW, @big_fontB);
     y := y + 14;
   end;
 end;
@@ -2405,9 +2405,9 @@ begin
   for i := 0 to Ord(optdisp_end) - 1 do
   begin
     if itemOn = i then
-      M_WriteText(160, y, OptionsDisplayMenu[i].name, ma_center, @big_fontY, @big_fontB)
+      M_WriteText(160, y, OptionsDisplayMenu[i].name, _MA_CENTER or _MC_UPPER, @big_fontY, @big_fontB)
     else
-      M_WriteText(160, y, OptionsDisplayMenu[i].name, ma_center, @big_fontW, @big_fontB);
+      M_WriteText(160, y, OptionsDisplayMenu[i].name, _MA_CENTER or _MC_UPPER, @big_fontW, @big_fontB);
     y := y + 14;
   end;
 end;
@@ -2426,9 +2426,9 @@ begin
 
   ppos.x := OptionsDisplayDetailDef.x;
   ppos.y := OptionsDisplayDetailDef.y + OptionsDisplayDetailDef.itemheight * Ord(od_detaillevel);
-  ppos := M_WriteText(ppos.x, ppos.y, 'Detail level: ', ma_left, @hu_fontY, @hu_fontB);
+  ppos := M_WriteText(ppos.x, ppos.y, 'Detail level: ', _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
   sprintf(stmp, '%s (%dx%dx32)', [detailStrings[detailLevel], SCREENWIDTH, SCREENHEIGHT]);
-  M_WriteText(ppos.x, ppos.y, stmp, ma_left, @hu_fontW, @hu_fontB);
+  M_WriteText(ppos.x, ppos.y, stmp, _MA_LEFT or _MC_UPPER, @hu_fontW, @hu_fontB);
 end;
 
 procedure M_ChangeFullScreen(choice: integer);
@@ -2448,8 +2448,8 @@ begin
 
   ppos.x := OptionsDisplayVideoModeDef.x;
   ppos.y := OptionsDisplayVideoModeDef.y + OptionsDisplayVideoModeDef.itemheight * Ord(odm_fullscreen);
-  ppos := M_WriteText(ppos.x, ppos.y, 'FullScreen: ', ma_left, @hu_fontY, @hu_fontB);
-  M_WriteText(ppos.x, ppos.y, yesnoStrings[fullscreen], ma_left, @hu_fontW, @hu_fontB);
+  ppos := M_WriteText(ppos.x, ppos.y, 'FullScreen: ', _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
+  M_WriteText(ppos.x, ppos.y, yesnoStrings[fullscreen], _MA_LEFT or _MC_UPPER, @hu_fontW, @hu_fontB);
 
   if mdisplaymode_idx < 0 then
     mdisplaymode_idx := 0
@@ -2457,9 +2457,9 @@ begin
     mdisplaymode_idx := numdisplaymodes - 1;
   ppos.x := OptionsDisplayVideoModeDef.x;
   ppos.y := OptionsDisplayVideoModeDef.y + OptionsDisplayVideoModeDef.itemheight * Ord(odm_screensize);
-  ppos := M_WriteText(ppos.x, ppos.y, 'Screen Size: ', ma_left, @hu_fontY, @hu_fontB);
+  ppos := M_WriteText(ppos.x, ppos.y, 'Screen Size: ', _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
   sprintf(stmp, '(%dx%d)', [displaymodes[mdisplaymode_idx].width, displaymodes[mdisplaymode_idx].height]);
-  M_WriteText(ppos.x, ppos.y, stmp, ma_left, @hu_fontW, @hu_fontB);
+  M_WriteText(ppos.x, ppos.y, stmp, _MA_LEFT or _MC_UPPER, @hu_fontW, @hu_fontB);
 
   M_DrawThermo(
     OptionsDisplayVideoModeDef.x, OptionsDisplayVideoModeDef.y + OptionsDisplayVideoModeDef.itemheight * (Ord(odm_screensize) + 1), 30, mdisplaymode_idx, numdisplaymodes);
@@ -2468,7 +2468,7 @@ begin
     stmp := 'No change'
   else
     sprintf(stmp, 'Set video mode to %dx%d...', [displaymodes[mdisplaymode_idx].width, displaymodes[mdisplaymode_idx].height]);
-  M_WriteText(OptionsDisplayVideoModeDef.x, OptionsDisplayVideoModeDef.y + OptionsDisplayVideoModeDef.itemheight * Ord(odm_setvideomode), stmp, ma_left, @hu_fontY, @hu_fontB);
+  M_WriteText(OptionsDisplayVideoModeDef.x, OptionsDisplayVideoModeDef.y + OptionsDisplayVideoModeDef.itemheight * Ord(odm_setvideomode), stmp, _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
 end;
 
 procedure M_SwitchShadeMode(choice: integer);
@@ -2490,8 +2490,8 @@ begin
 
   ppos.x := OptionsDisplayAppearanceDef.x;
   ppos.y := OptionsDisplayAppearanceDef.y + OptionsDisplayAppearanceDef.itemheight * Ord(od_shademenubackground);
-  ppos := M_WriteText(ppos.x, ppos.y, 'Menu background: ', ma_left, @hu_fontY, @hu_fontB);
-  M_WriteText(ppos.x, ppos.y, menubackrounds[shademenubackground mod 3], ma_left, @hu_fontW, @hu_fontB);
+  ppos := M_WriteText(ppos.x, ppos.y, 'Menu background: ', _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
+  M_WriteText(ppos.x, ppos.y, menubackrounds[shademenubackground mod 3], _MA_LEFT or _MC_UPPER, @hu_fontW, @hu_fontB);
 end;
 
 procedure M_DrawDisplayAutomapOptions;
@@ -2516,8 +2516,8 @@ begin
   aspectratioidx := _nearest_aspect_index;
   ppos.x := OptionsDisplayAspectRatioDef.x;
   ppos.y := OptionsDisplayAspectRatioDef.y + OptionsDisplayAspectRatioDef.itemheight * Ord(oda_forceaspectratio);
-  ppos := M_WriteText(ppos.x, ppos.y, 'Force Aspect Ratio: ', ma_left, @hu_fontY, @hu_fontB);
-  M_WriteText(ppos.x, ppos.y, straspectratios[_nearest_aspect_index], ma_left, @hu_fontW, @hu_fontB);
+  ppos := M_WriteText(ppos.x, ppos.y, 'Force Aspect Ratio: ', _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
+  M_WriteText(ppos.x, ppos.y, straspectratios[_nearest_aspect_index], _MA_LEFT or _MC_UPPER, @hu_fontW, @hu_fontB);
 end;
 
 procedure M_DrawOptionsDisplayCamera;
@@ -2530,14 +2530,14 @@ begin
   chasecamera_viewxy := ibetween(chasecamera_viewxy, CHASECAMERA_XY_MIN, CHASECAMERA_XY_MAX);
   ppos.x := OptionsDisplayCameraDef.x;
   ppos.y := OptionsDisplayCameraDef.y + OptionsDisplayCameraDef.itemheight * Ord(odc_chasecameraxy);
-  ppos := M_WriteText(ppos.x, ppos.y, 'Chase Camera XY position: ', ma_left, @hu_fontY, @hu_fontB);
-  M_WriteText(ppos.x, ppos.y, itoa(chasecamera_viewxy), ma_left, @hu_fontW, @hu_fontB);
+  ppos := M_WriteText(ppos.x, ppos.y, 'Chase Camera XY position: ', _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
+  M_WriteText(ppos.x, ppos.y, itoa(chasecamera_viewxy), _MA_LEFT or _MC_UPPER, @hu_fontW, @hu_fontB);
 
   chasecamera_viewz := ibetween(chasecamera_viewz, CHASECAMERA_Z_MIN, CHASECAMERA_Z_MAX);
   ppos.x := OptionsDisplayCameraDef.x;
   ppos.y := OptionsDisplayCameraDef.y + OptionsDisplayCameraDef.itemheight * Ord(odc_chasecameraz);
-  ppos := M_WriteText(ppos.x, ppos.y, 'Chase Camera Z position: ', ma_left, @hu_fontY, @hu_fontB);
-  M_WriteText(ppos.x, ppos.y, itoa(chasecamera_viewz), ma_left, @hu_fontY, @hu_fontB);
+  ppos := M_WriteText(ppos.x, ppos.y, 'Chase Camera Z position: ', _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
+  M_WriteText(ppos.x, ppos.y, itoa(chasecamera_viewz), _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
 
   M_DrawThermo(
     OptionsDisplayCameraDef.x, OptionsDisplayCameraDef.y + OptionsDisplayCameraDef.itemheight * (Ord(odc_chasecameraxy) + 1), 21, (chasecamera_viewxy - CHASECAMERA_XY_MIN) div 8, (CHASECAMERA_XY_MAX - CHASECAMERA_XY_MIN) div 8 + 1);
@@ -2555,8 +2555,8 @@ begin
 
   ppos.x := OptionsDisplay32bitDef.x;
   ppos.y := OptionsDisplay32bitDef.y + OptionsDisplay32bitDef.itemheight * Ord(od_flatfiltering);
-  ppos := M_WriteText(ppos.x, ppos.y, 'Flat filtering: ', ma_left, @hu_fontY, @hu_fontB);
-  M_WriteText(ppos.x, ppos.y, flatfilteringstrings[extremeflatfiltering], ma_left, @hu_fontW, @hu_fontB);
+  ppos := M_WriteText(ppos.x, ppos.y, 'Flat filtering: ', _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
+  M_WriteText(ppos.x, ppos.y, flatfilteringstrings[extremeflatfiltering], _MA_LEFT or _MC_UPPER, @hu_fontW, @hu_fontB);
 end;
 
 procedure M_DrawOptionsDisplayOpenGL;
@@ -2595,8 +2595,8 @@ begin
   vx_maxoptimizerpasscount := GetIntegerInRange(vx_maxoptimizerpasscount, 0, MAX_VX_OPTIMIZE);
   ppos.x := OptionsDisplayOpenGLVoxelsDef.x;
   ppos.y := OptionsDisplayOpenGLVoxelsDef.y + OptionsDisplayOpenGLVoxelsDef.itemheight * Ord(od_glv_optimize);
-  ppos := M_WriteText(ppos.x, ppos.y, 'Voxel mesh optimization: ', ma_left, @hu_fontY, @hu_fontB);
-  M_WriteText(ppos.x, ppos.y, str_voxeloptimizemethod[vx_maxoptimizerpasscount], ma_left, @hu_fontW, @hu_fontB);
+  ppos := M_WriteText(ppos.x, ppos.y, 'Voxel mesh optimization: ', _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
+  M_WriteText(ppos.x, ppos.y, str_voxeloptimizemethod[vx_maxoptimizerpasscount], _MA_LEFT or _MC_UPPER, @hu_fontW, @hu_fontB);
 end;
 
 procedure M_ChangeTextureFiltering(choice: integer);
@@ -2614,8 +2614,8 @@ begin
 
   ppos.x := OptionsDisplayOpenGLFilterDef.x;
   ppos.y := OptionsDisplayOpenGLFilterDef.y + OptionsDisplayOpenGLFilterDef.itemheight * Ord(od_glf_texture_filter);
-  ppos := M_WriteText(ppos.x, ppos.y, 'Filter: ', ma_left, @hu_fontY, @hu_fontB);
-  M_WriteText(ppos.x, ppos.y, gl_tex_filter_string, ma_left, @hu_fontW, @hu_fontB);
+  ppos := M_WriteText(ppos.x, ppos.y, 'Filter: ', _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
+  M_WriteText(ppos.x, ppos.y, gl_tex_filter_string, _MA_LEFT or _MC_UPPER, @hu_fontW, @hu_fontB);
 end;
 
 procedure M_Options(choice: integer);
@@ -3084,7 +3084,7 @@ begin
         begin
           if (ch >= 32) and (ch <= 127) and
              (saveCharIndex < SAVESTRINGSIZE - 1) and
-             (M_StringWidth(savegamestrings[saveSlot], @hu_fontY) < (SAVESTRINGSIZE - 2) * 8) then
+             (M_StringWidth(savegamestrings[saveSlot], _MC_UPPER, @hu_fontY) < (SAVESTRINGSIZE - 2) * 8) then
           begin
             inc(saveCharIndex);
             savegamestrings[saveSlot] := savegamestrings[saveSlot] + Chr(ch);
@@ -3520,7 +3520,7 @@ begin
         y := y + hu_fontY[0].height
       else if messageString[i] = #10 then
       begin
-        M_WriteText(160, y, str, ma_center, @hu_fontY, @hu_fontB);
+        M_WriteText(160, y, str, _MA_CENTER or _MC_UPPER, @hu_fontY, @hu_fontB);
         str := '';
       end
       else
@@ -3529,7 +3529,7 @@ begin
     if str <> '' then
     begin
       y := y + hu_fontY[0].height;
-      M_WriteText(160, y, str, ma_center, @hu_fontY, @hu_fontB);
+      M_WriteText(160, y, str, _MA_CENTER or _MC_UPPER, @hu_fontY, @hu_fontB);
     end;
 
     M_FinishUpdate(mheight);
@@ -3562,11 +3562,11 @@ begin
         delete(str, 1, 1);
         if currentMenu.menuitems[i].pBoolVal <> nil then
         begin
-          ppos := M_WriteText(x, y, str + ': ', ma_left, @hu_fontY, @hu_fontB);
-          M_WriteText(ppos.x, ppos.y, yesnoStrings[currentMenu.menuitems[i].pBoolVal^], ma_left, @hu_fontW, @hu_fontB);
+          ppos := M_WriteText(x, y, str + ': ', _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
+          M_WriteText(ppos.x, ppos.y, yesnoStrings[currentMenu.menuitems[i].pBoolVal^], _MA_LEFT or _MC_UPPER, @hu_fontW, @hu_fontB);
         end
         else
-          M_WriteText(x, y, str, ma_left, @hu_fontY, @hu_fontB);
+          M_WriteText(x, y, str, _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
       end;
     end;
     y := y + currentMenu.itemheight;
@@ -3574,20 +3574,20 @@ begin
 
   if currentMenu.leftMenu <> nil then
   begin
-    M_WriteText(6, 44, '<<', ma_left, @hu_fontB, @hu_fontB);
-    M_WriteText(5, 44, '<<', ma_left, @hu_fontG, @hu_fontB);
+    M_WriteText(6, 44, '<<', _MA_LEFT or _MC_UPPER, @hu_fontB, @hu_fontB);
+    M_WriteText(5, 44, '<<', _MA_LEFT or _MC_UPPER, @hu_fontG, @hu_fontB);
   end;
 
   if currentMenu.rightMenu <> nil then
   begin
     rstr := '>>';
-    rlen := M_StringWidth(rstr, @hu_fontY);
-    M_WriteText(315 - rlen + 1, 44, rstr, ma_left, @hu_fontB, @hu_fontB);
-    M_WriteText(315 - rlen, 44, rstr, ma_left, @hu_fontG, @hu_fontB);
+    rlen := M_StringWidth(rstr, _MC_UPPER, @hu_fontY);
+    M_WriteText(315 - rlen + 1, 44, rstr, _MA_LEFT or _MC_UPPER, @hu_fontB, @hu_fontB);
+    M_WriteText(315 - rlen, 44, rstr, _MA_LEFT or _MC_UPPER, @hu_fontG, @hu_fontB);
   end;
 
   if currentMenu.itemheight <= LINEHEIGHT2 then
-    M_WriteText(x + ARROWXOFF, currentMenu.y + itemOn * currentMenu.itemheight, '-', ma_left, @hu_fontW, @hu_fontB);
+    M_WriteText(x + ARROWXOFF, currentMenu.y + itemOn * currentMenu.itemheight, '-', _MA_LEFT or _MC_UPPER, @hu_fontW, @hu_fontB);
 
   M_FinishUpdate(200);
 end;

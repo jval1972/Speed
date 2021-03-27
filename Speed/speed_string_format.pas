@@ -35,11 +35,14 @@ function SH_Meters2KM(const x: integer): string;
 
 function SH_TicsToTimeStr(const t: integer): string;
 
+function SH_FmtRacePostion(const p: integer): string;
+
 implementation
 
 uses
   d_delphi,
-  doomdef;
+  doomdef,
+  speed_cars;
 
 function SH_Meters2KM(const x: integer): string;
 var
@@ -89,6 +92,18 @@ begin
   end
   else
     Result := smin + '''' + ssec + '"' + smsec;
+end;
+
+function SH_FmtRacePostion(const p: integer): string;
+const
+  PFMT: array[1..3] of string[2] = ('st', 'nd', 'rd');
+begin
+  if IsIntegerInRange(p, 1, 3) then
+    Result := itoa(p) + PFMT[p]
+  else if IsIntegerInRange(p, 4, MAX_RACE_CARS) then
+    Result := itoa(p) + 'th'
+  else
+    Result := '-';
 end;
 
 end.

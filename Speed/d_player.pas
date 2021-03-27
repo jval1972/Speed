@@ -81,6 +81,7 @@ type
     map: integer;
     numlaps: integer;
     carinfo: integer;
+    raceposition: integer;
     laptimes: array[0..MAXLAPS - 1] of integer;
     totaltime: integer;
   end;

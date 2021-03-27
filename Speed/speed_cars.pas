@@ -892,6 +892,7 @@ begin
   score.episode := gameepisode;
   score.map := gamemap;
   score.carinfo := p.mo.carinfo;
+  score.raceposition := p.mo.raceposition;
   score.numlaps := race.numlaps;
   SH_GetTimeLaps(p.mo, @tl);
   score.totaltime := 0;

@@ -140,24 +140,36 @@ end;
 // Race results
 procedure SH_Intermission_Drawer0;
 var
+  score: Pplayerscore_t;
+  mname: string;
   mpos: menupos_t;
   i: integer;
 begin
   V_DrawPatchFullScreenTMP320x200('MBG_RESU');
 
-  mpos := M_WriteText(30, 50, 'Player: ', ma_left, @hu_fontY, @hu_fontB);
-  M_WriteText(mpos.x, mpos.y, players[consoleplayer].playername, ma_left, @hu_fontW, @hu_fontB);
+  score := @players[consoleplayer].currentscore;
 
-  mpos := M_WriteText(30, 60, 'Car: ', ma_left, @hu_fontY, @hu_fontB);
-  M_WriteText(mpos.x, mpos.y, CARINFO[players[consoleplayer].currentscore.carinfo].name, ma_left, @hu_fontW, @hu_fontB);
+  mname := P_GetMapName(score.episode, score.map);
 
-  mpos := M_WriteText(30, 70, 'Total time: ', ma_left, @hu_fontY, @hu_fontB);
-  M_WriteText(mpos.x, mpos.y, SH_TicsToTimeStr(players[consoleplayer].currentscore.totaltime), ma_left, @hu_fontW, @hu_fontB);
+  mpos := M_WriteText(18, 55, 'Course: ', _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
+  M_WriteText(mpos.x, mpos.y, SH_MapData(mname).name, _MA_LEFT or _MC_UPPER, @hu_fontW, @hu_fontB);
+
+  mpos := M_WriteText(18, 65, 'Player: ', _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
+  M_WriteText(mpos.x, mpos.y, players[consoleplayer].playername, _MA_LEFT or _MC_UPPER, @hu_fontW, @hu_fontB);
+
+  mpos := M_WriteText(208, 65, 'Rank: ', _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
+  M_WriteText(mpos.x, mpos.y, SH_FmtRacePostion(score.raceposition), _MA_LEFT or _MC_NOCASE, @hu_fontW, @hu_fontB);
+
+  mpos := M_WriteText(18, 75, 'Car: ', _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
+  M_WriteText(mpos.x, mpos.y, CARINFO[score.carinfo].name, _MA_LEFT or _MC_UPPER, @hu_fontW, @hu_fontB);
+
+  mpos := M_WriteText(18, 85, 'Total time: ', _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
+  M_WriteText(mpos.x, mpos.y, SH_TicsToTimeStr(score.totaltime), _MA_LEFT or _MC_UPPER, @hu_fontW, @hu_fontB);
 
   for i := 0 to players[consoleplayer].currentscore.numlaps - 1 do
   begin
-    mpos := M_WriteText(30, 80 + 10 * i, 'Lap #' + itoa(i + 1) + ': ', ma_left, @hu_fontY, @hu_fontB);
-    M_WriteText(mpos.x, mpos.y, SH_TicsToTimeStr(players[consoleplayer].currentscore.laptimes[i]), ma_left, @hu_fontW, @hu_fontB);
+    mpos := M_WriteText(18, 95 + 10 * i, 'Lap #' + itoa(i + 1) + ': ', _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
+    M_WriteText(mpos.x, mpos.y, SH_TicsToTimeStr(score.laptimes[i]), _MA_LEFT or _MC_UPPER, @hu_fontW, @hu_fontB);
   end;
 
   V_CopyRect(0, 0, SCN_TMP, 320, 200, 0, 0, SCN_FG, true);
@@ -177,8 +189,8 @@ begin
   score := @players[consoleplayer].currentscore;
 
   mname := P_GetMapName(score.episode, score.map);
-  mpos := M_WriteText(18, 55, 'Course: ', ma_left, @hu_fontY, @hu_fontB);
-  M_WriteText(mpos.x, mpos.y, SH_MapData(mname).name, ma_left, @hu_fontW, @hu_fontB);
+  mpos := M_WriteText(18, 55, 'Course: ', _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
+  M_WriteText(mpos.x, mpos.y, SH_MapData(mname).name, _MA_LEFT or _MC_UPPER, @hu_fontW, @hu_fontB);
 
   if CARINFO[score.carinfo].cartype = ct_formula then
     stmp := 'Formula 1: '
@@ -187,8 +199,8 @@ begin
   else
     Exit;
 
-  mpos := M_WriteText(18, 65, stmp, ma_left, @hu_fontY, @hu_fontB);
-  M_WriteText(mpos.x, mpos.y, 'lap records', ma_left, @hu_fontW, @hu_fontB);
+  mpos := M_WriteText(18, 65, stmp, _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
+  M_WriteText(mpos.x, mpos.y, 'lap records', _MA_LEFT or _MC_UPPER, @hu_fontW, @hu_fontB);
 
   SH_DrawScoreTableItems(
     @recordtable.laprecords[
@@ -213,8 +225,8 @@ begin
   score := @players[consoleplayer].currentscore;
 
   mname := P_GetMapName(score.episode, score.map);
-  mpos := M_WriteText(18, 55, 'Course: ', ma_left, @hu_fontY, @hu_fontB);
-  M_WriteText(mpos.x, mpos.y, SH_MapData(mname).name, ma_left, @hu_fontW, @hu_fontB);
+  mpos := M_WriteText(18, 55, 'Course: ', _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
+  M_WriteText(mpos.x, mpos.y, SH_MapData(mname).name, _MA_LEFT or _MC_UPPER, @hu_fontW, @hu_fontB);
 
   if CARINFO[score.carinfo].cartype = ct_formula then
     stmp := 'Formula 1: '
@@ -223,11 +235,11 @@ begin
   else
     Exit;
 
-  mpos := M_WriteText(18, 65, stmp, ma_left, @hu_fontY, @hu_fontB);
-  mpos := M_WriteText(mpos.x, mpos.y, 'course records ', ma_left, @hu_fontW, @hu_fontB);
-  mpos := M_WriteText(mpos.x, mpos.y, '(', ma_left, @hu_fontY, @hu_fontB);
-  mpos := M_WriteText(mpos.x, mpos.y, itoa(score.numlaps) + ' laps', ma_left, @hu_fontW, @hu_fontB);
-  mpos := M_WriteText(mpos.x, mpos.y, ')', ma_left, @hu_fontY, @hu_fontB);
+  mpos := M_WriteText(18, 65, stmp, _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
+  mpos := M_WriteText(mpos.x, mpos.y, 'course records ', _MA_LEFT or _MC_UPPER, @hu_fontW, @hu_fontB);
+  mpos := M_WriteText(mpos.x, mpos.y, '(', _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
+  mpos := M_WriteText(mpos.x, mpos.y, itoa(score.numlaps) + ' Laps', _MA_LEFT or _MC_NOCASE, @hu_fontW, @hu_fontB);
+  mpos := M_WriteText(mpos.x, mpos.y, ')', _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
 
   SH_DrawScoreTableItems(
     @recordtable.courserecord[

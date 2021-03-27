@@ -39,12 +39,20 @@ type
     x, y: integer;
   end;
 
-  munutextalign_t = (ma_left, ma_right, ma_center);
+const
+  _MA_LEFT = 0;
+  _MA_RIGHT = 1;
+  _MA_CENTER = 2;
+  _MALIGN_MASK = 3;
+  _MC_UPPER = 4;
+  _MC_LOWER = 8;
+  _MC_NOCASE = 0;
+  _MCASE_MASK = 12;
 
-function M_WriteText(x, y: integer; const str: string; const align: munutextalign_t;
+function M_WriteText(x, y: integer; const str: string; const flags: integer;
   const font: Ppatch_tPArray; const shadefont: Ppatch_tPArray): menupos_t;
 
-function M_StringWidth(const str: string; const font: Ppatch_tPArray): integer;
+function M_StringWidth(const str: string; const flags: integer; const font: Ppatch_tPArray): integer;
 
 function M_StringHeight(const str: string; const font: Ppatch_tPArray): integer;
 
@@ -56,10 +64,18 @@ uses
   v_data,
   v_video;
 
+type
+  casefunc_t = function (ch: Char): Char;
+
+function nocase(ch: Char): Char;
+begin
+  Result := ch;
+end;
+
 //
 // Write a string using the font
 //
-function M_WriteText(x, y: integer; const str: string; const align: munutextalign_t;
+function M_WriteText(x, y: integer; const str: string; const flags: integer;
   const font: Ppatch_tPArray; const shadefont: Ppatch_tPArray): menupos_t;
 var
   w: integer;
@@ -68,6 +84,9 @@ var
   cx: integer;
   cy: integer;
   len: integer;
+  align: integer;
+  ccase: integer;
+  casefunc: casefunc_t;
 begin
   len := Length(str);
   if len = 0 then
@@ -78,13 +97,22 @@ begin
   end;
 
   ch := 1;
+  align := flags and _MALIGN_MASK;
   case align of
-    ma_left: cx := x;
-    ma_right: cx := x - M_StringWidth(str, font);
+    _MA_LEFT: cx := x;
+    _MA_RIGHT: cx := x - M_StringWidth(str, flags, font);
   else
-    cx := x - M_StringWidth(str, font) div 2;
+    cx := x - M_StringWidth(str, flags, font) div 2;
   end;
   cy := y;
+
+  ccase := flags and _MCASE_MASK;
+  case ccase of
+    _MC_UPPER: casefunc := @toupper;
+    _MC_LOWER: casefunc := @tolower;
+  else
+    casefunc := @nocase;
+  end;
 
   while true do
   begin
@@ -109,7 +137,7 @@ begin
       continue;
     end;
 
-    c := Ord(toupper(Chr(c))) - Ord(HU_FONTSTART);
+    c := Ord(casefunc(Chr(c))) - Ord(HU_FONTSTART);
     if (c < 0) or (c >= HU_FONTSIZE) then
     begin
       cx := cx + 4;
@@ -132,15 +160,25 @@ end;
 //
 // Find string width
 //
-function M_StringWidth(const str: string; const font: Ppatch_tPArray): integer;
+function M_StringWidth(const str: string; const flags: integer; const font: Ppatch_tPArray): integer;
 var
   i: integer;
   c: integer;
+  ccase: integer;
+  casefunc: casefunc_t;
 begin
+  ccase := flags and _MCASE_MASK;
+  case ccase of
+    _MC_UPPER: casefunc := @toupper;
+    _MC_LOWER: casefunc := @tolower;
+  else
+    casefunc := @nocase;
+  end;
+
   result := 0;
   for i := 1 to Length(str) do
   begin
-    c := Ord(toupper(str[i])) - Ord(HU_FONTSTART);
+    c := Ord(casefunc(str[i])) - Ord(HU_FONTSTART);
     if (c < 0) or (c >= HU_FONTSIZE) then
       result := result + 4
     else
