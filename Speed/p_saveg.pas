@@ -75,6 +75,10 @@ procedure P_ArchivePaths;
 
 procedure P_UnArchivePaths;
 
+procedure P_ArchiveChampionShip;
+
+procedure P_UnArchiveChampionShip;
+
 var
   save_p: PByteArray;
   savegameversion: integer;
@@ -115,6 +119,7 @@ uses
   psi_overlay,
   speed_path,
   speed_race,
+  speed_championship,
   r_defs,
   r_data,
   r_colormaps,
@@ -1043,6 +1048,18 @@ begin
     rtlpaths[i].mo := P_FindMobjFromKey(integer(rtlpaths[i].mo));
     incp(pointer(save_p), SizeOf(rtlpath_t));
   end;
+end;
+
+procedure P_ArchiveChampionShip;
+begin
+  Pchampionship_t(save_p)^ := championship;
+  incp(pointer(save_p), SizeOf(championship_t));
+end;
+
+procedure P_UnArchiveChampionShip;
+begin
+  championship := Pchampionship_t(save_p)^;
+  incp(pointer(save_p), SizeOf(championship_t));
 end;
 
 end.

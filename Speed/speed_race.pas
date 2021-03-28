@@ -105,6 +105,7 @@ uses
   g_game,
   p_setup,
   r_data,
+  speed_championship,
   speed_xlat_wad,
   w_wad,
   z_zone;
@@ -114,9 +115,8 @@ var
   sl: TDStringList;
   idx: integer;
 begin
-  racecartype := GetIntegerInRange(racecartype, 0, Ord(ct_any));
-  race.cartype := cartype_t(racecartype);
-  race.gametype := gametype;
+  race.cartype := championship.racecartype;
+  race.gametype := championship.gametype;
 
   race.groundlump := R_GetLumpForFlat(sectors[0].floorpic);
   race.ground := W_CacheLumpNum(race.groundlump, PU_LEVEL);
@@ -130,7 +130,7 @@ begin
   race.skytex := '';
   race.mountaintex := '';
   race.groundtex := '';
-  race.numlaps := GetIntegerInRange(numlaps, MINLAPS, MAXLAPS);
+  race.numlaps := championship.numlaps;
 
   sl := TDStringList.Create;
   try
@@ -174,7 +174,7 @@ begin
     Result := gt_asphalt;
     Exit;
   end;
-  
+
   race.ground := W_CacheLumpNum(race.groundlump, PU_LEVEL);
   nx := GetIntegerInRange((x div FRACUNIT) div SPEED_LEVEL_SCALE, 0, 4095);
   ny := GetIntegerInRange((y div FRACUNIT) div SPEED_LEVEL_SCALE, 0, 4095);

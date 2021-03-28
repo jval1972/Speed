@@ -141,6 +141,7 @@ uses
   speed_things,
   speed_cars,
   speed_race,
+  speed_championship,
   st_stuff,
   hu_stuff,
   s_sound,
@@ -1154,8 +1155,8 @@ begin
   p := @players[plnum];
 
   if plnum = consoleplayer then
-    p.playername := pilotname;
-    
+    p.playername := championship.consolepname;
+
   if p.playerstate = PST_REBORN then
     G_PlayerReborn(plnum)
   else
@@ -1181,10 +1182,10 @@ begin
   result := P_SpawnMobj(x, y, z, Ord(MT_PLAYER), @mthing);
 
   case racecartype of
-    Ord(ct_formula): result.carinfo := GetIntegerInRange(def_f1car, 0, NUMCARINFO_FORMULA - 1);
-    Ord(ct_stock): result.carinfo := GetIntegerInRange(def_ncar, NUMCARINFO_FORMULA, NUMCARINFO_FORMULA + NUMCARINFO_STOCK - 1);
+    Ord(ct_formula): result.carinfo := GetIntegerInRange(championship.def_f1car, 0, NUMCARINFO_FORMULA - 1);
+    Ord(ct_stock): result.carinfo := GetIntegerInRange(championship.def_ncar, NUMCARINFO_FORMULA, NUMCARINFO_FORMULA + NUMCARINFO_STOCK - 1);
   else
-    result.carinfo := GetIntegerInRange(def_anycar, 0, NUMCARINFO - 1);
+    result.carinfo := GetIntegerInRange(championship.def_anycar, 0, NUMCARINFO - 1);
   end;
   result.carid := result.carinfo;
 

@@ -303,6 +303,7 @@ uses
   speed_cars,
   speed_end_screen,
   speed_intermission,
+  speed_championship,
   speed_race,
   hu_stuff,
   st_stuff,
@@ -2009,6 +2010,7 @@ begin
   P_UnArchivePSMapScript;
   P_UnArchiveOverlay;
   P_UnArchiveRace;
+  P_UnArchiveChampionShip;
   P_UnArchivePaths;
 
   if save_p[0] <> $1d then
@@ -2153,6 +2155,13 @@ begin
 
   P_ArchiveRace;
 
+
+  len := integer(save_p) - integer(savebuffer);
+  M_AppendFile(name, savebuffer, len);
+  save_p := savebuffer;
+
+  P_ArchiveChampionShip;
+
   len := integer(save_p) - integer(savebuffer);
   M_AppendFile(name, savebuffer, len);
   save_p := savebuffer;
@@ -2226,6 +2235,7 @@ begin
   d_episode := episode;
   d_map := map;
   gameaction := ga_newgame;
+  SH_SaveChampionShipData(gametyp);
 end;
 
 procedure G_CmdNewGame(const parm1, parm2: string);
