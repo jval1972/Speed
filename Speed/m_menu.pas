@@ -2197,9 +2197,12 @@ begin
   M_WriteText(mpos.x, mpos.y, itoa(carinfo[fcar].number), _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
 
   M_DrawCarModel(180, 50, 144, 144, fcar, 80.0, (select_car_tic - gametic) / 100, pi / 6);
+
+  M_WriteText(160, 180, 'ARROW KEYS TO SELECT', _MA_CENTER or _MC_UPPER, @hu_fontY, @hu_fontB);
+  M_WriteText(160, 190, 'ENTER TO CONFIRM', _MA_CENTER or _MC_UPPER, @hu_fontY, @hu_fontB);
 end;
 
-procedure M_SelectCourse;
+procedure M_SelectCourse(choice: integer);
 var
   idx: integer;
   mname: string;
@@ -2271,6 +2274,9 @@ begin
   end;
 
   V_DrawPatch(250, 150, SCN_TMP, SH_MapData(mname).mapsprite, false);
+
+  M_WriteText(160, 180, 'ARROW KEYS TO SELECT', _MA_CENTER or _MC_UPPER, @hu_fontY, @hu_fontB);
+  M_WriteText(160, 190, 'ENTER TO CONFIRM', _MA_CENTER or _MC_UPPER, @hu_fontY, @hu_fontB);
 end;
 
 procedure M_ChangeDifficulty(choice: integer);
