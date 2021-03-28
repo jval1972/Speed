@@ -619,6 +619,11 @@ var
       // White buildings (length = 244)
       _move_thing(1728, 712, 1732, 712);
       _move_thing(436, 704, 452, 712);
+    end
+    else if levelname = 'E1M8' then
+    begin
+      _move_thing(1776, 3210, 1792, 3072);
+      _move_thing(1776, 3550, 1766, 3364);
     end;
   end;
 
