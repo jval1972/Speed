@@ -2758,13 +2758,7 @@ end;
 
 procedure M_QuitSpeed(choice: integer);
 begin
-  // We pick index 0 which is language sensitive,
-  //  or one at random, between 1 and maximum number.
-  if language <> english then
-    sprintf(endstring, '%s'#13#10#13#10 + DOSY, [endmsg[0]])
-  else
-    sprintf(endstring,'%s'#13#10#13#10 + DOSY, [endmsg[(gametic mod (NUM_QUITMESSAGES - 2)) + 1]]);
-
+  sprintf(endstring,'%s'#13#10#13#10 + DOSY, [QUITMSG]);
   M_StartMessage(endstring, @M_QuitResponse, true);
 end;
 

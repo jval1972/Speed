@@ -59,7 +59,7 @@ var
 
   QUITMSG: string =
     'are you sure you want to' + #13#10 +
-    'quit this great game?';
+    'quit the game?';
 
   LOADNET: string =
     'you can''t do load while in a net game!' + #13#10;

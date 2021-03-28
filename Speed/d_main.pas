@@ -1312,41 +1312,6 @@ begin
   // add any files specified on the command line with -file wadfile
   // to the wad list
   //
-  // convenience hack to allow -wart e m to add a wad file
-  // prepend a tilde to the filename so wadfile will be reloadable
-  p := M_CheckParm('-wart');
-  if (p <> 0) and (p < myargc - 1) then
-  begin
-    myargv[p][5] := 'p';     // big hack, change to -warp
-
-  // Map name handling.
-    case gamemode of
-      shareware,
-      retail,
-      registered:
-        begin
-          if p < myargc - 2 then
-          begin
-            sprintf(filename, '~' + DEVMAPS + 'E%sM%s.wad',
-              [myargv[p + 1][1], myargv[p + 2][1]]);
-            printf('Warping to Episode %s, Map %s.'#13#10,
-              [myargv[p + 1], myargv[p + 2]]);
-          end;
-        end;
-    else
-      begin
-        p := atoi(myargv[p + 1]);
-        if p < 10 then
-          sprintf(filename, '~' + DEVMAPS + 'cdata/map0%d.wad', [p])
-        else
-          sprintf (filename,'~' + DEVMAPS + 'cdata/map%d.wad', [p]);
-      end;
-    end;
-
-    D_AddFile(filename);
-  end;
-
-  SUC_Progress(8);
 
   D_AddWADFiles('-file');
   for p := 1 to 9 do
