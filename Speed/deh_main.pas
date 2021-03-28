@@ -2745,33 +2745,6 @@ begin
       inc(k);
     end;
 
-  for i := 0 to 8 do
-    DEH_AddString(@deh_strings, @mapnames2[i], 'HUSTR_' + itoa(i + 1));
-
-  for i := 0 to 8 do
-    DEH_AddString(@deh_strings, @mapnames2[i], 'HUSTR_' + IntToStrZFill(2, i + 1));
-
-  for i := 9 to 32 do // Doom2 BFG
-    DEH_AddString(@deh_strings, @mapnames2[i], 'HUSTR_' + itoa(i + 1));
-
-  for i := 0 to 8 do
-    DEH_AddString(@deh_strings, @mapnamesp[i], 'PHUSTR_' + itoa(i + 1));
-
-  for i := 0 to 8 do
-    DEH_AddString(@deh_strings, @mapnamesp[i], 'PHUSTR_' + IntToStrZFill(2, i + 1));
-
-  for i := 9 to 31 do
-    DEH_AddString(@deh_strings, @mapnamesp[i], 'PHUSTR_' + itoa(i + 1));
-
-  for i := 0 to 8 do
-    DEH_AddString(@deh_strings, @mapnamest[i], 'THUSTR_' + itoa(i + 1));
-
-  for i := 0 to 8 do
-    DEH_AddString(@deh_strings, @mapnamest[i], 'THUSTR_' + IntToStrZFill(2, i + 1));
-
-  for i := 9 to 31 do
-    DEH_AddString(@deh_strings, @mapnamest[i], 'THUSTR_' + itoa(i + 1));
-
   DEH_AddString(@deh_strings, @castorder[0].name, 'CC_ZOMBIE');
   DEH_AddString(@deh_strings, @castorder[1].name, 'CC_SHOTGUN');
   DEH_AddString(@deh_strings, @castorder[2].name, 'CC_HEAVY');

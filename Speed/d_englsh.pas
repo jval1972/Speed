@@ -281,42 +281,6 @@ const
   HUSTR_32 = 'level 32: grosse';
   HUSTR_33 = 'level 33: betray';
 
-  PHUSTR_1 = 'level 1: congo';
-  PHUSTR_2 = 'level 2: well of souls';
-  PHUSTR_3 = 'level 3: aztec';
-  PHUSTR_4 = 'level 4: caged';
-  PHUSTR_5 = 'level 5: ghost town';
-  PHUSTR_6 = 'level 6: baron''s lair';
-  PHUSTR_7 = 'level 7: caughtyard';
-  PHUSTR_8 = 'level 8: realm';
-  PHUSTR_9 = 'level 9: abattoire';
-  PHUSTR_10 = 'level 10: onslaught';
-  PHUSTR_11 = 'level 11: hunted';
-
-  PHUSTR_12 = 'level 12: speed';
-  PHUSTR_13 = 'level 13: the crypt';
-  PHUSTR_14 = 'level 14: genesis';
-  PHUSTR_15 = 'level 15: the twilight';
-  PHUSTR_16 = 'level 16: the omen';
-  PHUSTR_17 = 'level 17: compound';
-  PHUSTR_18 = 'level 18: neurosphere';
-  PHUSTR_19 = 'level 19: nme';
-  PHUSTR_20 = 'level 20: the death domain';
-
-  PHUSTR_21 = 'level 21: slayer';
-  PHUSTR_22 = 'level 22: impossible mission';
-  PHUSTR_23 = 'level 23: tombstone';
-  PHUSTR_24 = 'level 24: the final frontier';
-  PHUSTR_25 = 'level 25: the temple of darkness';
-  PHUSTR_26 = 'level 26: bunker';
-  PHUSTR_27 = 'level 27: anti-christ';
-  PHUSTR_28 = 'level 28: the sewers';
-  PHUSTR_29 = 'level 29: odyssey of noises';
-  PHUSTR_30 = 'level 30: the gateway of hell';
-
-  PHUSTR_31 = 'level 31: cyberden';
-  PHUSTR_32 = 'level 32: go 2 it';
-
   THUSTR_1 = 'level 1: system control';
   THUSTR_2 = 'level 2: human bbq';
   THUSTR_3 = 'level 3: power control';
