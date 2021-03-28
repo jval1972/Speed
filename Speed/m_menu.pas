@@ -2085,31 +2085,40 @@ begin
   M_SetupNextMenu(@EpiDef);
 end;
 
-procedure M_SingleRace;
+procedure M_SingleRace(choice: integer);
 begin
   mgametype := Ord(gt_singlerace);
   menu_select_cource := GetIntegerInRange(menu_select_cource, 0, mapdatalst.Count - 1);
   M_SetupNextMenu(@SelectCourseDef[menu_select_cource]);
 end;
 
-procedure M_PracticeRace;
+procedure M_PracticeRace(choice: integer);
 begin
   mgametype := Ord(gt_practice);
   menu_select_cource := GetIntegerInRange(menu_select_cource, 0, mapdatalst.Count - 1);
   M_SetupNextMenu(@SelectCourseDef[menu_select_cource]);
 end;
 
-procedure M_ChangeLapNumber;
+procedure M_ChangeLapNumber(choice: integer);
 begin
-  inc(numlaps);
-  if numlaps = MAXLAPS + 1 then
-    numlaps := MINLAPS;
+  if choice = 1 then
+  begin
+    inc(numlaps);
+    if numlaps = MAXLAPS + 1 then
+      numlaps := MINLAPS;
+  end
+  else
+  begin
+    dec(numlaps);
+    if numlaps = MINLAPS - 1 then
+      numlaps := MAXLAPS;
+  end;
 end;
 
 var
   select_car_tic: integer;
 
-procedure M_SelectCarModel;
+procedure M_SelectCarModel(choice: integer);
 var
   i, idx: integer;
 begin
@@ -2163,7 +2172,7 @@ begin
   end;
 end;
 
-procedure M_SelectCar;
+procedure M_SelectCar(choice: integer);
 begin
   currentmenu.menuitems[0].pIntVal^ := currentmenu.menuitems[0].tag;
   M_SetupNextMenu(currentmenu.prevMenu);
@@ -2264,20 +2273,40 @@ begin
   V_DrawPatch(250, 150, SCN_TMP, SH_MapData(mname).mapsprite, false);
 end;
 
-procedure M_ChangeDifficulty;
+procedure M_ChangeDifficulty(choice: integer);
 begin
-  if mgameskill = Ord(sk_nightmare) then
-    mgameskill := Ord(sk_baby)
+  if choice = 1 then
+  begin
+    if mgameskill = Ord(sk_nightmare) then
+      mgameskill := Ord(sk_baby)
+    else
+      inc(mgameskill);
+  end
   else
-    inc(mgameskill);
+  begin
+    if mgameskill = Ord(sk_baby) then
+      mgameskill := Ord(sk_nightmare)
+    else
+      dec(mgameskill);
+  end;
 end;
 
-procedure M_ChangeCarModel;
+procedure M_ChangeCarModel(choice: integer);
 begin
-  if racecartype = Ord(ct_any) then
-    racecartype := Ord(ct_formula)
+  if choice = 1 then
+  begin
+    if racecartype = Ord(ct_any) then
+      racecartype := Ord(ct_formula)
+    else
+      inc(racecartype);
+  end
   else
-    inc(racecartype);
+  begin
+    if racecartype = Ord(ct_formula) then
+      racecartype := Ord(ct_any)
+    else
+      dec(racecartype);
+  end;
 end;
 
 //
@@ -4075,7 +4104,7 @@ begin
 
 
   inc(pmi);
-  pmi.status := 1;
+  pmi.status := 2;
   pmi.name := 'Lap Count';
   pmi.cmd := '';
   pmi.routine := @M_ChangeLapNumber;
@@ -4095,7 +4124,7 @@ begin
   pmi.tag := 0;
 
   inc(pmi);
-  pmi.status := 1;
+  pmi.status := 2;
   pmi.name := 'Difficulty level';
   pmi.cmd := '';
   pmi.routine := @M_ChangeDifficulty;
@@ -4105,7 +4134,7 @@ begin
   pmi.tag := 0;
 
   inc(pmi);
-  pmi.status := 1;
+  pmi.status := 2;
   pmi.name := 'Car Model';
   pmi.cmd := '';
   pmi.routine := @M_ChangeCarModel;
