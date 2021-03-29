@@ -821,11 +821,12 @@ end;
 procedure SH_SetGear(const mo: Pmobj_t; const g: integer);
 begin
   if g <> mo.gear then
-  begin
-    mo.destgear := g;
-    mo.geartics := GEAR_CHANGE_TICS;
-    mo.nextgeartics := NEXT_GEAR_CHANGE_TICS;
-  end;
+    if mo.nextgeartics = 0 then
+    begin
+      mo.destgear := g;
+      mo.geartics := GEAR_CHANGE_TICS;
+      mo.nextgeartics := NEXT_GEAR_CHANGE_TICS;
+    end;
 end;
 
 procedure SH_ShiftGearUp(const mo: Pmobj_t);
@@ -862,17 +863,16 @@ var
   end;
 
 begin
-  if mo.enginespeed < 0 then
-//    SH_SetGear(mo, -1)
-  else if mo.nextgeartics = 0 then
-  begin
-    cinfo := @CARINFO[mo.carinfo];
-    f := mo.enginespeed div (cinfo.maxspeed div NUM_GEAR_ACCEL_FACTORS);
-    if _gear_better_up then
-      SH_ShiftGearUp(mo)
-    else if _gear_better_down then
-      SH_ShiftGearDown(mo)
-  end;
+  if mo.enginespeed >= 0 then
+    if mo.nextgeartics = 0 then
+    begin
+      cinfo := @CARINFO[mo.carinfo];
+      f := mo.enginespeed div (cinfo.maxspeed div NUM_GEAR_ACCEL_FACTORS);
+      if _gear_better_up then
+        SH_ShiftGearUp(mo)
+      else if _gear_better_down then
+        SH_ShiftGearDown(mo)
+    end;
 end;
 
 function SH_GearAccelerationFactor(const mo: Pmobj_t): fixed_t;
@@ -1017,7 +1017,7 @@ var
 begin
   if race.racestatus = rs_waiting then
     Exit;
-    
+
   p := mo.player;
   if IsIntegerInRange(mo.lapscompleted, 1, race.numlaps) then
     if not p.laprecordchecked[mo.lapscompleted - 1] then
@@ -1108,6 +1108,8 @@ begin
       cmd.brake := 0;
       cmd.accelerate := 0;
     end;
+    if mo.enginespeed = 0 then
+      SH_SetGear(mo, 0);
   end
 end;
 
