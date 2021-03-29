@@ -32,6 +32,7 @@ unit speed_cars;
 interface
 
 uses
+  doomdef,
   p_mobj_h,
   m_fixed,
   tables;
@@ -699,11 +700,30 @@ var
   def_ncar: integer = 20;
   def_anycar: integer = 0;
 
+const
+  NUM_CAR_GEARS = 6;
+  NUM_GEAR_ACCEL_FACTORS = 16;
+
+const
+  GEAR_ACCEL_FACTORS: array[-1..NUM_CAR_GEARS] of array[0..NUM_GEAR_ACCEL_FACTORS - 1] of fixed_t = (
+    ( 65536, 65536,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0),
+    (     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0),
+    ( 65536, 65536, 65536, 32768,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0),
+    ( 32768, 32768, 65536, 65536, 65536, 32768,     0,     0,     0,     0,     0,     0,     0,     0,     0,     0),
+    ( 16384, 16384, 32768, 32768, 65536, 65536, 65536, 32768, 32768,     0,     0,     0,     0,     0,     0,     0),
+    (  8192, 16384, 16384, 32768, 32768, 65536, 65536, 65536, 65536, 32768, 32768,     0,     0,     0,     0,     0),
+    (  8192,  8192, 16384, 16384, 16384, 32768, 32768, 32768, 65536, 65536, 65536, 65536, 65536, 32768, 16384,     0),
+    (  4096,  8192,  8192,  8192, 16384, 16384, 16384, 32768, 32768, 32768, 65536, 65536, 65536, 65536, 32768, 16384)
+  );
+
+const
+  GEAR_CHANGE_TICS = TICRATE div 8;
+  NEXT_GEAR_CHANGE_TICS = TICRATE;
+
 implementation
 
 uses
   d_delphi,
-  doomdef,
   d_think,
   d_player,
   i_system,
@@ -797,6 +817,80 @@ begin
   lst.Free;
 end;
 
+procedure SH_SetGear(const mo: Pmobj_t; const g: integer);
+begin
+  if g <> mo.gear then
+  begin
+    mo.destgear := g;
+    mo.geartics := GEAR_CHANGE_TICS;
+    mo.nextgeartics := NEXT_GEAR_CHANGE_TICS;
+  end;
+end;
+
+procedure SH_ShiftGearUp(const mo: Pmobj_t);
+begin
+  mo.destgear := mo.gear + 1;
+  mo.geartics := GEAR_CHANGE_TICS;
+  mo.nextgeartics := NEXT_GEAR_CHANGE_TICS;
+end;
+
+procedure SH_ShiftGearDown(const mo: Pmobj_t);
+begin
+  mo.destgear := mo.gear - 1;
+  mo.geartics := GEAR_CHANGE_TICS;
+  mo.nextgeartics := NEXT_GEAR_CHANGE_TICS;
+end;
+
+procedure SH_AutoGearBox(const mo: Pmobj_t);
+var
+  cinfo: Pcarinfo_t;
+  f: integer;
+
+  function _gear_better_up: boolean;
+  begin
+    Result := False;
+    if mo.gear < NUM_CAR_GEARS then
+      Result := GEAR_ACCEL_FACTORS[mo.gear, f] < GEAR_ACCEL_FACTORS[mo.gear + 1, f];
+  end;
+
+  function _gear_better_down: boolean;
+  begin
+    Result := False;
+    if mo.gear > 0 then
+      Result := GEAR_ACCEL_FACTORS[mo.gear, f] < GEAR_ACCEL_FACTORS[mo.gear - 1, f];
+  end;
+
+begin
+  if mo.enginespeed < 0 then
+//    SH_SetGear(mo, -1)
+  else if mo.nextgeartics = 0 then
+  begin
+    cinfo := @CARINFO[mo.carinfo];
+    f := mo.enginespeed div (cinfo.maxspeed div NUM_GEAR_ACCEL_FACTORS);
+    if _gear_better_up then
+      SH_ShiftGearUp(mo)
+    else if _gear_better_down then
+      SH_ShiftGearDown(mo)
+  end;
+end;
+
+function SH_GearAccelerationFactor(const mo: Pmobj_t): fixed_t;
+var
+  cinfo: Pcarinfo_t;
+  f: integer;
+begin
+  if mo.geartics > 0 then
+    Result := 0
+  else if mo.gear < 0 then
+    Result := FRACUNIT
+  else
+  begin
+    cinfo := @CARINFO[mo.carinfo];
+    f := mo.enginespeed div (cinfo.maxspeed div NUM_GEAR_ACCEL_FACTORS);
+    Result := GEAR_ACCEL_FACTORS[mo.gear, f];
+  end;
+end;
+
 procedure SH_BuildDrivingCmdAI(const mo: Pmobj_t; const cmd: Pdrivingcmd_t);
 // JVAL: 20210318 - Accelerator & turn factor depending on skill
 const
@@ -814,6 +908,12 @@ var
   decelstep: fixed_t;
   pth: integer;
 begin
+  if race.racestatus = rs_waiting then
+    Exit;
+
+  // Gear select
+  SH_AutoGearBox(mo);
+
   // Retrieve current speed
   dx := mo.x - mo.oldx;
   dy := mo.y - mo.oldy;
@@ -914,6 +1014,9 @@ var
   pth: integer;
   lcheck: Pmobj_t;
 begin
+  if race.racestatus = rs_waiting then
+    Exit;
+    
   p := mo.player;
   if IsIntegerInRange(mo.lapscompleted, 1, race.numlaps) then
     if not p.laprecordchecked[mo.lapscompleted - 1] then
@@ -959,6 +1062,12 @@ begin
 
   if p.cmd.forwardmove > 0 then
   begin
+    // Gear select
+    if mo.gear = -1 then
+      SH_SetGear(mo, 1)
+    else
+      SH_AutoGearBox(mo);
+
     cmd.brake := 0;
     cmd.deccelerate := 0;
     cmd.accelerate := carinfo[mo.carinfo].baseaccel;
@@ -967,12 +1076,18 @@ begin
   begin
     if mo.enginespeed <= 0 then
     begin
+      // Reverse gear
+      SH_SetGear(mo, -1);
+
       cmd.brake := 0;
       cmd.deccelerate := 0;
       cmd.accelerate := -carinfo[mo.carinfo].baseaccel div 6;
     end
     else
     begin
+      // Gear select
+      SH_AutoGearBox(mo);
+
       cmd.brake := carinfo[mo.carinfo].basedeccel div 4;
       cmd.deccelerate := 0;
       cmd.accelerate := 0;
@@ -1015,6 +1130,16 @@ begin
   if race.racestatus = rs_waiting then
     Exit;
 
+  if mo.geartics > 0 then
+  begin
+    dec(mo.geartics);
+    if mo.geartics = 0 then
+      mo.gear := mo.destgear;
+//    mo.enginespeed := mo.enginespeed * 15 div 16;
+  end
+  else if mo.nextgeartics > 0 then
+    dec(mo.nextgeartics);
+
   // Calculate actual speed
   dx := mo.x - mo.oldx;
   dy := mo.y - mo.oldy;
@@ -1031,7 +1156,7 @@ begin
 
   slipf := SH_SlipperFactorAtXY(mo.x, mo.y);
 
-  force := cmd.accelerate - cmd.brake - cmd.deccelerate;
+  force := FixedMul(cmd.accelerate, SH_GearAccelerationFactor(mo)) - cmd.brake - cmd.deccelerate;
   if cmd.accelerate < 0 then
     enginespeed := GetIntegerInRange(enginespeed + SH_SlipCalculation(force, slipf), carinfo[mo.carinfo].maxreversespeed, carinfo[mo.carinfo].maxspeed)
   else

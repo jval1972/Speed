@@ -520,7 +520,6 @@ type
     nexttireangle: integer;
     tireangle: integer;
     soundcountdown: integer;
-    cargear: integer;
     carturn: fixed_t;
     caraccelerate: fixed_t;
     cadeccelerate: fixed_t;
@@ -528,6 +527,11 @@ type
     brakesoundcountdown: integer;
     brakesoundorg: degenmobj_t;
     lastcrashsound: integer;
+    rpm: integer;
+    gear: integer;
+    destgear: integer;
+    geartics: integer;
+    nextgeartics: integer;
   end;
   Tmobj_tPArray = array[0..$FFFF] of Pmobj_t;
   Pmobj_tPArray = ^Tmobj_tPArray;
