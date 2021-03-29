@@ -66,6 +66,7 @@ var
   whitedigitsmall: array[0..9] of Ppatch_t;
   gearbox: Ppatch_t;
   gears: array[0..6] of Ppatch_t;
+  gear_reverse: Ppatch_t;
   speedometer: array[0..1] of Ppatch_t;
   mlaps: Ppatch_t;
   mposbar: Ppatch_t;
@@ -106,6 +107,7 @@ begin
   gearbox := W_CacheLumpName('MGEAR', PU_STATIC);
   for i := 0 to 6 do
     gears[i] := W_CacheLumpName('MG' + itoa(i), PU_STATIC);
+  gear_reverse := W_CacheLumpName('MGR', PU_STATIC);
   for i := 0 to 1 do
     speedometer[i] := W_CacheLumpName('MREVO' + itoa(i), PU_STATIC);
   mlaps := W_CacheLumpName('MLAPS', PU_STATIC);
@@ -150,15 +152,15 @@ end;
 procedure SH_DrawGears;
 begin
   V_DrawPatch(307, 195, SCN_HUD, gearbox, false);
-  case hud_player.mo.cargear of
+  case hud_player.mo.gear of
+  -1: V_DrawPatch(307, 143, SCN_HUD, gear_reverse, false);
+   0: V_DrawPatch(307, 143, SCN_HUD, gears[0], false);
    1: V_DrawPatch(307, 151, SCN_HUD, gears[1], false);
    2: V_DrawPatch(307, 159, SCN_HUD, gears[2], false);
    3: V_DrawPatch(307, 167, SCN_HUD, gears[3], false);
    4: V_DrawPatch(307, 175, SCN_HUD, gears[4], false);
    5: V_DrawPatch(307, 183, SCN_HUD, gears[5], false);
    6: V_DrawPatch(307, 191, SCN_HUD, gears[6], false);
-  else
-    V_DrawPatch(307, 143, SCN_HUD, gears[0], false);
   end;
 end;
 
@@ -456,6 +458,7 @@ begin
     ZeroMemory(screens[SCN_HUD], screendimentions[SCN_HUD].width * screendimentions[SCN_HUD].height);
 
     SH_GetTimeLaps(hud_player.mo, @timelaps);
+
     // Draw grears
     SH_DrawGears;
 
