@@ -596,6 +596,8 @@ begin
           dec(x, 8);
       Z_ChangeTag(p, PU_CACHE);
     end;
+    p := W_CacheLumpName('MMTM', PU_STATIC);
+    V_DrawPatch(x + p.leftoffset + 8, 49 + p.topoffset, SCN_TMP, p, false);
   end;
   V_DrawPatch(160, 190, SCN_TMP, 'MMCRED', false);
   V_CopyRectTransparent(0, 0, SCN_TMP, 320, 200, 0, 0, SCN_FG, true);
