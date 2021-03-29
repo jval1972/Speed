@@ -718,7 +718,7 @@ const
 
 const
   GEAR_CHANGE_TICS = TICRATE div 8;
-  NEXT_GEAR_CHANGE_TICS = TICRATE;
+  NEXT_GEAR_CHANGE_TICS = TICRATE div 8;
 
 implementation
 
