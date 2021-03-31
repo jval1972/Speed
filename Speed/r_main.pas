@@ -1799,8 +1799,6 @@ begin
   printf('R_SetViewSize'#13#10);
   // viewwidth / viewheight / detailLevel are set by the defaults
   R_SetViewSize;
-  printf('R_InitPlanes'#13#10);
-  R_InitPlanes;
   printf('R_InitLightTables'#13#10);
   R_InitLightTables;
   printf('R_InitSkyMap'#13#10);

@@ -45,8 +45,6 @@ uses
   r_defs,
   r_visplanes;  // JVAL: 3d Floors
 
-procedure R_InitPlanes;
-
 procedure R_ClearPlanes;
 
 function R_FindPlane(height: fixed_t; picnum: integer; lightlevel: integer;
@@ -89,15 +87,6 @@ uses
   r_main,
   r_draw,
   z_zone;
-
-//
-// R_InitPlanes
-// Only at game startup.
-//
-procedure R_InitPlanes;
-begin
-  // Doh!
-end;
 
 // JVAL: Visplane hash
 const
