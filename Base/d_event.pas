@@ -56,21 +56,14 @@ type
 
   gameaction_t = (
     ga_nothing, 
-    ga_loadlevel, 
-{$IFDEF HEXEN}
-    ga_initnew,
-{$ENDIF}
-    ga_newgame, 
+    ga_loadlevel,
+    ga_newgame,
     ga_loadgame,
-    ga_savegame, 
-    ga_playdemo, 
+    ga_savegame,
+    ga_playdemo,
     ga_completed,
-{$IFDEF HEXEN}
-    ga_leavemap,
-    ga_singlereborn,
-{$ENDIF}
-    ga_victory, 
-    ga_worlddone, 
+    ga_victory,
+    ga_worlddone,
     ga_screenshot
   );
 
@@ -115,33 +108,13 @@ const
   BTS_SAVEMASK = 4 + 8 + 16;
   BTS_SAVESHIFT = 2;
 
-{$IFDEF STRIFE}
-const
-    BT2_INVUSE          = 8;
-    // Drop inventory item
-    BT2_INVDROP         = 16;
-    // Jump up and down
-    BT2_JUMP            = 32;
-    // Use medkit
-    BT2_HEALTH          = 128;
-{$ENDIF}
-
 // Commands Actions
 const
   CM_SAVEGAME = 1;
 
 //
-// GLOBAL VARIABLES 
+// GLOBAL VARIABLES
 //
-
-{$IFDEF HEXEN}
-const
-// The top 3 bits of the artifact field in the ticcmd_t struct are used
-//     as additional flags
-  AFLAG_MASK = $3F;
-  AFLAG_SUICIDE = $40;
-  AFLAG_JUMP = $80;
-{$ENDIF}
 
 const
   MAXEVENTS = 256;
