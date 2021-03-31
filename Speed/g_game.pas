@@ -248,10 +248,6 @@ var
   majorbossdeathendsdoom1level: boolean = false;
 
 var
-// DOOM Par Times
-  pars: array[1..3, 1..9] of integer;
-
-var
   p_initialbullets: integer = 50;
   allowvanillademos: boolean = true;
   vanilla_demo_off: boolean = false;
@@ -1801,7 +1797,6 @@ begin
   wminfo.maxitems := totalitems;
   wminfo.maxsecret := totalsecret;
   wminfo.maxfrags := 0;
-  wminfo.partime := TICRATE * pars[gameepisode][gamemap];
   wminfo.pnum := consoleplayer;
 
   for i := 0 to MAXPLAYERS - 1 do
@@ -3100,40 +3095,6 @@ initialization
 
   mousebuttons := PBooleanArray(@mousearray[0]);
   joybuttons := PBooleanArray(@joyarray[0]);
-
-
-  ZeroMemory(@pars, SizeOf(pars));
-
-  pars[1, 1] := 30;
-  pars[1, 2] := 75;
-  pars[1, 3] := 120;
-  pars[1, 4] := 90;
-  pars[1, 5] := 165;
-  pars[1, 6] := 180;
-  pars[1, 7] := 180;
-  pars[1, 8] := 30;
-  pars[1, 9] := 165;
-
-  pars[2, 1] := 90;
-  pars[2, 2] := 90;
-  pars[2, 3] := 90;
-  pars[2, 4] := 120;
-  pars[2, 5] := 90;
-  pars[2, 6] := 360;
-  pars[2, 7] := 240;
-  pars[2, 8] := 30;
-  pars[2, 9] := 170;
-
-  pars[3, 1] := 90;
-  pars[3, 2] := 45;
-  pars[3, 3] := 90;
-  pars[3, 4] := 150;
-  pars[3, 5] := 90;
-  pars[3, 6] := 90;
-  pars[3, 7] := 165;
-  pars[3, 8] := 30;
-  pars[3, 9] := 135;
-
 
   precache := true;
 

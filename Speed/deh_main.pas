@@ -1113,52 +1113,6 @@ begin
 
     end
 
-
-
-
-    ////////////////////////////////////////////////////////////////////////////
-    else if (token1 = '[PARS]') or (token1 = 'PARS') then // BEX
-    begin
-    ////////////////////////////////////////////////////////////////////////////
-    // Parse pars //////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////
-      while true do
-      begin
-        if not DEH_NextLine(s, str, i) then
-          break;
-
-        splitstring(str, token1, stmp);
-        if token1 <> 'PAR' then
-        begin
-          mustnextline := false; // Already got line
-          break;
-        end;
-
-        splitstring(stmp, token2, token3);
-
-        if token3 = '' then
-          continue;
-
-        stmp := token3;
-        splitstring(stmp, token3, token4);
-
-        if token4 <> '' then
-        begin // Doom1, Ultimate Doom
-          par_episode := atoi(token2, -1);
-          par_map := atoi(token3, -1);
-          par_time := atoi(token4, -1);
-          if par_episode in [1, 2, 3] then
-            if par_map in [1..9] then
-              if par_time >= 0 then // JVAL =0 ????
-                pars[par_episode, par_map] := par_time;
-        end;
-
-      end;
-    end
-
-
-
-
     ////////////////////////////////////////////////////////////////////////////
     else if (token1 = '[STRINGS]') or (token1 = 'STRINGS') then // BEX
     begin
@@ -1623,21 +1577,6 @@ begin
   result.Add('%s = %d', [capitalizedstring(misc_tokens[8]), p_bluearmorclass]);
   result.Add('%s = %d', [capitalizedstring(misc_tokens[9]), p_initialbullets]);
   result.Add('%s = %d', [capitalizedstring(misc_tokens[10]), p_bfgcells]);
-
-  result.Add('');
-
-
-  //////////////////////////////////////////////////////////////////////////////
-  // Add pars
-  //////////////////////////////////////////////////////////////////////////////
-  result.Add('');
-  result.Add('# Par times');
-  result.Add('');
-  result.Add('[PARS]');
-  result.Add('# Doom 1');
-  for i := 1 to 3 do
-    for j := 1 to 9 do
-      result.Add('PAR %d %d %d', [i, j, pars[i, j]]);
 
   result.Add('');
 

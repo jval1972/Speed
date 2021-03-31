@@ -254,9 +254,6 @@ type
     maxsecret: integer;
     maxfrags: integer;
 
-    // the par time
-    partime: integer;
-
     // index of this player in game
     pnum: integer;
 

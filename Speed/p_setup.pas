@@ -1657,7 +1657,6 @@ begin
     sysrndseed := I_Random;
 
   wminfo.maxfrags := 0;
-  wminfo.partime := 180;
   for i := 0 to MAXPLAYERS - 1 do
   begin
     players[i].killcount := 0;
