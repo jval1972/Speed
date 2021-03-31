@@ -79,8 +79,6 @@ var
 //
 
 var
-  ylookup: array[0..MAXHEIGHT - 1] of PByteArray;
-  ylookupl: array[0..MAXHEIGHT - 1] of PLongWordArray;
   columnofs: array[0..MAXWIDTH - 1] of integer;
 
 type
@@ -198,28 +196,7 @@ begin
   for i := 0 to width - 1 do
     columnofs[i] := viewwindowx + i;
 
-  // Same with base row offset.
-  if width = SCREENWIDTH then
-  begin
-    viewwindowy := 0;
-  end
-  else
-  begin
-  {$IFDEF OPENGL}
-    viewwindowy := (trunc(ST_Y * SCREENHEIGHT / 200) - height) div 2;
-  {$ELSE}
-    viewwindowy := (V_PreserveY(ST_Y) - height) div 2;
-  {$ENDIF}
-  end;
-
-{$IFNDEF OPENGL}
-  // Preclaculate all row offsets.
-  for i := 0 to height - 1 do
-  begin
-    ylookup[i] := PByteArray(integer(screens[SCN_FG]) + (i + viewwindowy) * SCREENWIDTH);
-    ylookupl[i] := PLongWordArray(@screen32[(i + viewwindowy) * SCREENWIDTH]);
-  end;
-{$ENDIF}
+  viewwindowy := 0;
 end;
 
 procedure R_ScreenBlanc(const scn: integer; const black: byte = 0);

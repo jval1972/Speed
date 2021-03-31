@@ -296,7 +296,6 @@ procedure D_Display;
   procedure D_DisplayHU;
   var
     y: integer;
-    redrawsbar: boolean;
     redrawbkscn: boolean;
     palette: PByteArray;
     drawhu: boolean;
@@ -311,7 +310,6 @@ procedure D_Display;
     if nodrawers then
       exit; // for comparative timing / profiling
 
-    redrawsbar := false;
     redrawbkscn := false;
     drawhu := false;
 
@@ -334,10 +332,6 @@ procedure D_Display;
           begin
             if amstate = am_only then
               AM_Drawer;
-            if (viewheight <> SCREENHEIGHT) and viewfullscreen then
-              redrawsbar := true;
-            if inhelpscreensstate and not inhelpscreens then
-              redrawsbar := true; // just put away the help screen
             viewfullscreen := viewheight = SCREENHEIGHT;
             ST_Drawer;
           end;
