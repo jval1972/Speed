@@ -3909,26 +3909,6 @@ begin
   messageLastMenuActive := menuactive;
   quickSaveSlot := -1;
 
-  // Here we could catch other version dependencies,
-  //  like HELP1/2, and four episodes.
-
-  case gamemode of
-    shareware:
-      begin
-        ReadDef2.x := 280;
-        ReadDef2.y := 185; // x,y of menu
-        // We need to remove the fourth episode.
-        // Episode 2 and 3 are handled,
-        // branching to an ad screen.
-        dec(EpiDef.numitems);
-      end;
-    registered:
-      begin
-        // We need to remove the fourth episode.
-        dec(EpiDef.numitems);
-      end;
-  end;
-
   // JVAL 20200122 - Extended help screens
   extrahelpscreens := TDNumberList.Create;
   for i := 1 to 99 do
