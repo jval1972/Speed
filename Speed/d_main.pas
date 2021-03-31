@@ -339,10 +339,7 @@ procedure D_Display;
             if inhelpscreensstate and not inhelpscreens then
               redrawsbar := true; // just put away the help screen
             viewfullscreen := viewheight = SCREENHEIGHT;
-            if viewfullscreen then
-              ST_Drawer(stdo_no, redrawsbar)
-            else
-              ST_Drawer(stdo_full, redrawsbar);
+            ST_Drawer;
           end;
         end;
       GS_INTERMISSION:
@@ -386,7 +383,7 @@ procedure D_Display;
           end;
         end
         else if gametic <> 0 then
-          ST_Drawer(stdo_small, redrawsbar);
+          ST_Drawer;
       end;
     end;
 

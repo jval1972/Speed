@@ -1413,7 +1413,6 @@ begin
     GS_LEVEL:
       begin
         P_Ticker;
-        ST_Ticker;
         AM_Ticker;
         HU_Ticker;
       end;
