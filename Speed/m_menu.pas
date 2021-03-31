@@ -2360,7 +2360,7 @@ procedure M_ChooseEpisode(choice: integer);
 begin
   if (gamemode = shareware) and (choice <> 0) then
   begin
-    M_StartMessage(SWSTRING + #13#10 + PRESSKEY, nil, false);
+    M_StartMessage('Can not find championship'#13#10#13#10 + PRESSKEY, nil, false);
     M_SetupNextMenu(@ReadDef1);
     exit;
   end;
@@ -2368,7 +2368,7 @@ begin
   // Yet another hack...
   if (gamemode = registered) and (choice > 2) then
   begin
-    I_Warning('M_Episode(): 4th episode requires UltimateDOOM'#13#10);
+    I_Warning('M_ChooseEpisode(): Can not find championship'#13#10);
     choice := 0;
   end;
 

@@ -2883,7 +2883,6 @@ begin
   DEH_AddString(@deh_strings, @QLPROMPT, 'QLPROMPT');
   DEH_AddString(@deh_strings, @SNEWGAME, 'SNEWGAME');
   DEH_AddString(@deh_strings, @SNIGHTMARE, 'SNIGHTMARE');
-  DEH_AddString(@deh_strings, @SWSTRING, 'SWSTRING');
   DEH_AddString(@deh_strings, @MSGOFF, 'MSGOFF');
   DEH_AddString(@deh_strings, @MSGON, 'MSGON');
   DEH_AddString(@deh_strings, @NETEND, 'NETEND');

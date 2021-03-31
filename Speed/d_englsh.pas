@@ -89,10 +89,6 @@ var
     'are you sure? this skill level' + #13#10 +
     'isn''t even remotely fair.';
 
-  SWSTRING: string =
-    'this is the shareware version of doom.' + #13#10 +
-    'you need to order the entire trilogy.';
-
   MSGOFF: string =
     'Messages OFF';
   MSGON: string =
