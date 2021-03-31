@@ -355,13 +355,13 @@ end;
 // how much zoom-in per tic
 function M_ZOOMIN: integer;
 begin
-  result := trunc(1.02 * FRACUNIT);
+  result := trunc(1.03 * FRACUNIT);
 end;
 
 // how much zoom-out per tic
 function M_ZOOMOUT: integer;
 begin
-  result := trunc(FRACUNIT / 1.02);
+  result := trunc(FRACUNIT / 1.03);
 end;
 
 function FTOM(x : integer): integer;
