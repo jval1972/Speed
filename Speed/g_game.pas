@@ -1760,7 +1760,7 @@ begin
     AM_Stop;
   end;
 
-  case gamemap of
+(*  case gamemap of
     8:
       begin
         gameaction := ga_victory;
@@ -1771,7 +1771,7 @@ begin
         for i := 0 to MAXPLAYERS - 1 do
           players[i].didsecret := true;
       end;
-  end;
+  end;*)
 
   wminfo.didsecret := players[consoleplayer].didsecret;
   wminfo.epsd := gameepisode - 1;

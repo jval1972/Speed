@@ -96,7 +96,12 @@ begin
         in_stage_tic := 0;
         if in_stage = 3 then
         begin
-          if gametype = gt_championship then
+         if gametype <> gt_championship then
+            D_StartTitle;
+        end
+        else if in_stage = 4 then
+        begin
+          if (gametype = gt_championship) and (gamemap < 8) then
             G_WorldDone
           else
             D_StartTitle;
@@ -267,12 +272,65 @@ begin
   V_CopyRect(0, 0, SCN_TMP, 320, 200, 0, 0, SCN_FG, true);
 end;
 
-procedure SH_Intermission_Drawer;
+// Race results
+procedure SH_Intermission_Drawer3;
+var
+  score: Pplayerscore_t;
+  mpos: menupos_t;
+  ypos: integer;
+  i: integer;
+  cname: string;
 begin
-  case in_stage of
+  V_DrawPatchFullScreenTMP320x200('MBG_RECO');
+
+  V_DrawPatch(161, 50, SCN_TMP, 'REC_TXT', false);
+  SH_FixBufferPalette(screens[SCN_TMP], 1, 50 * 320);
+
+  score := @players[consoleplayer].currentscore;
+
+  mpos := M_WriteText(18, 55, 'Championship: ', _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
+  mpos := M_WriteText(mpos.x, mpos.y, itoa(score.episode), _MA_LEFT or _MC_UPPER, @hu_fontW, @hu_fontB);
+
+  mpos := M_WriteText(18, 65, 'Player: ', _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
+  mpos := M_WriteText(mpos.x, mpos.y, players[consoleplayer].playername, _MA_LEFT or _MC_UPPER, @hu_fontW, @hu_fontB);
+
+  ypos := 80;
+  M_WriteText(18, ypos, 'Course', _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
+  M_WriteText(183, ypos, 'Rank', _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
+  M_WriteText(254, ypos, 'Time', _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
+
+  ypos := 95;
+  for i := 1 to 8 do
+  begin
+    M_WriteText(16, ypos, itoa(i), _MA_RIGHT or _MC_UPPER, @hu_fontY, @hu_fontB);
+    if players[consoleplayer].score[score.episode, i].totaltime > 0 then
+    begin
+      cname := SH_MapData(P_GetMapName(score.episode, i)).name;
+      if Length(cname) > 20 then
+        SetLength(cname, 20);
+      M_WriteText(18, ypos, cname, _MA_LEFT or _MC_UPPER, @hu_fontW, @hu_fontB);
+      M_WriteText(215, ypos, SH_FmtRacePostion(players[consoleplayer].score[score.episode, i].raceposition), _MA_RIGHT or _MC_NOCASE, @hu_fontW, @hu_fontB);
+      M_WriteText(254, ypos, SH_TicsToTimeStr(players[consoleplayer].score[score.episode, i].totaltime), _MA_LEFT or _MC_UPPER, @hu_fontW, @hu_fontB);
+    end;
+    ypos := ypos + 10;
+  end;
+
+  V_CopyRect(0, 0, SCN_TMP, 320, 200, 0, 0, SCN_FG, true);
+end;
+
+procedure SH_Intermission_Drawer;
+var
+  draw_stage: integer;
+begin
+  if gametype = gt_championship then
+    draw_stage := in_stage
+  else
+    draw_stage := GetIntegerInRange(in_stage, 0, 2);
+  case draw_stage of
     0: SH_Intermission_Drawer0;
     1: SH_Intermission_Drawer1;
     2: SH_Intermission_Drawer2;
+    3: SH_Intermission_Drawer3;
   end;
 end;
 
