@@ -380,21 +380,14 @@ var
     speedthings := @PByteArray(bufmap)[SizeOf(speedDiskMap_t)];
     numspeedthings := (bufmapsize - SizeOf(speedDiskMap_t)) div SizeOf(speedthing_t);
 
-//    if prefix = '00' then
-//      logtofile('F:\DelphiDoom_Release\SPEEDHASTE\data_csv\speed_things.txt', 'map;thing_id;x;y;angle;type;type2' + #13#10);
     for ii := 0 to numspeedthings - 1 do
     begin
       th := @speedthings[ii];
       tid := th.thingtype;
-{      if tid > 240 shl 8 then
-        tid := tid - 240 shl 8
-      else
-        tid := ((tid and $FF00) shr 4) + (tid and $0F);}
       if tid > 240 shl 8 then
         tid := tid and $FF00 shr 8
       else
         tid := ((tid and $FF00) shr 4) + (tid and $0F);
-//      logtofile('F:\DelphiDoom_Release\SPEEDHASTE\data_csv\speed_things.txt', 'map' + prefix + ';' + 'thing' + itoa(ii) + ';' + itoa(th.x) + ';' + itoa(th.y) + ';' + itoa(th.angle) + ';' + itoa(th.thingtype) + ';' + itoa(tid) + #13#10);
       ang := 360 - round((th.angle  / 65536) * 360);
 
       if ang < 0 then
@@ -422,13 +415,10 @@ var
     if PLongWord(bufpath)^ <> PATHSIGNATURE then
       exit;
 
-//    if prefix = '00' then
-//      logtofile('F:\DelphiDoom_Release\SPEEDHASTE\data_csv\speed_paths.txt', 'map;id;x;y;angle;speed' + #13#10);
     npaths := PSmallIntArray(bufpath)[98];
     pA := @(PByteArray(bufpath)[$100]);
     for ii := 0 to npaths - 1 do
     begin
-//      logtofile('F:\DelphiDoom_Release\SPEEDHASTE\data_csv\speed_paths.txt', 'map' + prefix + ';' + itoa(ii) + ';' + itoa(pA[ii].x) + ';' + itoa(pA[ii].y) + ';' + itoa(pA[ii].dir) + ';' + itoa(pA[ii].speed) + #13#10);
       ang := round((pA[ii].dir / 65536) * 360) - 90;
       if ang < 0 then
         ang := ang + 360;
@@ -622,6 +612,7 @@ var
     end
     else if levelname = 'E1M8' then
     begin
+      // Move race path to correct place
       _move_thing(1776, 3210, 1792, 3072);
       _move_thing(1776, 3550, 1766, 3364);
     end;
