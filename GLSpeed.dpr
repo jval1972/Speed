@@ -223,7 +223,6 @@ uses
   sc_engine in 'Base\sc_engine.pas',
   sc_params in 'Base\sc_params.pas',
   sounds in 'Speed\sounds.pas',
-  st_lib in 'Speed\st_lib.pas',
   st_stuff in 'Speed\st_stuff.pas',
   tables in 'Base\tables.pas',
   v_data in 'Speed\v_data.pas',

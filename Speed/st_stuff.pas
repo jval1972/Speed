@@ -44,7 +44,6 @@ uses
 // Now sensitive for scaling.
 const
   ST_HEIGHT = 32;
-  ST_WIDTH = 320;
   ST_Y = 200 - ST_HEIGHT;
 
 var
@@ -105,7 +104,6 @@ uses
   i_video,
 {$ENDIF}
   g_game,
-  st_lib,
   p_inter,
   p_setup,
   p_enemy,
@@ -696,11 +694,6 @@ begin
   ST_DoPaletteStuff;
 end;
 
-procedure ST_LoadData;
-begin
-  lu_palette := W_GetNumForName(PLAYPAL);
-end;
-
 var
   st_stopped: boolean;
 
@@ -775,7 +768,8 @@ begin
   st_stopped := true;
 ////////////////////////////////////////////////////////////////////////////////
 
-  ST_LoadData;
+  lu_palette := W_GetNumForName(PLAYPAL);
+
   C_AddCmd('god, iddqd', @ST_CmdGod);
   C_AddCmd('massacre', @ST_CmdMassacre);
   C_AddCmd('givefullammo, rambo, idfa', @ST_CmdIDFA);
