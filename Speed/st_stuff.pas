@@ -37,7 +37,6 @@ unit st_stuff;
 interface
 
 uses
-  doomdef,
   d_event;
 
 // Size of statusbar.
@@ -87,46 +86,28 @@ implementation
 
 uses
   d_delphi,
-  d_net,
-  m_menu,
-  tables,
+  am_map,
   c_cmds,
-  d_items,
-  z_zone,
-  w_wad,
-  info,
-  info_h,
-{$IFDEF OPENGL}
-  gl_main,
+  doomdef,
+  doomstat,
+  d_englsh,
+  d_player,
   gl_render,
-{$ELSE}
-  r_hires,
-  i_video,
-{$ENDIF}
+  gl_main,
   g_game,
+  info_h,
+  info,
+  m_cheat,
+  m_fixed,
+  p_enemy,
   p_inter,
   p_setup,
-  p_enemy,
-  d_player,
-  r_defs,
-  r_main,
-  r_draw,
-  am_map,
-  m_cheat,
-  m_rnd,
-  m_fixed,
+  sounds,
   s_sound,
-// Needs access to LFB.
   v_data,
   v_video,
-// State.
-  doomstat,
-// Data.
-  dstrings,
-  d_englsh,
-  sounds,
-// for mapnames
-  hu_stuff;
+  w_wad,
+  z_zone;
 
 //
 // STATUS BAR DATA
@@ -672,19 +653,11 @@ begin
   if palette <> st_palette then
   begin
     st_palette := palette;
-    {$IFDEF OPENGL}
     gld_SetPalette(palette);
-    {$ELSE}
-    R_SetPalette(palette);
-    {$ENDIF}
     p := W_CacheLumpNum(lu_palette, PU_STATIC);
     pal := PByteArray(integer(p) + palette * 768);
-    {$IFDEF OPENGL}
     I_SetPalette(pal);
     V_SetPalette(pal);
-    {$ELSE}
-    IV_SetPalette(pal);
-    {$ENDIF}
     Z_ChangeTag(p, PU_CACHE);
   end;
 end;
