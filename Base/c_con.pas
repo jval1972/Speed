@@ -907,51 +907,37 @@ begin
         lnum := 0;
       end;
       y := V_GetScreenHeight(SCN_CON) - (ConsoleHeight - lnum + 1) * C_FONTHEIGHT;
-      if isDivideLine(ConsoleText[line].line) then
+
+      while i <= len do
       begin
-        patch := W_CacheLumpName({$IFDEF DOOM_OR_STRIFE}'brdr_t'{$ELSE}'BORDB'{$ENDIF}, PU_STATIC);
-        if len > ConsoleWidth then
-          len := ConsoleWidth;
-        for i := 1 to len do
+        c := toupper(ConsoleText[line].line[i]);
+        if (c >= HU_FONTSTART) and (c <= {$IFDEF DOOM_OR_STRIFE}HU_FONTEND{$ELSE}HU_CFONTEND{$ENDIF}) then
         begin
-          V_DrawPatch(x, y + 2{$IFDEF DOOM_OR_STRIFE} - 4{$ENDIF}, SCN_CON, patch, false);
-          x := x + 8;
-        end;
-        Z_ChangeTag(patch, PU_CACHE);
-      end
-      else
-      begin
-        while i <= len do
-        begin
-          c := toupper(ConsoleText[line].line[i]);
-          if (c >= HU_FONTSTART) and (c <= {$IFDEF DOOM_OR_STRIFE}HU_FONTEND{$ELSE}HU_CFONTEND{$ENDIF}) then
+          patch := hu_fontY[Ord(c) - Ord(HU_FONTSTART)];
+          if c in FIXED_PITCH_CHARS then
           begin
-            patch := hu_fontY[Ord(c) - Ord(HU_FONTSTART)];
-            if c in FIXED_PITCH_CHARS then
-            begin
-              V_DrawPatch(x + C_FONTWIDTH - patch.width, y, SCN_CON, patch, false);
-              x := x + C_FONTWIDTH;
-            end
-            else
-            begin
-              V_DrawPatch(x, y, SCN_CON, patch, false);
-              x := x + patch.width + 1;
-            end;
+            V_DrawPatch(x + C_FONTWIDTH - patch.width, y, SCN_CON, patch, false);
+            x := x + C_FONTWIDTH;
           end
           else
-            x := x + C_FONTWIDTH;
-          if x > xmax then
           begin
-            if ConsolePgUpDown = -1 then
-            begin
-              x := C_FONTWIDTH;
-              y := y + C_FONTHEIGHT;
-            end
-            else
-              break;
+            V_DrawPatch(x, y, SCN_CON, patch, false);
+            x := x + patch.width + 1;
           end;
-          inc(i);
+        end
+        else
+          x := x + C_FONTWIDTH;
+        if x > xmax then
+        begin
+          if ConsolePgUpDown = -1 then
+          begin
+            x := C_FONTWIDTH;
+            y := y + C_FONTHEIGHT;
+          end
+          else
+            break;
         end;
+        inc(i);
       end;
       line := (line + 1) and CONSOLETEXT_MASK;
     end;
