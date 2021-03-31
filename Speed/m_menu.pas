@@ -4268,7 +4268,7 @@ begin
 //EpisodeMenu
   pmi := @EpisodeMenu[0];
   pmi.status := 1;
-  pmi.name := 'Course #1';
+  pmi.name := 'Speed Haste Original';
   pmi.cmd := '';
   pmi.routine := @M_ChooseEpisode;
   pmi.pBoolVal := nil;
