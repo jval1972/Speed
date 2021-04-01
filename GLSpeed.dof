@@ -100,7 +100,7 @@ Conditionals=OPENGL;DOOM;
 DebugSourceDirs=
 UsePackages=0
 [Parameters]
-RunParams=-geom 1280x800 -nofullscreen F:\DelphiDoom_Release\SPEEDHASTE\EXPANSION\E1M9\e1m9_edit.wad
+RunParams=-geom 1280x800 -nofullscreen E1M9.zip -hackshareware
 HostApplication=
 Launcher=
 UseLauncher=0
