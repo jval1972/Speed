@@ -1,0 +1,231 @@
+////////////////////////////////////////////////////////////////////////////////
+// Easyslope items
+////////////////////////////////////////////////////////////////////////////////
+// RAISEFLOORTOANGLE
+ACTOR RAISEFLOORTOANGLE 1150
+{
+    HEALTH 1000
+    REACTIONTIME 8
+    RADIUS 16
+    HEIGHT 16
+    MASS 1000
+    SPEED 0
+    +NOBLOCKMAP
+    +NOCLIP
+    +DONTDRAW 
+    +NOGRAVITY 
+    +PRECISESPAWNANGLE
+    States
+    {
+    Spawn:
+        TNT1 A 1 
+        Stop
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// LOWERFLOORTOANGLE 
+ACTOR LOWERFLOORTOANGLE 1151
+{
+    HEALTH 1000
+    REACTIONTIME 8
+    RADIUS 16
+    HEIGHT 16
+    MASS 1000
+    SPEED 0
+    +NOBLOCKMAP
+    +NOCLIP
+    +DONTDRAW 
+    +NOGRAVITY 
+    +PRECISESPAWNANGLE
+    States
+    {
+    Spawn:
+        TNT1 A 1 
+        Stop
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// RAISECEILINGTOANGLE
+ACTOR RAISECEILINGTOANGLE 1152
+{
+    HEALTH 1000
+    REACTIONTIME 8
+    RADIUS 16
+    HEIGHT 16
+    MASS 1000
+    SPEED 0
+    +NOBLOCKMAP
+    +NOCLIP
+    +DONTDRAW 
+    +NOGRAVITY 
+    +PRECISESPAWNANGLE
+    States
+    {
+    Spawn:
+        TNT1 A 1 
+        Stop
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// LOWERCEILINGTOANGLE
+ACTOR LOWERCEILINGTOANGLE 1153
+{
+    HEALTH 1000
+    REACTIONTIME 8
+    RADIUS 16
+    HEIGHT 16
+    MASS 1000
+    SPEED 0
+    +NOBLOCKMAP
+    +NOCLIP
+    +DONTDRAW 
+    +NOGRAVITY 
+    +PRECISESPAWNANGLE
+    States
+    {
+    Spawn:
+        TNT1 A 1 
+        Stop
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// VERTEXRAISEFLOORTOANGLE
+ACTOR VERTEXRAISEFLOORTOANGLE 1154
+{
+    HEALTH 1000
+    REACTIONTIME 8
+    RADIUS 16
+    HEIGHT 16
+    MASS 1000
+    SPEED 0
+    +NOBLOCKMAP
+    +NOCLIP
+    +DONTDRAW 
+    +NOGRAVITY 
+    +PRECISESPAWNANGLE
+    States
+    {
+    Spawn:
+        TNT1 A 1 
+        Stop
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// VERTEXLOWERFLOORTOANGLE 
+ACTOR VERTEXLOWERFLOORTOANGLE 1155
+{
+    HEALTH 1000
+    REACTIONTIME 8
+    RADIUS 16
+    HEIGHT 16
+    MASS 1000
+    SPEED 0
+    +NOBLOCKMAP
+    +NOCLIP
+    +DONTDRAW 
+    +NOGRAVITY 
+    +PRECISESPAWNANGLE
+    States
+    {
+    Spawn:
+        TNT1 A 1 
+        Stop
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// VERTEXRAISECEILINGTOANGLE
+ACTOR VERTEXRAISECEILINGTOANGLE 1156
+{
+    HEALTH 1000
+    REACTIONTIME 8
+    RADIUS 16
+    HEIGHT 16
+    MASS 1000
+    SPEED 0
+    +NOBLOCKMAP
+    +NOCLIP
+    +DONTDRAW 
+    +NOGRAVITY 
+    +PRECISESPAWNANGLE
+    States
+    {
+    Spawn:
+        TNT1 A 1 
+        Stop
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// VERTEXLOWERCEILINGTOANGLE
+ACTOR VERTEXLOWERCEILINGTOANGLE 1157
+{
+    HEALTH 1000
+    REACTIONTIME 8
+    RADIUS 16
+    HEIGHT 16
+    MASS 1000
+    SPEED 0
+    +NOBLOCKMAP
+    +NOCLIP
+    +DONTDRAW 
+    +NOGRAVITY 
+    +PRECISESPAWNANGLE
+    States
+    {
+    Spawn:
+        TNT1 A 1 
+        Stop
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// FLOORTOANGLE
+ACTOR FLOORTOANGLE 1158
+{
+    HEALTH 1000
+    REACTIONTIME 8
+    RADIUS 16
+    HEIGHT 16
+    MASS 1000
+    SPEED 0
+    +NOBLOCKMAP
+    +NOCLIP
+    +DONTDRAW 
+    +NOGRAVITY 
+    +PRECISESPAWNANGLE
+    States
+    {
+    Spawn:
+        TNT1 A 1 
+        Stop
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// CEILINGTOANGLE
+ACTOR CEILINGTOANGLE 1159
+{
+    HEALTH 1000
+    REACTIONTIME 8
+    RADIUS 16
+    HEIGHT 16
+    MASS 1000
+    SPEED 0
+    +NOBLOCKMAP
+    +NOCLIP
+    +DONTDRAW 
+    +NOGRAVITY 
+    +PRECISESPAWNANGLE
+    States
+    {
+    Spawn:
+        TNT1 A 1 
+        Stop
+    }
+}
