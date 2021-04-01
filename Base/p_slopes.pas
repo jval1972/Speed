@@ -35,6 +35,7 @@ unit p_slopes;
 interface
 
 uses
+  d_delphi,
   m_fixed,
   r_defs;
 
@@ -50,16 +51,36 @@ procedure P_SlopesSetup;
 
 procedure P_DynamicSlope(const sec: Psector_t);
 
+procedure P_SlopesAlignPlane(const sec: Psector_t; const line: Pline_t; const flag: LongWord;
+  const calcpivotline: boolean = true);
+
+function P_ClosestFloorHeight(const sec: Psector_t; const line: Pline_t; const x, y: fixed_t): fixed_t;
+
+function P_ClosestCeilingHeight(const sec: Psector_t; const line: Pline_t; const x, y: fixed_t): fixed_t;
+
+procedure calc_slope_plane(
+  const x1, y1, z1: float;
+  const x2, y2, z2: float;
+  const x3, y3, z3: float;
+  out fa, fb, fc, fd: float);
+
+procedure PS_SetFloorSlope(const secid: integer; const x1, y1, z1: fixed_t;
+  const x2, y2, z2: fixed_t; const x3, y3, z3: fixed_t);
+
+procedure PS_SetCeilingSlope(const secid: integer; const x1, y1, z1: fixed_t;
+  const x2, y2, z2: fixed_t; const x3, y3, z3: fixed_t);
+
 const
   SLOPECOUNTDOWN = 4;
 
 implementation
 
 uses
-  d_delphi,
   Math,
   doomdata,
   m_vectors,
+  p_gravity,
+  p_map,
   p_setup,
   p_mobj_h,
   p_spec,
@@ -132,7 +153,8 @@ begin
   result := sqrt(dx * dx + dy * dy);
 end;
 
-procedure P_SlopesAlignPlane(const sec: Psector_t; const line: Pline_t; const flag: LongWord);
+procedure P_SlopesAlignPlane(const sec: Psector_t; const line: Pline_t; const flag: LongWord;
+  const calcpivotline: boolean = true);
 var
   refsec: Psector_t;
   i, j: integer;
@@ -148,127 +170,130 @@ var
   sd: Pside_t;
   start: integer;
 begin
-  {$IFDEF HEXEN}
-  if line.arg1 <> 0 then
-  {$ELSE}
-  if line.tag <> 0 then
-  {$ENDIF}
+  if calcpivotline then
   begin
-    start := -1;
-    sid := P_FindSectorFromLineTag2(line, start);
-    if sid < 0 then
+    {$IFDEF HEXEN}
+    if line.arg1 <> 0 then
+    {$ELSE}
+    if line.tag <> 0 then
+    {$ENDIF}
+    begin
+      start := -1;
+      sid := P_FindSectorFromLineTag2(line, start);
+      if sid < 0 then
+        exit;
+      refsec := @sectors[sid];
+    end
+    else if line.flags and ML_TWOSIDED <> 0 then
+    begin
+      refsec := line.backsector;
+      if refsec = sec then
+        refsec := line.frontsector;
+      if refsec = nil then
+        exit;
+    end
+    else
       exit;
-    refsec := @sectors[sid];
-  end
-  else if line.flags and ML_TWOSIDED <> 0 then
-  begin
-    refsec := line.backsector;
-    if refsec = sec then
-      refsec := line.frontsector;
-    if refsec = nil then
-      exit;
-  end
-  else
-    exit;
 
-  refvert := line.v1;
+    refvert := line.v1;
 
-  sec.slopeline := line;
-  refsec.slopesec := sec;
-  if flag = SRF_SLOPEFLOOR then
-  begin
-    srcheight := sec.floorheight;
-    destheight := refsec.floorheight;
-  end
-  else
-  begin
-    srcheight := sec.ceilingheight;
-    destheight := refsec.ceilingheight;
-  end;
+    sec.slopeline := line;
+    refsec.slopesec := sec;
+    if flag = SRF_SLOPEFLOOR then
+    begin
+      srcheight := sec.floorheight;
+      destheight := refsec.floorheight;
+    end
+    else
+    begin
+      srcheight := sec.ceilingheight;
+      destheight := refsec.ceilingheight;
+    end;
 
-  if srcheight = destheight then
-  begin
-    sec.renderflags := sec.renderflags and not SRF_SLOPED;
+    if srcheight = destheight then
+    begin
+      sec.renderflags := sec.renderflags and not SRF_SLOPED;
+      for i := 0 to sec.linecount - 1 do
+      begin
+        refline := sec.lines[i];
+        if refline.frontsector.renderflags and SRF_SLOPED = 0 then
+        begin
+          if refline.backsector = nil then
+            refline.renderflags := refline.renderflags and not LRF_SLOPED
+          else if refline.backsector.renderflags and SRF_SLOPED = 0 then // JVAL: Sos
+            refline.renderflags := refline.renderflags and not LRF_SLOPED;
+        end;
+        exit;
+      end;
+    end;
+
+    if flag = SRF_SLOPEFLOOR then
+      sec.renderflags := sec.renderflags or SRF_SLOPEFLOOR
+    else
+      sec.renderflags := sec.renderflags or SRF_SLOPECEILING;
+
+    bestdist := 0;
     for i := 0 to sec.linecount - 1 do
     begin
-      refline := sec.lines[i];
-      if refline.frontsector.renderflags and SRF_SLOPED = 0 then
+      // First vertex
+      vert := sec.lines[i].v1;
+      dist := abs(
+        ((line.v1.y - vert.y) div FRACUNIT) * (line.dx div FRACUNIT) -
+        ((line.v1.x - vert.x) div FRACUNIT) * (line.dy div FRACUNIT)
+      );
+      if dist > bestdist then
       begin
-        if refline.backsector = nil then
-          refline.renderflags := refline.renderflags and not LRF_SLOPED
-        else if refline.backsector.renderflags and SRF_SLOPED = 0 then // JVAL: Sos
-          refline.renderflags := refline.renderflags and not LRF_SLOPED;
+        bestdist := dist;
+        refvert := vert;
       end;
-      exit;
+      // Second vertex
+      vert := sec.lines[i].v2;
+      dist := abs(
+        ((line.v1.y - vert.y) div FRACUNIT) * (line.dx div FRACUNIT) -
+        ((line.v1.x - vert.x) div FRACUNIT) * (line.dy div FRACUNIT)
+      );
+      if dist > bestdist then
+      begin
+        bestdist := dist;
+        refvert := vert;
+      end;
     end;
-  end;
 
-  if flag = SRF_SLOPEFLOOR then
-    sec.renderflags := sec.renderflags or SRF_SLOPEFLOOR
-  else
-    sec.renderflags := sec.renderflags or SRF_SLOPECEILING;
+    v1[0] := line.dx / FRACUNIT;
+    v1[1] := line.dy / FRACUNIT;
+    v1[2] := 0.0;
+    v2[0] := (refvert.x - line.v1.x) / FRACUNIT;
+    v2[1] := (refvert.y - line.v1.y) / FRACUNIT;
+    v2[2] := (srcheight - destheight) / FRACUNIT;
 
-  bestdist := 0;
-  for i := 0 to sec.linecount - 1 do
-  begin
-    // First vertex
-    vert := sec.lines[i].v1;
-    dist := abs(
-      ((line.v1.y - vert.y) div FRACUNIT) * (line.dx div FRACUNIT) -
-      ((line.v1.x - vert.x) div FRACUNIT) * (line.dy div FRACUNIT)
-    );
-    if dist > bestdist then
+    CrossProduct(@v1, @v2, @cross);
+    VectorNormalize(@cross);
+
+    if ((cross[2] < 0) and (flag = SRF_SLOPEFLOOR)) or ((cross[2] > 0) and (flag = SRF_SLOPECEILING)) then
     begin
-      bestdist := dist;
-      refvert := vert;
+      cross[0] := -cross[0];
+      cross[1] := -cross[1];
+      cross[2] := -cross[2];
     end;
-    // Second vertex
-    vert := sec.lines[i].v2;
-    dist := abs(
-      ((line.v1.y - vert.y) div FRACUNIT) * (line.dx div FRACUNIT) -
-      ((line.v1.x - vert.x) div FRACUNIT) * (line.dy div FRACUNIT)
-    );
-    if dist > bestdist then
+
+    if flag = SRF_SLOPEFLOOR then
     begin
-      bestdist := dist;
-      refvert := vert;
+      sec.fa := cross[0];
+      sec.fb := cross[1];
+      sec.fic := 1.0 / cross[2];
+      sec.fd := -cross[0] * (line.v1.x / FRACUNIT) -
+                 cross[1] * (line.v1.y / FRACUNIT) -
+                 cross[2] * (destheight / FRACUNIT);
+    end
+    else
+    begin
+      sec.ca := cross[0];
+      sec.cb := cross[1];
+      sec.cic := 1.0 / cross[2];
+      sec.cd := -cross[0] * (line.v1.x / FRACUNIT) -
+                 cross[1] * (line.v1.y / FRACUNIT) -
+                 cross[2] * (destheight / FRACUNIT);
     end;
-  end;
-
-  v1[0] := line.dx / FRACUNIT;
-  v1[1] := line.dy / FRACUNIT;
-  v1[2] := 0.0;
-  v2[0] := (refvert.x - line.v1.x) / FRACUNIT;;
-  v2[1] := (refvert.y - line.v1.y) / FRACUNIT;;
-  v2[2] := (srcheight - destheight) / FRACUNIT;
-
-  CrossProduct(@v1, @v2, @cross);
-  VectorNormalize(@cross);
-
-  if ((cross[2] < 0) and (flag = SRF_SLOPEFLOOR)) or ((cross[2] > 0) and (flag = SRF_SLOPECEILING)) then
-  begin
-    cross[0] := -cross[0];
-    cross[1] := -cross[1];
-    cross[2] := -cross[2];
-  end;
-
-  if flag = SRF_SLOPEFLOOR then
-  begin
-    sec.fa := cross[0];
-    sec.fb := cross[1];
-    sec.fic := 1.0 / cross[2];
-    sec.fd := -cross[0] * (line.v1.x / FRACUNIT) -
-               cross[1] * (line.v1.y / FRACUNIT) -
-               cross[2] * (destheight / FRACUNIT);
-  end
-  else
-  begin
-    sec.ca := cross[0];
-    sec.cb := cross[1];
-    sec.cic := 1.0 / cross[2];
-    sec.cd := -cross[0] * (line.v1.x / FRACUNIT) -
-               cross[1] * (line.v1.y / FRACUNIT) -
-               cross[2] * (destheight / FRACUNIT);
   end;
 
   zvertexes := mallocz(numvertexes * SizeOf(zvertex_t));
@@ -305,14 +330,25 @@ end;
 
 procedure P_FixSlopedMobjs(const s: Psector_t);
 var
- mo: Pmobj_t;
+  mo: Pmobj_t;
+  grav: fixed_t;
 begin
   mo := s.thinglist;
   while mo <> nil do
   begin
+    if mo.flags and MF_NOGRAVITY <> 0 then
+      grav := 0
+    else
+      grav := FixedMul(P_GetSectorGravity(s), mo.gravity);
+
     mo.floorz := P_FloorHeight(s, mo.x, mo.y);
-    if  mo.z < mo.floorz then
-      mo.z := mo.floorz;
+    mo.ceilingz := P_CeilingHeight(s, mo.x, mo.y);
+
+    if mo.z - grav < mo.floorz then
+      mo.z := mo.floorz
+    else if (grav = 0) or (mo.z > mo.ceilingz) then
+      mo.z := mo.ceilingz;
+
     mo := mo.snext;
   end;
 end;
@@ -417,6 +453,209 @@ begin
     end
     {$ENDIF}
   end;;
+end;
+
+procedure P_FindNearestPointOnLine(const x, y: fixed_t; const line: Pline_t; var xx, yy: fixed_t);
+const
+  NP_SCALE = 16;
+var
+  A, B, C, D: integer;
+  dot: int64;
+  len_sq: int64;
+  param: int64;
+  x1, x2, y1, y2: integer;
+  ix, iy: integer;
+begin
+  x1 := line.v1.x div NP_SCALE;
+  y1 := line.v1.y div NP_SCALE;
+  x2 := line.v2.x div NP_SCALE;
+  y2 := line.v2.y div NP_SCALE;
+  ix := x div NP_SCALE;
+  iy := y div NP_SCALE;
+
+  A := ix - x1;
+  B := iy - y1;
+  C := x2 - x1;
+  D := y2 - y1;
+
+  dot := (A * C) + (B * D);
+  len_sq := (C * C) + (D * D);
+  param := -1;
+  if len_sq <> 0 then
+    param := (dot * NP_SCALE) div int64(len_sq);
+
+  if param < 0 then
+  begin
+    xx := x1;
+    yy := y1;
+  end
+  else if param > FRACUNIT then
+  begin
+    xx := x2;
+    yy := y2;
+  end
+  else
+  begin
+    xx := x1 + (param * C) div NP_SCALE;
+    yy := y1 + (param * D) div NP_SCALE;
+  end;
+  xx := xx * NP_SCALE;
+  yy := yy * NP_SCALE;
+end;
+
+function P_ClosestFloorHeight(const sec: Psector_t; const line: Pline_t; const x, y: fixed_t): fixed_t;
+var
+  xx, yy: fixed_t;
+  tmpsec: Psector_t;
+begin
+  if sec.renderflags and SRF_SLOPEFLOOR <> 0 then
+  begin
+    tmpsec := R_PointInSubSector(x, y).sector;
+    if tmpsec = sec then
+      result := ZatPointFloor(sec, x, y)
+    else
+    begin
+      P_FindNearestPointOnLine(x, y, line, xx, yy);
+      result := ZatPointFloor(sec, xx, yy)
+    end;
+  end
+  else
+    result := sec.floorheight;
+end;
+
+function P_ClosestCeilingHeight(const sec: Psector_t; const line: Pline_t; const x, y: fixed_t): fixed_t;
+var
+  xx, yy: fixed_t;
+  tmpsec: Psector_t;
+begin
+  if sec.renderflags and SRF_SLOPECEILING <> 0 then
+  begin
+    tmpsec := R_PointInSubSector(x, y).sector;
+    if tmpsec = sec then
+      result := ZatPointCeiling(sec, x, y)
+    else
+    begin
+      P_FindNearestPointOnLine(x, y, line, xx, yy);
+      result := ZatPointCeiling(sec, xx, yy)
+    end;
+  end
+  else
+    result := sec.ceilingheight;
+end;
+
+procedure calc_slope_plane(
+  const x1, y1, z1: float;
+  const x2, y2, z2: float;
+  const x3, y3, z3: float;
+  out fa, fb, fc, fd: float);
+var
+  a1, b1, c1: float;
+  a2, b2, c2: float;
+begin
+  a1 := x2 - x1;
+  b1 := y2 - y1;
+  c1 := z2 - z1;
+  a2 := x3 - x1;
+  b2 := y3 - y1;
+  c2 := z3 - z1;
+  fa := b1 * c2 - b2 * c1;
+  fb := a2 * c1 - a1 * c2;
+  fc := a1 * b2 - b1 * a2;
+  fd := (- fa * x1 - fb * y1 - fc * z1);
+end;
+
+procedure PS_SetFloorSlope(const secid: integer; const x1, y1, z1: fixed_t;
+  const x2, y2, z2: fixed_t; const x3, y3, z3: fixed_t);
+var
+  fx1, fy1, fz1: float;
+  fx2, fy2, fz2: float;
+  fx3, fy3, fz3: float;
+  fa, fb, fc, fd: float;
+  sec: Psector_t;
+begin
+  if (secid < 0) or (secid >= numsectors) then
+    exit;
+
+  sec := @sectors[secid];
+  if (z1 = z2) and (z2 = z3) then
+  begin
+    sec.renderflags := sec.renderflags and not SRF_SLOPEFLOOR;
+    sec.floorheight := z1;
+    P_ChangeSector(sec, true);
+  end
+  else
+  begin
+    fx1 := x1 / FRACUNIT;
+    fy1 := y1 / FRACUNIT;
+    fz1 := z1 / FRACUNIT;
+    fx2 := x2 / FRACUNIT;
+    fy2 := y2 / FRACUNIT;
+    fz2 := z2 / FRACUNIT;
+    fx3 := x3 / FRACUNIT;
+    fy3 := y3 / FRACUNIT;
+    fz3 := z3 / FRACUNIT;
+    calc_slope_plane(
+      fx1, fy1, fz1,
+      fx2, fy2, fz2,
+      fx3, fy3, fz3,
+      fa, fb, fc, fd);
+    sec.fa := fa;
+    sec.fb := fb;
+    sec.fic := 1 / fc;
+    sec.fd := fd;
+    sec.renderflags := sec.renderflags or SRF_SLOPEFLOOR;
+    P_SlopesAlignPlane(sec, nil, SRF_SLOPEFLOOR, false);
+    sec.slopeline := sec.lines[0];
+    sec.slopeline.renderflags := sec.slopeline.renderflags or LRF_SLOPED;
+    P_FixSlopedMobjs(sec);
+  end;
+end;
+
+procedure PS_SetCeilingSlope(const secid: integer; const x1, y1, z1: fixed_t;
+  const x2, y2, z2: fixed_t; const x3, y3, z3: fixed_t);
+var
+  fx1, fy1, fz1: float;
+  fx2, fy2, fz2: float;
+  fx3, fy3, fz3: float;
+  ca, cb, cc, cd: float;
+  sec: Psector_t;
+begin
+  if (secid < 0) or (secid >= numsectors) then
+    exit;
+
+  sec := @sectors[secid];
+  if (z1 = z2) and (z2 = z3) then
+  begin
+    sec.renderflags := sec.renderflags and not SRF_SLOPECEILING;
+    sec.ceilingheight := z1;
+    P_ChangeSector(sec, true);
+  end
+  else
+  begin
+    fx1 := x1 / FRACUNIT;
+    fy1 := y1 / FRACUNIT;
+    fz1 := z1 / FRACUNIT;
+    fx2 := x2 / FRACUNIT;
+    fy2 := y2 / FRACUNIT;
+    fz2 := z2 / FRACUNIT;
+    fx3 := x3 / FRACUNIT;
+    fy3 := y3 / FRACUNIT;
+    fz3 := z3 / FRACUNIT;
+    calc_slope_plane(
+      fx1, fy1, fz1,
+      fx2, fy2, fz2,
+      fx3, fy3, fz3,
+      ca, cb, cc, cd);
+    sec.ca := ca;
+    sec.cb := cb;
+    sec.cic := 1 / cc;
+    sec.cd := cd;
+    sec.renderflags := sec.renderflags or SRF_SLOPECEILING;
+    P_SlopesAlignPlane(sec, nil, SRF_SLOPECEILING, false);
+    sec.slopeline := sec.lines[0];
+    sec.slopeline.renderflags := sec.slopeline.renderflags or LRF_SLOPED;
+    P_FixSlopedMobjs(sec);
+  end;
 end;
 
 end.

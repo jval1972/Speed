@@ -289,6 +289,13 @@ begin
     exit;
   end;
 
+  // JVAL: VERSION 206 
+  if ld.flags and ML_NOCLIP <> 0 then
+  begin
+    result := true;
+    exit;
+  end;
+
   if P_BoxOnLineSide(@tmbbox, ld) <> -1 then
   begin
     result := true;
