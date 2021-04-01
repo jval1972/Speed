@@ -123,7 +123,7 @@ type
     name: char8_t;
   end;
   Pfilelump_t = ^filelump_t;
-  Tfilelump_tArray = packed array[0..$FFFF] of filelump_t;
+  Tfilelump_tArray = packed array[0..$FFF] of filelump_t;
   Pfilelump_tArray = ^Tfilelump_tArray;
 
 //
@@ -140,7 +140,7 @@ type
     end;
 
   Plumpinfo_t = ^lumpinfo_t;
-  lumpinfo_tArray = array[0..$FFFF] of lumpinfo_t;
+  lumpinfo_tArray = array[0..$FFF] of lumpinfo_t;
   Plumpinfo_tArray = ^lumpinfo_tArray;
 
 type
