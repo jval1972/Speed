@@ -185,7 +185,6 @@ function W_LumpLength(const lump: integer): integer;
 procedure W_ReadLump(const lump: integer; dest: pointer);
 
 function W_CacheLumpNum(const lump: integer; const tag: integer): pointer;
-function W_CacheLumpNum2(const lump: integer; const tag: integer): pointer;
 function W_CacheLumpName(const name: string; const tag: integer; const flags: LongWord = $0): pointer;
 function W_TextLumpNum(const lump: integer): string;
 function W_TextLumpName(const name: string): string;
@@ -901,25 +900,6 @@ begin
 end;
 
 //
-// W_InitFile
-// Just initialize from a single file.
-//
-procedure W_InitFile(const filename: string);
-var
-  names: TDStringList;
-begin
-  names := TDSTringList.Create;
-  try
-    names.Add(filename);
-    W_InitMultipleFiles(names);
-  finally
-    if names.Objects[0] <> nil then
-      names.Objects[0].Free;
-    names.Free;
-  end;
-end;
-
-//
 // W_NumLumps
 //
 function W_NumLumps: integer;
@@ -1197,24 +1177,6 @@ begin
   if lump < 0 then
     I_Error('W_CacheLumpNum(): lump = %d, < 0', [lump]);
 
-  if lumpcache[lump] = nil then
-  begin
-    // read the lump in
-    //printf ("cache miss on lump %i\n",lump);
-    Z_Malloc(W_LumpLength(lump), tag, @lumpcache[lump]);
-    W_ReadLump(lump, lumpcache[lump]);
-  end
-  else
-  begin
-    //printf ("cache hit on lump %i\n",lump);
-    Z_ChangeTag(lumpcache[lump], tag);
-  end;
-
-  result := lumpcache[lump];
-end;
-
-function W_CacheLumpNum2(const lump: integer; const tag: integer): pointer;
-begin
   if lumpcache[lump] = nil then
   begin
     // read the lump in
