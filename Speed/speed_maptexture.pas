@@ -95,6 +95,7 @@ uses
   m_crc32,
   m_argv,
   sc_engine,
+  speed_flatsize,
   w_pak,
   w_wadwriter,
   w_wad,
@@ -649,7 +650,7 @@ begin
   wr.AddSeparator('F_START');
   wr.AddData(lname, bmbuffer4096, SizeOf(bmbuffer4096_t));
   wr.AddSeparator('F_END');
-  wr.AddString('FLATINFO',  lname + '=8192');
+  wr.AddString(FLATSIZELUMPNAME,  lname + '=8192');
   wr.SaveToFile(wname);
   wr.Free;
 
@@ -737,6 +738,7 @@ begin
           ms.Position := 0;
           maptexture.LoadFromStream(ms);
           ms.Free;
+          lname := stmp;
           lname[5] := 'F';
           lname[6] := 'L';
           lname[7] := 'A';
