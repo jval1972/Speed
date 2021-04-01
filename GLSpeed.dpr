@@ -384,7 +384,8 @@ uses
   speed_end_screen in 'Speed\speed_end_screen.pas',
   speed_score_draw in 'Speed\speed_score_draw.pas',
   speed_championship in 'Speed\speed_championship.pas',
-  p_easyslope in 'Base\p_easyslope.pas';
+  p_easyslope in 'Base\p_easyslope.pas',
+  speed_maptexture in 'Speed\speed_maptexture.pas';
 
 var
   Saved8087CW: Word;

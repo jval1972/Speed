@@ -165,6 +165,7 @@ uses
   speed_alias,
   speed_flatsize,
   speed_mapdata,
+  speed_maptexture,
   speed_end_screen,
   speed_hud,
   speed_intermission,
@@ -1726,6 +1727,11 @@ begin
         I_Error('W_InitMultipleFiles(): no files found');
     end;
   end;
+
+  SUC_Progress(34);
+
+  printf('SH_CheckMapFlats: Checking map flats.'#13#10);
+  SH_CheckMapFlats;
 
   printf('SH_InitSpeedAlias: Initialize SPEED HASTE alias entries.'#13#10);
   SH_InitSpeedAlias;
