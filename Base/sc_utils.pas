@@ -66,6 +66,7 @@ var
     str_incl: string;
     do_all: boolean;
     do_one: boolean;
+    iret: string;
   begin
     inc(depth);
     if depth >= MAXINCLUDEDEPTH then
@@ -112,10 +113,15 @@ var
               if includes.IndexOf(s2) < 0 then
               begin
                 includes.Add(s2);
-                result := result +
-                          decide(addcomment, '//---->' + str + #13#10, '') +
-                          SC_DoPreprocess(str_incl) + #13#10 +
-                          decide(addcomment, '//---->' + str + ' + <--- end of include'#13#10, '');
+                iret := SC_DoPreprocess(str_incl);
+                if addcomment then
+                  result := result +
+                    '//---->' + str + #13#10 +
+                    iret + #13#10 +
+                    '//---->' + str + ' + <--- end of include'#13#10
+                else
+                  result := result +
+                    iret + #13#10;
                 idx := includes.IndexOf(s2);
                 if idx >= 0 then
                   includes.Delete(idx);
