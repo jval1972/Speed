@@ -117,6 +117,7 @@ type
     function GenerateMusic: boolean;
     function GenerateSounds: boolean;
     function GeneratePK3ModelEntries: boolean;
+    function GenerateGrafs: boolean;
     procedure WritePK3Entry;
     procedure WriteFlatSizeEntry;
     function AddPAKFileSystemEntry(const lumpname: string; const aliasname: string): boolean;
@@ -1533,6 +1534,26 @@ begin
   end;
 end;
 
+function TSpeedToWADConverter.GenerateGrafs: boolean;
+var
+  p: pointer;
+  size: integer;
+begin
+  Result := ReadLump(lumps, numlumps, 'GRAFS.PAL', p, size);
+  if not Result then
+    Exit;
+
+  wadwriter.AddData('GRAFSPAL', p, size);
+  memfree(p, size);
+
+  ReadLump(lumps, numlumps, 'GRAFS.DAT', p, size);
+  if not Result then
+    Exit;
+
+  wadwriter.AddData('GRAFSDAT', p, size);
+  memfree(p, size);
+end;
+
 procedure TSpeedToWADConverter.WritePK3Entry;
 begin
   if pk3entry = nil then
@@ -1599,6 +1620,7 @@ begin
   GenerateMusic;
   GenerateSounds;
   GeneratePK3ModelEntries;
+  GenerateGrafs;
   WritePK3Entry;
   WriteFlatSizeEntry;
 end;
