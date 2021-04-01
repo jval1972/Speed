@@ -1858,7 +1858,7 @@ begin
   // JVAL: 20210309 - Load path
   if devparm then
     printf('SH_LoadPath()'#13#10);
-  SH_LoadPath(lumpnum + Ord(ML_THINGS), lumpnum + Ord(ML_PATH));
+  SH_LoadPath(lumpname, lumpnum + Ord(ML_THINGS), lumpnum + Ord(ML_PATH));
 
   // JVAL: 20210312 - Init race
   if devparm then

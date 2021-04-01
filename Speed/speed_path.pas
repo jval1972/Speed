@@ -63,7 +63,7 @@ type
   rtlpath_tArray = array[0..$FF] of rtlpath_t;
   Prtlpath_tArray = ^rtlpath_tArray;
 
-function SH_LoadPath(const lmpthings, lmppath: integer): boolean;
+function SH_LoadPath(const levelname: string; const lmpthings, lmppath: integer): boolean;
 
 function SH_GetNextPath(const mo: Pmobj_t): Prtlpath_t;
 
@@ -111,6 +111,8 @@ uses
   p_mobj,
   p_tick,
   r_main,
+  sc_engine,
+  w_pak,
   w_wad,
   z_zone;
 
@@ -168,7 +170,7 @@ begin
   aheadpaths.Free;
 end;
 
-function SH_LoadPath(const lmpthings, lmppath: integer): boolean;
+function SH_LoadPath(const levelname: string; const lmpthings, lmppath: integer): boolean;
 const
   PATH_TO_KMH_DIV = 10240;
 var
@@ -177,53 +179,97 @@ var
   mt: Pmapthing_t;
   numthings: integer;
   mappaths: Pmapspeedpathpoint_tArray;
+  strdata: string;
+  mapthing: mapthing_t;
+  lst: TDStringList;
+  sc: TScriptEngine;
 begin
+  Result := True;
+
   if lmppath >= W_NumLumps then
-  begin
+    Result := False
+  else if char8tostring(W_GetNameForNum(lmppath)) <> 'PATH' then
     Result := False;
-    Exit;
-  end;
 
-  if char8tostring(W_GetNameForNum(lmppath)) <> 'PATH' then
+  if Result then  // WAD loading
   begin
-    Result := False;
-    Exit;
-  end;
+    numpaths := W_LumpLength(lmppath) div SizeOf(mapspeedpathpoint_t);
+    rtlpaths := Z_Malloc(numpaths * SizeOf(rtlpath_t), PU_LEVEL, nil);
+    ZeroMemory(rtlpaths, numpaths * SizeOf(rtlpath_t));
 
-  numpaths := W_LumpLength(lmppath) div SizeOf(mapspeedpathpoint_t);
-  rtlpaths := Z_Malloc(numpaths * SizeOf(rtlpath_t), PU_LEVEL, nil);
-  ZeroMemory(rtlpaths, numpaths * SizeOf(rtlpath_t));
+    mappaths := W_CacheLumpNum(lmppath, PU_STATIC);
 
-  mappaths := W_CacheLumpNum(lmppath, PU_STATIC);
+    data := W_CacheLumpNum(lmpthings, PU_STATIC);
+    numthings := W_LumpLength(lmpthings) div SizeOf(mapthing_t);
 
-  data := W_CacheLumpNum(lmpthings, PU_STATIC);
-  numthings := W_LumpLength(lmpthings) div SizeOf(mapthing_t);
-
-  mt := Pmapthing_t(data);
-  p := 0;
-  for i := 0 to numthings - 1 do
-  begin
-    if mt._type = _SHTH_PATH then
+    mt := Pmapthing_t(data);
+    p := 0;
+    for i := 0 to numthings - 1 do
     begin
-      if p < numpaths then
+      if mt._type = _SHTH_PATH then
       begin
-        rtlpaths[p].mo := P_SpawnMapThing(mt);
-        rtlpaths[p].speed := mappaths[p].speed div PATH_TO_KMH_DIV;
-        inc(p);
-      end
-      else
-        Break;  // JVAL: 20210309 - Ouch!
+        if p < numpaths then
+        begin
+          rtlpaths[p].mo := P_SpawnMapThing(mt);
+          rtlpaths[p].speed := mappaths[p].speed div PATH_TO_KMH_DIV;
+          inc(p);
+        end
+        else
+          Break;  // JVAL: 20210309 - Ouch!
+      end;
+
+      inc(mt);
     end;
 
-    inc(mt);
+    Z_Free(data);
+    Z_Free(mappaths);
+  end
+  else  // Try PK3
+  begin
+    strdata := PAK_ReadFileAsString(levelname + '_PATH.txt');
+    if strdata <> '' then
+    begin
+      lst := TDStringList.Create;
+
+      sc := TScriptEngine.Create(strdata);
+      while sc.GetString do
+        lst.Add(sc._String);
+      sc.Free;
+
+      numpaths := lst.Count div 4;
+      rtlpaths := Z_Malloc(numpaths * SizeOf(rtlpath_t), PU_LEVEL, nil);
+      ZeroMemory(rtlpaths, numpaths * SizeOf(rtlpath_t));
+
+      sc := TScriptEngine.Create(strdata);
+
+      mapthing._type := _SHTH_PATH;
+      mapthing.options := 7;
+
+      p := 0;
+
+      while sc.GetString do
+      begin
+        mapthing.x := atoi(sc._String);
+        sc.MustGetString;
+        mapthing.y := atoi(sc._String);
+        sc.MustGetString;
+        mapthing.angle := atoi(sc._String);
+
+        rtlpaths[p].mo := P_SpawnMapThing(@mapthing);
+        sc.MustGetString;
+        rtlpaths[p].speed := atoi(sc._String);
+
+        inc(p);
+      end;
+
+      sc.Free;
+
+      lst.Free;
+      Result := True;
+    end;
   end;
 
-  Z_Free(data);
-  Z_Free(mappaths);
-
   SH_GroupPathSequence;
-
-  Result := True;
 end;
 
 function SH_GetNextPath(const mo: Pmobj_t): Prtlpath_t;
