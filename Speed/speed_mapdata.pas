@@ -68,6 +68,7 @@ implementation
 uses
   doomdata,
   speed_xlat_wad,
+  w_pak,
   w_wad,
   z_zone;
 
@@ -93,6 +94,7 @@ var
   idx: integer;
   mrec: mapdata_t;
   mclass: TMapData;
+  strdata: string;
 begin
   mapdatalst := TDStringList.Create;
   for i := 1 to 4 do
@@ -102,6 +104,8 @@ begin
       lump := W_CheckNumForName(lname);
       if lump >= 0 then
       begin
+
+        // Check WAD MAPDATA
         mlump := -1;
         for k := lump + 1 to lump + Ord(ML_MAPDATA) do
         begin
@@ -113,7 +117,14 @@ begin
             Break;
           end;
         end;
+
+        strdata := '';
         if mlump >= 0 then
+          strdata := W_TextLumpNum(mlump)
+        else  // Check PK3 MAPDATA
+          strdata := PAK_ReadFileAsString(lname + '_MAPDATA.txt');
+
+        if strdata <> '' then
         begin
           mrec.episode := i;
           mrec.map := j;
@@ -128,7 +139,7 @@ begin
 
           sl := TDStringList.Create;
           try
-            sl.Text := W_TextLumpNum(mlump);
+            sl.Text := strdata;
             idx := sl.IndexOfName(sMAPDATA_sprite);
             if idx >= 0 then
               mrec.mapsprite := sl.ValuesIdx[idx];
