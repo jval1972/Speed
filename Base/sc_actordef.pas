@@ -2307,7 +2307,7 @@ end;
 
 procedure SC_ParseActordefLump(const in_text: string);
 begin
-  SC_DoParseActordefLump(SC_Preprocess(in_text, false));
+  SC_DoParseActordefLump(SC_Preprocess(in_text, devparm));
 end;
 
 var
