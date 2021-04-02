@@ -163,6 +163,7 @@ uses
   ps_main,
   psi_overlay,
   speed_alias,
+  speed_cars,
   speed_flatsize,
   speed_mapdata,
   speed_maptexture,
@@ -1797,6 +1798,11 @@ begin
   SH_InitMapData;
 
   SUC_Progress(47);
+
+  printf('SH_InitCars: Initializing Speed Haste Cars'#13#10);
+  SH_InitCars;
+
+  SUC_Progress(48);
 
   printf('Info_CheckStates: Check states tables'#13#10);
   Info_CheckStates;

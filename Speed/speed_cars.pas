@@ -695,6 +695,8 @@ procedure SH_EngineSound(const caller: Pmobj_t; const soundtarg: Pmobj_t);
 
 procedure SH_BrakeSound(const caller: Pmobj_t);
 
+procedure SH_InitCars;
+
 var
   def_f1car: integer = 0;
   def_ncar: integer = 20;
@@ -725,6 +727,7 @@ implementation
 
 uses
   d_delphi,
+  c_cmds,
   d_think,
   d_player,
   i_system,
@@ -1246,12 +1249,22 @@ begin
   SH_ExecuteDrivingCmd(mo, @cmd);
 end;
 
+var
+  print_player_path: boolean = false;
+
+const
+  PRINT_PLAYER_PATH_TICS = 10;
+
 procedure SH_MoveCarPlayer(const mo: Pmobj_t);
 var
   cmd: drivingcmd_t;
 begin
   SH_BuildDrivingCmdPlayer(mo, @cmd);
   SH_ExecuteDrivingCmd(mo, @cmd);
+
+  if print_player_path then
+    if racetime mod PRINT_PLAYER_PATH_TICS = 0 then
+      printf('%d %d %d %d'#13#10, [mo.x div FRACUNIT, mo.y div FRACUNIT, mo.angle div ANG1, mo.enginespeed div KMH_TO_FIXED]);
 end;
 
 procedure SH_EngineSound(const caller: Pmobj_t; const soundtarg: Pmobj_t);
@@ -1301,6 +1314,23 @@ begin
   end
   else
     dec(caller.brakesoundcountdown);
+end;
+
+procedure CmdprintPlayerPath(const parm: string);
+begin
+  if parm = '' then
+  begin
+    printf('print_player_path=' + decide(print_player_path, 'TRUE', 'FALSE') + #13#10);
+    Exit;
+  end;
+
+  print_player_path := C_BoolEval(parm, print_player_path);
+  CmdprintPlayerPath('');
+end;
+
+procedure SH_InitCars;
+begin
+  C_AddCmd('print_player_path', @CmdprintPlayerPath);
 end;
 
 end.
