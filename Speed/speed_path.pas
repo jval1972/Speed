@@ -437,6 +437,9 @@ begin
   racepositions.numracepositions := 0;
   inf := @racepositions.items[0];
   lapsize := rtlpaths[numpaths - 1].dist_to_here;
+  // lapsize in meters:
+  //    rtlpaths[numpaths - 1].dist_to_here/fracunit/8,4018
+  //    rtlpaths[numpaths - 1].dist_to_here/550620
   racelen := lapsize * int64(race.numlaps);
 
   think := thinkercap.next;
