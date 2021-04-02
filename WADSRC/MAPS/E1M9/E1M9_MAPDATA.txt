@@ -1,0 +1,8 @@
+sprite=MAPSPR00
+sky=NUBES0
+mountain=MOUNT3
+ground=FLAT0062
+name=The Hills
+length=4347
+best=4200
+level=2
