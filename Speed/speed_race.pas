@@ -90,7 +90,7 @@ const
   MINLAPS = 2;
   MAXLAPS = 10;
 
-procedure SH_InitRace(const lump: integer);
+procedure SH_InitRace(const levelname: string; const lump: integer);
 
 function SH_GroundTypeAtXY(const x, y: fixed_t): groundtype_t;
 
@@ -107,12 +107,14 @@ uses
   r_data,
   speed_championship,
   speed_xlat_wad,
+  w_pak,
   w_wad,
   z_zone;
 
-procedure SH_InitRace(const lump: integer);
+procedure SH_InitRace(const levelname: string; const lump: integer);
 var
   sl: TDStringList;
+  strdata: string;
   idx: integer;
 begin
   race.cartype := championship.racecartype;
@@ -134,7 +136,14 @@ begin
 
   sl := TDStringList.Create;
   try
-    sl.Text := W_TextLumpNum(lump);
+    strdata := '';
+    if lump < W_NumLumps then
+      if W_GetNameForNum(lump) = 'MAPDATA' then
+        strdata := W_TextLumpNum(lump);
+    if strdata = '' then
+      strdata := PAK_ReadFileAsString(levelname + '_MAPDATA.txt');
+
+    sl.Text := strdata;
     idx := sl.IndexOfName(sMAPDATA_sprite);
     if idx >= 0 then
       race.mapsprite := sl.ValuesIdx[idx];

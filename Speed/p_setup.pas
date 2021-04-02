@@ -1863,7 +1863,7 @@ begin
   // JVAL: 20210312 - Init race
   if devparm then
     printf('SH_InitRace()'#13#10);
-  SH_InitRace(lumpnum + Ord(ML_MAPDATA));
+  SH_InitRace(lumpname, lumpnum + Ord(ML_MAPDATA));
 
   // JVAL: 20210310 - Init cars
   if devparm then
