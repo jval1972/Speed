@@ -2336,8 +2336,9 @@ begin
     end
     else if gamemode = shareware then
     begin
-      if episode > 1 then
-        episode := 1;  // only start episode 1 on shareware
+      if not hackshareware then
+        if episode > 1 then
+          episode := 1;  // only start episode 1 on shareware
     end
     else
     begin
