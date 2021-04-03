@@ -37,10 +37,14 @@ procedure SH_ShutDownSpeedHud;
 
 procedure SH_HudDrawer;
 
+var
+  draw_speed_hud: boolean = true;
+
 implementation
 
 uses
   d_delphi,
+  c_cmds,
   doomdef,
   d_player,
   p_tick,
@@ -56,6 +60,18 @@ uses
   v_video,
   w_wad,
   z_zone;
+
+procedure CmdprintSpeedHud(const parm: string);
+begin
+  if parm = '' then
+  begin
+    printf('draw_speed_hud=' + decide(draw_speed_hud, 'TRUE', 'FALSE') + #13#10);
+    Exit;
+  end;
+
+  draw_speed_hud := C_BoolEval(parm, draw_speed_hud);
+  CmdprintSpeedHud('');
+end;
 
 var
   bluedigitbig: array[0..9] of Ppatch_t;
@@ -88,6 +104,7 @@ var
   i: integer;
   sn: string;
 begin
+  C_AddCmd('draw_speed_hud', @CmdprintSpeedHud);
   for i := 0 to 9 do
   begin
     sn := itoa(i);
@@ -456,6 +473,9 @@ end;
 
 procedure SH_HudDrawer;
 begin
+  if not draw_speed_hud then
+    Exit;
+
   hud_player := @players[consoleplayer];
 
   if firstinterpolation then
