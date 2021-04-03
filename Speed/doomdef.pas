@@ -181,6 +181,11 @@ type
     gt_practice
   );
 
+const
+  TT_AUTOMATIC = 0;
+  TT_MANUAL = 1;
+
+type  
 //
 // Key cards.
 //

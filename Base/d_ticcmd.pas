@@ -46,10 +46,7 @@ type
     consistancy: smallint; // checks for net game
     chatchar: byte;
     buttons: byte;
-{$IFDEF STRIFE}
     buttons2: byte;
-    inventory: integer;
-{$ENDIF}
     commands: byte; // JVAL for special commands
 {$IFDEF HERETIC_OR_HEXEN}
     lookfly: byte;   // look up/down/centering/fly

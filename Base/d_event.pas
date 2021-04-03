@@ -108,6 +108,10 @@ const
   BTS_SAVEMASK = 4 + 8 + 16;
   BTS_SAVESHIFT = 2;
 
+const
+  BT2_GEARUP = 1;
+  BT2_GEARDOWN = 2;
+
 // Commands Actions
 const
   CM_SAVEGAME = 1;

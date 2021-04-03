@@ -49,6 +49,7 @@ type
     cartype: cartype_t;
     racestatus: racestatus_t;
     gametype: gametype_t;
+    transmissiontype: integer;
     completed: boolean;
     ground: Pground_t;
     groundlump: integer;
@@ -119,6 +120,7 @@ var
 begin
   race.cartype := championship.racecartype;
   race.gametype := championship.gametype;
+  race.transmissiontype := championship.transmissiontype;
 
   race.groundlump := R_GetLumpForFlat(sectors[0].floorpic);
   race.ground := W_CacheLumpNum(race.groundlump, PU_LEVEL);

@@ -41,6 +41,7 @@ type
     numlaps: integer;
     racecartype: cartype_t;
     gametype: gametype_t;
+    transmissiontype: integer;
     def_f1car: integer;
     def_ncar: integer;
     def_anycar: integer;
@@ -57,6 +58,7 @@ implementation
 
 uses
   d_delphi,
+  g_game,
   speed_race;
 
 procedure SH_SaveChampionShipData(const gtyp: gametype_t);
@@ -65,6 +67,7 @@ begin
   championship.numlaps := GetIntegerInRange(numlaps, MINLAPS, MAXLAPS);
   championship.racecartype := cartype_t(GetIntegerInRange(racecartype, 0, Ord(ct_any)));
   championship.gametype := gtyp;
+  championship.transmissiontype := transmissiontype;
   championship.def_f1car := def_f1car;
   championship.def_ncar := def_ncar;
   championship.def_anycar := def_anycar;

@@ -121,7 +121,7 @@ type
   Pdefault_t = ^default_t;
 
 const
-  NUMDEFAULTS = 202;
+  NUMDEFAULTS = 207;
 
 // JVAL
 // Note: All setable defaults must be in lowercase, don't ask why. Just do it. :)
@@ -865,6 +865,14 @@ const
      defaultbvalue: true;
      _type: tInteger),
 
+    (name: 'transmissiontype';
+     location: @transmissiontype;
+     setable: DFS_NEVER;
+     defaultsvalue: '';
+     defaultivalue: 0;
+     defaultbvalue: true;
+     _type: tInteger),
+
     (name: 'numlaps';
      location: @numlaps;
      setable: DFS_NEVER;
@@ -1040,6 +1048,22 @@ const
      setable: DFS_NEVER;
      defaultsvalue: '';
      defaultivalue: KEY_DOWNARROW;
+     defaultbvalue: false;
+     _type: tInteger),
+
+    (name: 'key_gearup';
+     location: @key_gearup;
+     setable: DFS_NEVER;
+     defaultsvalue: '';
+     defaultivalue: Ord('a');
+     defaultbvalue: false;
+     _type: tInteger),
+
+    (name: 'key_geardown';
+     location: @key_geardown;
+     setable: DFS_NEVER;
+     defaultsvalue: '';
+     defaultivalue: Ord('a');
      defaultbvalue: false;
      _type: tInteger),
 
@@ -1365,6 +1389,22 @@ const
      setable: DFS_ALWAYS;
      defaultsvalue: '';
      defaultivalue: 7;
+     defaultbvalue: false;
+     _type: tInteger),
+
+    (name: 'joyb_gearup';
+     location: @joygearup;
+     setable: DFS_ALWAYS;
+     defaultsvalue: '';
+     defaultivalue: 8;
+     defaultbvalue: false;
+     _type: tInteger),
+
+    (name: 'joyb_geardown';
+     location: @joygearup;
+     setable: DFS_ALWAYS;
+     defaultsvalue: '';
+     defaultivalue: 9;
      defaultbvalue: false;
      _type: tInteger),
 
