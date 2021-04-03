@@ -312,9 +312,14 @@ begin
         curlaptime := curlaptime - timelaps[i];
     end;
     _draw_lap_time(66, ypos, curlaptime, @timedigityellow);
+    for i := numcompletedlaps - 1 downto 0 do
+      _draw_lap_time(66, ypos + (i + 1) * 10, timelaps[numcompletedlaps - 1 - i], @timedigityellow);
+  end
+  else
+  begin
+    for i := race.numlaps - 1 downto 0 do
+      _draw_lap_time(66, ypos + (i + 1) * 10, timelaps[race.numlaps - 1 - i], @timedigityellow);
   end;
-  for i := numcompletedlaps - 1 downto 0 do
-    _draw_lap_time(66, ypos + (i + 1) * 10, timelaps[numcompletedlaps - 1 - i], @timedigityellow);
 end;
 
 function _big_white_string_width(const s: string): integer;
