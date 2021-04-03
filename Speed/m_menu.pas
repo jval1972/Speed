@@ -92,6 +92,7 @@ procedure M_SetKeyboardMode(const mode: integer);
 
 var
   menu_select_cource: integer = 0;
+  mtransmission: integer = 0;
 
 implementation
 
@@ -422,9 +423,10 @@ type
     news_singlerace,
     news_practice,
     news_numlaps,
-    news_carselect,
     news_difficultylevel,
+    news_carselect,
     news_carmodel,
+    news_transmission,
     news_end
   );
 
@@ -2018,6 +2020,11 @@ const
     'Veteran'
   );
 
+  str_transmission: array[TT_AUTOMATIC..TT_MANUAL] of string = (
+    'Automatic',
+    'Manual'
+  );
+  
   str_cartype: array[0..Ord(ct_any)] of string = (
     'Formula 1',
     'Stock',
@@ -2031,7 +2038,7 @@ var
   fcar: integer;
 begin
   M_DrawHeadLine(20, 15, 'New Game');
-  M_DrawHeadLine(30, 40, 'New Game Setup');
+  M_DrawHeadLine(30, 40, 'Setup Race');
 
   y := DEF_MENU_ITEMS_START_Y;
   for i := 0 to Ord(news_end) - 1 do
@@ -2052,6 +2059,8 @@ begin
     end
     else if i = Ord(news_difficultylevel) then
       stmp := stmp + ': ' + str_skill[skill_t(mgameskill)]
+    else if i = Ord(news_transmission) then
+      stmp := stmp + ': ' + str_transmission[GetIntegerInRange(mtransmission, TT_AUTOMATIC, TT_MANUAL)]
     else if i = Ord(news_carmodel) then
       stmp := stmp + ': ' + str_cartype[racecartype];
     if itemOn = i then
@@ -2218,7 +2227,7 @@ begin
   mname := mapdatalst.Strings[idx];
   m_episode := atoi(mname[2]);
   m_map := atoi(mname[4]);
-  G_DeferedInitNew(skill_t(mgameskill), gametype_t(mgametype), m_episode, m_map);
+  G_DeferedInitNew(skill_t(mgameskill), gametype_t(mgametype), m_episode, m_map, mtransmission);
   M_ClearMenus;
 end;
 
@@ -2315,6 +2324,14 @@ begin
   end;
 end;
 
+procedure M_ChangeTransmission(choice: integer);
+begin
+  if mtransmission = TT_AUTOMATIC then
+    mtransmission := TT_MANUAL
+  else
+    mtransmission := TT_AUTOMATIC;
+end;
+
 //
 //      M_Episode
 //
@@ -2374,7 +2391,7 @@ begin
 
   menu_episode := choice;
 
-  G_DeferedInitNew(skill_t(mgameskill), gametype_t(mgametype), menu_episode + 1, 1);
+  G_DeferedInitNew(skill_t(mgameskill), gametype_t(mgametype), menu_episode + 1, 1, mtransmission);
   M_ClearMenus;
 end;
 
@@ -4100,6 +4117,16 @@ begin
   pmi.tag := 0;
 
   inc(pmi);
+  pmi.status := 2;
+  pmi.name := 'Difficulty level';
+  pmi.cmd := '';
+  pmi.routine := @M_ChangeDifficulty;
+  pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
+  pmi.alphaKey := 'd';
+  pmi.tag := 0;
+
+  inc(pmi);
   pmi.status := 1;
   pmi.name := 'Select Vehicle';
   pmi.cmd := '';
@@ -4111,22 +4138,22 @@ begin
 
   inc(pmi);
   pmi.status := 2;
-  pmi.name := 'Difficulty level';
-  pmi.cmd := '';
-  pmi.routine := @M_ChangeDifficulty;
-  pmi.pBoolVal := nil;
-  pmi.pIntVal := nil;
-  pmi.alphaKey := 'd';
-  pmi.tag := 0;
-
-  inc(pmi);
-  pmi.status := 2;
   pmi.name := 'Car Model';
   pmi.cmd := '';
   pmi.routine := @M_ChangeCarModel;
   pmi.pBoolVal := nil;
   pmi.pIntVal := nil;
   pmi.alphaKey := 'm';
+  pmi.tag := 0;
+
+  inc(pmi);
+  pmi.status := 2;
+  pmi.name := 'Transmission';
+  pmi.cmd := '';
+  pmi.routine := @M_ChangeTransmission;
+  pmi.pBoolVal := nil;
+  pmi.pIntVal := nil;
+  pmi.alphaKey := 't';
   pmi.tag := 0;
 
 ////////////////////////////////////////////////////////////////////////////////

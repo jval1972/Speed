@@ -49,7 +49,7 @@ type
   end;
   Pchampionship_t = ^championship_t;
 
-procedure SH_SaveChampionShipData(const gtyp: gametype_t);
+procedure SH_SaveChampionShipData(const gtyp: gametype_t; const atransmission: integer);
 
 var
   championship: championship_t;
@@ -61,13 +61,13 @@ uses
   g_game,
   speed_race;
 
-procedure SH_SaveChampionShipData(const gtyp: gametype_t);
+procedure SH_SaveChampionShipData(const gtyp: gametype_t; const atransmission: integer);
 begin
   ZeroMemory(@championship, SizeOf(championship_t));
   championship.numlaps := GetIntegerInRange(numlaps, MINLAPS, MAXLAPS);
   championship.racecartype := cartype_t(GetIntegerInRange(racecartype, 0, Ord(ct_any)));
   championship.gametype := gtyp;
-  championship.transmissiontype := transmissiontype;
+  championship.transmissiontype := atransmission;
   championship.def_f1car := def_f1car;
   championship.def_ncar := def_ncar;
   championship.def_anycar := def_anycar;

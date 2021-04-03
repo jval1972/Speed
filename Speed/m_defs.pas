@@ -866,7 +866,7 @@ const
      _type: tInteger),
 
     (name: 'transmissiontype';
-     location: @transmissiontype;
+     location: @mtransmission;
      setable: DFS_NEVER;
      defaultsvalue: '';
      defaultivalue: 0;
@@ -1063,7 +1063,7 @@ const
      location: @key_geardown;
      setable: DFS_NEVER;
      defaultsvalue: '';
-     defaultivalue: Ord('a');
+     defaultivalue: Ord('z');
      defaultbvalue: false;
      _type: tInteger),
 

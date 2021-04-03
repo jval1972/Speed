@@ -97,6 +97,7 @@ var
 
   startepisode: integer;
   startmap: integer;
+  starttransmission: integer;
   advancedemo: boolean;
 
   basedefault: string;          // default file
@@ -1354,6 +1355,7 @@ begin
   startskill := sk_medium;
   startepisode := 1;
   startmap := 1;
+  starttransmission := 0;
   autostart := false;
 
   p := M_CheckParm('-skill');
@@ -1378,6 +1380,11 @@ begin
     startmap := 1;
     autostart := true;
   end;
+
+  p := M_CheckParm('-transmission');
+  if (p <> 0) and (p < myargc - 1) then
+    starttransmission := atoi(myargv[p + 1]);
+
 
   p := M_CheckParm('-timer');
   if (p <> 0) and (p < myargc - 1) and (deathmatch <> 0) then
@@ -2127,7 +2134,7 @@ begin
   begin
     if autostart or netgame then
     begin
-      G_InitNew(startskill, starttype, startepisode, startmap);
+      G_InitNew(startskill, starttype, startepisode, startmap, starttransmission);
     end
     else
       D_StartTitle; // start up intro loop

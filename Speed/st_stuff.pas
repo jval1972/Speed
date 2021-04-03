@@ -99,6 +99,7 @@ uses
   info,
   m_cheat,
   m_fixed,
+  m_menu,
   p_enemy,
   p_inter,
   p_setup,
@@ -597,7 +598,7 @@ begin
       if W_CheckNumForName(P_GetMapName(epsd, map)) > -1 then
       begin
         plyr._message := STSTR_CLEV;
-        G_DeferedInitNew(gameskill, gametype, epsd, map);
+        G_DeferedInitNew(gameskill, gametype, epsd, map, mtransmission);
       end;
     end;
   end;

@@ -720,14 +720,17 @@ const
   );
 
 const
-  GEAR_CHANGE_TICS = TICRATE div 8;
-  NEXT_GEAR_CHANGE_TICS = TICRATE div 8;
+  AUTO_GEAR_CHANGE_TICS = TICRATE div 8;
+  AUTO_NEXT_GEAR_CHANGE_TICS = TICRATE div 8;
+  MANUAL_GEAR_CHANGE_TICS = TICRATE div 16;
+  MANUAL_NEXT_GEAR_CHANGE_TICS = TICRATE div 16;
 
 implementation
 
 uses
   d_delphi,
   c_cmds,
+  d_event,
   d_think,
   d_player,
   i_system,
@@ -788,7 +791,7 @@ begin
       if idx >= 0 then
         carids.Delete(idx);
     end;
-  
+
   for i := 0 to lst.Count - 1 do
   begin
     mo := lst.Pointers[i];
@@ -827,23 +830,23 @@ begin
     if mo.nextgeartics = 0 then
     begin
       mo.destgear := g;
-      mo.geartics := GEAR_CHANGE_TICS;
-      mo.nextgeartics := NEXT_GEAR_CHANGE_TICS;
+      mo.geartics := AUTO_GEAR_CHANGE_TICS;
+      mo.nextgeartics := AUTO_NEXT_GEAR_CHANGE_TICS;
     end;
 end;
 
-procedure SH_ShiftGearUp(const mo: Pmobj_t);
+procedure SH_ShiftGearUp(const mo: Pmobj_t; const gtics, nextgtics: integer);
 begin
   mo.destgear := mo.gear + 1;
-  mo.geartics := GEAR_CHANGE_TICS;
-  mo.nextgeartics := NEXT_GEAR_CHANGE_TICS;
+  mo.geartics := gtics;
+  mo.nextgeartics := nextgtics;
 end;
 
-procedure SH_ShiftGearDown(const mo: Pmobj_t);
+procedure SH_ShiftGearDown(const mo: Pmobj_t; const gtics, nextgtics: integer);
 begin
   mo.destgear := mo.gear - 1;
-  mo.geartics := GEAR_CHANGE_TICS;
-  mo.nextgeartics := NEXT_GEAR_CHANGE_TICS;
+  mo.geartics := gtics;
+  mo.nextgeartics := nextgtics;
 end;
 
 procedure SH_AutoGearBox(const mo: Pmobj_t);
@@ -872,10 +875,30 @@ begin
       cinfo := @CARINFO[mo.carinfo];
       f := mo.enginespeed div (cinfo.maxspeed div NUM_GEAR_ACCEL_FACTORS);
       if _gear_better_up then
-        SH_ShiftGearUp(mo)
+        SH_ShiftGearUp(mo, AUTO_GEAR_CHANGE_TICS, AUTO_NEXT_GEAR_CHANGE_TICS)
       else if _gear_better_down then
-        SH_ShiftGearDown(mo)
+        SH_ShiftGearDown(mo, AUTO_GEAR_CHANGE_TICS, AUTO_NEXT_GEAR_CHANGE_TICS)
     end;
+end;
+
+procedure SH_ManualGearBox(const p: Pplayer_t);
+var
+  f: integer;
+begin
+  if p.cmd.buttons2 and BT2_GEARUP <> 0 then
+  begin
+    if p.mo.gear < NUM_CAR_GEARS then
+      SH_ShiftGearUp(p.mo, MANUAL_GEAR_CHANGE_TICS, MANUAL_NEXT_GEAR_CHANGE_TICS);
+  end
+  else if p.cmd.buttons2 and BT2_GEARDOWN <> 0 then
+  begin
+    if p.mo.gear > 1 then
+    begin
+      f := p.mo.enginespeed div (CARINFO[p.mo.carinfo].maxspeed div NUM_GEAR_ACCEL_FACTORS);
+      if GEAR_ACCEL_FACTORS[p.mo.gear - 1, f] > 0 then
+        SH_ShiftGearDown(p.mo, MANUAL_GEAR_CHANGE_TICS, MANUAL_NEXT_GEAR_CHANGE_TICS);
+    end;
+  end;
 end;
 
 function SH_GearAccelerationFactor(const mo: Pmobj_t): fixed_t;
@@ -1070,7 +1093,12 @@ begin
     if mo.gear = -1 then
       SH_SetGear(mo, 1)
     else
-      SH_AutoGearBox(mo);
+    begin
+      if race.transmissiontype = TT_AUTOMATIC then
+        SH_AutoGearBox(mo)
+      else
+        SH_ManualGearBox(p);
+    end;
 
     cmd.brake := 0;
     cmd.deccelerate := 0;
@@ -1090,7 +1118,10 @@ begin
     else
     begin
       // Gear select
-      SH_AutoGearBox(mo);
+      if race.transmissiontype = TT_AUTOMATIC then
+        SH_AutoGearBox(mo)
+      else
+        SH_ManualGearBox(p);
 
       cmd.brake := carinfo[mo.carinfo].basedeccel div 4;
       cmd.deccelerate := 0;

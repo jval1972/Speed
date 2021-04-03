@@ -44,12 +44,12 @@ uses
 
 procedure G_DeathMatchSpawnPlayer(playernum: integer);
 
-procedure G_InitNew(skill: skill_t; gametyp: gametype_t; episode: integer; map: integer);
+procedure G_InitNew(skill: skill_t; gametyp: gametype_t; episode: integer; map: integer; atransmission: integer);
 
 // Can be called by the startup code or M_Responder.
 // A normal game starts at map 1,
 // but a warp test can start elsewhere
-procedure G_DeferedInitNew(skill: skill_t; gametyp: gametype_t; episode: integer; map: integer);
+procedure G_DeferedInitNew(skill: skill_t; gametyp: gametype_t; episode: integer; map: integer; atransmission: integer);
 
 procedure G_CmdNewGame(const parm1, parm2: string);
 
@@ -1678,8 +1678,11 @@ begin
     save_p := PByteArray(integer(save_p) + 1);
   end;
 
+  transmissiontype := save_p[0];
+  save_p := PByteArray(integer(save_p) + 1);
+
   // load a base level
-  G_InitNew(gameskill, gametype, gameepisode, gamemap);
+  G_InitNew(gameskill, gametype, gameepisode, gamemap, transmissiontype);
 
   // get the times
   a := save_p[0];
@@ -1791,6 +1794,9 @@ begin
     save_p[0] := intval(playeringame[i]);
     save_p := PByteArray(integer(save_p) + 1);
   end;
+
+  save_p[0] := transmissiontype;
+  save_p := PByteArray(integer(save_p) + 1);
 
   save_p[0] := _SHR(leveltime, 16);
   save_p := PByteArray(integer(save_p) + 1);
@@ -1928,17 +1934,19 @@ end;
 var
   d_skill: skill_t;
   d_gametype: gametype_t;
+  d_transmission: integer;
   d_episode: integer;
   d_map: integer;
 
-procedure G_DeferedInitNew(skill: skill_t; gametyp: gametype_t; episode: integer; map: integer);
+procedure G_DeferedInitNew(skill: skill_t; gametyp: gametype_t; episode: integer; map: integer; atransmission: integer);
 begin
   d_skill := skill;
   d_gametype := gametyp;
   d_episode := episode;
   d_map := map;
   gameaction := ga_newgame;
-  SH_SaveChampionShipData(gametyp);
+  d_transmission := atransmission;
+  SH_SaveChampionShipData(gametyp, atransmission);
 end;
 
 procedure G_CmdNewGame(const parm1, parm2: string);
@@ -1968,7 +1976,7 @@ begin
   if W_CheckNumForName(P_GetMapName(epsd, map)) > -1 then
   begin
     players[consoleplayer]._message := STSTR_CLEV;
-    G_DeferedInitNew(gameskill, gt_singlerace, epsd, map);
+    G_DeferedInitNew(gameskill, gt_singlerace, epsd, map, mtransmission);
     C_ExecuteCmd('closeconsole', '1');
   end
   else
@@ -1991,7 +1999,7 @@ begin
   if W_CheckNumForName(P_GetMapName(epsd, map)) > -1 then
   begin
     players[consoleplayer]._message := STSTR_CLEV;
-    G_DeferedInitNew(gameskill, gt_practice, epsd, map);
+    G_DeferedInitNew(gameskill, gt_practice, epsd, map, mtransmission);
     C_ExecuteCmd('closeconsole', '1');
   end
   else
@@ -2012,11 +2020,11 @@ begin
   fastparm := false;
   nomonsters := false;
   consoleplayer := 0;
-  G_InitNew(d_skill, d_gametype, d_episode, d_map);
+  G_InitNew(d_skill, d_gametype, d_episode, d_map, d_transmission);
   gameaction := ga_nothing;
 end;
 
-procedure G_InitNew(skill: skill_t; gametyp: gametype_t; episode: integer; map: integer);
+procedure G_InitNew(skill: skill_t; gametyp: gametype_t; episode: integer; map: integer; atransmission: integer);
 var
   i: integer;
   levelinf: Plevelinfo_t;
@@ -2113,6 +2121,8 @@ begin
   mgameskill := Ord(gameskill);
   gametype := gametyp;
   mgametype := Ord(gametype);
+  transmissiontype := atransmission;
+  mtransmission := atransmission;
 
   viewactive := true;
   demostarttic := 0;
@@ -2671,7 +2681,7 @@ begin
   preparingdemoplayback := true;
   // don't spend a lot of time in loadlevel if not singledemo
   precache := singledemo; // JVAL original code: precache := false
-  G_InitNew(skill, gametype, episode, map);
+  G_InitNew(skill, gametype, episode, map, transmissiontype);
   preparingdemoplayback := false;
   spawnrandommonsters := oldspawnrandommonsters;  // Back to default
   dogs := olddogs;
