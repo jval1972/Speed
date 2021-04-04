@@ -3332,6 +3332,7 @@ begin
     glPushMatrix;
     glMultMatrixf(@rippletexmatrix);
   end;
+
   if not flat.ceiling and (sec.renderflags and SRF_SLOPEFLOOR <> 0) then
   begin
     // go through all loops of this sector
@@ -3383,6 +3384,7 @@ begin
     glPopMatrix;
     glMatrixMode(GL_MODELVIEW);
   end;
+
   {$IFNDEF HERETIC}
   if flat.hasoffset then
   begin
@@ -3450,6 +3452,7 @@ begin
     flat.voffs := plane.yoffs / FLATUVSCALE;
     {$ENDIF}
     flat.ripple := plane.renderflags and SRF_RIPPLE_CEILING <> 0;
+
   end
   else // if it is a floor ...
   begin
@@ -3481,6 +3484,7 @@ begin
     flat.voffs := plane.yoffs / FLATUVSCALE;
     {$ENDIF}
     flat.ripple := plane.renderflags and SRF_RIPPLE_FLOOR <> 0;
+
   end;
 
   // get height from plane
