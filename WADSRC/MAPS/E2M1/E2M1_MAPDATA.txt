@@ -1,0 +1,8 @@
+sprite=MAPSPR21
+sky=NUBES21
+mountain=MOUNT21
+ground=FLAT0062
+name=The Pyramids
+length=2236
+best=1700
+level=1
