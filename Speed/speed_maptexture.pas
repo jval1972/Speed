@@ -42,14 +42,29 @@ const
   TEXSCREENSIZE = TEXSCREENSIZEX * TEXSCREENSIZEY;
   TILESIZE = 64;
 
+const
+  ANGLE_SHIFT = 2;
+  ANGLE_MASK = 3;
+
 type
   maptexture_t = packed record
     filler: LongWord;
     maptiles: packed array[0..TEXSCREENSIZE - 1] of smallint;
-    angles: packed array[0..TEXSCREENSIZE - 1] of byte;
+    angles_trans: packed array[0..TEXSCREENSIZE - 1] of byte;
   end;
   Pmaptexture_t = ^maptexture_t;
 
+const
+  NUMTRANSLATIONS = 11;
+
+type
+  translationtable_t = array[0..255] of integer;
+  Ptranslationtable_t = ^translationtable_t;
+
+const
+  TRANSLATION_ROVERS: array[1..NUMTRANSLATIONS - 1] of integer = (
+    16, 48, 64, 80, 96, 112, 128, 144, 192, 208
+  );
 
 type
   buffer_t = packed array[0..4095] of byte;
@@ -62,12 +77,15 @@ type
   TMapTexture = class(TObject)
   private
     data: Pmaptexture_t;
+    translations: array[0..NUMTRANSLATIONS - 1] of translationtable_t;
     function getidx(const x, y: integer): integer;
   protected
     procedure SetMapTile(x, y: integer; const tile: integer); virtual;
     function GetMapTile(x, y: integer): integer; virtual;
     procedure SetAngle(x, y: integer; const ang: integer); virtual;
     function GetAngle(x, y: integer): integer; virtual;
+    procedure SetTranslation(x, y: integer; const trans: integer); virtual;
+    function GetTranslation(x, y: integer): integer; virtual;
   public
     constructor Create; virtual;
     destructor Destroy; override;
@@ -85,6 +103,7 @@ type
     procedure AssignTo(const amaptexture: TMapTexture);
     property MapTiles[x, y: integer]: integer read GetMapTile write SetMapTile;
     property Angles[x, y: integer]: integer read GetAngle write SetAngle;
+    property Translation[x, y: integer]: integer read GetTranslation write SetTranslation;
   end;
 
 procedure SH_CheckMapFlats;
@@ -102,10 +121,27 @@ uses
   z_zone;
 
 constructor TMapTexture.Create;
+var
+  i, t: integer;
+  rover: integer;
 begin
   Inherited;
   GetMem(data, SizeOf(maptexture_t));
   Clear;
+
+  for t := 0 to NUMTRANSLATIONS - 1 do
+  begin
+    for i := 0 to 255 do
+      translations[t][i] := i;
+    if t > 0 then
+    begin
+      rover := TRANSLATION_ROVERS[t];
+      for i := 64 to 79 do
+        translations[t][i] := rover + (i - 64) div 2;
+{      for i := 128 to 143 do
+        translations[t][i] := rover + i - 128;}
+    end;
+  end;
 end;
 
 destructor TMapTexture.Destroy;
@@ -145,7 +181,7 @@ var
   idx: integer;
 begin
   idx := getidx(x, y);
-  data.angles[idx] := ang;
+  data.angles_trans[idx] := (data.angles_trans[idx] and not ANGLE_MASK) + (ang and ANGLE_MASK);
 end;
 
 function TMapTexture.GetAngle(x, y: integer): integer;
@@ -153,7 +189,23 @@ var
   idx: integer;
 begin
   idx := getidx(x, y);
-  Result := data.angles[idx];
+  Result := data.angles_trans[idx] and ANGLE_MASK;
+end;
+
+procedure TMapTexture.SetTranslation(x, y: integer; const trans: integer);
+var
+  idx: integer;
+begin
+  idx := getidx(x, y);
+  data.angles_trans[idx] := (data.angles_trans[idx] and ANGLE_MASK) + (trans shl ANGLE_SHIFT);
+end;
+
+function TMapTexture.GetTranslation(x, y: integer): integer;
+var
+  idx: integer;
+begin
+  idx := getidx(x, y);
+  Result := data.angles_trans[idx] shr ANGLE_SHIFT;
 end;
 
 procedure TMapTexture.SaveToStream(const strm: TStream);
@@ -174,7 +226,7 @@ var
 
   function _elem_str(const xx, yy: integer): string;
   begin
-    Result := IntToStr(xx) + ' ' + IntToStr(yy) + ' ' + IntToStr(GetMapTile(xx, yy)) + ' ' + IntToStr(GetAngle(xx, yy)) + #13#10;
+    Result := IntToStr(xx) + ' ' + IntToStr(yy) + ' ' + IntToStr(GetMapTile(xx, yy)) + ' ' + IntToStr(GetAngle(xx, yy)) + ' ' + IntToStr(GetTranslation(xx, yy)) + #13#10;
   end;
 
 begin
@@ -209,7 +261,7 @@ procedure TMapTexture.ApplyImportText(const tx: string; const aX1: integer = -1;
 var
   sc: TScriptEngine;
   x, y, x2, y2: integer;
-  xx, yy, tile, ang: integer;
+  xx, yy, tile, ang, trans: integer;
   rx, ry: integer;
   cnt: integer;
 begin
@@ -251,6 +303,8 @@ begin
     tile := sc._Integer;
     sc.MustGetInteger;
     ang := sc._Integer;
+    sc.MustGetInteger;
+    trans := sc._Integer;
 
     if aX1 >= 0 then
       xx := xx - rX + aX1;
@@ -261,6 +315,7 @@ begin
       begin
         SetMapTile(xx, yy, tile);
         SetAngle(xx, yy, ang);
+        SetTranslation(xx, yy, trans);
       end;
   end;
   sc.Free;
@@ -314,6 +369,7 @@ var
     bb: byte;
     c: LongWord;
     ln: PLongWordArray;
+    trans: Ptranslationtable_t;
   begin
     GetMem(bmbuffer4096, SizeOf(bmbuffer4096_t));
     for m := 0 to 4095 do
@@ -333,13 +389,14 @@ var
           tile[ix] := 0;
       end;
 
-      _rotate_tile(@tile, data.angles[m]);
+      _rotate_tile(@tile, data.angles_trans[m] and ANGLE_MASK);
+      trans := @TRANSLATIONS[data.angles_trans[m] shr ANGLE_SHIFT];
 
       it := 0;
       for iy := yb to yb + 63 do
         for ix := xb to xb + 63 do
         begin
-          bmbuffer4096[iy, ix] := tile[it];
+          bmbuffer4096[iy, ix] := trans[tile[it]];
           inc(it);
         end;
     end;
@@ -461,6 +518,7 @@ var
     it: integer;
     bmbuffer4096: bmbuffer4096_p;
     bb: byte;
+    trans: Ptranslationtable_t;
   begin
     bmbuffer4096 := buf4096;
     for m := 0 to 4095 do
@@ -480,13 +538,14 @@ var
           tile[ix] := 0;
       end;
 
-      _rotate_tile(@tile, data.angles[m]);
+      _rotate_tile(@tile, data.angles_trans[m] and ANGLE_MASK);
+      trans := @TRANSLATIONS[data.angles_trans[m] shr ANGLE_SHIFT];
 
       it := 0;
       for iy := yb to yb + 63 do
         for ix := xb to xb + 63 do
         begin
-          bmbuffer4096[ix, iy] := tile[it];
+          bmbuffer4096[ix, iy] := trans[tile[it]];
           inc(it);
         end;
     end;
@@ -562,6 +621,7 @@ var
     bmbuffer4096: bmbuffer4096_p;
     bmbuffer8192: bmbuffer8192_p;
     bb: byte;
+    trans: Ptranslationtable_t;
   begin
     GetMem(bmbuffer4096, SizeOf(bmbuffer4096_t));
     for m := 0 to 4095 do
@@ -581,13 +641,14 @@ var
           tile[ix] := 0;
       end;
 
-      _rotate_tile(@tile, data.angles[m]);
+      _rotate_tile(@tile, data.angles_trans[m] and ANGLE_MASK);
+      trans := @TRANSLATIONS[data.angles_trans[m] shr ANGLE_SHIFT];
 
       it := 0;
       for iy := yb to yb + 63 do
         for ix := xb to xb + 63 do
         begin
-          bmbuffer4096[ix, iy] := tile[it];
+          bmbuffer4096[ix, iy] := trans[tile[it]];
           inc(it);
         end;
     end;
