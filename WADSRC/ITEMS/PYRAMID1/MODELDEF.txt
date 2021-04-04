@@ -1,0 +1,21 @@
+modeldef "PYRAMID_1.ddmodel" 
+{
+  scale 256.0                // Remember to define the scale of the model
+}
+
+state S_PYRAMID_10 {         // State S_PYRAMID_10 is automatically generated, it's the state #0 of mobj PYRAMID_1
+  model "PYRAMID_1.ddmodel"  // The model
+  texture "PYRAMID.png"      // The texture
+  frame 0
+}
+
+modeldef "PYRAMID_2.ddmodel" 
+{
+  scale 512.0                // Remember to define the scale of the model
+}
+
+state S_PYRAMID_20 {         // State S_PYRAMID_20 is automatically generated, it's the state #0 of mobj PYRAMID_2
+  model "PYRAMID_2.ddmodel"  // The model
+  texture "PYRAMID.png"      // The texture
+  frame 0
+}
