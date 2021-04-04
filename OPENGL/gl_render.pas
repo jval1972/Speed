@@ -499,28 +499,27 @@ begin
   printf('GL_VERSION: %s'#13#10, [glGetString(GL_VERSION)]);
 
   if devparm then
-  begin
     printf('GL_EXTENSIONS:'#13#10);
 
-    extensions := StringVal(glGetString(GL_EXTENSIONS));
-    extensions_l := '';
-    for i := 1 to Length(extensions) do
-    begin
-      if extensions[i] = ' ' then
-        extensions_l := extensions_l + #13#10
-      else
-        extensions_l := extensions_l + toupper(extensions[i]);
-    end;
+  extensions := StringVal(glGetString(GL_EXTENSIONS));
+  extensions_l := '';
+  for i := 1 to Length(extensions) do
+  begin
+    if extensions[i] = ' ' then
+      extensions_l := extensions_l + #13#10
+    else
+      extensions_l := extensions_l + toupper(extensions[i]);
+  end;
 
-    ext_lst := TDStringList.Create;
-    try
-      ext_lst.Text := extensions_l;
+  ext_lst := TDStringList.Create;
+  try
+    ext_lst.Text := extensions_l;
+    if devparm then
       for i := 0 to ext_lst.count - 1 do
         printf('  %s'#13#10, [ext_lst.strings[i]]);
-      gld_InitExtensions(ext_lst);
-    finally
-      ext_lst.Free;
-    end;
+    gld_InitExtensions(ext_lst);
+  finally
+    ext_lst.Free;
   end;
 
   gld_InitPalettedTextures;
