@@ -215,7 +215,12 @@ var
 begin
   idx := fmdl.Frames.IndexOf(frm);
   if idx >= 0 then
+  begin
     DrawSimpleIdx(idx);
+    Exit;
+  end;
+  if fmdl.Frames.Count = 1 then
+    DrawSimpleIdx(0);
 end;
 
 end.
