@@ -55,7 +55,7 @@ type
   Pmaptexture_t = ^maptexture_t;
 
 const
-  NUMTRANSLATIONS = 11;
+  NUMTRANSLATIONS = 21;
 
 type
   translationtable_t = array[0..255] of integer;
@@ -63,7 +63,8 @@ type
 
 const
   TRANSLATION_ROVERS: array[1..NUMTRANSLATIONS - 1] of integer = (
-    16, 48, 64, 80, 96, 112, 128, 144, 192, 208
+    16, 48, 64, 80, 96, 112, 128, 144, 192, 208,
+    24, 40, 56, 72, 88, 104, 120, 136, 152, 200
   );
 
 type
