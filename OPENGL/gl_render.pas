@@ -3694,7 +3694,7 @@ begin
   glMatrixMode(GL_MODELVIEW);
   glPushMatrix;
   glTranslatef(sprite.x, sprite.y, sprite.z);
-  glRotatef(sprite.mo.angle / (ANGLE_MAX / 360.0) - 90.0, 0.0, 1.0, 0.0);
+  glRotatef((sprite.mo.angle + sprite.mo.driftangle) / (ANGLE_MAX / 360.0) - 90.0, 0.0, 1.0, 0.0);
 
   // JVAL
   // Draw light effects (only if not invulnerability)
@@ -3953,7 +3953,7 @@ begin
   glMatrixMode(GL_MODELVIEW);
   glPushMatrix;
   glTranslatef(sprite.x, sprite.y, sprite.z);
-  glRotatef(sprite.mo.angle / (ANGLE_MAX / 360.0) - 90.0, 0.0, 1.0, 0.0);
+  glRotatef((sprite.mo.angle + sprite.mo.driftangle) / (ANGLE_MAX / 360.0) - 90.0, 0.0, 1.0, 0.0);
 
   // JVAL
   // Draw light effects (only if not invulnerability)
