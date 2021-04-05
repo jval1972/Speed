@@ -44,9 +44,6 @@ uses
   m_fixed,
   tables,
   r_data,
-  {$IFNDEF OPENGL}
-  r_sprite,
-  {$ENDIF}
   r_defs;
 
 const
@@ -131,71 +128,6 @@ procedure R_ExecuteSetViewSize;
 procedure R_SetViewAngleOffset(const angle: angle_t);
 
 var
-  {$IFNDEF OPENGL}
-  basebatchcolfunc: PProcedure;
-  batchcolfunc: PProcedure;
-  batchfuzzcolfunc: PProcedure;
-  batchlightcolfunc: PProcedure;
-  batchwhitelightcolfunc: PProcedure;
-  batchredlightcolfunc: PProcedure;
-  batchgreenlightcolfunc: PProcedure;
-  batchbluelightcolfunc: PProcedure;
-  batchyellowlightcolfunc: PProcedure;
-  batchtranscolfunc: PProcedure;
-  batchtaveragecolfunc: PProcedure;
-  batchtalphacolfunc: PProcedure;
-  batchaddcolfunc: PProcedure;
-  batchsubtractcolfunc: PProcedure;
-
-  // JVAL: Multithreading sprite funcs
-  basebatchcolfunc_mt: spritefunc_t;
-  batchcolfunc_mt: spritefunc_t;
-  batchtalphacolfunc_mt: spritefunc_t;
-  batchaddcolfunc_mt: spritefunc_t;
-  batchsubtractcolfunc_mt: spritefunc_t;
-  maskedcolfunc_mt: spritefunc_t;
-  colfunc_mt: spritefunc_t;
-  alphacolfunc_mt: spritefunc_t;
-  addcolfunc_mt: spritefunc_t;
-  subtractcolfunc_mt: spritefunc_t;
-
-  colfunc: PProcedure;
-  wallcolfunc: PProcedure;
-  basewallcolfunc: PProcedure;
-  tallwallcolfunc: PProcedure;
-  skycolfunc: PProcedure;
-  transcolfunc: PProcedure;
-  averagecolfunc: PProcedure;
-  alphacolfunc: PProcedure;
-  addcolfunc: PProcedure;
-  subtractcolfunc: PProcedure;
-  maskedcolfunc: PProcedure;
-  maskedcolfunc2: PProcedure; // For hi res textures
-  fuzzcolfunc: PProcedure;
-  lightcolfunc: PProcedure;
-  whitelightcolfunc: PProcedure;
-  redlightcolfunc: PProcedure;
-  greenlightcolfunc: PProcedure;
-  bluelightcolfunc: PProcedure;
-  yellowlightcolfunc: PProcedure;
-  spanfunc: PProcedure;
-  basespanfunc: PProcedure;
-  ripplespanfunc: PProcedure;
-
-  // JVAL: Slopes
-  slopefunc: PProcedure;
-  baseslopefunc: PProcedure;
-  rippleslopefunc: PProcedure;
-
-  // JVAL: Multithreading flats
-  spanfuncMT: PPointerParmProcedure;
-  basespanfuncMT: PPointerParmProcedure;
-  ripplespanfuncMT: PPointerParmProcedure;
-  slopefuncMT: PPointerParmProcedure;
-  baseslopefuncMT: PPointerParmProcedure;
-  rippleslopefuncMT: PPointerParmProcedure;
-  {$ENDIF}
-
   centerxfrac: fixed_t;
   centeryfrac: fixed_t;
   centerxshift: fixed_t;
@@ -210,11 +142,7 @@ var
 
   viewcos: fixed_t;
   viewsin: fixed_t;
-{$IFNDEF OPENGL}
-  // for precise plane drawing in hi-res
-  dviewsin, dviewcos: Double;
-  planerelativeaspect: Double;
-{$ENDIF}
+
   projection: fixed_t;
   projectiony: fixed_t; // JVAL For correct aspect
 
@@ -296,19 +224,13 @@ function R_GetColormap32(const cmap: PByteArray): PLongWordArray;
 
 procedure R_Ticker;
 
-{$IFDEF OPENGL}
 var
   viewpitch: integer;
   absviewpitch: integer;
-{$ENDIF}
 
 var
   monitor_relative_aspect: Double = 1.0;
   fov: fixed_t; // JVAL: 3d Floors (Made global - moved from R_InitTextureMapping)
-
-{$IFNDEF OPENGL}
-procedure R_SetRenderingFunctions;
-{$ENDIF}
 
 var
   rendervalidcount: integer = 0; // Don't bother reseting this // version 205
@@ -328,68 +250,22 @@ uses
   p_sight,
   p_map,
   p_3dfloors,  // JVAL: 3d floors
-  {$IFNDEF OPENGL}
-  i_video,
-  i_system,
-  {$ENDIF}
   r_colormaps,
   r_aspect,
   r_draw,
   r_bsp,
   r_earthquake,
   r_things,
-  {$IFNDEF OPENGL}
-  r_things_sortvissprites,
-  r_dynlights,
-  r_softlights,
-  {$ENDIF}
   r_plane,
   r_sky,
-{$IFNDEF OPENGL}
-  r_segs,
-{$ENDIF}
   r_hires,
   r_camera,
   r_precalc,
-{$IFNDEF OPENGL}
-  r_cache_main,
-  r_fake3d,
-  r_ripple,
-  r_trans8,
-  r_voxels,
-  r_3dfloors, // JVAL: 3d Floors
-  r_slopes, // JVAL: Slopes
-{$ENDIF}
   r_lights,
   r_intrpl,
-{$IFDEF OPENGL}
   gl_render, // JVAL OPENGL
   gl_clipper,
   gl_tex,
-{$ELSE}
-  r_segs2,
-  r_wall8,
-  r_wall32,
-  r_flat8,
-  r_flat32,
-  r_span,
-  r_span32,
-  r_column,
-  r_tallcolumn,
-  r_batchcolumn,
-  r_col_l,
-  r_col_ms,
-  r_col_sk,
-  r_col_fz,
-  r_col_av,
-  r_col_al,
-  r_col_tr,
-  r_draw_additive,
-  r_draw_subtractive,
-  r_depthbuffer,  // JVAL: 3d Floors
-  r_zbuffer, // JVAL: version 205
-  v_video,
-{$ENDIF}
   r_subsectors,
   v_data,
   st_stuff,
@@ -675,11 +551,7 @@ begin
     dy := temp;
   end;
 
-  {$IFDEF FPC}
-  angle := _SHRW(tantoangle[FixedDiv(dy, dx) shr DBITS], ANGLETOFINESHIFT);
-  {$ELSE}
   angle := tantoangle[FixedDiv(dy, dx) shr DBITS] shr ANGLETOFINESHIFT;
-  {$ENDIF}
 
   result := FixedDiv(dx, finecosine[angle]);
 end;
@@ -890,642 +762,11 @@ begin
   end;
 end;
 
-{$IFNDEF OPENGL}
-procedure R_SetPalette64;
-begin
-  if setdetail in [DL_LOWEST, DL_LOW, DL_MEDIUM] then
-    I_SetPalette64;
-end;
-
-procedure R_SetRenderingFunctions;
-begin
-  case setdetail of
-    DL_LOWEST:
-      begin
-        basebatchcolfunc := R_DrawColumnLow_Batch;
-        batchcolfunc := R_DrawColumnLow_Batch;
-        batchfuzzcolfunc := R_DrawFuzzColumn_Batch;
-        batchlightcolfunc := nil;
-        batchwhitelightcolfunc := nil;
-        batchredlightcolfunc := nil;
-        batchgreenlightcolfunc := nil;
-        batchbluelightcolfunc := nil;
-        batchyellowlightcolfunc := nil;
-        batchtranscolfunc := R_DrawTranslatedColumn_Batch;
-
-        if usemultithread then
-        begin
-          basebatchcolfunc_mt := R_DrawColumnLow_BatchMT;
-          batchcolfunc_mt := R_DrawColumnLow_BatchMT;
-          if diher8bittransparency then
-            batchtalphacolfunc_mt := nil
-          else
-            batchtalphacolfunc_mt := R_DrawColumnAlphaMedium_BatchMT;
-          batchaddcolfunc_mt := R_DrawColumnAddMedium_BatchMT;
-          batchsubtractcolfunc_mt := R_DrawColumnSubtractMedium_BatchMT;
-          maskedcolfunc_mt := nil;
-          colfunc_mt := nil;
-          alphacolfunc_mt := nil;
-          addcolfunc_mt := nil;
-          subtractcolfunc_mt := nil;
-        end
-        else
-        begin
-          basebatchcolfunc_mt := nil;
-          batchcolfunc_mt := nil;
-          batchtalphacolfunc_mt := nil;
-          batchaddcolfunc_mt := nil;
-          batchsubtractcolfunc_mt := nil;
-          maskedcolfunc_mt := nil;
-          colfunc_mt := nil;
-          alphacolfunc_mt := nil;
-          addcolfunc_mt := nil;
-          subtractcolfunc_mt := nil;
-        end;
-
-        colfunc := R_DrawColumnLowest;
-        wallcolfunc := R_DrawColumnLowest;
-        basewallcolfunc := R_DrawColumnLowest;
-        tallwallcolfunc := R_DrawTallColumnLowest;
-        transcolfunc := R_DrawTranslatedColumn;
-        if diher8bittransparency then
-        begin
-          averagecolfunc := R_DrawColumnAlphaMediumDiher;
-          alphacolfunc := R_DrawColumnAlphaMediumDiher;
-          batchtaveragecolfunc := nil;
-          batchtalphacolfunc := nil;
-        end
-        else
-        begin
-          averagecolfunc := R_DrawColumnAverageLowest;
-          alphacolfunc := R_DrawColumnAlphaLowest;
-          batchtaveragecolfunc := R_DrawColumnAverageMedium_Batch;
-          batchtalphacolfunc := R_DrawColumnAlphaMedium_Batch;
-        end;
-        addcolfunc := R_DrawColumnAddLowest;
-        batchaddcolfunc := R_DrawColumnAddMedium_Batch;
-        subtractcolfunc := R_DrawColumnSubtractLowest;
-        batchsubtractcolfunc := R_DrawColumnSubtractMedium_Batch;
-
-        maskedcolfunc := R_DrawColumnLowest;
-        maskedcolfunc2 := R_DrawColumnLowest;
-
-        if usemultithread then
-        begin
-          spanfunc := R_StoreFlatSpan8;
-          basespanfunc := R_StoreFlatSpan8;
-          ripplespanfunc := R_StoreFlatSpan8;
-          slopefunc := R_StoreFlatSpan8;
-          baseslopefunc := R_StoreFlatSpan8;
-          rippleslopefunc := R_StoreFlatSpan8;
-
-          spanfuncMT := R_DrawSpanLowMT;
-          basespanfuncMT := R_DrawSpanLowMT;
-          ripplespanfuncMT := R_DrawSpanLowMT;
-          slopefuncMT := R_DrawSpanLowMT;
-          baseslopefuncMT := R_DrawSpanLowMT;
-          rippleslopefuncMT := R_DrawSpanLowMT;
-        end
-        else
-        begin
-          spanfunc := R_DrawSpanLow;
-          basespanfunc := R_DrawSpanLow;
-          ripplespanfunc := R_DrawSpanLow;
-          slopefunc := R_DrawSpanLow; // JVAL: Slopes
-          baseslopefunc := R_DrawSpanLow;
-          rippleslopefunc := R_DrawSpanLow;
-        end;
-
-        fuzzcolfunc := R_DrawFuzzColumn;
-        lightcolfunc := R_DrawFuzzColumn;
-        whitelightcolfunc := R_DrawFuzzColumn;
-        redlightcolfunc := R_DrawFuzzColumn;
-        greenlightcolfunc := R_DrawFuzzColumn;
-        bluelightcolfunc := R_DrawFuzzColumn;
-        yellowlightcolfunc := R_DrawFuzzColumn;
-        skycolfunc := R_DrawSkyColumnLow;
-        videomode := vm8bit;
-      end;
-    DL_LOW:
-      begin
-        basebatchcolfunc := R_DrawColumnLow_Batch;
-        batchcolfunc := R_DrawColumnLow_Batch;
-        batchfuzzcolfunc := R_DrawFuzzColumn_Batch;
-        batchlightcolfunc := nil;
-        batchwhitelightcolfunc := nil;
-        batchredlightcolfunc := nil;
-        batchgreenlightcolfunc := nil;
-        batchbluelightcolfunc := nil;
-        batchyellowlightcolfunc := nil;
-        batchtranscolfunc := R_DrawTranslatedColumn_Batch;
-
-        if usemultithread then
-        begin
-          basebatchcolfunc_mt := R_DrawColumnLow_BatchMT;
-          batchcolfunc_mt := R_DrawColumnLow_BatchMT;
-          if diher8bittransparency then
-            batchtalphacolfunc_mt := nil
-          else
-            batchtalphacolfunc_mt := R_DrawColumnAlphaMedium_BatchMT;
-          batchaddcolfunc_mt := R_DrawColumnAddMedium_BatchMT;
-          batchsubtractcolfunc_mt := R_DrawColumnSubtractMedium_BatchMT;
-          maskedcolfunc_mt := nil;
-          colfunc_mt := nil;
-          alphacolfunc_mt := nil;
-          addcolfunc_mt := nil;
-          subtractcolfunc_mt := nil;
-        end
-        else
-        begin
-          basebatchcolfunc_mt := nil;
-          batchcolfunc_mt := nil;
-          batchtalphacolfunc_mt := nil;
-          batchaddcolfunc_mt := nil;
-          batchsubtractcolfunc_mt := nil;
-          maskedcolfunc_mt := nil;
-          colfunc_mt := nil;
-          alphacolfunc_mt := nil;
-          addcolfunc_mt := nil;
-          subtractcolfunc_mt := nil;
-        end;
-
-        colfunc := R_DrawColumnLow;
-        wallcolfunc := R_DrawColumnLow;
-        basewallcolfunc := R_DrawColumnLow;
-        tallwallcolfunc := R_DrawTallColumnLow;
-        transcolfunc := R_DrawTranslatedColumn;
-        if diher8bittransparency then
-        begin
-          averagecolfunc := R_DrawColumnAlphaMediumDiher;
-          alphacolfunc := R_DrawColumnAlphaMediumDiher;
-          batchtaveragecolfunc := nil;
-          batchtalphacolfunc := nil;
-        end
-        else
-        begin
-          averagecolfunc := R_DrawColumnAverageLow;
-          alphacolfunc := R_DrawColumnAlphaLow;
-          batchtaveragecolfunc := R_DrawColumnAverageMedium_Batch;
-          batchtalphacolfunc := R_DrawColumnAlphaMedium_Batch;
-        end;
-        addcolfunc := R_DrawColumnAddLow;
-        batchaddcolfunc := R_DrawColumnAddMedium_Batch;
-        subtractcolfunc := R_DrawColumnSubtractLow;
-        batchsubtractcolfunc := R_DrawColumnSubtractMedium_Batch;
-
-        maskedcolfunc := R_DrawColumnLow;
-        maskedcolfunc2 := R_DrawColumnLow;
-
-        if usemultithread then
-        begin
-          spanfunc := R_StoreFlatSpan8;
-          basespanfunc := R_StoreFlatSpan8;
-          ripplespanfunc := R_StoreFlatSpan8;
-          slopefunc := R_StoreFlatSpan8;
-          baseslopefunc := R_StoreFlatSpan8;
-          rippleslopefunc := R_StoreFlatSpan8;
-
-          spanfuncMT := R_DrawSpanLowMT;
-          basespanfuncMT := R_DrawSpanLowMT;
-          ripplespanfuncMT := R_DrawSpanLowMT;
-          slopefuncMT := R_DrawSpanLowMT;
-          baseslopefuncMT := R_DrawSpanLowMT;
-          rippleslopefuncMT := R_DrawSpanLowMT;
-        end
-        else
-        begin
-          spanfunc := R_DrawSpanLow;
-          basespanfunc := R_DrawSpanLow;
-          ripplespanfunc := R_DrawSpanLow;
-          slopefunc := R_DrawSpanLow; // JVAL: Slopes
-          baseslopefunc := R_DrawSpanLow;
-          rippleslopefunc := R_DrawSpanLow;
-        end;
-
-        fuzzcolfunc := R_DrawFuzzColumn;
-        lightcolfunc := R_DrawFuzzColumn;
-        whitelightcolfunc := R_DrawFuzzColumn;
-        redlightcolfunc := R_DrawFuzzColumn;
-        greenlightcolfunc := R_DrawFuzzColumn;
-        bluelightcolfunc := R_DrawFuzzColumn;
-        yellowlightcolfunc := R_DrawFuzzColumn;
-        skycolfunc := R_DrawSkyColumnLow;
-        videomode := vm8bit;
-      end;
-    DL_MEDIUM:
-      begin
-        basebatchcolfunc := R_DrawColumnMedium_Batch;
-        batchcolfunc := R_DrawColumnMedium_Batch;
-        batchfuzzcolfunc := R_DrawFuzzColumn_Batch;
-        batchlightcolfunc := nil;
-        batchwhitelightcolfunc := nil;
-        batchredlightcolfunc := nil;
-        batchgreenlightcolfunc := nil;
-        batchbluelightcolfunc := nil;
-        batchyellowlightcolfunc := nil;
-        batchtranscolfunc := R_DrawTranslatedColumn_Batch;
-
-        if usemultithread then
-        begin
-          basebatchcolfunc_mt := R_DrawColumnMedium_BatchMT;
-          batchcolfunc_mt := R_DrawColumnMedium_BatchMT;
-          if diher8bittransparency then
-            batchtalphacolfunc_mt := nil
-          else
-            batchtalphacolfunc_mt := R_DrawColumnAlphaMedium_BatchMT;
-          batchaddcolfunc_mt := R_DrawColumnAddMedium_BatchMT;
-          batchsubtractcolfunc_mt := R_DrawColumnSubtractMedium_BatchMT;
-          maskedcolfunc_mt := nil;
-          colfunc_mt := nil;
-          alphacolfunc_mt := nil;
-          addcolfunc_mt := nil;
-          subtractcolfunc_mt := nil;
-        end
-        else
-        begin
-          basebatchcolfunc_mt := nil;
-          batchcolfunc_mt := nil;
-          batchtalphacolfunc_mt := nil;
-          batchaddcolfunc_mt := nil;
-          batchsubtractcolfunc_mt := nil;
-          maskedcolfunc_mt := nil;
-          colfunc_mt := nil;
-          alphacolfunc_mt := nil;
-          addcolfunc_mt := nil;
-          subtractcolfunc_mt := nil;
-        end;
-
-        colfunc := R_DrawColumnMedium;
-        wallcolfunc := R_DrawColumnMedium;
-        basewallcolfunc := R_DrawColumnMedium;
-        tallwallcolfunc := R_DrawTallColumnMedium;
-        transcolfunc := R_DrawTranslatedColumn;
-        if diher8bittransparency then
-        begin
-          averagecolfunc := R_DrawColumnAlphaMediumDiher;
-          alphacolfunc := R_DrawColumnAlphaMediumDiher;
-          batchtaveragecolfunc := nil;
-          batchtalphacolfunc := nil;
-        end
-        else
-        begin
-          averagecolfunc := R_DrawColumnAverageMedium;
-          alphacolfunc := R_DrawColumnAlphaMedium;
-          batchtaveragecolfunc := R_DrawColumnAverageMedium_Batch;
-          batchtalphacolfunc := R_DrawColumnAlphaMedium_Batch;
-        end;
-        addcolfunc := R_DrawColumnAddMedium;
-        batchaddcolfunc := R_DrawColumnAddMedium_Batch;
-        subtractcolfunc := R_DrawColumnSubtractMedium;
-        batchsubtractcolfunc := R_DrawColumnSubtractMedium_Batch;
-
-        maskedcolfunc := R_DrawColumnMedium;
-        maskedcolfunc2 := R_DrawColumnMedium;
-
-        if usemultithread then
-        begin
-          spanfunc := R_StoreFlatSpan8;
-          basespanfunc := R_StoreFlatSpan8;
-          ripplespanfunc := R_StoreFlatSpan8;
-          slopefunc := R_StoreFlatSpan8;
-          baseslopefunc := R_StoreFlatSpan8;
-          rippleslopefunc := R_StoreFlatSpan8;
-
-          spanfuncMT := R_DrawSpanMediumMT;
-          basespanfuncMT := R_DrawSpanMediumMT;
-          ripplespanfuncMT := R_DrawSpanMedium_RippleMT;
-          slopefuncMT := R_DrawSpanMediumMT;
-          baseslopefuncMT := R_DrawSpanMediumMT;
-          rippleslopefuncMT := R_DrawSpanMedium_RippleMT;
-        end
-        else
-        begin
-          spanfunc := R_DrawSpanMedium;
-          basespanfunc := R_DrawSpanMedium;
-          ripplespanfunc := R_DrawSpanMedium_Ripple;
-          slopefunc := R_DrawSlopeMedium; // JVAL: Slopes
-          baseslopefunc := R_DrawSlopeMedium;
-          rippleslopefunc := R_DrawSlopeMedium_Ripple;
-        end;
-
-        fuzzcolfunc := R_DrawFuzzColumn;
-        lightcolfunc := R_DrawFuzzColumn;
-        whitelightcolfunc := R_DrawFuzzColumn;
-        redlightcolfunc := R_DrawFuzzColumn;
-        greenlightcolfunc := R_DrawFuzzColumn;
-        bluelightcolfunc := R_DrawFuzzColumn;
-        yellowlightcolfunc := R_DrawFuzzColumn;
-        skycolfunc := R_DrawSkyColumn;
-        videomode := vm8bit;
-      end;
-    DL_NORMAL:  // JVAL: 32 bit color - Default
-      begin
-        basebatchcolfunc := R_DrawColumnHi_Batch;
-        batchcolfunc := R_DrawColumnHi_Batch;
-        if use32bitfuzzeffect then
-          batchfuzzcolfunc := R_DrawFuzzColumn32_Batch
-        else
-          batchfuzzcolfunc := R_DrawFuzzColumnHi_Batch;
-        batchlightcolfunc := R_DrawWhiteLightColumnHi_Batch;
-        batchwhitelightcolfunc := R_DrawWhiteLightColumnHi_Batch;
-        batchredlightcolfunc := R_DrawRedLightColumnHi_Batch;
-        batchgreenlightcolfunc := R_DrawGreenLightColumnHi_Batch;
-        batchbluelightcolfunc := R_DrawBlueLightColumnHi_Batch;
-        batchyellowlightcolfunc := R_DrawYellowLightColumnHi_Batch;
-        batchtranscolfunc := R_DrawTranslatedColumnHi_Batch;
-        batchtaveragecolfunc := R_DrawColumnAverageHi_Batch;
-        batchtalphacolfunc := R_DrawColumnAlphaHi_Batch;
-        batchaddcolfunc := R_DrawColumnAddHi_Batch;
-        batchsubtractcolfunc := R_DrawColumnSubtractHi_Batch;
-
-        if usemultithread then
-        begin
-          basebatchcolfunc_mt := R_DrawColumnHi_BatchMT;
-          batchcolfunc_mt := R_DrawColumnHi_BatchMT;
-          batchtalphacolfunc_mt := R_DrawColumnAlphaHi_BatchMT;
-          batchaddcolfunc_mt := R_DrawColumnAddHi_BatchMT;
-          batchsubtractcolfunc_mt := R_DrawColumnSubtractHi_BatchMT;
-          maskedcolfunc_mt := R_DrawMaskedColumnNormalMT;
-          colfunc_mt := nil;
-          alphacolfunc_mt := nil;
-          addcolfunc_mt := nil;
-          subtractcolfunc_mt := nil;
-        end
-        else
-        begin
-          basebatchcolfunc_mt := nil;
-          batchcolfunc_mt := nil;
-          batchtalphacolfunc_mt := nil;
-          batchaddcolfunc_mt := nil;
-          batchsubtractcolfunc_mt := nil;
-          maskedcolfunc_mt := nil;
-          colfunc_mt := nil;
-          alphacolfunc_mt := nil;
-          addcolfunc_mt := nil;
-          subtractcolfunc_mt := nil;
-        end;
-
-        colfunc := R_DrawColumnHi;
-        wallcolfunc := R_DrawColumnHi;
-        basewallcolfunc := R_DrawColumnHi;
-        tallwallcolfunc := R_DrawTallColumnHi;
-        transcolfunc := R_DrawTranslatedColumnHi;
-        averagecolfunc := R_DrawColumnAverageHi;
-        alphacolfunc := R_DrawColumnAlphaHi;
-        addcolfunc := R_DrawColumnAddHi;
-        subtractcolfunc := R_DrawColumnSubtractHi;
-        maskedcolfunc := R_DrawMaskedColumnNormal;
-        maskedcolfunc2 := R_DrawMaskedColumnHi32;
-
-        if usemultithread then
-        begin
-          spanfunc := R_StoreFlatSpan32;
-          basespanfunc := R_StoreFlatSpan32;
-          ripplespanfunc := R_StoreFlatSpan32;
-          slopefunc := R_StoreFlatSpan32;
-          baseslopefunc := R_StoreFlatSpan32;
-          rippleslopefunc := R_StoreFlatSpan32;
-
-          spanfuncMT := R_DrawSpanNormalMT;
-          basespanfuncMT := R_DrawSpanNormalMT;
-          ripplespanfuncMT := R_DrawSpanNormal_RippleMT;
-          slopefuncMT := R_DrawSpanNormalMT;
-          baseslopefuncMT := R_DrawSpanNormalMT;
-          rippleslopefuncMT := R_DrawSpanNormal_RippleMT;
-        end
-        else
-        begin
-          spanfunc := R_DrawSpanNormal;
-          basespanfunc := R_DrawSpanNormal;
-          ripplespanfunc := R_DrawSpanNormal_Ripple;
-          slopefunc := R_DrawSpanNormal;  // JVAL: Slopes
-          baseslopefunc := R_DrawSpanNormal;
-          rippleslopefunc := R_DrawSpanNormal_Ripple;
-        end;
-
-        if use32bitfuzzeffect then
-          fuzzcolfunc := R_DrawFuzzColumn32
-        else
-          fuzzcolfunc := R_DrawFuzzColumnHi;
-        lightcolfunc := R_DrawWhiteLightColumnHi;
-        whitelightcolfunc := R_DrawWhiteLightColumnHi;
-        redlightcolfunc := R_DrawRedLightColumnHi;
-        greenlightcolfunc := R_DrawGreenLightColumnHi;
-        bluelightcolfunc := R_DrawBlueLightColumnHi;
-        yellowlightcolfunc := R_DrawYellowLightColumnHi;
-        skycolfunc := R_DrawSkyColumnHi;
-        videomode := vm32bit;
-      end;
-    DL_HIRES:
-      begin
-        basebatchcolfunc := R_DrawColumnHi_Batch;
-        batchcolfunc := R_DrawColumnHi_Batch;
-        if use32bitfuzzeffect then
-          batchfuzzcolfunc := R_DrawFuzzColumn32_Batch
-        else
-          batchfuzzcolfunc := R_DrawFuzzColumnHi_Batch;
-        batchlightcolfunc := R_DrawWhiteLightColumnHi_Batch;
-        batchwhitelightcolfunc := R_DrawWhiteLightColumnHi_Batch;
-        batchredlightcolfunc := R_DrawRedLightColumnHi_Batch;
-        batchgreenlightcolfunc := R_DrawGreenLightColumnHi_Batch;
-        batchbluelightcolfunc := R_DrawBlueLightColumnHi_Batch;
-        batchyellowlightcolfunc := R_DrawYellowLightColumnHi_Batch;
-        batchtranscolfunc := R_DrawTranslatedColumnHi_Batch;
-        batchtaveragecolfunc := R_DrawColumnAverageHi_Batch;
-        batchtalphacolfunc := R_DrawColumnAlphaHi_Batch;
-        batchaddcolfunc := R_DrawColumnAddHi_Batch;
-        batchsubtractcolfunc := R_DrawColumnSubtractHi_Batch;
-
-        if usemultithread then
-        begin
-          basebatchcolfunc_mt := R_DrawColumnHi_BatchMT;
-          batchcolfunc_mt := R_DrawColumnHi_BatchMT;
-          batchtalphacolfunc_mt := R_DrawColumnAlphaHi_BatchMT;
-          batchaddcolfunc_mt := R_DrawColumnAddHi_BatchMT;
-          batchsubtractcolfunc_mt := R_DrawColumnSubtractHi_BatchMT;
-          maskedcolfunc_mt := nil;
-          colfunc_mt := nil;
-          alphacolfunc_mt := nil;
-          addcolfunc_mt := nil;
-          subtractcolfunc_mt := nil;
-        end
-        else
-        begin
-          basebatchcolfunc_mt := nil;
-          batchcolfunc_mt := nil;
-          batchtalphacolfunc_mt := nil;
-          batchaddcolfunc_mt := nil;
-          batchsubtractcolfunc_mt := nil;
-          maskedcolfunc_mt := nil;
-          colfunc_mt := nil;
-          alphacolfunc_mt := nil;
-          addcolfunc_mt := nil;
-          subtractcolfunc_mt := nil;
-        end;
-
-        colfunc := R_DrawColumnHi;
-        wallcolfunc := R_DrawColumnUltra;
-        basewallcolfunc := R_DrawColumnUltra;
-        tallwallcolfunc := R_DrawTallColumnUltra;
-        transcolfunc := R_DrawTranslatedColumnHi;
-        averagecolfunc := R_DrawColumnAverageHi;
-        alphacolfunc := R_DrawColumnAlphaHi;
-        addcolfunc := R_DrawColumnAddHi;
-        subtractcolfunc := R_DrawColumnSubtractHi;
-        maskedcolfunc := R_DrawMaskedColumnHi;
-        maskedcolfunc2 := R_DrawMaskedColumnHi32;
-
-        if usemultithread then
-        begin
-          spanfunc := R_StoreFlatSpan32;
-          basespanfunc := R_StoreFlatSpan32;
-          ripplespanfunc := R_StoreFlatSpan32;
-          slopefunc := R_StoreFlatSpan32;
-          baseslopefunc := R_StoreFlatSpan32;
-          rippleslopefunc := R_StoreFlatSpan32;
-
-          spanfuncMT := R_DrawSpanNormalMT;
-          basespanfuncMT := R_DrawSpanNormalMT;
-          ripplespanfuncMT := R_DrawSpanNormal_RippleMT;
-          slopefuncMT := R_DrawSpanNormalMT;
-          baseslopefuncMT := R_DrawSpanNormalMT;
-          rippleslopefuncMT := R_DrawSpanNormal_RippleMT;
-        end
-        else
-        begin
-          spanfunc := R_DrawSpanNormal;
-          basespanfunc := R_DrawSpanNormal;
-          ripplespanfunc := R_DrawSpanNormal_Ripple;
-          slopefunc := R_DrawSpanNormal;  // JVAL: Slopes
-          baseslopefunc := R_DrawSpanNormal;
-          rippleslopefunc := R_DrawSpanNormal_Ripple;
-        end;
-
-        if use32bitfuzzeffect then
-          fuzzcolfunc := R_DrawFuzzColumn32
-        else
-          fuzzcolfunc := R_DrawFuzzColumnHi;
-        lightcolfunc := R_DrawWhiteLightColumnHi;
-        whitelightcolfunc := R_DrawWhiteLightColumnHi;
-        redlightcolfunc := R_DrawRedLightColumnHi;
-        greenlightcolfunc := R_DrawGreenLightColumnHi;
-        bluelightcolfunc := R_DrawBlueLightColumnHi;
-        yellowlightcolfunc := R_DrawYellowLightColumnHi;
-        skycolfunc := R_DrawSkyColumnHi;
-        videomode := vm32bit;
-      end;
-    DL_ULTRARES:
-      begin
-        basebatchcolfunc := R_DrawColumnHi_Batch;
-        batchcolfunc := R_DrawColumnHi_Batch;
-        if use32bitfuzzeffect then
-          batchfuzzcolfunc := R_DrawFuzzColumn32_Batch
-        else
-          batchfuzzcolfunc := R_DrawFuzzColumnHi_Batch;
-        batchlightcolfunc := R_DrawWhiteLightColumnHi_Batch;
-        batchwhitelightcolfunc := R_DrawWhiteLightColumnHi_Batch;
-        batchredlightcolfunc := R_DrawRedLightColumnHi_Batch;
-        batchgreenlightcolfunc := R_DrawGreenLightColumnHi_Batch;
-        batchbluelightcolfunc := R_DrawBlueLightColumnHi_Batch;
-        batchyellowlightcolfunc := R_DrawYellowLightColumnHi_Batch;
-        batchtranscolfunc := R_DrawTranslatedColumnHi_Batch;
-        batchtaveragecolfunc := R_DrawColumnAverageHi_Batch;
-        batchtalphacolfunc := R_DrawColumnAlphaHi_Batch;
-        batchaddcolfunc := R_DrawColumnAddHi_Batch;
-        batchsubtractcolfunc := R_DrawColumnSubtractHi_Batch;
-
-        if usemultithread then
-        begin
-          basebatchcolfunc_mt := R_DrawColumnHi_BatchMT;
-          batchcolfunc_mt := R_DrawColumnHi_BatchMT;
-          batchtalphacolfunc_mt := R_DrawColumnAlphaHi_BatchMT;
-          batchaddcolfunc_mt := R_DrawColumnAddHi_BatchMT;
-          batchsubtractcolfunc_mt := R_DrawColumnSubtractHi_BatchMT;
-          maskedcolfunc_mt := nil;
-          colfunc_mt := nil;
-          alphacolfunc_mt := nil;
-          addcolfunc_mt := nil;
-          subtractcolfunc_mt := nil;
-        end
-        else
-        begin
-          basebatchcolfunc_mt := nil;
-          batchcolfunc_mt := nil;
-          batchtalphacolfunc_mt := nil;
-          batchaddcolfunc_mt := nil;
-          batchsubtractcolfunc_mt := nil;
-          maskedcolfunc_mt := nil;
-          colfunc_mt := nil;
-          alphacolfunc_mt := nil;
-          addcolfunc_mt := nil;
-          subtractcolfunc_mt := nil;
-        end;
-
-        colfunc := R_DrawColumnUltra;
-        wallcolfunc := R_DrawColumnUltra;
-        basewallcolfunc := R_DrawColumnUltra;
-        tallwallcolfunc := R_DrawTallColumnUltra;
-        transcolfunc := R_DrawTranslatedColumnHi;
-        averagecolfunc := R_DrawColumnAverageUltra;
-        addcolfunc := R_DrawColumnAddHi;
-        subtractcolfunc := R_DrawColumnSubtractHi;
-        alphacolfunc := R_DrawColumnAlphaHi;
-        maskedcolfunc := R_DrawMaskedColumnHi;
-        maskedcolfunc2 := R_DrawMaskedColumnUltra32;
-
-        if usemultithread then
-        begin
-          spanfunc := R_StoreFlatSpan32;
-          basespanfunc := R_StoreFlatSpan32;
-          ripplespanfunc := R_StoreFlatSpan32;
-          slopefunc := R_StoreFlatSpan32;
-          baseslopefunc := R_StoreFlatSpan32;
-          rippleslopefunc := R_StoreFlatSpan32;
-
-          spanfuncMT := R_DrawSpanNormalMT;
-          basespanfuncMT := R_DrawSpanNormalMT;
-          ripplespanfuncMT := R_DrawSpanNormal_RippleMT;
-          slopefuncMT := R_DrawSpanNormalMT;
-          baseslopefuncMT := R_DrawSpanNormalMT;
-          rippleslopefuncMT := R_DrawSpanNormal_RippleMT;
-        end
-        else
-        begin
-          spanfunc := R_DrawSpanNormal; //R_DrawSpanUltra;
-          basespanfunc := R_DrawSpanNormal;
-          ripplespanfunc := R_DrawSpanNormal_Ripple;
-          slopefunc := R_DrawSpanNormal;  // JVAL: Slopes
-          baseslopefunc := R_DrawSpanNormal;
-          rippleslopefunc := R_DrawSpanNormal_Ripple;
-        end;
-
-        if use32bitfuzzeffect then
-          fuzzcolfunc := R_DrawFuzzColumn32
-        else
-          fuzzcolfunc := R_DrawFuzzColumnHi;
-        lightcolfunc := R_DrawWhiteLightColumnHi;
-        whitelightcolfunc := R_DrawWhiteLightColumnHi;
-        redlightcolfunc := R_DrawRedLightColumnHi;
-        greenlightcolfunc := R_DrawGreenLightColumnHi;
-        bluelightcolfunc := R_DrawBlueLightColumnHi;
-        yellowlightcolfunc := R_DrawYellowLightColumnHi;
-        skycolfunc := R_DrawSkyColumnUltra;
-        videomode := vm32bit;
-      end;
-  end;
-
-end;
-{$ENDIF}
-
 //
 // R_ExecuteSetViewSize
 //
 procedure R_ExecuteSetViewSize;
 var
-{$IFNDEF OPENGL}
-  cosadj: fixed_t;
-  dy, dy1: fixed_t;
-{$ENDIF}
   i: integer;
   j: integer;
   level: integer;
@@ -1546,19 +787,14 @@ begin
   centeryfrac := centery * FRACUNIT;
 
 // JVAL: Widescreen support
-  monitor_relative_aspect := R_GetRelativeAspect{$IFNDEF OPENGL} * R_Fake3DAspectCorrection(viewplayer){$ENDIF};
+  monitor_relative_aspect := R_GetRelativeAspect;
   projection := Round(centerx / monitor_relative_aspect * FRACUNIT);
   projectiony := (((SCREENHEIGHT * centerx * 320) div 200) div SCREENWIDTH * FRACUNIT); // JVAL for correct aspect
 
   if olddetail <> setdetail then
   begin
     olddetail := setdetail;
-{$IFDEF OPENGL}
     videomode := vm32bit;
-{$ELSE}
-    R_SetRenderingFunctions;
-    R_SetPalette64;
-{$ENDIF}
   end;
 
   R_InitBuffer(scaledviewwidth, viewheight);
@@ -1580,29 +816,6 @@ begin
   // thing clipping
   for i := 0 to viewwidth - 1 do
     screenheightarray[i] := viewheight;
-
-{$IFNDEF OPENGL}
-  // planes
-  dy := centeryfrac + FRACUNIT div 2;
-  for i := 0 to viewheight - 1 do
-  begin
-    dy := dy - FRACUNIT;
-    dy1 := abs(dy);
-    yslope[i] := FixedDiv(projectiony, dy1); // JVAL for correct aspect
-
-    // JVAL: 20200430 - For slope lightmap
-    if dy1 < 4 * FRACUNIT then
-      slyslope[i] := FixedDiv(projectiony, 4 * FRACUNIT)
-    else
-      slyslope[i] := yslope[i];
-  end;
-
-  for i := 0 to viewwidth - 1 do
-  begin
-    cosadj := abs(finecosine[xtoviewangle[i] div ANGLETOFINEUNIT]);
-    distscale[i] := FixedDiv(FRACUNIT, cosadj);
-  end;
-{$ENDIF}
 
   // Calculate the light levels to use
   //  for each level / scale combination.
@@ -1665,28 +878,6 @@ begin
   R_CmdZAxisShift;
 end;
 
-{$IFNDEF OPENGL}
-procedure R_CmdUseFake3D(const parm1: string = '');
-var
-  newf: boolean;
-begin
-  if parm1 = '' then
-  begin
-    printf('Current setting: usefake3d = %s.'#13#10, [truefalseStrings[usefake3d]]);
-    exit;
-  end;
-
-  newf := C_BoolEval(parm1, usefake3d);
-  if newf <> usefake3d then
-  begin
-    usefake3d := newf;
-    R_InitTextureMapping;
-    setsizeneeded := true;
-  end;
-  R_CmdUseFake3D;
-end;
-{$ENDIF}
-
 procedure R_CmdUse32bitfuzzeffect(const parm1: string = '');
 var
   newusefz: boolean;
@@ -1699,12 +890,7 @@ begin
 
   newusefz := C_BoolEval(parm1, use32bitfuzzeffect);
   if newusefz <> use32bitfuzzeffect then
-  begin
     use32bitfuzzeffect := newusefz;
-{$IFNDEF OPENGL}
-    R_SetRenderingFunctions;
-{$ENDIF}
-  end;
   R_CmdUse32bitfuzzeffect;
 end;
 
@@ -1722,51 +908,32 @@ begin
   if newdih <> diher8bittransparency then
   begin
     diher8bittransparency := newdih;
-{$IFNDEF OPENGL}
-    R_SetRenderingFunctions;
-{$ENDIF}
   end;
   R_CmdDiher8bitTransparency;
 end;
 
 procedure R_CmdScreenWidth;
 begin
-  {$IFDEF OPENGL}
   printf('ScreenWidth = %d.'#13#10, [SCREENWIDTH]);
-  {$ELSE}
-  printf('ScreenWidth = %d.'#13#10, [WINDOWWIDTH]);
-  {$ENDIF}
 end;
 
 procedure R_CmdScreenHeight;
 begin
-  {$IFDEF OPENGL}
   printf('ScreenHeight = %d.'#13#10, [SCREENHEIGHT]);
-  {$ELSE}
-  printf('ScreenHeight = %d.'#13#10, [WINDOWHEIGHT]);
-  {$ENDIF}
 end;
 
 procedure R_CmdClearCache;
 begin
-  {$IFDEF OPENGL}
   gld_ClearTextureMemory;
-  {$ELSE}
-  R_Clear32Cache;
-  {$ENDIF}
   Z_FreeTags(PU_CACHE, PU_CACHE);
   printf('Texture cache clear'#13#10);
 end;
 
 procedure R_CmdResetCache;
 begin
-  {$IFNDEF OPENGL}
-  R_Reset32Cache;
-  {$ENDIF}
   Z_FreeTags(PU_CACHE, PU_CACHE);
   printf('Texture cache reset'#13#10);
 end;
-
 
 
 //
@@ -1774,22 +941,12 @@ end;
 //
 procedure R_Init;
 begin
-{$IFNDEF OPENGL}
-  printf('R_Init32Cache'#13#10);
-  R_Init32Cache;
-  printf('R_InitFake3D'#13#10);
-  R_InitFake3D;
-{$ENDIF}
   printf('R_InitAspect'#13#10);
   R_InitAspect;
   printf('R_InitData'#13#10);
   R_InitData;
   printf('R_InitCustomColormaps'#13#10);
   R_InitCustomColormaps;
-{$IFNDEF OPENGL}
-  printf('R_InitRippleEffects'#13#10);
-  R_InitRippleEffects;
-{$ENDIF}
   printf('R_InitInterpolations'#13#10);
   R_InitInterpolations;
   printf('R_InitPointToAngle'#13#10);
@@ -1805,37 +962,12 @@ begin
   R_InitSkyMap;
   printf('R_InitTranslationsTables'#13#10);
   R_InitTranslationTables;
-{$IFNDEF OPENGL}
-  printf('R_InitTransparency8Tables'#13#10);
-  R_InitTransparency8Tables;
-{$ENDIF}
   printf('R_InitPrecalc'#13#10);
   R_InitPrecalc;
-{$IFNDEF OPENGL}
-  printf('R_InitVoxels'#13#10);
-  R_InitVoxels;
-  printf('R_InitWallsCache8'#13#10);
-  R_InitWallsCache8;
-  printf('R_InitWallsCache32'#13#10);
-  R_InitWallsCache32;
-  printf('R_InitFlatsCache8'#13#10);
-  R_InitFlatsCache8;
-  printf('R_InitFlatsCache32'#13#10);
-  R_InitFlatsCache32;
-  printf('R_InitDepthBuffer'#13#10); // JVAL: 3d Floors
-  R_InitDepthBuffer;
-  printf('R_InitZBuffer'#13#10); // JVAL: version 205
-  R_InitZBuffer;
-  printf('R_InitDynamicLights'#13#10);
-  R_InitDynamicLights;
-{$ENDIF}
 
   framecount := 0;
 
   C_AddCmd('zaxisshift', @R_CmdZAxisShift);
-{$IFNDEF OPENGL}
-  C_AddCmd('fake3d, usefake3d', @R_CmdUseFake3D);
-{$ENDIF}
   C_AddCmd('lowestres, lowestresolution', @R_CmdLowestRes);
   C_AddCmd('lowres, lowresolution', @R_CmdLowRes);
   C_AddCmd('mediumres, mediumresolution', @R_CmdMediumRes);
@@ -1860,52 +992,18 @@ procedure R_ShutDown;
 begin
   printf(#13#10 + 'R_ShutDownLightBoost');
   R_ShutDownLightBoost;
-{$IFNDEF OPENGL}
-  printf(#13#10 + 'R_ShutDownLightTexture');
-  R_ShutDownLightTexture;
-  printf(#13#10 + 'R_ShutDownFake3D');
-  R_ShutDownFake3D;
-  printf(#13#10 + 'R_ShutDown32Cache');
-  R_ShutDown32Cache;
-{$ENDIF}
   printf(#13#10 + 'R_ShutDownInterpolation');
   R_ResetInterpolationBuffer;
-{$IFNDEF OPENGL}
-  printf(#13#10 + 'R_FreeTransparency8Tables');
-  R_FreeTransparency8Tables;
-{$ENDIF}
   printf(#13#10 + 'R_ShutDownPrecalc');
   R_ShutDownPrecalc;
-{$IFNDEF OPENGL}
-  printf(#13#10 + 'R_ShutDownWallsCache8');
-  R_ShutDownWallsCache8;
-  printf(#13#10 + 'R_ShutDownWallsCache32');
-  R_ShutDownWallsCache32;
-  printf(#13#10 + 'R_ShutDownFlatsCache8');
-  R_ShutDownFlatsCache8;
-  printf(#13#10 + 'R_ShutDownFlatsCache32');
-  R_ShutDownFlatsCache32;
-{$ENDIF}
   printf(#13#10 + 'R_ShutDownCustomColormaps');
   R_ShutDownCustomColormaps;
   printf(#13#10 + 'R_ShutDownSprites');
   R_ShutDownSprites;
   printf(#13#10 + 'R_FreeMemory');
   R_FreeMemory;
-{$IFNDEF OPENGL}
-  printf(#13#10 + 'R_VoxelsDone');
-  R_VoxelsDone;
-  printf(#13#10 + 'R_ShutDownDepthBuffer'); // JVAL: 3d Floors
-  R_ShutDownDepthBuffer;
-  printf(#13#10 + 'R_ShutDownZBuffer'); // JVAL: version 205
-  R_ShutDownZBuffer;
-  printf(#13#10 + 'R_DynamicLightsDone');
-  R_DynamicLightsDone;
-{$ENDIF}
-{$IFDEF OPENGL}
   printf(#13#10 + 'R_ShutDownOpenGL');
   R_ShutDownOpenGL;
-{$ENDIF}
   printf(#13#10);
 end;
 
@@ -1953,7 +1051,7 @@ var
 procedure R_SetupFrame(player: Pplayer_t);
 var
   i: integer;
-  cy{$IFNDEF OPENGL}, dy, dy1{$ENDIF}: fixed_t;
+  cy: fixed_t;
   sblocks: integer;
   sec: Psector_t;
   cm: integer;
@@ -1972,15 +1070,9 @@ begin
   R_AdjustChaseCamera;
   R_AdjustGlobalEarthQuake(player);
 
-{$IFNDEF OPENGL}
-  viewsubsector := R_PointInSubSector(viewx, viewy); // JVAL: 3d Floors
-  hasExtraFloors := viewsubsector.sector.midsec >= 0;  // JVAL: 3d Floors
-{$ENDIF}
-
-  {$IFDEF OPENGL}
   viewpitch := 0;
   absviewpitch := 0;
-  {$ENDIF}
+
 //******************************
 // JVAL Enabled z axis shift
   if zaxisshift and ((player.lookdir16 <> 0) or p_justspawned) and (viewangleoffset = 0) then
@@ -2025,9 +1117,6 @@ begin
       zlight := @customcolormap.zlight;
       scalelight := @customcolormap.scalelight;
       colormaps := customcolormap.colormap;
-     {$IFNDEF OPENGL}
-      V_CalcColorMapPalette;
-     {$ENDIF}
       lastcm := cm;
       recalctables32needed := true;
     end;
@@ -2040,9 +1129,6 @@ begin
       zlight := @def_zlight;
       scalelight := @def_scalelight;
       colormaps := def_colormaps;
-     {$IFNDEF OPENGL}
-      V_CalcColorMapPalette;
-     {$ENDIF}
       lastcm := cm;
       recalctables32needed := true;
     end;
@@ -2057,10 +1143,6 @@ begin
     else
       fixedcolormap := PByteArray(
         integer(colormaps) + fixedcolormapnum * 256);
-
-    {$IFNDEF OPENGL}
-    walllights := @scalelightfixed;
-    {$ENDIF}
 
     for i := 0 to MAXLIGHTSCALE - 1 do
       scalelightfixed[i] := fixedcolormap;
@@ -2099,173 +1181,19 @@ end;
 // R_RenderView
 //
 
-{$IFNDEF OPENGL}
-var
-  oldlookdir16: integer = MAXINT;
-
-procedure R_Fake3DPrepare(player: Pplayer_t);
-begin
-  if oldlookdir16 = player.lookdir16 then
-    Exit;
-
-  oldlookdir16 := player.lookdir16;
-
-  viewplayer := player;
-  R_ExecuteSetViewSize;
-end;
-
-var
-  task_clearplanes: integer = -1;
-  task_8bitlights: integer = -1;
-
-procedure R_DoRenderPlayerView8_MultiThread(player: Pplayer_t);
-begin
-  R_Fake3DPrepare(player);
-  R_SetupFrame(player);
-  task_8bitlights := MT_ScheduleTask(@R_Calc8bitTables);
-  MT_ExecutePendingTask(task_8bitlights);
-
-  // Clear buffers.
-  R_ClearClipSegs;
-  R_ClearDrawSegs;
-  R_ClearPlanes;
-  R_Wait3DLookup;
-  R_Fake3DAdjustPlanes(player);
-  R_ClearSprites;
-
-  // check for new console commands.
-  NetUpdate;
-
-  R_ClearWallsCache8;
-
-  // The head node is the last node output.
-  R_RenderBSPNode(numnodes - 1);
-
-  R_ProjectAdditionalThings;
-
-  R_SortVisSpritesMT;
-
-  R_RenderMultiThreadWalls8;
-
-  R_SetUpDrawSegLists;
-
-  R_DrawPlanes;
-
-  R_RenderMultiThreadFlats8;
-
-  R_WaitWallsCache8;
-
-  R_DrawFFloorsMultiThread;  // JVAL: 3d Floors
-
-  R_RenderMultiThreadFFloors8;
-
-  MT_WaitTask(task_8bitlights);
-  R_DrawMasked_MultiThread;
-
-  // Check for new console commands.
-  NetUpdate;
-
-  R_Execute3DTransform;
-
-  R_DrawPlayer;
-
-  // Check for new console commands.
-  NetUpdate;
-
-  task_clearplanes := MT_ScheduleTask(@R_InitializeVisplanes);
-  MT_ExecutePendingTask(task_clearplanes);
-end;
-
-procedure R_DoRenderPlayerView32_MultiThread(player: Pplayer_t);
-begin
-  R_Fake3DPrepare(player);
-  R_SetupFrame(player);
-  R_CalcHiResTables_MultiThread;
-
-  // Clear buffers.
-  R_ClearClipSegs;
-  R_ClearDrawSegs;
-  R_ClearPlanes;
-  R_Wait3DLookup;
-  R_Fake3DAdjustPlanes(player);
-  R_ClearSprites;
-
-  // check for new console commands.
-  NetUpdate;
-
-  R_ClearWallsCache32;
-
-  // The head node is the last node output.
-  R_RenderBSPNode(numnodes - 1);
-
-  R_ProjectAdditionalThings;
-
-  R_SortVisSpritesMT;
-
-  R_RenderMultiThreadWalls32;
-
-  R_SetUpDrawSegLists;
-
-  R_DrawPlanes;
-
-  R_RenderMultiThreadFlats32;
-
-  R_WaitWallsCache32;
-
-  R_DrawFFloorsMultiThread;  // JVAL: 3d Floors
-
-  R_RenderMultiThreadFFloors32;
-
-  R_DrawMasked_MultiThread;
-
-  // Check for new console commands.
-  NetUpdate;
-
-  R_Execute3DTransform;
-
-  R_DrawPlayer;
-
-  // Check for new console commands.
-  NetUpdate;
-
-  task_clearplanes := MT_ScheduleTask(@R_InitializeVisplanes);
-  MT_ExecutePendingTask(task_clearplanes);
-end;
-{$ENDIF}
-
 procedure R_DoRenderPlayerView_SingleThread(player: Pplayer_t);
 begin
-{$IFNDEF OPENGL}
-  R_Fake3DPrepare(player);
-{$ENDIF}
   R_SetupFrame(player);
 
-{$IFNDEF OPENGL}
-  R_Calc8bitTables;
-  R_CalcHiResTables_SingleThread;
-{$ENDIF}
-
-  // Clear buffers.
-{$IFNDEF OPENGL}
-  R_ClearClipSegs;
-  R_ClearDrawSegs;
-{$ENDIF}
   R_ClearPlanes;
-{$IFNDEF OPENGL}
-  R_Fake3DAdjustPlanes(player);
-{$ENDIF}
   R_ClearSprites;
 
-{$IFDEF OPENGL}
   gld_StartDrawScene; // JVAL OPENGL
-{$ENDIF}
 
   // check for new console commands.
   NetUpdate;
 
-{$IFDEF OPENGL}
   gld_ClipperAddViewRange;
-{$ENDIF}
 
   // The head node is the last node output.
   R_RenderBSPNode(numnodes - 1);
@@ -2275,63 +1203,22 @@ begin
   // Check for new console commands.
   NetUpdate;
 
-{$IFDEF OPENGL}
   gld_DrawScene(player);
 
   NetUpdate;
 
   gld_EndDrawScene;
 
-{$ELSE}
-  R_SetUpDrawSegLists;
-
-  R_DrawPlanes;
-
   // Check for new console commands.
   NetUpdate;
-
-  R_DrawFFloors;  // JVAL: 3d Floors
-
-  R_DrawMasked_SingleThread;
-
-  R_Execute3DTransform;
-
-  R_DrawPlayer;
-{$ENDIF}
-
-
-  // Check for new console commands.
-  NetUpdate;
-
-{$IFNDEF OPENGL}
-  task_clearplanes := MT_ScheduleTask(@R_InitializeVisplanes);
-  MT_ExecutePendingTask(task_clearplanes);
-{$ENDIF}
 end;
 
 procedure R_RenderPlayerView(player: Pplayer_t);
 begin
   // new render validcount
   Inc(rendervalidcount);
-
-{$IFNDEF OPENGL}
-  MT_WaitTask(task_clearplanes);
-  zbufferactive := r_uselightmaps;
-  R_SetDrawSegFunctions;  // version 205
-  if usemultithread then
-  begin
-    if (videomode = vm8bit) then
-      R_DoRenderPlayerView8_MultiThread(player)
-    else
-      R_DoRenderPlayerView32_MultiThread(player);
-  end
-  else
-{$ENDIF}
-    R_DoRenderPlayerView_SingleThread(player);
-{$IFNDEF OPENGL}
-  if zbufferactive then
-    R_StopZBuffer;
-{$ENDIF}
+  
+  R_DoRenderPlayerView_SingleThread(player);
 end;
 
 procedure R_Ticker;
