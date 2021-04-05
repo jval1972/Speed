@@ -278,6 +278,7 @@ begin
     Pmobj_t(addr).prevtiredistance[2] := Pmobj_t(addr).nexttiredistance[2];
     Pmobj_t(addr).prevtiredistance[3] := Pmobj_t(addr).nexttiredistance[3];
     Pmobj_t(addr).prevtireangle := Pmobj_t(addr).nexttireangle;
+    Pmobj_t(addr).prevdriftangle := Pmobj_t(addr).nextdriftangle;
     Pmobj_t(addr).nextx := Pmobj_t(addr).x;
     Pmobj_t(addr).nexty := Pmobj_t(addr).y;
     Pmobj_t(addr).nextz := Pmobj_t(addr).z;
@@ -287,6 +288,7 @@ begin
     Pmobj_t(addr).nexttiredistance[2] := Pmobj_t(addr).tiredistance[2];
     Pmobj_t(addr).nexttiredistance[3] := Pmobj_t(addr).tiredistance[3];
     Pmobj_t(addr).nexttireangle := Pmobj_t(addr).tireangle;
+    Pmobj_t(addr).nextdriftangle := Pmobj_t(addr).driftangle;
     inc(Pmobj_t(addr).intrplcnt);
     exit;
   end;
@@ -476,6 +478,7 @@ begin
     mo.tiredistance[2] := mo.nexttiredistance[2];
     mo.tiredistance[3] := mo.nexttiredistance[3];
     mo.tireangle := mo.nexttireangle;
+    mo.driftangle := mo.nextdriftangle;
   end;
   result := 0;
 end;
@@ -510,6 +513,7 @@ begin
     mo.tiredistance[2] := mo.nexttiredistance[2];
     mo.tiredistance[3] := mo.nexttiredistance[3];
     mo.tireangle := mo.nexttireangle;
+    mo.driftangle := mo.nextdriftangle;
   end;
 end;
 
@@ -577,6 +581,7 @@ begin
       mo.tiredistance[2] := R_InterpolationCalcDBL(mo.prevtiredistance[2], mo.nexttiredistance[2], ticfrac);
       mo.tiredistance[3] := R_InterpolationCalcDBL(mo.prevtiredistance[3], mo.nexttiredistance[3], ticfrac);
       mo.tireangle := R_InterpolationCalcIF(mo.prevtireangle, mo.nexttireangle, ticfrac);
+      mo.driftangle := R_InterpolationCalcIF(mo.prevdriftangle, mo.nextdriftangle, ticfrac);
     end;
   end;
   result := 0;
@@ -665,6 +670,7 @@ begin
           mo.tiredistance[2] := R_InterpolationCalcDBL(mo.prevtiredistance[2], mo.nexttiredistance[2], ticfrac);
           mo.tiredistance[3] := R_InterpolationCalcDBL(mo.prevtiredistance[3], mo.nexttiredistance[3], ticfrac);
           mo.tireangle := R_InterpolationCalcIF(mo.prevtireangle, mo.nexttireangle, ticfrac);
+          mo.driftangle := R_InterpolationCalcIF(mo.prevdriftangle, mo.nextdriftangle, ticfrac);
         end;
       end;
     end;
