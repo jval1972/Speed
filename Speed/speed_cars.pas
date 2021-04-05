@@ -57,6 +57,7 @@ type
     turnspeed: angle_t; // angle to turn per TIC
     model3d: string[64];
     cartype: cartype_t;
+    maxdrift: integer;
     name: string[14];
   end;
   Pcarinfo_t = ^carinfo_t;
@@ -90,6 +91,7 @@ const
       turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N0A.I3D';
       cartype: ct_formula;
+      maxdrift: 20;
       name: 'PHOENIX ENGINE';
     ),
     (
@@ -105,6 +107,7 @@ const
       turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N0A.I3D';
       cartype: ct_formula;
+      maxdrift: 20;
       name: 'SPEED-X';
     ),
     (
@@ -120,6 +123,7 @@ const
       turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N0A.I3D';
       cartype: ct_formula;
+      maxdrift: 20;
       name: 'BAM BAM';
     ),
     (
@@ -135,6 +139,7 @@ const
       turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N0A.I3D';
       cartype: ct_formula;
+      maxdrift: 20;
       name: 'SNAP';
     ),
 
@@ -151,6 +156,7 @@ const
       turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N1A.I3D';
       cartype: ct_formula;
+      maxdrift: 20;
       name: 'BLUE STEEL';
     ),
     (
@@ -166,6 +172,7 @@ const
       turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N1A.I3D';
       cartype: ct_formula;
+      maxdrift: 20;
       name: 'SONIC';
     ),
     (
@@ -181,6 +188,7 @@ const
       turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N1A.I3D';
       cartype: ct_formula;
+      maxdrift: 20;
       name: 'DORY';
     ),
 
@@ -197,6 +205,7 @@ const
       turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N2A.I3D';
       cartype: ct_formula;
+      maxdrift: 20;
       name: 'DREAM MAKER';
     ),
     (
@@ -212,6 +221,7 @@ const
       turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N2A.I3D';
       cartype: ct_formula;
+      maxdrift: 20;
       name: 'DARK KNIGHT';
     ),
     (
@@ -227,6 +237,7 @@ const
       turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N2A.I3D';
       cartype: ct_formula;
+      maxdrift: 20;
       name: 'PANTHER';
     ),
     (
@@ -242,6 +253,7 @@ const
       turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N2A.I3D';
       cartype: ct_formula;
+      maxdrift: 20;
       name: 'ZORRO';
     ),
 
@@ -258,6 +270,7 @@ const
       turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N3A.I3D';
       cartype: ct_formula;
+      maxdrift: 20;
       name: 'FROZEN SKY';
     ),
     (
@@ -273,6 +286,7 @@ const
       turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N3A.I3D';
       cartype: ct_formula;
+      maxdrift: 20;
       name: 'DIABLO';
     ),
     (
@@ -288,6 +302,7 @@ const
       turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N3A.I3D';
       cartype: ct_formula;
+      maxdrift: 20;
       name: 'HERCULES';
     ),
     (
@@ -303,6 +318,7 @@ const
       turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N3A.I3D';
       cartype: ct_formula;
+      maxdrift: 20;
       name: 'VAPOR';
     ),
     (
@@ -318,6 +334,7 @@ const
       turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N4A.I3D';
       cartype: ct_formula;
+      maxdrift: 20;
       name: 'SPEED DEMON';
     ),
     (
@@ -333,6 +350,7 @@ const
       turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N4A.I3D';
       cartype: ct_formula;
+      maxdrift: 20;
       name: 'BIG MAN';
     ),
     (
@@ -348,6 +366,7 @@ const
       turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N4A.I3D';
       cartype: ct_formula;
+      maxdrift: 20;
       name: 'GREAT ZEUS';
     ),
 
@@ -364,6 +383,7 @@ const
       turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N5A.I3D';
       cartype: ct_formula;
+      maxdrift: 20;
       name: 'BLACK BULLET';
     ),
     (
@@ -379,6 +399,7 @@ const
       turnspeed: 448 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR0N5A.I3D';
       cartype: ct_formula;
+      maxdrift: 20;
       name: 'ICE CUBE';
     ),
 
@@ -396,6 +417,7 @@ const
       turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N0A.I3D';
       cartype: ct_stock;
+      maxdrift: 45;
       name: 'ROAD STAR';
     ),
     (
@@ -411,6 +433,7 @@ const
       turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N0A.I3D';
       cartype: ct_stock;
+      maxdrift: 45;
       name: 'LEMON STAR';
     ),
     (
@@ -426,6 +449,7 @@ const
       turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N0A.I3D';
       cartype: ct_stock;
+      maxdrift: 45;
       name: 'BUMBLE BEE';
     ),
     (
@@ -441,6 +465,7 @@ const
       turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N0A.I3D';
       cartype: ct_stock;
+      maxdrift: 45;
       name: 'SUNSHINE';
     ),
     (
@@ -456,6 +481,7 @@ const
       turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N1A.I3D';
       cartype: ct_stock;
+      maxdrift: 45;
       name: 'THE FLAME';
     ),
     (
@@ -471,6 +497,7 @@ const
       turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N1A.I3D';
       cartype: ct_stock;
+      maxdrift: 45;
       name: 'ROAD FROG';
     ),
     (
@@ -486,6 +513,7 @@ const
       turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N1A.I3D';
       cartype: ct_stock;
+      maxdrift: 45;
       name: 'THE HULK';
     ),
     (
@@ -501,6 +529,7 @@ const
       turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N2A.I3D';
       cartype: ct_stock;
+      maxdrift: 45;
       name: 'SKEIN';
     ),
     (
@@ -516,6 +545,7 @@ const
       turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N2A.I3D';
       cartype: ct_stock;
+      maxdrift: 45;
       name: 'ROAD FAME';
     ),
     (
@@ -531,6 +561,7 @@ const
       turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N2A.I3D';
       cartype: ct_stock;
+      maxdrift: 45;
       name: 'BIG BIRD';
     ),
     (
@@ -546,6 +577,7 @@ const
       turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N2A.I3D';
       cartype: ct_stock;
+      maxdrift: 45;
       name: 'TORCH';
     ),
     (
@@ -561,6 +593,7 @@ const
       turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N3A.I3D';
       cartype: ct_stock;
+      maxdrift: 45;
       name: 'BLACK FURY';
     ),
     (
@@ -576,6 +609,7 @@ const
       turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N3A.I3D';
       cartype: ct_stock;
+      maxdrift: 45;
       name: 'BURNER';
     ),
     (
@@ -591,6 +625,7 @@ const
       turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N3A.I3D';
       cartype: ct_stock;
+      maxdrift: 45;
       name: 'SHADOW';
     ),
     (
@@ -606,6 +641,7 @@ const
       turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N4A.I3D';
       cartype: ct_stock;
+      maxdrift: 45;
       name: 'LUCKY HORSE';
     ),
     (
@@ -621,6 +657,7 @@ const
       turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N4A.I3D';
       cartype: ct_stock;
+      maxdrift: 45;
       name: 'DIAMOND';
     ),
     (
@@ -636,6 +673,7 @@ const
       turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N4A.I3D';
       cartype: ct_stock;
+      maxdrift: 45;
       name: 'POLAR BEAR';
     ),
     (
@@ -651,6 +689,7 @@ const
       turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N5A.I3D';
       cartype: ct_stock;
+      maxdrift: 45;
       name: 'THE MIRACLE';
     ),
     (
@@ -666,6 +705,7 @@ const
       turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N5A.I3D';
       cartype: ct_stock;
+      maxdrift: 45;
       name: 'BLUEBERRY';
     ),
     (
@@ -681,6 +721,7 @@ const
       turnspeed: 424 * FRACUNIT; // ~2.5 * ANG1
       model3d: 'CAR1N5A.I3D';
       cartype: ct_stock;
+      maxdrift: 45;
       name: 'BOOM BOOM';
     )
   );
@@ -1163,6 +1204,7 @@ var
   slipf: integer;
   dan: fixed_t;
   force: fixed_t;
+  dangle: int64;
 begin
   if race.racestatus = rs_waiting then
     Exit;
@@ -1228,6 +1270,26 @@ begin
       mo.tireangle := GetIntegerInRange(mo.tireangle - dan, 0, ANG1 * TIRE_ANGLE_MAX);
   end;
   mo.tireangle := GetIntegerInRange(mo.tireangle, -ANG1 * TIRE_ANGLE_MAX, ANG1 * TIRE_ANGLE_MAX);
+
+  // Adjust drift
+  if mo.driftangle <> 0 then
+  begin
+    dangle := mo.driftangle;
+    dangle := dangle * 15 div 16;
+    mo.driftangle := dangle;
+  end;
+
+  if mo.tireangle <> 0 then
+    if actualspeed > 10 * KMH_TO_FIXED then
+    begin
+      dangle := mo.tireangle;
+      dangle := dangle * (actualspeed div KMH_TO_FIXED) div (carinfo[mo.carinfo].maxspeed div KMH_TO_FIXED);
+      mo.driftangle := mo.driftangle + dangle div 16;
+      if mo.driftangle > ANG1 * (carinfo[mo.carinfo].maxdrift * actualspeed div carinfo[mo.carinfo].maxspeed) then
+        mo.driftangle := ANG1 * (carinfo[mo.carinfo].maxdrift * actualspeed div carinfo[mo.carinfo].maxspeed)
+      else if mo.driftangle < -ANG1 * (carinfo[mo.carinfo].maxdrift * actualspeed div carinfo[mo.carinfo].maxspeed) then
+        mo.driftangle := -ANG1 * (carinfo[mo.carinfo].maxdrift * actualspeed div carinfo[mo.carinfo].maxspeed)
+    end;
 
   // Adjust momentum
   an := mo.angle shr ANGLETOFINESHIFT;
