@@ -87,24 +87,16 @@ type
     name: string;
     mapname: string;
     alias: string;
-
-    // lump number of music
-    lumpnum: integer;
-
-    // music data
-    data: pointer;
-
-    // music handle once registered
-    handle: integer;
-    // is an mp3?
-    mp3stream: TDStream;
+    lumpnum: integer; // lump number of music
+    data: pointer;  // music data
+    handle: integer;  // music handle once registered
+    mp3stream: TDStream;  // is an mp3?
   end;
   Pmusicinfo_t = ^musicinfo_t;
 
 //
 // Identifiers for all music in game.
 //
-
   musicenum_t = (
     mus_None,
     mus_e1m1,
