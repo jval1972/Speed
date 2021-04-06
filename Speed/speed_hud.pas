@@ -104,7 +104,7 @@ var
   i: integer;
   sn: string;
 begin
-  C_AddCmd('draw_speed_hud', @CmdprintSpeedHud);
+  C_AddCmd('draw_speed_hud, draw_player_hud', @CmdprintSpeedHud);
   for i := 0 to 9 do
   begin
     sn := itoa(i);
