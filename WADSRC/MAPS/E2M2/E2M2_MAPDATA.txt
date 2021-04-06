@@ -1,0 +1,8 @@
+sprite=MAPSPR22
+sky=NUBES22
+mountain=MOUNT22
+ground=FLAT0062
+name=The Green Mountain
+length=3595
+best=2700
+level=1
