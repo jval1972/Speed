@@ -1,0 +1,249 @@
+model model1;
+
+const
+  NUM_SHIP_POINTS = 10;
+  
+type
+  shippoint_t = record
+    x, z: float;
+  end;
+  
+  shiparray_t = array[0..NUM_SHIP_POINTS - 1] of shippoint_t;
+  
+var
+  bottom_ship, mid_ship, top_ship: shiparray_t;
+  bottom_deck1, top_deck1: shiparray_t;
+  bottom_deck2, top_deck2: shiparray_t;
+  funnel1, funnel2: shiparray_t;
+  funnel3, funnel4: shiparray_t;
+
+procedure InitShipArrays;
+var
+  i: integer;
+begin
+// Body
+  bottom_ship[0].x := -0.40;
+  bottom_ship[0].z :=  0.00;
+  
+  bottom_ship[1].x := -0.38;
+  bottom_ship[1].z :=  0.02;
+  
+  bottom_ship[2].x := -0.30;
+  bottom_ship[2].z :=  0.07;
+  
+  bottom_ship[3].x :=  0.40;
+  bottom_ship[3].z :=  0.07;
+  
+  bottom_ship[4].x :=  0.42;
+  bottom_ship[4].z :=  0.05;
+  
+  bottom_ship[5].x :=  0.42;
+  bottom_ship[5].z := -0.05;
+  
+  bottom_ship[6].x :=  0.40;
+  bottom_ship[6].z := -0.07;
+  
+  bottom_ship[7].x := -0.30;
+  bottom_ship[7].z := -0.07;
+  
+  bottom_ship[8].x := -0.38;
+  bottom_ship[8].z := -0.02;
+
+  bottom_ship[9].x := -0.40;
+  bottom_ship[9].z :=  0.00;
+  
+  for i := 0 to NUM_SHIP_POINTS - 1 do    
+  begin
+    mid_ship[i].x := bottom_ship[i].x + 0.03;
+    mid_ship[i].z := bottom_ship[i].z + 0.01;
+    top_ship[i].x := mid_ship[i].x * 1.1;
+    top_ship[i].z := mid_ship[i].z * 1.1;
+  end;
+  
+  mid_ship[0].x := -0.42;
+  mid_ship[NUM_SHIP_POINTS - 1].x := -0.42;
+  top_ship[0].x := -0.42;
+  top_ship[NUM_SHIP_POINTS - 1].x := -0.42;
+  mid_ship[4].x := top_ship[4].x;
+  mid_ship[4].z := top_ship[4].z;
+  mid_ship[5].x := top_ship[5].x;
+  mid_ship[5].z := top_ship[5].z;
+  
+// Deck1
+  bottom_deck1[0].x :=  0.42;
+  bottom_deck1[0].z :=  0.00;
+  
+  bottom_deck1[1].x :=  0.42;
+  bottom_deck1[1].z :=  0.06;
+
+  bottom_deck1[2].x :=  0.41;
+  bottom_deck1[2].z :=  0.06;
+
+  bottom_deck1[3].x :=  0.39;
+  bottom_deck1[3].z :=  0.06;
+
+  bottom_deck1[4].x :=  0.35;
+  bottom_deck1[4].z :=  0.06;
+
+  bottom_deck1[5].x :=  0.35;
+  bottom_deck1[5].z := -0.06;
+
+  bottom_deck1[6].x :=  0.39;
+  bottom_deck1[6].z := -0.06;
+
+  bottom_deck1[7].x :=  0.41;
+  bottom_deck1[7].z := -0.06;
+
+  bottom_deck1[8].x :=  0.42;
+  bottom_deck1[8].z := -0.06;
+
+  bottom_deck1[9].x :=  0.42;
+  bottom_deck1[9].z := -0.00;
+
+  for i := 0 to NUM_SHIP_POINTS - 1 do
+  begin
+    top_deck1[i].x := bottom_deck1[i].x{ * 0.9};
+    top_deck1[i].z := bottom_deck1[i].z * 0.9;
+  end;
+  
+// Deck2
+  bottom_deck2[0].x := -0.20;
+  bottom_deck2[0].z :=  0.00;
+  
+  bottom_deck2[1].x := -0.20;
+  bottom_deck2[1].z :=  0.04;
+
+  bottom_deck2[2].x := -0.10;
+  bottom_deck2[2].z :=  0.04;
+
+  bottom_deck2[3].x :=  0.00;
+  bottom_deck2[3].z :=  0.04;
+
+  bottom_deck2[4].x :=  0.20;
+  bottom_deck2[4].z :=  0.04;
+
+  bottom_deck2[5].x :=  0.20;
+  bottom_deck2[5].z := -0.04;
+
+  bottom_deck2[6].x :=  0.00;
+  bottom_deck2[6].z := -0.04;
+
+  bottom_deck2[7].x := -0.10;
+  bottom_deck2[7].z := -0.04;
+
+  bottom_deck2[8].x := -0.20;
+  bottom_deck2[8].z := -0.04;
+
+  bottom_deck2[9].x := -0.20;
+  bottom_deck2[9].z := -0.00;
+
+  for i := 0 to NUM_SHIP_POINTS - 1 do
+  begin
+    top_deck2[i].x := bottom_deck2[i].x * 0.9;
+    top_deck2[i].z := bottom_deck2[i].z * 0.9;
+  end;
+
+  // funnels
+  funnel1[0].x :=  0.375;
+  funnel1[0].z :=  0.00;
+  
+  funnel1[1].x :=  0.38;
+  funnel1[1].z :=  0.014;
+
+  funnel1[2].x :=  0.39;
+  funnel1[2].z :=  0.02;
+
+  funnel1[3].x :=  0.40;
+  funnel1[3].z :=  0.02;
+
+  funnel1[4].x :=  0.41;
+  funnel1[4].z :=  0.014;
+
+  funnel1[5].x :=  0.415;
+  funnel1[5].z :=  0.00;
+
+  funnel1[6].x :=  0.41;
+  funnel1[6].z := -0.014;
+
+  funnel1[7].x :=  0.40;
+  funnel1[7].z := -0.02;
+
+  funnel1[8].x :=  0.39;
+  funnel1[8].z := -0.02;
+
+  funnel1[9].x :=  0.38;
+  funnel1[9].z := -0.014;
+
+  for i := 0 to NUM_SHIP_POINTS - 1 do
+  begin
+    funnel2[i].x := funnel1[i].x{ + 0.01};   
+    funnel2[i].z := funnel1[i].z;
+    funnel3[i].x := funnel1[i].x + 0.07; 
+    funnel3[i].z := funnel1[i].z; 
+    funnel4[i].x := funnel2[i].x + 0.07; 
+    funnel4[i].z := funnel2[i].z; 
+  end;  
+end;
+    
+procedure DrawShipPart(var sh1, sh2: shiparray_t; const y1, y2: float; const stretchtex: boolean);
+var
+  i, i2: integer;  
+begin
+  glBegin(GL_TRIANGLE_STRIP);
+  glTexCoord2f(sh1[0].x + 0.5, y1);
+  glVertex3f(sh1[0].x, y1, sh1[0].z); 
+  for i := 0 to NUM_SHIP_POINTS - 1 do
+  begin
+    if stretchtex then
+      glTexCoord2f(sh1[i].x + 0.5, y2)
+    else
+      glTexCoord2f(sh2[i].x + 0.5, y2);
+    glVertex3f(sh2[i].x, y2, sh2[i].z);
+    i2 := (i + 1) mod NUM_SHIP_POINTS; 
+    glTexCoord2f(sh1[i2].x + 0.5, y1);
+    glVertex3f(sh1[i2].x, y1, sh1[i2].z); 
+  end;
+  if (sh2[0].x <> sh2[NUM_SHIP_POINTS - 1].x) or (sh2[0].z <> sh2[NUM_SHIP_POINTS - 1].z) then
+  begin
+    glTexCoord2f(sh2[0].x + 0.5, y2);
+    glVertex3f(sh2[0].x, y2, sh1[0].z);
+  end; 
+  glEnd;
+end;
+
+procedure DrawShipTop(var sh: shiparray_t; const y: float; const u, v: float);
+var
+  i: integer;  
+begin
+  glBegin(GL_TRIANGLE_FAN);
+    glTexCoord2f(u, v);
+    for i := 0 to NUM_SHIP_POINTS - 1 do
+      glVertex3f(sh[i].x, y, sh[i].z);
+  glEnd;
+end; 
+    
+procedure DrawRadar(const x1, x2, y1, y2: float);
+begin
+  glBegin(GL_TRIANGLE_FAN);
+    glTexCoord2f(x1, y1);
+    glVertex3f(x1, y1, 0.0); 
+    glTexCoord2f(x2, y1);
+    glVertex3f(x2, y1, 0.0); 
+    glTexCoord2f(x2, y2);
+    glVertex3f(x2 + 0.01, y2, 0.0); 
+  glEnd;
+end;
+
+begin
+  InitShipArrays;
+  SetFrame(0);
+  DrawShipPart(bottom_ship, mid_ship, 0.0, 0.05, false);
+  DrawShipPart(mid_ship, top_ship, 0.05, 0.10, false);
+  DrawShipTop(top_ship, 0.10, 0.5, 0.5);  
+  DrawShipPart(bottom_deck1, top_deck1, 0.10, 0.18, true);  
+  DrawShipTop(top_deck1, 0.18, 0.5, 0.5);  
+  DrawShipPart(bottom_deck2, top_deck2, 0.10, 0.12, true);  
+  DrawShipTop(top_deck2, 0.12, 0.5, 0.5);  
+  DrawShipPart(funnel1, funnel2, 0.18, 0.19, true);  
+  DrawRadar(top_ship[0].x + 0.03, top_ship[0].x + 0.04, 0.09, 0.15);  
+end.

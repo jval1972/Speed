@@ -1,0 +1,253 @@
+model model1;
+
+const
+  NUM_SHIP_POINTS = 10;
+  
+type
+  shippoint_t = record
+    x, z: float;
+  end;
+  
+  shiparray_t = array[0..NUM_SHIP_POINTS - 1] of shippoint_t;
+  
+var
+  bottom_ship, mid_ship, top_ship: shiparray_t;
+  bottom_deck1, top_deck1: shiparray_t;
+  funnel1, funnel2: shiparray_t;
+
+procedure InitShipArrays;
+var
+  i: integer;
+begin
+// Body
+  bottom_ship[0].x := -0.42;
+  bottom_ship[0].z :=  0.00;
+  
+  bottom_ship[1].x := -0.40;
+  bottom_ship[1].z :=  0.06;
+  
+  bottom_ship[2].x := -0.30;
+  bottom_ship[2].z :=  0.07;
+  
+  bottom_ship[3].x :=  0.40;
+  bottom_ship[3].z :=  0.07;
+  
+  bottom_ship[4].x :=  0.42;
+  bottom_ship[4].z :=  0.05;
+  
+  bottom_ship[5].x :=  0.42;
+  bottom_ship[5].z := -0.05;
+  
+  bottom_ship[6].x :=  0.40;
+  bottom_ship[6].z := -0.07;
+  
+  bottom_ship[7].x := -0.30;
+  bottom_ship[7].z := -0.07;
+  
+  bottom_ship[8].x := -0.40;
+  bottom_ship[8].z := -0.06;
+
+  bottom_ship[9].x := -0.42;
+  bottom_ship[9].z :=  0.00;
+  
+  for i := 0 to NUM_SHIP_POINTS - 1 do    
+  begin
+    mid_ship[i].x := bottom_ship[i].x + 0.03;
+    if bottom_ship[i].z < -0.001 then
+      mid_ship[i].z := bottom_ship[i].z - 0.01
+    else if bottom_ship[i].z > 0.001 then
+      mid_ship[i].z := bottom_ship[i].z + 0.01
+    else 
+      mid_ship[i].z := 0.0;
+      
+    top_ship[i].x := mid_ship[i].x * 1.1;
+    top_ship[i].z := mid_ship[i].z * 1.1;
+  end;
+  
+  mid_ship[0].x := -0.44;
+  mid_ship[NUM_SHIP_POINTS - 1].x := -0.44;
+  top_ship[0].x := -0.44;
+  top_ship[NUM_SHIP_POINTS - 1].x := -0.44;
+  mid_ship[4].x := top_ship[4].x;
+  mid_ship[4].z := top_ship[4].z;
+  mid_ship[5].x := top_ship[5].x;
+  mid_ship[5].z := top_ship[5].z;
+  
+// Deck1
+  bottom_deck1[0].x :=  0.36;
+  bottom_deck1[0].z :=  0.00;
+  
+  bottom_deck1[1].x :=  0.36;
+  bottom_deck1[1].z :=  0.06;
+
+  bottom_deck1[2].x :=  0.34;
+  bottom_deck1[2].z :=  0.06;
+
+  bottom_deck1[3].x :=  0.30;
+  bottom_deck1[3].z :=  0.06;
+
+  bottom_deck1[4].x :=  0.29;
+  bottom_deck1[4].z :=  0.06;
+
+  bottom_deck1[5].x :=  0.29;
+  bottom_deck1[5].z := -0.06;
+
+  bottom_deck1[6].x :=  0.30;
+  bottom_deck1[6].z := -0.06;
+
+  bottom_deck1[7].x :=  0.34;
+  bottom_deck1[7].z := -0.06;
+
+  bottom_deck1[8].x :=  0.36;
+  bottom_deck1[8].z := -0.06;
+
+  bottom_deck1[9].x :=  0.36;
+  bottom_deck1[9].z := -0.00;
+
+  for i := 0 to NUM_SHIP_POINTS - 1 do
+  begin
+    top_deck1[i].x := bottom_deck1[i].x{ * 0.9};
+    top_deck1[i].z := bottom_deck1[i].z * 0.9;
+  end;
+  
+  // funnels
+  funnel1[0].x :=  0.385;
+  funnel1[0].z :=  0.00;
+  
+  funnel1[1].x :=  0.39;
+  funnel1[1].z :=  0.014;
+
+  funnel1[2].x :=  0.40;
+  funnel1[2].z :=  0.02;
+
+  funnel1[3].x :=  0.41;
+  funnel1[3].z :=  0.02;
+
+  funnel1[4].x :=  0.42;
+  funnel1[4].z :=  0.014;
+
+  funnel1[5].x :=  0.425;
+  funnel1[5].z :=  0.00;
+
+  funnel1[6].x :=  0.42;
+  funnel1[6].z := -0.014;
+
+  funnel1[7].x :=  0.41;
+  funnel1[7].z := -0.02;
+
+  funnel1[8].x :=  0.40;
+  funnel1[8].z := -0.02;
+
+  funnel1[9].x :=  0.39;
+  funnel1[9].z := -0.014;
+
+  for i := 0 to NUM_SHIP_POINTS - 1 do
+  begin
+    funnel2[i].x := funnel1[i].x{ + 0.01};   
+    funnel2[i].z := funnel1[i].z;
+  end;  
+end;
+    
+procedure DrawShipPart(var sh1, sh2: shiparray_t; const y1, y2: float; const stretchtex: boolean);
+var
+  i, i2: integer;  
+begin
+  glBegin(GL_TRIANGLE_STRIP);
+  glTexCoord2f(sh1[0].x + 0.5, y1);
+  glVertex3f(sh1[0].x, y1, sh1[0].z); 
+  for i := 0 to NUM_SHIP_POINTS - 1 do
+  begin
+    if stretchtex then
+      glTexCoord2f(sh1[i].x + 0.5, y2)
+    else
+      glTexCoord2f(sh2[i].x + 0.5, y2);
+    glVertex3f(sh2[i].x, y2, sh2[i].z);
+    i2 := (i + 1) mod NUM_SHIP_POINTS; 
+    glTexCoord2f(sh1[i2].x + 0.5, y1);
+    glVertex3f(sh1[i2].x, y1, sh1[i2].z); 
+  end;
+  if (sh2[0].x <> sh2[NUM_SHIP_POINTS - 1].x) or (sh2[0].z <> sh2[NUM_SHIP_POINTS - 1].z) then
+  begin
+    glTexCoord2f(sh2[0].x + 0.5, y2);
+    glVertex3f(sh2[0].x, y2, sh1[0].z);
+  end; 
+  glEnd;
+end;
+
+procedure DrawShipTop(var sh: shiparray_t; const y: float; const u, v: float);
+var
+  i: integer;  
+begin
+  glBegin(GL_TRIANGLE_FAN);
+    glTexCoord2f(u, v);
+    for i := 0 to NUM_SHIP_POINTS - 1 do
+      glVertex3f(sh[i].x, y, sh[i].z);
+  glEnd;
+end; 
+    
+procedure DrawRadar(const x1, x2, y1, y2, z: float);
+begin
+  glBegin(GL_TRIANGLE_FAN);
+    glTexCoord2f(x1, y1);
+    glVertex3f(x1, y1, z); 
+    glTexCoord2f(x2, y1);
+    glVertex3f(x2, y1, z); 
+    glTexCoord2f(x2, y2);
+    glVertex3f(x2 + 0.01, y2, z); 
+  glEnd;
+end;
+
+procedure Cont_glTexCoord2f(const u, v: float);
+begin
+  glTexCoord2f((u + 0.002) * 0.996, v * 0.242 + 0.754);
+end;
+  
+procedure Cont_glVertex3f(const x, y, z: float);
+begin
+  glVertex3f((x - 0.2) * 0.33, ((y + 1.0) * 5 / 128) + 0.1 , z * 0.08);  
+end;
+
+procedure DrawContainers;
+begin
+  glBegin(GL_QUADS);
+    // Front Face
+    Cont_glTexCoord2f(0.0, 0.0); Cont_glVertex3f(-1.0, -1.0,  1.0);  // Bottom Left Of The Texture and Quad
+    Cont_glTexCoord2f(1.0, 0.0); Cont_glVertex3f( 1.0, -1.0,  1.0);  // Bottom Right Of The Texture and Quad
+    Cont_glTexCoord2f(1.0, 1.0); Cont_glVertex3f( 1.0,  1.0,  1.0);  // Top Right Of The Texture and Quad
+    Cont_glTexCoord2f(0.0, 1.0); Cont_glVertex3f(-1.0,  1.0,  1.0);  // Top Left Of The Texture and Quad
+    // Back Face
+    Cont_glTexCoord2f(1.0, 0.0); Cont_glVertex3f(-1.0, -1.0, -1.0);  // Bottom Right Of The Texture and Quad
+    Cont_glTexCoord2f(1.0, 1.0); Cont_glVertex3f(-1.0,  1.0, -1.0);  // Top Right Of The Texture and Quad
+    Cont_glTexCoord2f(0.0, 1.0); Cont_glVertex3f( 1.0,  1.0, -1.0);  // Top Left Of The Texture and Quad
+    Cont_glTexCoord2f(0.0, 0.0); Cont_glVertex3f( 1.0, -1.0, -1.0);  // Bottom Left Of The Texture and Quad
+    // Top Face
+    Cont_glTexCoord2f(0.0, 1.0); Cont_glVertex3f(-1.0,  1.0, -1.0);  // Top Left Of The Texture and Quad
+    Cont_glTexCoord2f(0.0, 0.0); Cont_glVertex3f(-1.0,  1.0,  1.0);  // Bottom Left Of The Texture and Quad
+    Cont_glTexCoord2f(1.0, 0.0); Cont_glVertex3f( 1.0,  1.0,  1.0);  // Bottom Right Of The Texture and Quad
+    Cont_glTexCoord2f(1.0, 1.0); Cont_glVertex3f( 1.0,  1.0, -1.0);  // Top Right Of The Texture and Quad
+    // Right face
+    Cont_glTexCoord2f(1.0, 0.0); Cont_glVertex3f( 1.0, -1.0, -1.0);  // Bottom Right Of The Texture and Quad
+    Cont_glTexCoord2f(1.0, 1.0); Cont_glVertex3f( 1.0,  1.0, -1.0);  // Top Right Of The Texture and Quad
+    Cont_glTexCoord2f(0.0, 1.0); Cont_glVertex3f( 1.0,  1.0,  1.0);  // Top Left Of The Texture and Quad
+    Cont_glTexCoord2f(0.0, 0.0); Cont_glVertex3f( 1.0, -1.0,  1.0);  // Bottom Left Of The Texture and Quad
+    // Left Face
+    Cont_glTexCoord2f(0.0, 0.0); Cont_glVertex3f(-1.0, -1.0, -1.0);  // Bottom Left Of The Texture and Quad
+    Cont_glTexCoord2f(1.0, 0.0); Cont_glVertex3f(-1.0, -1.0,  1.0);  // Bottom Right Of The Texture and Quad
+    Cont_glTexCoord2f(1.0, 1.0); Cont_glVertex3f(-1.0,  1.0,  1.0);  // Top Right Of The Texture and Quad
+    Cont_glTexCoord2f(0.0, 1.0); Cont_glVertex3f(-1.0,  1.0, -1.0);  // Top Left Of The Texture and Quad
+  glEnd;
+end;
+
+begin
+  InitShipArrays;
+  SetFrame(0);
+  DrawShipPart(bottom_ship, mid_ship, 0.0, 0.05, false);
+  DrawShipPart(mid_ship, top_ship, 0.05, 0.10, false);
+  DrawShipTop(top_ship, 0.10, 0.5, 0.5);  
+  DrawShipPart(bottom_deck1, top_deck1, 0.10, 0.20, true);  
+  DrawShipTop(top_deck1, 0.20, 0.5, 0.5);  
+  DrawShipPart(funnel1, funnel2, 0.10, 0.20, true);  
+  DrawRadar(top_deck1[0].x - 0.02, top_deck1[0].x - 0.03, 0.20, 0.24, -0.04);  
+  DrawRadar(top_deck1[0].x - 0.02, top_deck1[0].x - 0.03, 0.20, 0.24,  0.04);
+  DrawContainers;  
+end.
