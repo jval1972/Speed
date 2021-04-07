@@ -54,8 +54,13 @@ begin
   
   for i := 0 to NUM_SHIP_POINTS - 1 do    
   begin
-    mid_ship[i].x := bottom_ship[i].x + 0.03;
-    mid_ship[i].z := bottom_ship[i].z + 0.01;
+    mid_ship[i].x := bottom_ship[i].x + 0.03;   
+    if bottom_ship[i].z < -0.001 then
+      mid_ship[i].z := bottom_ship[i].z - 0.01
+    else if bottom_ship[i].z > 0.001 then
+      mid_ship[i].z := bottom_ship[i].z + 0.01
+    else
+      mid_ship[i].z := 0.0; 
     top_ship[i].x := mid_ship[i].x * 1.1;
     top_ship[i].z := mid_ship[i].z * 1.1;
   end;
