@@ -59,6 +59,7 @@ uses
   m_fixed,
   speed_defs,
   speed_flatsize,
+  speed_maptexture,
   speed_palette,
   speed_patch,
   speed_bitmap,
@@ -628,7 +629,9 @@ function TSpeedToWADConverter.GenerateFlats: boolean;
 var
   position: integer;
   i: integer;
+  t, j, rover: integer;
   buf: PByteArray;
+  buf61: PByteArray;
   stmp: string;
   c: byte;
 begin
@@ -646,6 +649,7 @@ begin
   f.Seek(position, sFromBeginning);
 
   buf := malloc(64 * 64);
+  buf61 := malloc(64 * 64);
 
   wadwriter.AddSeparator('F_START');
 
@@ -655,6 +659,19 @@ begin
     stmp := SH_FLAT_PREFIX + IntToStrZFill(4, i + 1);
     wadwriter.AddData(stmp, buf, 64 * 64);
     sflatsize.Add(stmp + '=' + itoa(SPEED_LEVEL_SCALE * 64));
+    if i = 61 then
+      for t := 1 to NUMTRANSLATIONS - 1 do
+      begin
+        rover := TRANSLATION_ROVERS[t];
+        for j := 0 to 64 * 64 - 1 do
+          if buf[j] in [64..79] then
+            buf61[j] := rover +  (buf[j] - 64) div 2
+          else
+            buf61[j] := buf[j];
+        stmp := SH_TRANFLAT_PREFIX + IntToStrZFill(4, t);
+        wadwriter.AddData(stmp, buf61, 64 * 64);
+        sflatsize.Add(stmp + '=' + itoa(SPEED_LEVEL_SCALE * 64));
+      end;
   end;
 
   // Create F_SKY1
@@ -664,6 +681,7 @@ begin
   sflatsize.Add('F_SKY1=64');
 
   memfree(pointer(buf), 64 * 64);
+  memfree(pointer(buf61), 64 * 64);
 
   wadwriter.AddSeparator('F_END');
 end;

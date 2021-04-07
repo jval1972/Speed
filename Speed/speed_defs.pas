@@ -58,6 +58,7 @@ function getjcllumpname(const l: speedlump_p): string;
 
 const
   SH_FLAT_PREFIX = 'FLAT';
+  SH_TRANFLAT_PREFIX = 'FTRN';
   SH_WALL_PREFIX = 'WALL';
 
 implementation
