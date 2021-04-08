@@ -77,28 +77,28 @@ begin
   bottom_deck1[0].z :=  0.00;
   
   bottom_deck1[1].x := -0.25;
-  bottom_deck1[1].z :=  0.05;
+  bottom_deck1[1].z :=  0.055;
 
   bottom_deck1[2].x := -0.10;
-  bottom_deck1[2].z :=  0.05;
+  bottom_deck1[2].z :=  0.055;
 
   bottom_deck1[3].x :=  0.10;
-  bottom_deck1[3].z :=  0.05;
+  bottom_deck1[3].z :=  0.055;
 
-  bottom_deck1[4].x :=  0.35;
-  bottom_deck1[4].z :=  0.05;
+  bottom_deck1[4].x :=  0.36;
+  bottom_deck1[4].z :=  0.055;
 
-  bottom_deck1[5].x :=  0.35;
-  bottom_deck1[5].z := -0.05;
+  bottom_deck1[5].x :=  0.36;
+  bottom_deck1[5].z := -0.055;
 
   bottom_deck1[6].x :=  0.10;
-  bottom_deck1[6].z := -0.05;
+  bottom_deck1[6].z := -0.055;
 
   bottom_deck1[7].x := -0.10;
-  bottom_deck1[7].z := -0.05;
+  bottom_deck1[7].z := -0.055;
 
   bottom_deck1[8].x := -0.25;
-  bottom_deck1[8].z := -0.05;
+  bottom_deck1[8].z := -0.055;
 
   bottom_deck1[9].x := -0.25;
   bottom_deck1[9].z := -0.00;
@@ -147,7 +147,7 @@ begin
   end;
 
   // funnels
-  funnel1[0].x :=  0.15;
+  funnel1[0].x :=  0.155;
   funnel1[0].z :=  0.00;
   
   funnel1[1].x :=  0.16;
@@ -162,7 +162,7 @@ begin
   funnel1[4].x :=  0.19;
   funnel1[4].z :=  0.014;
 
-  funnel1[5].x :=  0.20;
+  funnel1[5].x :=  0.195;
   funnel1[5].z :=  0.00;
 
   funnel1[6].x :=  0.19;
