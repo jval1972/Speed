@@ -228,11 +228,11 @@ end;
 procedure DrawRadar(const x1, x2, y1, y2: float);
 begin
   glBegin(GL_TRIANGLE_FAN);
-    glTexCoord2f(x1, y1);
+    glTexCoord2f(x1 + 0.5, y1);
     glVertex3f(x1, y1, 0.0); 
-    glTexCoord2f(x2, y1);
+    glTexCoord2f(x2 + 0.5, y1);
     glVertex3f(x2, y1, 0.0); 
-    glTexCoord2f(x2, y2);
+    glTexCoord2f(x2 + 0.5, y2);
     glVertex3f(x2 + 0.01, y2, 0.0); 
   glEnd;
 end;
@@ -251,4 +251,5 @@ begin
   DrawShipPart(funnel3, funnel4, 0.16, 0.22, true);
   DrawRadar(-0.15, -0.13, 0.20, 0.25);  
   DrawRadar(-0.10, -0.08, 0.20, 0.25);  
+  DrawRadar( 0.42,  0.44, 0.10, 0.15);  
 end.

@@ -106,7 +106,7 @@ ACTOR SHIP_5 2006
 ///////////////////////////////
 // SHIP_6 (Commercial Ship #2)
 ///////////////////////////////
-ACTOR SHIP_5 2007
+ACTOR SHIP_6 2007
 {
   Radius 256
   Height 54

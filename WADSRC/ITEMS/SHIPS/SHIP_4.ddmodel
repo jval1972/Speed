@@ -257,4 +257,5 @@ begin
   DrawShipPart(funnel5, funnel6, 0.20, 0.24, true);
   DrawRadar(-0.15, -0.13, 0.20, 0.25);  
   DrawRadar(-0.10, -0.08, 0.20, 0.25);  
+  DrawRadar(-0.05, -0.03, 0.20, 0.25);  
 end.
