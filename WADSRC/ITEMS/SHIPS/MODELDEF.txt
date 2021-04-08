@@ -53,3 +53,31 @@ state S_SHIP_40 {         // State S_SHIP_40 is automatically generated, it's th
   texture "SHIP_4.png"    // The texture
   frame 0
 }
+
+//////////////////
+// SHIP_5
+//////////////////
+modeldef "SHIP_5.ddmodel" 
+{
+  scale 1024.0            // Remember to define the scale of the model
+}
+
+state S_SHIP_50 {         // State S_SHIP_50 is automatically generated, it's the state #0 of mobj SHIP_5
+  model "SHIP_5.ddmodel"  // The model
+  texture "SHIP_5.png"    // The texture
+  frame 0
+}
+
+//////////////////
+// SHIP_6
+//////////////////
+modeldef "SHIP_6.ddmodel" 
+{
+  scale 1024.0            // Remember to define the scale of the model
+}
+
+state S_SHIP_60 {         // State S_SHIP_60 is automatically generated, it's the state #0 of mobj SHIP_6
+  model "SHIP_6.ddmodel"  // The model
+  texture "SHIP_6.png"    // The texture
+  frame 0
+}
