@@ -1,0 +1,34 @@
+model model1;
+
+procedure myvert(const x, y, z, u: float);
+begin
+  glTexCoord2f(u, y);
+  glVertex3f(x, y, z);
+end;
+  
+procedure Cylinder(r1, r2, h: float);
+var
+  radius, halfLength: float;
+  i, slices: integer;
+  theta, nextTheta: float;
+begin
+  slices := 8;
+  for i := 0 to slices - 1 do
+  begin
+    theta := i * 2.0 * PI / slices;
+    nextTheta := (i + 1) * 2.0 * PI / slices;
+    glBegin(GL_TRIANGLE_STRIP);
+      myvert(r1 * cos(theta), h, r1 * sin(theta), i / slices);
+      myvert(r2 * cos(theta), 0.0, r2 * sin(theta), i / slices);
+      myvert(r1 * cos(nextTheta), h, r1 * sin(nextTheta), (i + 1) / slices);
+      myvert(r2 * cos(nextTheta), 0.0, r2 * sin(nextTheta), (i + 1) / slices);
+    glEnd;
+  end;
+end;
+
+begin
+  SetFrame(0);
+  Cylinder(0.10, 0.15, 0.5);
+  Cylinder(0.10, 0.10, 0.75);
+  Cylinder(0.02, 0.02, 0.85);
+end.

@@ -1,0 +1,10 @@
+modeldef "LIGHTHOUSE.ddmodel" 
+{
+  scale 384.0                // Remember to define the scale of the model
+}
+
+state S_LIGHTHOUSE0 {        // State S_LIGHTHOUSE0 is automatically generated, it's the state #0 of mobj LIGHTHOUSE
+  model "LIGHTHOUSE.ddmodel" // The model
+  texture "LIGHTHOUSE.png"   // The texture
+  frame 0
+}
