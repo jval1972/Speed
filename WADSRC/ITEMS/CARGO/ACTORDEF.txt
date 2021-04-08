@@ -1,0 +1,218 @@
+///////////////////////////////
+// CARGO_1
+///////////////////////////////
+ACTOR CARGO_1 2009
+{
+  Radius 64
+  Height 56
+  Health 100000
+  Mass 100000
+  Reactiontime 8
+  PRECISESPAWNANGLE
+  States
+  {
+    Spawn:
+    {
+      CRG0 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// CARGO_2
+///////////////////////////////
+ACTOR CARGO_2 2010
+{
+  Radius 64
+  Height 56
+  Health 100000
+  Mass 100000
+  Reactiontime 8
+  PRECISESPAWNANGLE
+  States
+  {
+    Spawn:
+    {
+      CRG1 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// CARGO_3
+///////////////////////////////
+ACTOR CARGO_3 2011
+{
+  Radius 64
+  Height 112
+  Health 100000
+  Mass 100000
+  Reactiontime 8
+  PRECISESPAWNANGLE
+  States
+  {
+    Spawn:
+    {
+      CRG2 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// CARGO_4
+///////////////////////////////
+ACTOR CARGO_4 2012
+{
+  Radius 64
+  Height 112
+  Health 100000
+  Mass 100000
+  Reactiontime 8
+  PRECISESPAWNANGLE
+  States
+  {
+    Spawn:
+    {
+      CRG3 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// CARGO_5
+///////////////////////////////
+ACTOR CARGO_5 2013
+{
+  Radius 64
+  Height 168
+  Health 100000
+  Mass 100000
+  Reactiontime 8
+  PRECISESPAWNANGLE
+  States
+  {
+    Spawn:
+    {
+      CRG4 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// CARGO_6
+///////////////////////////////
+ACTOR CARGO_6 2014
+{
+  Radius 64
+  Height 168
+  Health 100000
+  Mass 100000
+  Reactiontime 8
+  PRECISESPAWNANGLE
+  States
+  {
+    Spawn:
+    {
+      CRG5 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// CARGO_7
+///////////////////////////////
+ACTOR CARGO_7 2015
+{
+  Radius 64
+  Height 168
+  Health 100000
+  Mass 100000
+  Reactiontime 8
+  PRECISESPAWNANGLE
+  States
+  {
+    Spawn:
+    {
+      CRG6 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// CARGO_8
+///////////////////////////////
+ACTOR CARGO_8 2016
+{
+  Radius 64
+  Height 224
+  Health 100000
+  Mass 100000
+  Reactiontime 8
+  PRECISESPAWNANGLE
+  States
+  {
+    Spawn:
+    {
+      CRG7 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// CARGO_9
+///////////////////////////////
+ACTOR CARGO_9 2017
+{
+  Radius 64
+  Height 224
+  Health 100000
+  Mass 100000
+  Reactiontime 8
+  PRECISESPAWNANGLE
+  States
+  {
+    Spawn:
+    {
+      CRG8 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// CARGO_10
+///////////////////////////////
+ACTOR CARGO_10 2018
+{
+  Radius 64
+  Height 224
+  Health 100000
+  Mass 100000
+  Reactiontime 8
+  PRECISESPAWNANGLE
+  States
+  {
+    Spawn:
+    {
+      CRG9 A -1
+      Stop
+    }
+  }
+}
