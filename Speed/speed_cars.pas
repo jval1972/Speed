@@ -1409,7 +1409,7 @@ begin
     dec(caller.brakesoundcountdown);
 end;
 
-procedure CmdprintPlayerPath(const parm: string);
+procedure CmdPrintPlayerPath(const parm: string);
 begin
   if parm = '' then
   begin
@@ -1418,7 +1418,7 @@ begin
   end;
 
   print_player_path := C_BoolEval(parm, print_player_path);
-  CmdprintPlayerPath('');
+  CmdPrintPlayerPath('');
 end;
 
 procedure SH_InitCars;
