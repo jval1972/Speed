@@ -1,0 +1,432 @@
+modeldef "buildings.ddmodel"
+{
+  scale 256.0               // Remember to define the scale of the model
+}
+
+state "S_NEWBUILDING_0010"
+{
+  model "buildings.ddmodel"
+  frame 0
+}
+
+
+state "S_NEWBUILDING_0020"
+{
+  model "buildings.ddmodel"
+  frame 1
+}
+
+
+state "S_NEWBUILDING_0030"
+{
+  model "buildings.ddmodel"
+  frame 2
+}
+
+
+state "S_NEWBUILDING_0040"
+{
+  model "buildings.ddmodel"
+  frame 3
+}
+
+
+state "S_NEWBUILDING_0050"
+{
+  model "buildings.ddmodel"
+  frame 4
+}
+
+
+state "S_NEWBUILDING_0060"
+{
+  model "buildings.ddmodel"
+  frame 5
+}
+
+
+state "S_NEWBUILDING_0070"
+{
+  model "buildings.ddmodel"
+  frame 6
+}
+
+
+state "S_NEWBUILDING_0080"
+{
+  model "buildings.ddmodel"
+  frame 7
+}
+
+
+state "S_NEWBUILDING_0090"
+{
+  model "buildings.ddmodel"
+  frame 8
+}
+
+
+state "S_NEWBUILDING_0100"
+{
+  model "buildings.ddmodel"
+  frame 9
+}
+
+
+state "S_NEWBUILDING_0110"
+{
+  model "buildings.ddmodel"
+  frame 10
+}
+
+
+state "S_NEWBUILDING_0120"
+{
+  model "buildings.ddmodel"
+  frame 11
+}
+
+
+state "S_NEWBUILDING_0130"
+{
+  model "buildings.ddmodel"
+  frame 12
+}
+
+
+state "S_NEWBUILDING_0140"
+{
+  model "buildings.ddmodel"
+  frame 13
+}
+
+
+state "S_NEWBUILDING_0150"
+{
+  model "buildings.ddmodel"
+  frame 14
+}
+
+
+state "S_NEWBUILDING_0160"
+{
+  model "buildings.ddmodel"
+  frame 15
+}
+
+
+state "S_NEWBUILDING_0170"
+{
+  model "buildings.ddmodel"
+  frame 16
+}
+
+
+state "S_NEWBUILDING_0180"
+{
+  model "buildings.ddmodel"
+  frame 17
+}
+
+
+state "S_NEWBUILDING_0190"
+{
+  model "buildings.ddmodel"
+  frame 18
+}
+
+
+state "S_NEWBUILDING_0200"
+{
+  model "buildings.ddmodel"
+  frame 19
+}
+
+
+state "S_NEWBUILDING_0210"
+{
+  model "buildings.ddmodel"
+  frame 20
+}
+
+
+state "S_NEWBUILDING_0220"
+{
+  model "buildings.ddmodel"
+  frame 21
+}
+
+
+state "S_NEWBUILDING_0230"
+{
+  model "buildings.ddmodel"
+  frame 22
+}
+
+
+state "S_NEWBUILDING_0240"
+{
+  model "buildings.ddmodel"
+  frame 23
+}
+
+
+state "S_NEWBUILDING_0250"
+{
+  model "buildings.ddmodel"
+  frame 24
+}
+
+
+state "S_NEWBUILDING_0260"
+{
+  model "buildings.ddmodel"
+  frame 25
+}
+
+
+state "S_NEWBUILDING_0270"
+{
+  model "buildings.ddmodel"
+  frame 26
+}
+
+
+state "S_NEWBUILDING_0280"
+{
+  model "buildings.ddmodel"
+  frame 27
+}
+
+
+state "S_NEWBUILDING_0290"
+{
+  model "buildings.ddmodel"
+  frame 28
+}
+
+
+state "S_NEWBUILDING_0300"
+{
+  model "buildings.ddmodel"
+  frame 29
+}
+
+
+state "S_NEWBUILDING_0310"
+{
+  model "buildings.ddmodel"
+  frame 30
+}
+
+
+state "S_NEWBUILDING_0320"
+{
+  model "buildings.ddmodel"
+  frame 31
+}
+
+
+state "S_NEWBUILDING_0330"
+{
+  model "buildings.ddmodel"
+  frame 32
+}
+
+
+state "S_NEWBUILDING_0340"
+{
+  model "buildings.ddmodel"
+  frame 33
+}
+
+
+state "S_NEWBUILDING_0350"
+{
+  model "buildings.ddmodel"
+  frame 34
+}
+
+
+state "S_NEWBUILDING_0360"
+{
+  model "buildings.ddmodel"
+  frame 35
+}
+
+
+state "S_NEWBUILDING_0370"
+{
+  model "buildings.ddmodel"
+  frame 36
+}
+
+
+state "S_NEWBUILDING_0380"
+{
+  model "buildings.ddmodel"
+  frame 37
+}
+
+
+state "S_NEWBUILDING_0390"
+{
+  model "buildings.ddmodel"
+  frame 38
+}
+
+
+state "S_NEWBUILDING_0400"
+{
+  model "buildings.ddmodel"
+  frame 39
+}
+
+
+state "S_NEWBUILDING_0410"
+{
+  model "buildings.ddmodel"
+  frame 40
+}
+
+
+state "S_NEWBUILDING_0420"
+{
+  model "buildings.ddmodel"
+  frame 41
+}
+
+
+state "S_NEWBUILDING_0430"
+{
+  model "buildings.ddmodel"
+  frame 42
+}
+
+
+state "S_NEWBUILDING_0440"
+{
+  model "buildings.ddmodel"
+  frame 43
+}
+
+
+state "S_NEWBUILDING_0450"
+{
+  model "buildings.ddmodel"
+  frame 44
+}
+
+
+state "S_NEWBUILDING_0460"
+{
+  model "buildings.ddmodel"
+  frame 45
+}
+
+
+state "S_NEWBUILDING_0470"
+{
+  model "buildings.ddmodel"
+  frame 46
+}
+
+
+state "S_NEWBUILDING_0480"
+{
+  model "buildings.ddmodel"
+  frame 47
+}
+
+
+state "S_NEWBUILDING_0490"
+{
+  model "buildings.ddmodel"
+  frame 48
+}
+
+
+state "S_NEWBUILDING_0500"
+{
+  model "buildings.ddmodel"
+  frame 49
+}
+
+
+state "S_NEWBUILDING_0510"
+{
+  model "buildings.ddmodel"
+  frame 50
+}
+
+
+state "S_NEWBUILDING_0520"
+{
+  model "buildings.ddmodel"
+  frame 51
+}
+
+
+state "S_NEWBUILDING_0530"
+{
+  model "buildings.ddmodel"
+  frame 52
+}
+
+
+state "S_NEWBUILDING_0540"
+{
+  model "buildings.ddmodel"
+  frame 53
+}
+
+
+state "S_NEWBUILDING_0550"
+{
+  model "buildings.ddmodel"
+  frame 54
+}
+
+
+state "S_NEWBUILDING_0560"
+{
+  model "buildings.ddmodel"
+  frame 55
+}
+
+
+state "S_NEWBUILDING_0570"
+{
+  model "buildings.ddmodel"
+  frame 56
+}
+
+
+state "S_NEWBUILDING_0580"
+{
+  model "buildings.ddmodel"
+  frame 57
+}
+
+
+state "S_NEWBUILDING_0590"
+{
+  model "buildings.ddmodel"
+  frame 58
+}
+
+
+state "S_NEWBUILDING_0600"
+{
+  model "buildings.ddmodel"
+  frame 59
+}
+
+
+state "S_NEWBUILDING_0610"
+{
+  model "buildings.ddmodel"
+  frame 60
+}
+
+

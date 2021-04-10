@@ -1,0 +1,1342 @@
+///////////////////////////////
+// NEWBUILDING_001
+///////////////////////////////
+ACTOR NEWBUILDING_001 2019
+{
+  Radius 64
+  Height 192
+  Health 1000000
+  Mass 1000000
+  Scale 2
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      BL01 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// NEWBUILDING_002
+///////////////////////////////
+ACTOR NEWBUILDING_002 2020
+{
+  Radius 64
+  Height 224
+  Health 1000000
+  Mass 1000000
+  Scale 2
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      BL02 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// NEWBUILDING_003
+///////////////////////////////
+ACTOR NEWBUILDING_003 2021
+{
+  Radius 64
+  Height 224
+  Health 1000000
+  Mass 1000000
+  Scale 2
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      BL03 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// NEWBUILDING_004
+///////////////////////////////
+ACTOR NEWBUILDING_004 2022
+{
+  Radius 64
+  Height 256
+  Health 1000000
+  Mass 1000000
+  Scale 2
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      BL04 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// NEWBUILDING_005
+///////////////////////////////
+ACTOR NEWBUILDING_005 2023
+{
+  Radius 80
+  Height 288
+  Health 1000000
+  Mass 1000000
+  Scale 2
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      BL05 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// NEWBUILDING_006
+///////////////////////////////
+ACTOR NEWBUILDING_006 2024
+{
+  Radius 64
+  Height 224
+  Health 1000000
+  Mass 1000000
+  Scale 2
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      BL06 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// NEWBUILDING_007
+///////////////////////////////
+ACTOR NEWBUILDING_007 2025
+{
+  Radius 64
+  Height 192
+  Health 1000000
+  Mass 1000000
+  Scale 2
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      BL07 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// NEWBUILDING_008
+///////////////////////////////
+ACTOR NEWBUILDING_008 2026
+{
+  Radius 64
+  Height 192
+  Health 1000000
+  Mass 1000000
+  Scale 2
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      BL08 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// NEWBUILDING_009
+///////////////////////////////
+ACTOR NEWBUILDING_009 2027
+{
+  Radius 80
+  Height 168
+  Health 1000000
+  Mass 1000000
+  Scale 2
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      BL09 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// NEWBUILDING_010
+///////////////////////////////
+ACTOR NEWBUILDING_010 2028
+{
+  Radius 48
+  Height 192
+  Health 1000000
+  Mass 1000000
+  Scale 2
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      BL10 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// NEWBUILDING_011
+///////////////////////////////
+ACTOR NEWBUILDING_011 2029
+{
+  Radius 48
+  Height 128
+  Health 1000000
+  Mass 1000000
+  Scale 2
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      BL11 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// NEWBUILDING_012
+///////////////////////////////
+ACTOR NEWBUILDING_012 2030
+{
+  Radius 48
+  Height 146
+  Health 1000000
+  Mass 1000000
+  Scale 2
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      BL12 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// NEWBUILDING_013
+///////////////////////////////
+ACTOR NEWBUILDING_013 2031
+{
+  Radius 64
+  Height 96
+  Health 1000000
+  Mass 1000000
+  Scale 2
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      BL13 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// NEWBUILDING_014
+///////////////////////////////
+ACTOR NEWBUILDING_014 2032
+{
+  Radius 64
+  Height 320
+  Health 1000000
+  Mass 1000000
+  Scale 2
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      BL14 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// NEWBUILDING_015
+///////////////////////////////
+ACTOR NEWBUILDING_015 2033
+{
+  Radius 64
+  Height 160
+  Health 1000000
+  Mass 1000000
+  Scale 2
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      BL15 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// NEWBUILDING_016
+///////////////////////////////
+ACTOR NEWBUILDING_016 2034
+{
+  Radius 48
+  Height 144
+  Health 1000000
+  Mass 1000000
+  Scale 2
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      BL16 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// NEWBUILDING_017
+///////////////////////////////
+ACTOR NEWBUILDING_017 2035
+{
+  Radius 64
+  Height 256
+  Health 1000000
+  Mass 1000000
+  Scale 2
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      BL17 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// NEWBUILDING_018
+///////////////////////////////
+ACTOR NEWBUILDING_018 2036
+{
+  Radius 64
+  Height 288
+  Health 1000000
+  Mass 1000000
+  Scale 2
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      BL18 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// NEWBUILDING_019
+///////////////////////////////
+ACTOR NEWBUILDING_019 2037
+{
+  Radius 64
+  Height 192
+  Health 1000000
+  Mass 1000000
+  Scale 2
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      BL19 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// NEWBUILDING_020
+///////////////////////////////
+ACTOR NEWBUILDING_020 2038
+{
+  Radius 64
+  Height 307
+  Health 1000000
+  Mass 1000000
+  Scale 2
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      BL20 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// NEWBUILDING_021
+///////////////////////////////
+ACTOR NEWBUILDING_021 2039
+{
+  Radius 64
+  Height 320
+  Health 1000000
+  Mass 1000000
+  Scale 2
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      BL21 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// NEWBUILDING_022
+///////////////////////////////
+ACTOR NEWBUILDING_022 2040
+{
+  Radius 64
+  Height 336
+  Health 1000000
+  Mass 1000000
+  Scale 2
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      BL22 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// NEWBUILDING_023
+///////////////////////////////
+ACTOR NEWBUILDING_023 2041
+{
+  Radius 64
+  Height 320
+  Health 1000000
+  Mass 1000000
+  Scale 2
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      BL23 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// NEWBUILDING_024
+///////////////////////////////
+ACTOR NEWBUILDING_024 2042
+{
+  Radius 64
+  Height 288
+  Health 1000000
+  Mass 1000000
+  Scale 2
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      BL24 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// NEWBUILDING_025
+///////////////////////////////
+ACTOR NEWBUILDING_025 2043
+{
+  Radius 64
+  Height 230
+  Health 1000000
+  Mass 1000000
+  Scale 2
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      BL25 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// NEWBUILDING_026
+///////////////////////////////
+ACTOR NEWBUILDING_026 2044
+{
+  Radius 64
+  Height 288
+  Health 1000000
+  Mass 1000000
+  Scale 2
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      BL26 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// NEWBUILDING_027
+///////////////////////////////
+ACTOR NEWBUILDING_027 2045
+{
+  Radius 64
+  Height 256
+  Health 1000000
+  Mass 1000000
+  Scale 2
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      BL27 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// NEWBUILDING_028
+///////////////////////////////
+ACTOR NEWBUILDING_028 2046
+{
+  Radius 48
+  Height 192
+  Health 1000000
+  Mass 1000000
+  Scale 2
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      BL28 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// NEWBUILDING_029
+///////////////////////////////
+ACTOR NEWBUILDING_029 2047
+{
+  Radius 48
+  Height 192
+  Health 1000000
+  Mass 1000000
+  Scale 2
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      BL29 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// NEWBUILDING_030
+///////////////////////////////
+ACTOR NEWBUILDING_030 2048
+{
+  Radius 64
+  Height 288
+  Health 1000000
+  Mass 1000000
+  Scale 2
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      BL30 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// NEWBUILDING_031
+///////////////////////////////
+ACTOR NEWBUILDING_031 2049
+{
+  Radius 64
+  Height 314
+  Health 1000000
+  Mass 1000000
+  Scale 2
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      BL31 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// NEWBUILDING_032
+///////////////////////////////
+ACTOR NEWBUILDING_032 2050
+{
+  Radius 64
+  Height 288
+  Health 1000000
+  Mass 1000000
+  Scale 2
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      BL32 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// NEWBUILDING_033
+///////////////////////////////
+ACTOR NEWBUILDING_033 2051
+{
+  Radius 64
+  Height 314
+  Health 1000000
+  Mass 1000000
+  Scale 2
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      BL33 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// NEWBUILDING_034
+///////////////////////////////
+ACTOR NEWBUILDING_034 2052
+{
+  Radius 64
+  Height 288
+  Health 1000000
+  Mass 1000000
+  Scale 2
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      BL34 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// NEWBUILDING_035
+///////////////////////////////
+ACTOR NEWBUILDING_035 2053
+{
+  Radius 64
+  Height 269
+  Health 1000000
+  Mass 1000000
+  Scale 2
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      BL35 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// NEWBUILDING_036
+///////////////////////////////
+ACTOR NEWBUILDING_036 2054
+{
+  Radius 128
+  Height 112
+  Health 1000000
+  Mass 1000000
+  Scale 2
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      BL36 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// NEWBUILDING_037
+///////////////////////////////
+ACTOR NEWBUILDING_037 2055
+{
+  Radius 64
+  Height 240
+  Health 1000000
+  Mass 1000000
+  Scale 2
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      BL37 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// NEWBUILDING_038
+///////////////////////////////
+ACTOR NEWBUILDING_038 2056
+{
+  Radius 48
+  Height 224
+  Health 1000000
+  Mass 1000000
+  Scale 2
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      BL38 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// NEWBUILDING_039
+///////////////////////////////
+ACTOR NEWBUILDING_039 2057
+{
+  Radius 48
+  Height 202
+  Health 1000000
+  Mass 1000000
+  Scale 2
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      BL39 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// NEWBUILDING_040
+///////////////////////////////
+ACTOR NEWBUILDING_040 2058
+{
+  Radius 64
+  Height 192
+  Health 1000000
+  Mass 1000000
+  Scale 2
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      BL40 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// NEWBUILDING_041
+///////////////////////////////
+ACTOR NEWBUILDING_041 2059
+{
+  Radius 64
+  Height 269
+  Health 1000000
+  Mass 1000000
+  Scale 2
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      BL41 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// NEWBUILDING_042
+///////////////////////////////
+ACTOR NEWBUILDING_042 2060
+{
+  Radius 64
+  Height 120
+  Health 1000000
+  Mass 1000000
+  Scale 2
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      BL42 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// NEWBUILDING_043
+///////////////////////////////
+ACTOR NEWBUILDING_043 2061
+{
+  Radius 64
+  Height 230
+  Health 1000000
+  Mass 1000000
+  Scale 2
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      BL43 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// NEWBUILDING_044
+///////////////////////////////
+ACTOR NEWBUILDING_044 2062
+{
+  Radius 64
+  Height 160
+  Health 1000000
+  Mass 1000000
+  Scale 2
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      BL44 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// NEWBUILDING_045
+///////////////////////////////
+ACTOR NEWBUILDING_045 2063
+{
+  Radius 96
+  Height 96
+  Health 1000000
+  Mass 1000000
+  Scale 2
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      BL45 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// NEWBUILDING_046
+///////////////////////////////
+ACTOR NEWBUILDING_046 2064
+{
+  Radius 64
+  Height 230
+  Health 1000000
+  Mass 1000000
+  Scale 2
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      BL46 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// NEWBUILDING_047
+///////////////////////////////
+ACTOR NEWBUILDING_047 2065
+{
+  Radius 96
+  Height 160
+  Health 1000000
+  Mass 1000000
+  Scale 2
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      BL47 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// NEWBUILDING_048
+///////////////////////////////
+ACTOR NEWBUILDING_048 2066
+{
+  Radius 64
+  Height 269
+  Health 1000000
+  Mass 1000000
+  Scale 2
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      BL48 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// NEWBUILDING_049
+///////////////////////////////
+ACTOR NEWBUILDING_049 2067
+{
+  Radius 64
+  Height 224
+  Health 1000000
+  Mass 1000000
+  Scale 2
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      BL49 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// NEWBUILDING_050
+///////////////////////////////
+ACTOR NEWBUILDING_050 2068
+{
+  Radius 96
+  Height 96
+  Health 1000000
+  Mass 1000000
+  Scale 2
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      BL50 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// NEWBUILDING_051
+///////////////////////////////
+ACTOR NEWBUILDING_051 2069
+{
+  Radius 64
+  Height 288
+  Health 1000000
+  Mass 1000000
+  Scale 2
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      BL51 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// NEWBUILDING_052
+///////////////////////////////
+ACTOR NEWBUILDING_052 2070
+{
+  Radius 64
+  Height 205
+  Health 1000000
+  Mass 1000000
+  Scale 2
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      BL52 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// NEWBUILDING_053
+///////////////////////////////
+ACTOR NEWBUILDING_053 2071
+{
+  Radius 64
+  Height 307
+  Health 1000000
+  Mass 1000000
+  Scale 2
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      BL53 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// NEWBUILDING_054
+///////////////////////////////
+ACTOR NEWBUILDING_054 2072
+{
+  Radius 64
+  Height 216
+  Health 1000000
+  Mass 1000000
+  Scale 2
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      BL54 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// NEWBUILDING_055
+///////////////////////////////
+ACTOR NEWBUILDING_055 2073
+{
+  Radius 64
+  Height 205
+  Health 1000000
+  Mass 1000000
+  Scale 2
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      BL55 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// NEWBUILDING_056
+///////////////////////////////
+ACTOR NEWBUILDING_056 2074
+{
+  Radius 64
+  Height 256
+  Health 1000000
+  Mass 1000000
+  Scale 2
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      BL56 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// NEWBUILDING_057
+///////////////////////////////
+ACTOR NEWBUILDING_057 2075
+{
+  Radius 64
+  Height 240
+  Health 1000000
+  Mass 1000000
+  Scale 2
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      BL57 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// NEWBUILDING_058
+///////////////////////////////
+ACTOR NEWBUILDING_058 2076
+{
+  Radius 64
+  Height 216
+  Health 1000000
+  Mass 1000000
+  Scale 2
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      BL58 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// NEWBUILDING_059
+///////////////////////////////
+ACTOR NEWBUILDING_059 2077
+{
+  Radius 64
+  Height 288
+  Health 1000000
+  Mass 1000000
+  Scale 2
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      BL59 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// NEWBUILDING_060
+///////////////////////////////
+ACTOR NEWBUILDING_060 2078
+{
+  Radius 64
+  Height 272
+  Health 1000000
+  Mass 1000000
+  Scale 2
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      BL60 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// NEWBUILDING_061
+///////////////////////////////
+ACTOR NEWBUILDING_061 2079
+{
+  Radius 64
+  Height 192
+  Health 1000000
+  Mass 1000000
+  Scale 2
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      BL61 A -1
+      Stop
+    }
+  }
+}
+
+
