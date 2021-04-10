@@ -1,0 +1,11 @@
+modeldef "BALOON.ddmodel" 
+{
+  scale 512.0
+}
+
+state S_BALOON0010 {
+  model "BALOON.ddmodel"
+  texture "BALOON.png"
+  frame1 0
+  frame2 0
+}

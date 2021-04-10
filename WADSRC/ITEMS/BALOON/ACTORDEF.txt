@@ -1,0 +1,20 @@
+///////////////////////////////
+// BALOON001
+///////////////////////////////
+ACTOR BALOON001 2080
+{
+  Radius 60
+  Height 180
+  Health 100000
+  Mass 10000
+  Reactiontime 8
+  PRECISESPAWNANGLE
+  States
+  {
+    Spawn:
+    {
+      BLN1 A -1
+      Stop
+    }
+  }
+}
