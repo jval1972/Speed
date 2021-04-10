@@ -12,7 +12,7 @@ ACTOR SAIL_001 2081
   {
     Spawn:
     {
-      SAILA -1
+      SAIL A -1
       Stop
     }
   }
@@ -33,7 +33,7 @@ ACTOR SAIL_002 2082
   {
     Spawn:
     {
-      SAILB -1
+      SAIL B -1
       Stop
     }
   }
@@ -54,7 +54,7 @@ ACTOR SAIL_003 2083
   {
     Spawn:
     {
-      SAILC -1
+      SAIL C -1
       Stop
     }
   }
@@ -75,7 +75,7 @@ ACTOR SAIL_004 2084
   {
     Spawn:
     {
-      SAILD -1
+      SAIL D -1
       Stop
     }
   }
@@ -96,7 +96,7 @@ ACTOR SAIL_005 2085
   {
     Spawn:
     {
-      SAILE -1
+      SAIL E -1
       Stop
     }
   }
@@ -117,7 +117,7 @@ ACTOR SAIL_006 2086
   {
     Spawn:
     {
-      SAILF -1
+      SAIL F -1
       Stop
     }
   }
@@ -138,7 +138,7 @@ ACTOR SAIL_007 2087
   {
     Spawn:
     {
-      SAILG -1
+      SAIL G -1
       Stop
     }
   }
@@ -159,7 +159,7 @@ ACTOR SAIL_008 2088
   {
     Spawn:
     {
-      SAILH -1
+      SAIL H -1
       Stop
     }
   }
@@ -180,7 +180,7 @@ ACTOR SAIL_009 2089
   {
     Spawn:
     {
-      SAILI -1
+      SAIL I -1
       Stop
     }
   }
@@ -201,7 +201,7 @@ ACTOR SAIL_010 2090
   {
     Spawn:
     {
-      SAILJ -1
+      SAIL J -1
       Stop
     }
   }
@@ -222,7 +222,7 @@ ACTOR SAIL_011 2091
   {
     Spawn:
     {
-      SAILK -1
+      SAIL K -1
       Stop
     }
   }
@@ -243,7 +243,7 @@ ACTOR SAIL_012 2092
   {
     Spawn:
     {
-      SAILL -1
+      SAIL L -1
       Stop
     }
   }
@@ -264,7 +264,7 @@ ACTOR SAIL_013 2093
   {
     Spawn:
     {
-      SAILM -1
+      SAIL M -1
       Stop
     }
   }
@@ -285,7 +285,7 @@ ACTOR SAIL_014 2094
   {
     Spawn:
     {
-      SAILN -1
+      SAIL N -1
       Stop
     }
   }
@@ -306,7 +306,7 @@ ACTOR SAIL_015 2095
   {
     Spawn:
     {
-      SAILO -1
+      SAIL O -1
       Stop
     }
   }
@@ -327,7 +327,7 @@ ACTOR SAIL_016 2096
   {
     Spawn:
     {
-      SAILP -1
+      SAIL P -1
       Stop
     }
   }
