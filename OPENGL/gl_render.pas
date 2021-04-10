@@ -3913,7 +3913,7 @@ begin
   begin
     if isgamesuspended then
     begin
-      modelinf.model.DrawSimple(modelinf.model.lastdrawframe, sprite.mo.scale);
+      modelinf.model.DrawSimple(info.startframe, sprite.mo.scale);
     end
     else
     begin
