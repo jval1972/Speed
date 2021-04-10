@@ -1,0 +1,146 @@
+model model1;
+
+const
+  NUM_SHIP_POINTS = 10;
+  
+type
+  shippoint_t = record
+    x, z: float;
+  end;
+  
+  shiparray_t = array[0..NUM_SHIP_POINTS - 1] of shippoint_t;
+  
+var                                          
+  bottom_ship, top_ship: shiparray_t;
+
+procedure InitShipArrays;
+var
+  i: integer;
+begin
+// Body
+  bottom_ship[0].x := -0.40;
+  bottom_ship[0].z :=  0.00;
+  
+  bottom_ship[1].x := -0.38;
+  bottom_ship[1].z :=  0.05;
+  
+  bottom_ship[2].x := -0.25;
+  bottom_ship[2].z :=  0.14;
+  
+  bottom_ship[3].x :=  0.25;
+  bottom_ship[3].z :=  0.14;
+  
+  bottom_ship[4].x :=  0.42;
+  bottom_ship[4].z :=  0.08;
+  
+  bottom_ship[5].x :=  0.42;
+  bottom_ship[5].z := -0.08;
+  
+  bottom_ship[6].x :=  0.25;
+  bottom_ship[6].z := -0.14;
+  
+  bottom_ship[7].x := -0.25;
+  bottom_ship[7].z := -0.14;
+  
+  bottom_ship[8].x := -0.38;
+  bottom_ship[8].z := -0.05;
+
+  bottom_ship[9].x := -0.40;
+  bottom_ship[9].z :=  0.00;
+  
+  for i := 0 to NUM_SHIP_POINTS - 1 do
+  begin
+    top_ship[i].x := bottom_ship[i].x * 1.1;
+    top_ship[i].z := bottom_ship[i].z * 1.1;
+  end;
+  
+  top_ship[0].x := -0.50;
+  top_ship[NUM_SHIP_POINTS - 1].x := -0.50;
+  
+end;
+    
+var
+  frm: integer;
+  
+const
+  NUMFRAMES = 16;
+    
+procedure mytexcoord(const u, v: float);
+begin
+  glTexCoord2f((frm + 0.5) / NUMFRAMES, v); 
+end;
+
+procedure DrawShipPart(var sh1, sh2: shiparray_t; const y1, y2: float; const stretchtex: boolean);
+var
+  i, i2: integer;  
+begin
+  glBegin(GL_TRIANGLE_STRIP);
+  mytexcoord(sh1[0].x + 0.5, y1);
+  glVertex3f(sh1[0].x, y1, sh1[0].z); 
+  for i := 0 to NUM_SHIP_POINTS - 1 do
+  begin
+    if stretchtex then
+      mytexcoord(sh1[i].x + 0.5, y2)
+    else
+      mytexcoord(sh2[i].x + 0.5, y2);
+    glVertex3f(sh2[i].x, y2, sh2[i].z);
+    i2 := (i + 1) mod NUM_SHIP_POINTS; 
+    mytexcoord(sh1[i2].x + 0.5, y1);
+    glVertex3f(sh1[i2].x, y1, sh1[i2].z); 
+  end;
+  if (sh2[0].x <> sh2[NUM_SHIP_POINTS - 1].x) or (sh2[0].z <> sh2[NUM_SHIP_POINTS - 1].z) then
+  begin
+    mytexcoord(sh2[0].x + 0.5, y2);
+    glVertex3f(sh2[0].x, y2, sh1[0].z);
+  end; 
+  glEnd;
+end;
+
+procedure DrawShipTop(var sh: shiparray_t; const y: float; const u, v: float);
+var
+  i: integer;  
+begin
+  glBegin(GL_TRIANGLE_FAN);
+    mytexcoord(u, v);
+    for i := 0 to NUM_SHIP_POINTS - 1 do
+      glVertex3f(sh[i].x, y, sh[i].z);
+  glEnd;
+end; 
+    
+procedure DrawSail(const x1, x2, y1, y2: float; const u, v: float);
+begin
+  mytexcoord(u, v);
+  glBegin(GL_TRIANGLE_FAN);
+    glVertex3f(x1, y1, 0.0); 
+    glVertex3f(x2, y1, 0.0); 
+    glVertex3f(x2, y2, 0.0); 
+  glEnd;
+end;
+
+procedure DrawMust(const x1, x2, y1, y2: float; const u, v: float);
+begin
+  mytexcoord(u, v);
+  glBegin(GL_QUADS);
+    glVertex3f(x1, y1, 0.0); 
+    glVertex3f(x2, y1, 0.0); 
+    glVertex3f(x2, y2, 0.0); 
+    glVertex3f(x1, y2, 0.0); 
+  glEnd;
+end;
+
+var
+  i: integer;
+begin
+  InitShipArrays;
+  for i := 0 to NUMFRAMES - 1 do
+  begin
+    frm := i;
+    SetFrame(frm);
+    
+    DrawShipPart(bottom_ship, top_ship, 0.0, 0.15, false);
+    DrawShipTop(top_ship, 0.15, 0.5, 0.5);  
+  
+    DrawSail(-0.20,  0.20, 0.20, 0.85, 0.1, 0.75);  
+    DrawMust( 0.20,  0.21, 0.15, 0.90, 0.1, 0.95);
+  end;  
+end.

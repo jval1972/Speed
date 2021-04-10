@@ -1,0 +1,149 @@
+modeldef "SAILBOAT.ddmodel" 
+{
+  scale 128.0
+}
+
+state "S_SAIL_0010"
+{
+  model "SAILBOAT.ddmodel"
+  texture "SAILBOAT.png"
+  frame1 0
+  frame2 0
+}
+
+
+state "S_SAIL_0020"
+{
+  model "SAILBOAT.ddmodel"
+  texture "SAILBOAT.png"
+  frame1 1
+  frame2 1
+}
+
+
+state "S_SAIL_0030"
+{
+  model "SAILBOAT.ddmodel"
+  texture "SAILBOAT.png"
+  frame1 2
+  frame2 2
+}
+
+
+state "S_SAIL_0040"
+{
+  model "SAILBOAT.ddmodel"
+  texture "SAILBOAT.png"
+  frame1 3
+  frame2 3
+}
+
+
+state "S_SAIL_0050"
+{
+  model "SAILBOAT.ddmodel"
+  texture "SAILBOAT.png"
+  frame1 4
+  frame2 4
+}
+
+
+state "S_SAIL_0060"
+{
+  model "SAILBOAT.ddmodel"
+  texture "SAILBOAT.png"
+  frame1 5
+  frame2 5
+}
+
+
+state "S_SAIL_0070"
+{
+  model "SAILBOAT.ddmodel"
+  texture "SAILBOAT.png"
+  frame1 6
+  frame2 6
+}
+
+
+state "S_SAIL_0080"
+{
+  model "SAILBOAT.ddmodel"
+  texture "SAILBOAT.png"
+  frame1 7
+  frame2 7
+}
+
+
+state "S_SAIL_0090"
+{
+  model "SAILBOAT.ddmodel"
+  texture "SAILBOAT.png"
+  frame1 8
+  frame2 8
+}
+
+
+state "S_SAIL_0100"
+{
+  model "SAILBOAT.ddmodel"
+  texture "SAILBOAT.png"
+  frame1 9
+  frame2 9
+}
+
+
+state "S_SAIL_0110"
+{
+  model "SAILBOAT.ddmodel"
+  texture "SAILBOAT.png"
+  frame1 10
+  frame2 10
+}
+
+
+state "S_SAIL_0120"
+{
+  model "SAILBOAT.ddmodel"
+  texture "SAILBOAT.png"
+  frame1 11
+  frame2 11
+}
+
+
+state "S_SAIL_0130"
+{
+  model "SAILBOAT.ddmodel"
+  texture "SAILBOAT.png"
+  frame1 12
+  frame2 12
+}
+
+
+state "S_SAIL_0140"
+{
+  model "SAILBOAT.ddmodel"
+  texture "SAILBOAT.png"
+  frame1 13
+  frame2 13
+}
+
+
+state "S_SAIL_0150"
+{
+  model "SAILBOAT.ddmodel"
+  texture "SAILBOAT.png"
+  frame1 14
+  frame2 14
+}
+
+
+state "S_SAIL_0160"
+{
+  model "SAILBOAT.ddmodel"
+  texture "SAILBOAT.png"
+  frame1 15
+  frame2 15
+}
+
+

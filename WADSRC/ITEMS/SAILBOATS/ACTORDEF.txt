@@ -1,0 +1,336 @@
+///////////////////////////////
+// SAIL_001
+///////////////////////////////
+ACTOR SAIL_001 2081
+{
+  Radius 64
+  Height 64
+  Health 1000
+  Mass 1000
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      SAILA -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// SAIL_002
+///////////////////////////////
+ACTOR SAIL_002 2082
+{
+  Radius 64
+  Height 64
+  Health 1000
+  Mass 1000
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      SAILB -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// SAIL_003
+///////////////////////////////
+ACTOR SAIL_003 2083
+{
+  Radius 64
+  Height 64
+  Health 1000
+  Mass 1000
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      SAILC -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// SAIL_004
+///////////////////////////////
+ACTOR SAIL_004 2084
+{
+  Radius 64
+  Height 64
+  Health 1000
+  Mass 1000
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      SAILD -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// SAIL_005
+///////////////////////////////
+ACTOR SAIL_005 2085
+{
+  Radius 64
+  Height 64
+  Health 1000
+  Mass 1000
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      SAILE -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// SAIL_006
+///////////////////////////////
+ACTOR SAIL_006 2086
+{
+  Radius 64
+  Height 64
+  Health 1000
+  Mass 1000
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      SAILF -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// SAIL_007
+///////////////////////////////
+ACTOR SAIL_007 2087
+{
+  Radius 64
+  Height 64
+  Health 1000
+  Mass 1000
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      SAILG -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// SAIL_008
+///////////////////////////////
+ACTOR SAIL_008 2088
+{
+  Radius 64
+  Height 64
+  Health 1000
+  Mass 1000
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      SAILH -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// SAIL_009
+///////////////////////////////
+ACTOR SAIL_009 2089
+{
+  Radius 64
+  Height 64
+  Health 1000
+  Mass 1000
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      SAILI -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// SAIL_010
+///////////////////////////////
+ACTOR SAIL_010 2090
+{
+  Radius 64
+  Height 64
+  Health 1000
+  Mass 1000
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      SAILJ -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// SAIL_011
+///////////////////////////////
+ACTOR SAIL_011 2091
+{
+  Radius 64
+  Height 64
+  Health 1000
+  Mass 1000
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      SAILK -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// SAIL_012
+///////////////////////////////
+ACTOR SAIL_012 2092
+{
+  Radius 64
+  Height 64
+  Health 1000
+  Mass 1000
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      SAILL -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// SAIL_013
+///////////////////////////////
+ACTOR SAIL_013 2093
+{
+  Radius 64
+  Height 64
+  Health 1000
+  Mass 1000
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      SAILM -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// SAIL_014
+///////////////////////////////
+ACTOR SAIL_014 2094
+{
+  Radius 64
+  Height 64
+  Health 1000
+  Mass 1000
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      SAILN -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// SAIL_015
+///////////////////////////////
+ACTOR SAIL_015 2095
+{
+  Radius 64
+  Height 64
+  Health 1000
+  Mass 1000
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      SAILO -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// SAIL_016
+///////////////////////////////
+ACTOR SAIL_016 2096
+{
+  Radius 64
+  Height 64
+  Health 1000
+  Mass 1000
+  Reactiontime 8
+  States
+  {
+    Spawn:
+    {
+      SAILP -1
+      Stop
+    }
+  }
+}
+
+
