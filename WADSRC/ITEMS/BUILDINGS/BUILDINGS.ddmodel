@@ -31,17 +31,23 @@ begin
   glEnd;
 end;
 
-procedure MakeFloor(const x1, y1, z1, x2, y2, z2: float; const u1, v1, u2, v2: integer);
+procedure MakeFloor(const x1, y1, z1, x2, y2, z2: float; const u1, v1, u2, v2: integer;
+  const left, right, back, front: boolean);
 begin
-  MakeRoof(x1, z1, x2, z2, y1, u1, v1, u1, v2);  
-  MakeRoof(x1, z1, x2, z2, y2, u1, v1, u1, v2);
-  MakeWall(x1, z1, x1, z2, y1, y2, u1, v1, u2, v2);
-  MakeWall(x1, z2, x2, z2, y1, y2, u1, v1, u2, v2);
-  MakeWall(x2, z2, x2, z1, y1, y2, u1, v1, u2, v2);
-  MakeWall(x2, z1, x1, z1, y1, y2, u1, v1, u2, v2);
+//  MakeRoof(x1, z1, x2, z2, y1, u1, v1, u1, v2);  
+//  MakeRoof(x1, z1, x2, z2, y2, u1, v1, u1, v2);
+  if left then
+    MakeWall(x1, z1, x1, z2, y1, y2, u1, v1, u2, v2);
+  if back then
+    MakeWall(x1, z2, x2, z2, y1, y2, u1, v1, u2, v2);
+  if right then
+    MakeWall(x2, z2, x2, z1, y1, y2, u1, v1, u2, v2);
+  if front then
+    MakeWall(x2, z1, x1, z1, y1, y2, u1, v1, u2, v2);
 end;
 
-procedure MakeBlock(const x1, z1, x2, z2: float; const fheight: float; const nfloors: integer; const u1, v1, u2, v2: integer);
+procedure MakeBlock(const x1, z1, x2, z2: float; const fheight: float; const nfloors: integer; 
+  const u1, v1, u2, v2: integer; const left, right, back, front: boolean);
 var
   i: integer;
 begin
@@ -49,8 +55,9 @@ begin
     MakeFloor(
       x1, fheight * i, z1, 
       x2, fheight * (i + 1), z2, 
-      u1, v1, u2, v2
+      u1, v1, u2, v2, left, right, back, front
     );
+  MakeRoof(x1, z1, x2, z2, nfloors * fheight, u1, v1, u1, v2);    
 end;
   
 type
@@ -82,7 +89,10 @@ begin
     z := -buildings[bi].dz / 2;
     for j := 0 to buildings[bi].zblocks - 1 do
     begin
-      MakeBlock(x, z, x + stepx, z + stepz, buildings[bi].height, buildings[bi].nfloors, buildings[bi].u1, buildings[bi].v1, buildings[bi].u2, buildings[bi].v2);
+      MakeBlock(
+        x, z, x + stepx, z + stepz, buildings[bi].height, buildings[bi].nfloors, 
+        buildings[bi].u1, buildings[bi].v1, buildings[bi].u2, buildings[bi].v2,
+        i = 0, i = buildings[bi].xblocks - 1, j = buildings[bi].zblocks - 1, j = 0);
       z := z + stepz;
     end;
     x := x + stepx;
