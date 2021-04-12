@@ -9,6 +9,7 @@ ACTOR CARGO_1 2009
   Mass 100000
   Reactiontime 8
   PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -31,6 +32,7 @@ ACTOR CARGO_2 2010
   Mass 100000
   Reactiontime 8
   PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -53,6 +55,7 @@ ACTOR CARGO_3 2011
   Mass 100000
   Reactiontime 8
   PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -75,6 +78,7 @@ ACTOR CARGO_4 2012
   Mass 100000
   Reactiontime 8
   PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -97,6 +101,7 @@ ACTOR CARGO_5 2013
   Mass 100000
   Reactiontime 8
   PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -119,6 +124,7 @@ ACTOR CARGO_6 2014
   Mass 100000
   Reactiontime 8
   PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -141,6 +147,7 @@ ACTOR CARGO_7 2015
   Mass 100000
   Reactiontime 8
   PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -163,6 +170,7 @@ ACTOR CARGO_8 2016
   Mass 100000
   Reactiontime 8
   PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -185,6 +193,7 @@ ACTOR CARGO_9 2017
   Mass 100000
   Reactiontime 8
   PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -207,6 +216,7 @@ ACTOR CARGO_10 2018
   Mass 100000
   Reactiontime 8
   PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:

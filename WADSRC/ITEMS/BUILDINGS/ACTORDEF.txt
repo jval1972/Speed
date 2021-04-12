@@ -9,6 +9,7 @@ ACTOR NEWBUILDING_001 2019
   Mass 1000000
   Scale 2
   Reactiontime 8
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -31,6 +32,7 @@ ACTOR NEWBUILDING_002 2020
   Mass 1000000
   Scale 2
   Reactiontime 8
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -53,6 +55,7 @@ ACTOR NEWBUILDING_003 2021
   Mass 1000000
   Scale 2
   Reactiontime 8
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -75,6 +78,7 @@ ACTOR NEWBUILDING_004 2022
   Mass 1000000
   Scale 2
   Reactiontime 8
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -97,6 +101,7 @@ ACTOR NEWBUILDING_005 2023
   Mass 1000000
   Scale 2
   Reactiontime 8
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -119,6 +124,7 @@ ACTOR NEWBUILDING_006 2024
   Mass 1000000
   Scale 2
   Reactiontime 8
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -141,6 +147,7 @@ ACTOR NEWBUILDING_007 2025
   Mass 1000000
   Scale 2
   Reactiontime 8
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -163,6 +170,7 @@ ACTOR NEWBUILDING_008 2026
   Mass 1000000
   Scale 2
   Reactiontime 8
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -185,6 +193,7 @@ ACTOR NEWBUILDING_009 2027
   Mass 1000000
   Scale 2
   Reactiontime 8
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -207,6 +216,7 @@ ACTOR NEWBUILDING_010 2028
   Mass 1000000
   Scale 2
   Reactiontime 8
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -229,6 +239,7 @@ ACTOR NEWBUILDING_011 2029
   Mass 1000000
   Scale 2
   Reactiontime 8
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -251,6 +262,7 @@ ACTOR NEWBUILDING_012 2030
   Mass 1000000
   Scale 2
   Reactiontime 8
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -273,6 +285,7 @@ ACTOR NEWBUILDING_013 2031
   Mass 1000000
   Scale 2
   Reactiontime 8
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -295,6 +308,7 @@ ACTOR NEWBUILDING_014 2032
   Mass 1000000
   Scale 2
   Reactiontime 8
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -317,6 +331,7 @@ ACTOR NEWBUILDING_015 2033
   Mass 1000000
   Scale 2
   Reactiontime 8
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -339,6 +354,7 @@ ACTOR NEWBUILDING_016 2034
   Mass 1000000
   Scale 2
   Reactiontime 8
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -361,6 +377,7 @@ ACTOR NEWBUILDING_017 2035
   Mass 1000000
   Scale 2
   Reactiontime 8
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -383,6 +400,7 @@ ACTOR NEWBUILDING_018 2036
   Mass 1000000
   Scale 2
   Reactiontime 8
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -405,6 +423,7 @@ ACTOR NEWBUILDING_019 2037
   Mass 1000000
   Scale 2
   Reactiontime 8
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -427,6 +446,7 @@ ACTOR NEWBUILDING_020 2038
   Mass 1000000
   Scale 2
   Reactiontime 8
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -449,6 +469,7 @@ ACTOR NEWBUILDING_021 2039
   Mass 1000000
   Scale 2
   Reactiontime 8
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -471,6 +492,7 @@ ACTOR NEWBUILDING_022 2040
   Mass 1000000
   Scale 2
   Reactiontime 8
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -493,6 +515,7 @@ ACTOR NEWBUILDING_023 2041
   Mass 1000000
   Scale 2
   Reactiontime 8
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -515,6 +538,7 @@ ACTOR NEWBUILDING_024 2042
   Mass 1000000
   Scale 2
   Reactiontime 8
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -537,6 +561,7 @@ ACTOR NEWBUILDING_025 2043
   Mass 1000000
   Scale 2
   Reactiontime 8
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -559,6 +584,7 @@ ACTOR NEWBUILDING_026 2044
   Mass 1000000
   Scale 2
   Reactiontime 8
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -581,6 +607,7 @@ ACTOR NEWBUILDING_027 2045
   Mass 1000000
   Scale 2
   Reactiontime 8
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -603,6 +630,7 @@ ACTOR NEWBUILDING_028 2046
   Mass 1000000
   Scale 2
   Reactiontime 8
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -625,6 +653,7 @@ ACTOR NEWBUILDING_029 2047
   Mass 1000000
   Scale 2
   Reactiontime 8
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -647,6 +676,7 @@ ACTOR NEWBUILDING_030 2048
   Mass 1000000
   Scale 2
   Reactiontime 8
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -669,6 +699,7 @@ ACTOR NEWBUILDING_031 2049
   Mass 1000000
   Scale 2
   Reactiontime 8
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -691,6 +722,7 @@ ACTOR NEWBUILDING_032 2050
   Mass 1000000
   Scale 2
   Reactiontime 8
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -713,6 +745,7 @@ ACTOR NEWBUILDING_033 2051
   Mass 1000000
   Scale 2
   Reactiontime 8
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -735,6 +768,7 @@ ACTOR NEWBUILDING_034 2052
   Mass 1000000
   Scale 2
   Reactiontime 8
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -757,6 +791,7 @@ ACTOR NEWBUILDING_035 2053
   Mass 1000000
   Scale 2
   Reactiontime 8
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -779,6 +814,7 @@ ACTOR NEWBUILDING_036 2054
   Mass 1000000
   Scale 2
   Reactiontime 8
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -801,6 +837,7 @@ ACTOR NEWBUILDING_037 2055
   Mass 1000000
   Scale 2
   Reactiontime 8
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -823,6 +860,7 @@ ACTOR NEWBUILDING_038 2056
   Mass 1000000
   Scale 2
   Reactiontime 8
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -845,6 +883,7 @@ ACTOR NEWBUILDING_039 2057
   Mass 1000000
   Scale 2
   Reactiontime 8
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -867,6 +906,7 @@ ACTOR NEWBUILDING_040 2058
   Mass 1000000
   Scale 2
   Reactiontime 8
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -889,6 +929,7 @@ ACTOR NEWBUILDING_041 2059
   Mass 1000000
   Scale 2
   Reactiontime 8
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -911,6 +952,7 @@ ACTOR NEWBUILDING_042 2060
   Mass 1000000
   Scale 2
   Reactiontime 8
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -933,6 +975,7 @@ ACTOR NEWBUILDING_043 2061
   Mass 1000000
   Scale 2
   Reactiontime 8
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -955,6 +998,7 @@ ACTOR NEWBUILDING_044 2062
   Mass 1000000
   Scale 2
   Reactiontime 8
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -977,6 +1021,7 @@ ACTOR NEWBUILDING_045 2063
   Mass 1000000
   Scale 2
   Reactiontime 8
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -999,6 +1044,7 @@ ACTOR NEWBUILDING_046 2064
   Mass 1000000
   Scale 2
   Reactiontime 8
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -1021,6 +1067,7 @@ ACTOR NEWBUILDING_047 2065
   Mass 1000000
   Scale 2
   Reactiontime 8
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -1043,6 +1090,7 @@ ACTOR NEWBUILDING_048 2066
   Mass 1000000
   Scale 2
   Reactiontime 8
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -1065,6 +1113,7 @@ ACTOR NEWBUILDING_049 2067
   Mass 1000000
   Scale 2
   Reactiontime 8
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -1087,6 +1136,7 @@ ACTOR NEWBUILDING_050 2068
   Mass 1000000
   Scale 2
   Reactiontime 8
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -1109,6 +1159,7 @@ ACTOR NEWBUILDING_051 2069
   Mass 1000000
   Scale 2
   Reactiontime 8
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -1131,6 +1182,7 @@ ACTOR NEWBUILDING_052 2070
   Mass 1000000
   Scale 2
   Reactiontime 8
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -1153,6 +1205,7 @@ ACTOR NEWBUILDING_053 2071
   Mass 1000000
   Scale 2
   Reactiontime 8
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -1175,6 +1228,7 @@ ACTOR NEWBUILDING_054 2072
   Mass 1000000
   Scale 2
   Reactiontime 8
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -1197,6 +1251,7 @@ ACTOR NEWBUILDING_055 2073
   Mass 1000000
   Scale 2
   Reactiontime 8
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -1219,6 +1274,7 @@ ACTOR NEWBUILDING_056 2074
   Mass 1000000
   Scale 2
   Reactiontime 8
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -1241,6 +1297,7 @@ ACTOR NEWBUILDING_057 2075
   Mass 1000000
   Scale 2
   Reactiontime 8
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -1263,6 +1320,7 @@ ACTOR NEWBUILDING_058 2076
   Mass 1000000
   Scale 2
   Reactiontime 8
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -1285,6 +1343,7 @@ ACTOR NEWBUILDING_059 2077
   Mass 1000000
   Scale 2
   Reactiontime 8
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -1307,6 +1366,7 @@ ACTOR NEWBUILDING_060 2078
   Mass 1000000
   Scale 2
   Reactiontime 8
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
@@ -1329,6 +1389,7 @@ ACTOR NEWBUILDING_061 2079
   Mass 1000000
   Scale 2
   Reactiontime 8
+  +NORENDERINTERPOLATE
   States
   {
     Spawn:
