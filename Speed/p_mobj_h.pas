@@ -367,6 +367,8 @@ const
   MF3_EX_BLOODIGNOREDAMAGE = 32;
   // Flip sprite
   MF3_EX_FLIPSPRITE = 64;
+  // No interpolation
+  MF3_EX_NORENDERINTERPOLATE = 128;
 
 type
 // Map Object definition.

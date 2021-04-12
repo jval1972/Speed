@@ -425,14 +425,11 @@ begin
   while (th <> nil) and (th <> @thinkercap) do
   begin
     if @th._function.acp1 = @P_MobjThinker then
-    {$IFDEF STRIFE}
-      if Pmobj_t(th).flags2_ex and MF2_EX_JUSTAPPEARED = 0 then
-    {$ELSE}
       if Pmobj_t(th).flags and MF_JUSTAPPEARED = 0 then
-    {$ENDIF}
-    // JVAL: 20200105 - Interpolate only mobjs that the renderer touched
-      if (Pmobj_t(th).rendervalidcount = rendervalidcount) or (Pmobj_t(th).player <> nil) then
-        R_AddInterpolationItem(th, imobj);
+        if Pmobj_t(th).flags3_ex and MF3_EX_NORENDERINTERPOLATE = 0 then
+        // JVAL: 20200105 - Interpolate only mobjs that the renderer touched
+          if (Pmobj_t(th).rendervalidcount = rendervalidcount) or (Pmobj_t(th).player <> nil) then
+            R_AddInterpolationItem(th, imobj);
     th := th.next;
   end;
   {$IFDEF DEBUG}

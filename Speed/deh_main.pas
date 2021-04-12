@@ -1803,6 +1803,7 @@ begin
   mobj_flags3_ex.Add('MF3_EX_NOCRASH');
   mobj_flags3_ex.Add('MF3_EX_BLOODIGNOREDAMAGE');
   mobj_flags3_ex.Add('MF3_EX_FLIPSPRITE');
+  mobj_flags3_ex.Add('MF3_EX_NORENDERINTERPOLATE');
 
   mobj_flags4_ex := TDTextList.Create;
 
