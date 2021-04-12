@@ -1,0 +1,11 @@
+modeldef "stadium_lamp.ddmodel" 
+{
+  scale 2048.0
+}
+
+state S_STADIUMLAMP0 {
+  model "stadium_lamp.ddmodel" 
+  texture "stadium_lamp.png"
+  frame1 0
+  frame2 0
+}

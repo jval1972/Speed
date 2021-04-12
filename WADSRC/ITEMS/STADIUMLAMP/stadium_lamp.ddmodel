@@ -1,0 +1,73 @@
+model model1;
+
+procedure myvert(const x, y, z, u: float);
+var
+  u1, v1: float;
+begin
+  if u < 0.01 then
+    u1 := 0.01
+  else if u > 0.99 then
+    u1 := 0.99
+  else 
+    u1 := u;
+  if y < 0.01 then
+    v1 := 0.01
+  else if y > 0.99 then
+    v1 := 0.99
+  else 
+    v1 := y;
+  glTexCoord2f(u1, v1);
+  glVertex3f(x, y, z);
+end;
+  
+procedure Cylinder(slices: integer; r1, r2, h, dz1, dz2: float);
+var
+  radius, halfLength: float;
+  i: integer;
+  theta, nextTheta: float;
+begin
+  for i := 0 to slices - 1 do
+  begin
+    theta := i * 2.0 * PI / slices;
+    nextTheta := (i + 1) * 2.0 * PI / slices;
+    glBegin(GL_TRIANGLE_STRIP);
+      myvert(r1 * cos(theta), h, r1 * sin(theta) + dz2, i / slices);
+      myvert(r2 * cos(theta), 0.0, r2 * sin(theta) + dz1, i / slices);
+      myvert(r1 * cos(nextTheta), h, r1 * sin(nextTheta) + dz2, (i + 1) / slices);
+      myvert(r2 * cos(nextTheta), 0.0, r2 * sin(nextTheta) + dz1, (i + 1) / slices);
+    glEnd;
+  end;
+end;
+
+begin
+  SetFrame(0);
+  Cylinder(8, 0.001, 0.12, 0.05, 0.0, 0.02);
+  Cylinder(6, 0.01, 0.015, 0.5, 0.0, 0.1);
+  Cylinder(4, 0.005, 0.005, 0.5, -0.04, 0.09);
+  Cylinder(4, 0.005, 0.005, 0.525, -0.08, 0.098);
+  glBegin(GL_TRIANGLE_STRIP);
+    myvert(0.0, 0.0, 0.0, 0.0);
+    myvert(0.0, 0.0, 0.05, 0.0);
+    myvert(0.0, 0.2, 0.05, 0.1);
+  glEnd;
+  glBegin(GL_QUADS);
+    glTexCoord2f(0.005, 0.505);    glVertex3f(0.05, 0.45, 0.1);
+    glTexCoord2f(0.995, 0.505);    glVertex3f(0.05, 0.55, 0.3);
+    glTexCoord2f(0.995, 0.995);    glVertex3f(-0.05, 0.55, 0.3);
+    glTexCoord2f(0.005, 0.995);    glVertex3f(-0.05, 0.45,  0.1);
+  glEnd;
+  glBegin(GL_TRIANGLE_FAN);
+    myvert(0.00, 0.5, 0.1, 0.4);
+    glVertex3f(0.05, 0.45, 0.1);
+    glVertex3f(0.05, 0.55, 0.3);
+    glVertex3f(-0.05, 0.55, 0.3);
+    glVertex3f(-0.05, 0.45,  0.1);
+    glVertex3f(0.05, 0.45, 0.1);
+  glEnd;
+  glBegin(GL_TRIANGLE_STRIP);
+    glTexCoord2f(0.1, 0.4);
+    glVertex3f(0.00, 0.525, 0.1);
+    glVertex3f(0.00, 0.49, 0.09);
+    glVertex3f(0.00, 0.55, 0.3);
+  glEnd;
+end.
