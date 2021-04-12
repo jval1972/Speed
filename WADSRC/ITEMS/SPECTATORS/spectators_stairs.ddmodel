@@ -1,0 +1,56 @@
+model model1;
+
+const
+  TEX_SIZE = 128;
+  
+procedure mytexcoord(const x, y: integer);
+begin
+  glTexCoord2f((0.5 + x) / TEX_SIZE, (0.5 + y) / TEX_SIZE);
+end;
+
+procedure MakeSide(const z: float);
+begin
+  glbegin(GL_QUADS);
+    mytexcoord(1, 53); glVertex3f(-0.256, 0.000, z);
+    mytexcoord(1, 45); glVertex3f(-0.256, 0.05, z);
+    mytexcoord(91, 1); glVertex3f( 0.256, 0.220, z);
+    mytexcoord(91, 53); glVertex3f( 0.256, 0.000, z);
+  glEnd;
+end;
+
+procedure MakeStairs(const z1, z2: float);
+begin
+  glbegin(GL_QUADS);
+    mytexcoord(100, 1); glVertex3f(-0.256, 0.05, z1);
+    mytexcoord(126, 1); glVertex3f(-0.256, 0.05, z2);
+    mytexcoord(126, 20); glVertex3f(0.256, 0.220, z2);
+    mytexcoord(100, 20); glVertex3f(0.256, 0.220, z1);
+  glEnd;
+end;
+  
+procedure MakeAdvert(const z1, z2: float; u, v: integer);
+begin
+  glbegin(GL_QUADS);
+    mytexcoord(u, v); 
+    glVertex3f(-0.256, 0.05, z2);
+    mytexcoord(u, v + 22); 
+    glVertex3f(-0.256, 0.000, z2);
+    mytexcoord(u + 93, v + 22); 
+    glVertex3f(-0.256, 0.000, z1);
+    mytexcoord(u + 93, v); 
+    glVertex3f(-0.256, 0.05, z1);
+  glEnd;
+end;
+
+var
+  i: integer;
+begin 
+  for i := 0 to 3 do
+  begin
+    SetFrame(i);
+    MakeSide(0.1);
+    MakeSide(-0.1);
+    MakeAdvert(0.1, -0.1, 1, 32 + i * 24);
+    MakeStairs(0.1, -0.1);
+  end;
+end.

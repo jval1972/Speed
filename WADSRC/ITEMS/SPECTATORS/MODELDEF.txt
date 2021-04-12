@@ -1,0 +1,32 @@
+modeldef "spectators_stairs.ddmodel" 
+{
+  scale 756.0
+}
+
+state S_SPECTATORS0000 {
+  model "spectators_stairs.ddmodel" 
+  texture "spectators_stairs1.png"
+  frame1 0
+  frame2 0
+}
+
+state S_SPECTATORS0010 {
+  model "spectators_stairs.ddmodel" 
+  texture "spectators_stairs1.png"
+  frame1 1
+  frame2 1
+}
+
+state S_SPECTATORS0020 {
+  model "spectators_stairs.ddmodel" 
+  texture "spectators_stairs1.png"
+  frame1 2
+  frame2 2
+}
+
+state S_SPECTATORS0030 {
+  model "spectators_stairs.ddmodel" 
+  texture "spectators_stairs1.png"
+  frame1 3
+  frame2 3
+}
