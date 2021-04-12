@@ -103,6 +103,7 @@
     '  Reactiontime 8'#13#10 +
     '  Scale 2'#13#10 +
     '  +SOLID'#13#10 +
+    '  +NORENDERINTERPOLATE'#13#10 +
     '  States'#13#10 +
     '  {'#13#10 +
     '    Spawn:'#13#10 +
@@ -125,6 +126,7 @@
     '  Reactiontime 8'#13#10 +
     '  Scale 2'#13#10 +
     '  +SOLID'#13#10 +
+    '  +NORENDERINTERPOLATE'#13#10 +
     '  States'#13#10 +
     '  {'#13#10 +
     '    Spawn:'#13#10 +
@@ -148,6 +150,7 @@
     '  Reactiontime 8'#13#10 +
     '  Scale 2'#13#10 +
     '  +SOLID'#13#10 +
+    '  +NORENDERINTERPOLATE'#13#10 +
     '  States'#13#10 +
     '  {'#13#10 +
     '    Spawn:'#13#10 +
@@ -170,6 +173,7 @@
     '  Reactiontime 8'#13#10 +
     '  Scale 2'#13#10 +
     '  +SOLID'#13#10 +
+    '  +NORENDERINTERPOLATE'#13#10 +
     '  States'#13#10 +
     '  {'#13#10 +
     '    Spawn:'#13#10 +
@@ -193,6 +197,7 @@
     '  Reactiontime 8'#13#10 +
     '  Scale 2'#13#10 +
     '  +SOLID'#13#10 +
+    '  +NORENDERINTERPOLATE'#13#10 +
     '  States'#13#10 +
     '  {'#13#10 +
     '    Spawn:'#13#10 +
@@ -216,6 +221,7 @@
     '  Reactiontime 8'#13#10 +
     '  Scale 2'#13#10 +
     '  +SOLID'#13#10 +
+    '  +NORENDERINTERPOLATE'#13#10 +
     '  States'#13#10 +
     '  {'#13#10 +
     '    Spawn:'#13#10 +
@@ -239,6 +245,7 @@
     '  Reactiontime 8'#13#10 +
     '  Scale 2'#13#10 +
     '  +SOLID'#13#10 +
+    '  +NORENDERINTERPOLATE'#13#10 +
     '  States'#13#10 +
     '  {'#13#10 +
     '    Spawn:'#13#10 +
@@ -261,6 +268,7 @@
     '  Reactiontime 8'#13#10 +
     '  Scale 2'#13#10 +
     '  +SOLID'#13#10 +
+    '  +NORENDERINTERPOLATE'#13#10 +
     '  States'#13#10 +
     '  {'#13#10 +
     '    Spawn:'#13#10 +
@@ -283,6 +291,7 @@
     '  Reactiontime 8'#13#10 +
     '  Scale 2'#13#10 +
     '  +SOLID'#13#10 +
+    '  +NORENDERINTERPOLATE'#13#10 +
     '  States'#13#10 +
     '  {'#13#10 +
     '    Spawn:'#13#10 +
@@ -306,6 +315,7 @@
     '  Reactiontime 8'#13#10 +
     '  Scale 2'#13#10 +
     '  +SOLID'#13#10 +
+    '  +NORENDERINTERPOLATE'#13#10 +
     '  States'#13#10 +
     '  {'#13#10 +
     '    Spawn:'#13#10 +
@@ -329,6 +339,7 @@
     '  Reactiontime 8'#13#10 +
     '  Scale 2'#13#10 +
     '  +SOLID'#13#10 +
+    '  +NORENDERINTERPOLATE'#13#10 +
     '  States'#13#10 +
     '  {'#13#10 +
     '    Spawn:'#13#10 +
@@ -352,6 +363,7 @@
     '  Reactiontime 8'#13#10 +
     '  Scale 2'#13#10 +
     '  +SOLID'#13#10 +
+    '  +NORENDERINTERPOLATE'#13#10 +
     '  States'#13#10 +
     '  {'#13#10 +
     '    Spawn:'#13#10 +
@@ -375,6 +387,7 @@
     '  Reactiontime 8'#13#10 +
     '  Scale 2'#13#10 +
     '  +SOLID'#13#10 +
+    '  +NORENDERINTERPOLATE'#13#10 +
     '  States'#13#10 +
     '  {'#13#10 +
     '    Spawn:'#13#10 +
@@ -397,6 +410,7 @@
     '  Mass 1000'#13#10 +
     '  Reactiontime 8'#13#10 +
     '  Scale 2'#13#10 +
+    '  +NORENDERINTERPOLATE'#13#10 +
     '  States'#13#10 +
     '  {'#13#10 +
     '    Spawn:'#13#10 +
@@ -419,6 +433,7 @@
     '  Mass 1000'#13#10 +
     '  Reactiontime 8'#13#10 +
     '  Scale 2'#13#10 +
+    '  +NORENDERINTERPOLATE'#13#10 +
     '  States'#13#10 +
     '  {'#13#10 +
     '    Spawn:'#13#10 +
@@ -442,6 +457,7 @@
     '  Reactiontime 8'#13#10 +
     '  Scale 2'#13#10 +
     '  +SOLID'#13#10 +
+    '  +NORENDERINTERPOLATE'#13#10 +
     '  States'#13#10 +
     '  {'#13#10 +
     '    Spawn:'#13#10 +
