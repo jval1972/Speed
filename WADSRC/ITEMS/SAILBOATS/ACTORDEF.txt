@@ -8,6 +8,7 @@ ACTOR SAIL_001 2081
   Health 1000
   Mass 1000
   Reactiontime 8
+  +PRECISESPAWNANGLE
   States
   {
     Spawn:
@@ -29,6 +30,7 @@ ACTOR SAIL_002 2082
   Health 1000
   Mass 1000
   Reactiontime 8
+  +PRECISESPAWNANGLE
   States
   {
     Spawn:
@@ -50,6 +52,7 @@ ACTOR SAIL_003 2083
   Health 1000
   Mass 1000
   Reactiontime 8
+  +PRECISESPAWNANGLE
   States
   {
     Spawn:
@@ -71,6 +74,7 @@ ACTOR SAIL_004 2084
   Health 1000
   Mass 1000
   Reactiontime 8
+  +PRECISESPAWNANGLE
   States
   {
     Spawn:
@@ -92,6 +96,7 @@ ACTOR SAIL_005 2085
   Health 1000
   Mass 1000
   Reactiontime 8
+  +PRECISESPAWNANGLE
   States
   {
     Spawn:
@@ -113,6 +118,7 @@ ACTOR SAIL_006 2086
   Health 1000
   Mass 1000
   Reactiontime 8
+  +PRECISESPAWNANGLE
   States
   {
     Spawn:
@@ -134,6 +140,7 @@ ACTOR SAIL_007 2087
   Health 1000
   Mass 1000
   Reactiontime 8
+  +PRECISESPAWNANGLE
   States
   {
     Spawn:
@@ -155,6 +162,7 @@ ACTOR SAIL_008 2088
   Health 1000
   Mass 1000
   Reactiontime 8
+  +PRECISESPAWNANGLE
   States
   {
     Spawn:
@@ -176,6 +184,7 @@ ACTOR SAIL_009 2089
   Health 1000
   Mass 1000
   Reactiontime 8
+  +PRECISESPAWNANGLE
   States
   {
     Spawn:
@@ -197,6 +206,7 @@ ACTOR SAIL_010 2090
   Health 1000
   Mass 1000
   Reactiontime 8
+  +PRECISESPAWNANGLE
   States
   {
     Spawn:
@@ -218,6 +228,7 @@ ACTOR SAIL_011 2091
   Health 1000
   Mass 1000
   Reactiontime 8
+  +PRECISESPAWNANGLE
   States
   {
     Spawn:
@@ -239,6 +250,7 @@ ACTOR SAIL_012 2092
   Health 1000
   Mass 1000
   Reactiontime 8
+  +PRECISESPAWNANGLE
   States
   {
     Spawn:
@@ -260,6 +272,7 @@ ACTOR SAIL_013 2093
   Health 1000
   Mass 1000
   Reactiontime 8
+  +PRECISESPAWNANGLE
   States
   {
     Spawn:
@@ -281,6 +294,7 @@ ACTOR SAIL_014 2094
   Health 1000
   Mass 1000
   Reactiontime 8
+  +PRECISESPAWNANGLE
   States
   {
     Spawn:
@@ -302,6 +316,7 @@ ACTOR SAIL_015 2095
   Health 1000
   Mass 1000
   Reactiontime 8
+  +PRECISESPAWNANGLE
   States
   {
     Spawn:
@@ -323,6 +338,7 @@ ACTOR SAIL_016 2096
   Health 1000
   Mass 1000
   Reactiontime 8
+  +PRECISESPAWNANGLE
   States
   {
     Spawn:
