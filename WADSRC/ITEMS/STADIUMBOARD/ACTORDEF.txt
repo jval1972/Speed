@@ -1,0 +1,21 @@
+///////////////////////////////
+// STADIUMBOARD
+///////////////////////////////
+ACTOR STADIUMBOARD 2102
+{
+  Radius 120
+  Height 200
+  Health 1000000
+  Mass 1000000
+  Reactiontime 8
+  PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  States
+  {
+    Spawn:
+    {
+      STBR A -1
+      Stop
+    }
+  }
+}

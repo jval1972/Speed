@@ -1,0 +1,52 @@
+model model1;
+
+procedure myvert(const x, y, z, u: float);
+var
+  u1, v1: float;
+begin
+  if u < 0.01 then
+    u1 := 0.01
+  else if u > 0.99 then
+    u1 := 0.99
+  else 
+    u1 := u;
+  if y < 0.01 then
+    v1 := 0.01
+  else if y > 0.99 then
+    v1 := 0.99
+  else 
+    v1 := y;
+  glTexCoord2f(u1, v1);
+  glVertex3f(x, y, z);
+end;
+  
+procedure Cylinder(slices: integer; dx, r1, r2, h, dz1, dz2: float);
+var
+  radius, halfLength: float;
+  i: integer;
+  theta, nextTheta: float;
+begin
+  for i := 0 to slices - 1 do
+  begin
+    theta := i * 2.0 * PI / slices;
+    nextTheta := (i + 1) * 2.0 * PI / slices;
+    glBegin(GL_TRIANGLE_STRIP);
+      myvert(dx + r1 * cos(theta), h, r1 * sin(theta) + dz2, i / slices);
+      myvert(dx + r2 * cos(theta), 0.0, r2 * sin(theta) + dz1, i / slices);
+      myvert(dx + r1 * cos(nextTheta), h, r1 * sin(nextTheta) + dz2, (i + 1) / slices);
+      myvert(dx + r2 * cos(nextTheta), 0.0, r2 * sin(nextTheta) + dz1, (i + 1) / slices);
+    glEnd;
+  end;
+end;
+
+begin
+  SetFrame(0);
+  Cylinder(4, -0.1, 0.01, 0.015, 0.5, 0.0, 0.05);
+  Cylinder(4,  0.1, 0.01, 0.015, 0.5, 0.0, 0.05);
+  glBegin(GL_QUADS);
+    glTexCoord2f(0.995, 0.995);    glVertex3f(0.2, 0.45, 0.055);
+    glTexCoord2f(0.995, 0.505);    glVertex3f(0.2, 0.62, 0.105);
+    glTexCoord2f(0.005, 0.505);    glVertex3f(-0.2, 0.62, 0.105);
+    glTexCoord2f(0.005, 0.995);    glVertex3f(-0.2, 0.45,  0.055);
+  glEnd;
+end.

@@ -1,0 +1,11 @@
+modeldef "stadium_board.ddmodel" 
+{
+  scale 1536.0
+}
+
+state S_STADIUMBOARD0 {
+  model "stadium_board.ddmodel" 
+  texture "stadium_board.png"
+  frame1 0
+  frame2 0
+}
