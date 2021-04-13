@@ -1322,6 +1322,9 @@ begin
   slidemo := mo;
   hitcount := 0;
 
+  mo.momx := mo.momx div 2;
+  mo.momy := mo.momy div 2;
+
   repeat
     inc(hitcount);
 
