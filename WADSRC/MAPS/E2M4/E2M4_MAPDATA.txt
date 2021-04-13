@@ -1,0 +1,8 @@
+sprite=MAPSPR24
+sky=NUBES24
+mountain=MOUNT24
+ground=FLAT0062
+name=The Stadium
+length=4448
+best=3400
+level=1
