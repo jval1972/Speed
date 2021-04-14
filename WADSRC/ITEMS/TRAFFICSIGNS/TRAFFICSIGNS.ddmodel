@@ -1,0 +1,500 @@
+model model1;
+
+const
+  TEX_SIZE = 512;
+  
+procedure myvert(const x, y, z, u: float);
+var
+  u1, v1: float;
+begin
+  if u < 0.005 then
+    u1 := 0.005
+  else if u > 0.995 then
+    u1 := 0.995 
+  else
+    u1 := u;
+  glTexCoord2f(u1, y);
+  glVertex3f(x, y, z);
+end;
+  
+procedure Cylinder(r1, r2, h: float);
+var
+  radius, halfLength: float;
+  i, slices: integer;
+  theta, nextTheta: float;
+begin
+  slices := 8;
+  for i := 0 to slices - 1 do
+  begin
+    theta := i * 2.0 * PI / slices;
+    nextTheta := (i + 1) * 2.0 * PI / slices;
+    glBegin(GL_TRIANGLE_STRIP);
+      myvert(r1 * cos(theta), h, r1 * sin(theta), i / slices);
+      myvert(r2 * cos(theta), 0.0, r2 * sin(theta), i / slices);
+      myvert(r1 * cos(nextTheta), h, r1 * sin(nextTheta), (i + 1) / slices);
+      myvert(r2 * cos(nextTheta), 0.0, r2 * sin(nextTheta), (i + 1) / slices);
+    glEnd;
+  end;
+end;
+
+const
+  MAXPOINTS = 20;
+  
+var
+  pointsX: array[0..MAXPOINTS - 1] of float;
+  pointsY: array[0..MAXPOINTS - 1] of float;
+  numpoints: integer;
+  
+procedure ClearPoints;
+begin
+  numpoints := 0;
+end;
+  
+procedure AddPoint(const x, y: float);
+begin
+  pointsX[numpoints] := x;
+  pointsY[numpoints] := y;
+  numpoints := numpoints + 1;
+end;
+  
+procedure pointvertcoord(const x, y: float; const cx, cy: float; const z: float);
+begin
+  glTexCoord2f(x / TEX_SIZE, y / TEX_SIZE);
+  glVertex3f((x - cx) / 256, (cy - y) / 256 + 0.5, z);
+end;
+  
+procedure pointvert(const x, y: float; const cx, cy: float; const z: float);
+begin
+  glVertex3f((x - cx) / 256, (cy - y) / 256 + 0.5, z);
+end;
+  
+procedure circlepoints(const x1, y1, x2, y2: integer);
+var
+  rx, ry: float;
+  cx, cy: float;
+  i: integer;
+begin
+  rx := (x2 - x1) / 2;
+  ry := (y2 - y1) / 2;
+  cx := (x2 + x1) / 2;
+  cy := (y2 + y1) / 2;
+  ClearPoints;
+  for i := 0 to MAXPOINTS - 1 do
+    AddPoint(cx + rx * Sin360(i / MAXPOINTS * 360), cy + ry * Cos360(i / MAXPOINTS * 360)); 
+end;
+  
+procedure DrawPoints;
+var
+  maxx, minx, maxy, miny: float;
+  i: integer;
+  cnt: integer;
+  cx, cy: float;  
+begin
+  cnt := numpoints;
+  maxx := -100000;
+  minx := 100000;
+  maxy := -100000;
+  miny := 100000;
+  for i := 0 to cnt - 1 do
+  begin
+    if pointsX[i] < minx then
+      minx := pointsX[i]; 
+    if pointsX[i] > maxx then
+      maxx := pointsX[i]; 
+    if pointsY[i] < miny then
+      miny := pointsY[i]; 
+    if pointsY[i] > maxy then
+      maxy := pointsY[i]; 
+  end;
+  cx := (maxx + minx) / 2.0;
+  cy := (maxy + miny) / 2.0;
+  
+  glBegin(GL_TRIANGLE_FAN);
+    pointvertcoord(cx, cy, cx, cy, 0.03);
+    for i := 0 to cnt - 1 do
+      pointvertcoord(pointsX[i], pointsY[i], cx, cy, 0.03);
+    pointvertcoord(pointsX[0], pointsY[0], cx, cy, 0.03);
+  glEnd;
+  
+  glTexCoord2f(4 / TEX_SIZE, 260 / TEX_SIZE);
+  glBegin(GL_TRIANGLE_FAN);
+    pointvert(cx, cy, cx, cy, 0.01);
+    for i := 0 to cnt - 1 do
+      pointvert(pointsX[i], pointsY[i], cx, cy, 0.01);
+    pointvert(pointsX[0], pointsY[0], cx, cy, 0.01);
+  glEnd;
+  
+  glBegin(GL_TRIANGLE_STRIP);
+    for i := 0 to cnt - 1 do
+    begin
+      pointvert(pointsX[i], pointsY[i], cx, cy, 0.01);
+      pointvert(pointsX[i], pointsY[i], cx, cy, 0.03);
+    end;
+    pointvert(pointsX[0], pointsY[0], cx, cy, 0.01);
+    pointvert(pointsX[0], pointsY[0], cx, cy, 0.03);
+  glEnd;  
+end;
+  
+begin
+// Stop
+  SetFrame(0);
+  Cylinder(0.02, 0.02, 0.5);
+  Cylinder(0.02, 0.05, 0.05);
+  ClearPoints;
+  AddPoint(1, 275);
+  AddPoint(19, 257);
+  AddPoint(44, 257);
+  AddPoint(62, 275);
+  AddPoint(62, 300);
+  AddPoint(44, 318);
+  AddPoint(19, 318);
+  AddPoint(1, 300);
+  DrawPoints;
+  
+// Tri
+  SetFrame(1);
+  Cylinder(0.02, 0.02, 0.5);
+  Cylinder(0.02, 0.05, 0.05);
+  ClearPoints;
+  AddPoint(58, 261);
+  AddPoint(58, 260);
+  AddPoint(60, 258);
+  AddPoint(126, 258);
+  AddPoint(128, 260);
+  AddPoint(128, 261);
+  AddPoint(94, 319);
+  AddPoint(92, 319);
+  DrawPoints;
+  
+// Walk
+  SetFrame(2);
+  Cylinder(0.02, 0.02, 0.5);
+  Cylinder(0.02, 0.05, 0.05);
+  ClearPoints;
+  AddPoint(138, 258);
+  AddPoint(140, 258);
+  AddPoint(174, 316);
+  AddPoint(174, 317);
+  AddPoint(172, 319);
+  AddPoint(106, 319);
+  AddPoint(104, 317);
+  AddPoint(104, 315);
+  DrawPoints;
+
+// No parking
+  SetFrame(3);
+  Cylinder(0.02, 0.02, 0.5);
+  Cylinder(0.02, 0.05, 0.05);
+  circlepoints(168, 257, 232, 320);  
+  DrawPoints;
+
+// No parking 2
+  SetFrame(4);
+  Cylinder(0.02, 0.02, 0.5);
+  Cylinder(0.02, 0.05, 0.05);
+  circlepoints(234, 257, 298, 320);  
+  DrawPoints;
+
+// 
+  SetFrame(5);
+  Cylinder(0.02, 0.02, 0.5);
+  Cylinder(0.02, 0.05, 0.05);
+  ClearPoints;
+  AddPoint(301, 260);
+  AddPoint(303, 258);
+  AddPoint(360, 258);
+  AddPoint(362, 260);
+  AddPoint(362, 317);
+  AddPoint(360, 319);
+  AddPoint(303, 319);
+  AddPoint(301, 317);
+  DrawPoints;
+
+// No way
+  SetFrame(6);
+  Cylinder(0.02, 0.02, 0.5);
+  Cylinder(0.02, 0.05, 0.05);
+  circlepoints(365, 258, 426, 319);  
+  DrawPoints;
+
+// Closed road
+  SetFrame(7);
+  Cylinder(0.02, 0.02, 0.5);
+  Cylinder(0.02, 0.05, 0.05);
+  circlepoints(430, 258, 491, 319);  
+  DrawPoints;
+
+// Speed limit 50
+  SetFrame(8);
+  Cylinder(0.02, 0.02, 0.5);
+  Cylinder(0.02, 0.05, 0.05);
+  circlepoints(2, 321, 62, 382);  
+  DrawPoints;
+
+// Speed limit 60
+  SetFrame(9);
+  Cylinder(0.02, 0.02, 0.5);
+  Cylinder(0.02, 0.05, 0.05);
+  circlepoints(65, 321, 126, 382);  
+  DrawPoints;
+
+// Speed limit 70
+  SetFrame(10);
+  Cylinder(0.02, 0.02, 0.5);
+  Cylinder(0.02, 0.05, 0.05);
+  circlepoints(129, 321, 189, 382);  
+  DrawPoints;
+
+// Speed limit 80
+  SetFrame(11);
+  Cylinder(0.02, 0.02, 0.5);
+  Cylinder(0.02, 0.05, 0.05);
+  circlepoints(192, 321, 252, 382);  
+  DrawPoints;
+
+// Speed limit 90
+  SetFrame(12);
+  Cylinder(0.02, 0.02, 0.5);
+  Cylinder(0.02, 0.05, 0.05);
+  circlepoints(255, 321, 315, 382);  
+  DrawPoints;
+
+// Diamond
+  SetFrame(13);
+  Cylinder(0.02, 0.02, 0.5);
+  Cylinder(0.02, 0.05, 0.05);
+  ClearPoints;
+  AddPoint(346, 321);
+  AddPoint(349, 321);
+  AddPoint(378, 350);
+  AddPoint(378.5, 351.5);
+  AddPoint(378, 353);
+  AddPoint(349, 382);
+  AddPoint(346, 382);
+  AddPoint(317, 353);
+  AddPoint(316.5, 351.5);
+  AddPoint(317, 350);
+  DrawPoints;
+
+// Diamond 2
+  SetFrame(14);
+  Cylinder(0.02, 0.02, 0.5);
+  Cylinder(0.02, 0.05, 0.05);
+  ClearPoints;
+  AddPoint(410, 321);
+  AddPoint(413, 321);
+  AddPoint(442, 350);
+  AddPoint(442.5, 351.5);
+  AddPoint(442, 353);
+  AddPoint(413, 382);
+  AddPoint(410, 382);
+  AddPoint(381, 353);
+  AddPoint(380.5, 351.5);
+  AddPoint(381, 350);
+  DrawPoints;
+
+// Circle
+  SetFrame(15);
+  Cylinder(0.02, 0.02, 0.5);
+  Cylinder(0.02, 0.05, 0.05);
+  circlepoints(446, 321, 507, 382);  
+  DrawPoints;
+
+// Turn left
+  SetFrame(16);
+  Cylinder(0.02, 0.02, 0.5);
+  Cylinder(0.02, 0.05, 0.05);
+  circlepoints(1, 384, 62, 445);  
+  DrawPoints;
+
+// Turn left
+  SetFrame(17);
+  Cylinder(0.02, 0.02, 0.5);
+  Cylinder(0.02, 0.05, 0.05);
+  circlepoints(65, 384, 126, 445);  
+  DrawPoints;
+
+// Tunnel height 3.1 meters
+  SetFrame(18);
+  Cylinder(0.02, 0.02, 0.5);
+  Cylinder(0.02, 0.05, 0.05);
+  circlepoints(129, 384, 190, 445);  
+  DrawPoints;
+
+// Tunnel height 5.1 meters
+  SetFrame(19);
+  Cylinder(0.02, 0.02, 0.5);
+  Cylinder(0.02, 0.05, 0.05);
+  circlepoints(193, 384, 254, 445);  
+  DrawPoints;
+  
+// Go left
+  SetFrame(20);
+  Cylinder(0.02, 0.02, 0.5);
+  Cylinder(0.02, 0.05, 0.05);
+  ClearPoints;
+  AddPoint(259, 384);
+  AddPoint(327, 384);
+  AddPoint(330, 387);
+  AddPoint(330, 431);
+  AddPoint(327, 434);
+  AddPoint(259, 434);
+  AddPoint(256, 431);
+  AddPoint(256, 387);
+  DrawPoints;
+   
+// Go right
+  SetFrame(21);
+  Cylinder(0.02, 0.02, 0.5);
+  Cylinder(0.02, 0.05, 0.05);
+  ClearPoints;
+  AddPoint(336, 384);
+  AddPoint(404, 384);
+  AddPoint(407, 387);
+  AddPoint(407, 431);
+  AddPoint(404, 434);
+  AddPoint(336, 434);
+  AddPoint(333, 431);
+  AddPoint(333, 387);
+  DrawPoints;
+   
+// Port
+  SetFrame(22);
+  Cylinder(0.02, 0.02, 0.5);
+  Cylinder(0.02, 0.05, 0.05);
+  ClearPoints;
+  AddPoint(443, 367);
+  AddPoint(445, 367);
+  AddPoint(479, 425);
+  AddPoint(479, 426);
+  AddPoint(477, 428);
+  AddPoint(411, 428);
+  AddPoint(409, 426);
+  AddPoint(409, 425);
+  DrawPoints;
+  
+// Falling stones
+  SetFrame(23);
+  Cylinder(0.02, 0.02, 0.5);
+  Cylinder(0.02, 0.05, 0.05);
+  ClearPoints;
+  AddPoint(35, 448);
+  AddPoint(37, 448);
+  AddPoint(71, 506);
+  AddPoint(71, 507);
+  AddPoint(69, 509);
+  AddPoint(3, 509);
+  AddPoint(1, 507);
+  AddPoint(1, 506);
+  DrawPoints;
+  
+// Cross road
+  SetFrame(24);
+  Cylinder(0.02, 0.02, 0.5);
+  Cylinder(0.02, 0.05, 0.05);
+  ClearPoints;
+  AddPoint(107, 448);
+  AddPoint(109, 448);
+  AddPoint(143, 506);
+  AddPoint(143, 507);
+  AddPoint(141, 509);
+  AddPoint(75, 509);
+  AddPoint(73, 507);
+  AddPoint(73, 506);
+  DrawPoints;
+   
+// Tunnel
+  SetFrame(25);
+  Cylinder(0.02, 0.02, 0.5);
+  Cylinder(0.02, 0.05, 0.05);
+  ClearPoints;
+  AddPoint(179, 448);
+  AddPoint(181, 448);
+  AddPoint(215, 506);
+  AddPoint(215, 507);
+  AddPoint(213, 509);
+  AddPoint(147, 509);
+  AddPoint(145, 507);
+  AddPoint(145, 506);
+  DrawPoints;
+  
+// Dead end
+  SetFrame(26);
+  Cylinder(0.02, 0.02, 0.5);
+  Cylinder(0.02, 0.05, 0.05);
+  ClearPoints;
+  AddPoint(469, 431);
+  AddPoint(509, 431);
+  AddPoint(510, 432);
+  AddPoint(510, 491);
+  AddPoint(509, 492);
+  AddPoint(469, 492);
+  AddPoint(468, 491);
+  AddPoint(468, 432);
+  DrawPoints;
+  
+// Highway end
+  SetFrame(27);
+  Cylinder(0.02, 0.02, 0.5);
+  Cylinder(0.02, 0.05, 0.05);
+  ClearPoints;
+  AddPoint(219.5, 448);
+  AddPoint(260, 448);
+  AddPoint(262, 450);
+  AddPoint(262, 507);
+  AddPoint(260, 509);
+  AddPoint(219.5, 509);
+  AddPoint(217.5, 507);
+  AddPoint(217.5, 450);
+  DrawPoints;
+  
+// Highway start
+  SetFrame(28);
+  Cylinder(0.02, 0.02, 0.5);
+  Cylinder(0.02, 0.05, 0.05);
+  ClearPoints;
+  AddPoint(266, 436);
+  AddPoint(307, 436);
+  AddPoint(309, 438);
+  AddPoint(309, 495);
+  AddPoint(307, 497);
+  AddPoint(266, 497);
+  AddPoint(264, 495);
+  AddPoint(264, 438);
+  DrawPoints;
+  
+// Circle
+  SetFrame(29);
+  Cylinder(0.02, 0.02, 0.5);
+  Cylinder(0.02, 0.05, 0.05);
+  ClearPoints;
+  AddPoint(339, 450);
+  AddPoint(341, 450);
+  AddPoint(375, 508);
+  AddPoint(373, 510);
+  AddPoint(307, 510);
+  AddPoint(305, 508);
+  DrawPoints;
+  
+// Train
+  SetFrame(30);
+  Cylinder(0.02, 0.02, 0.5);
+  Cylinder(0.02, 0.05, 0.05);
+  ClearPoints;
+  AddPoint(440, 450);
+  AddPoint(442, 450);
+  AddPoint(475, 508);
+  AddPoint(473, 510);
+  AddPoint(407, 510);
+  AddPoint(405, 508);
+  DrawPoints;  
+  
+// Tunnel height 3.1 meters
+  SetFrame(31);
+  Cylinder(0.02, 0.02, 0.5);
+  Cylinder(0.02, 0.05, 0.05);
+  circlepoints(360, 438, 421, 498);  
+  DrawPoints;
+
+end.
+

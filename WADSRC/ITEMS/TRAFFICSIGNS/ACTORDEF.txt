@@ -1,0 +1,768 @@
+///////////////////////////////
+// TRAFFICSIGN_001
+///////////////////////////////
+ACTOR TRAFFICSIGN_001 2103
+{
+  Radius 8
+  Height 64
+  Health 1000
+  Mass 1000
+  Reactiontime 8
+  +SOLID
+  +PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  States
+  {
+    Spawn:
+    {
+      TS01 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// TRAFFICSIGN_002
+///////////////////////////////
+ACTOR TRAFFICSIGN_002 2104
+{
+  Radius 8
+  Height 64
+  Health 1000
+  Mass 1000
+  Reactiontime 8
+  +SOLID
+  +PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  States
+  {
+    Spawn:
+    {
+      TS02 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// TRAFFICSIGN_003
+///////////////////////////////
+ACTOR TRAFFICSIGN_003 2105
+{
+  Radius 8
+  Height 64
+  Health 1000
+  Mass 1000
+  Reactiontime 8
+  +SOLID
+  +PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  States
+  {
+    Spawn:
+    {
+      TS03 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// TRAFFICSIGN_004
+///////////////////////////////
+ACTOR TRAFFICSIGN_004 2106
+{
+  Radius 8
+  Height 64
+  Health 1000
+  Mass 1000
+  Reactiontime 8
+  +SOLID
+  +PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  States
+  {
+    Spawn:
+    {
+      TS04 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// TRAFFICSIGN_005
+///////////////////////////////
+ACTOR TRAFFICSIGN_005 2107
+{
+  Radius 8
+  Height 64
+  Health 1000
+  Mass 1000
+  Reactiontime 8
+  +SOLID
+  +PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  States
+  {
+    Spawn:
+    {
+      TS05 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// TRAFFICSIGN_006
+///////////////////////////////
+ACTOR TRAFFICSIGN_006 2108
+{
+  Radius 8
+  Height 64
+  Health 1000
+  Mass 1000
+  Reactiontime 8
+  +SOLID
+  +PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  States
+  {
+    Spawn:
+    {
+      TS06 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// TRAFFICSIGN_007
+///////////////////////////////
+ACTOR TRAFFICSIGN_007 2109
+{
+  Radius 8
+  Height 64
+  Health 1000
+  Mass 1000
+  Reactiontime 8
+  +SOLID
+  +PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  States
+  {
+    Spawn:
+    {
+      TS07 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// TRAFFICSIGN_008
+///////////////////////////////
+ACTOR TRAFFICSIGN_008 2110
+{
+  Radius 8
+  Height 64
+  Health 1000
+  Mass 1000
+  Reactiontime 8
+  +SOLID
+  +PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  States
+  {
+    Spawn:
+    {
+      TS08 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// TRAFFICSIGN_009
+///////////////////////////////
+ACTOR TRAFFICSIGN_009 2111
+{
+  Radius 8
+  Height 64
+  Health 1000
+  Mass 1000
+  Reactiontime 8
+  +SOLID
+  +PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  States
+  {
+    Spawn:
+    {
+      TS09 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// TRAFFICSIGN_010
+///////////////////////////////
+ACTOR TRAFFICSIGN_010 2112
+{
+  Radius 8
+  Height 64
+  Health 1000
+  Mass 1000
+  Reactiontime 8
+  +SOLID
+  +PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  States
+  {
+    Spawn:
+    {
+      TS10 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// TRAFFICSIGN_011
+///////////////////////////////
+ACTOR TRAFFICSIGN_011 2113
+{
+  Radius 8
+  Height 64
+  Health 1000
+  Mass 1000
+  Reactiontime 8
+  +SOLID
+  +PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  States
+  {
+    Spawn:
+    {
+      TS11 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// TRAFFICSIGN_012
+///////////////////////////////
+ACTOR TRAFFICSIGN_012 2114
+{
+  Radius 8
+  Height 64
+  Health 1000
+  Mass 1000
+  Reactiontime 8
+  +SOLID
+  +PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  States
+  {
+    Spawn:
+    {
+      TS12 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// TRAFFICSIGN_013
+///////////////////////////////
+ACTOR TRAFFICSIGN_013 2115
+{
+  Radius 8
+  Height 64
+  Health 1000
+  Mass 1000
+  Reactiontime 8
+  +SOLID
+  +PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  States
+  {
+    Spawn:
+    {
+      TS13 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// TRAFFICSIGN_014
+///////////////////////////////
+ACTOR TRAFFICSIGN_014 2116
+{
+  Radius 8
+  Height 64
+  Health 1000
+  Mass 1000
+  Reactiontime 8
+  +SOLID
+  +PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  States
+  {
+    Spawn:
+    {
+      TS14 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// TRAFFICSIGN_015
+///////////////////////////////
+ACTOR TRAFFICSIGN_015 2117
+{
+  Radius 8
+  Height 64
+  Health 1000
+  Mass 1000
+  Reactiontime 8
+  +SOLID
+  +PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  States
+  {
+    Spawn:
+    {
+      TS15 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// TRAFFICSIGN_016
+///////////////////////////////
+ACTOR TRAFFICSIGN_016 2118
+{
+  Radius 8
+  Height 64
+  Health 1000
+  Mass 1000
+  Reactiontime 8
+  +SOLID
+  +PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  States
+  {
+    Spawn:
+    {
+      TS16 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// TRAFFICSIGN_017
+///////////////////////////////
+ACTOR TRAFFICSIGN_017 2119
+{
+  Radius 8
+  Height 64
+  Health 1000
+  Mass 1000
+  Reactiontime 8
+  +SOLID
+  +PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  States
+  {
+    Spawn:
+    {
+      TS17 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// TRAFFICSIGN_018
+///////////////////////////////
+ACTOR TRAFFICSIGN_018 2120
+{
+  Radius 8
+  Height 64
+  Health 1000
+  Mass 1000
+  Reactiontime 8
+  +SOLID
+  +PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  States
+  {
+    Spawn:
+    {
+      TS18 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// TRAFFICSIGN_019
+///////////////////////////////
+ACTOR TRAFFICSIGN_019 2121
+{
+  Radius 8
+  Height 64
+  Health 1000
+  Mass 1000
+  Reactiontime 8
+  +SOLID
+  +PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  States
+  {
+    Spawn:
+    {
+      TS19 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// TRAFFICSIGN_020
+///////////////////////////////
+ACTOR TRAFFICSIGN_020 2122
+{
+  Radius 8
+  Height 64
+  Health 1000
+  Mass 1000
+  Reactiontime 8
+  +SOLID
+  +PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  States
+  {
+    Spawn:
+    {
+      TS20 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// TRAFFICSIGN_021
+///////////////////////////////
+ACTOR TRAFFICSIGN_021 2123
+{
+  Radius 8
+  Height 64
+  Health 1000
+  Mass 1000
+  Reactiontime 8
+  +SOLID
+  +PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  States
+  {
+    Spawn:
+    {
+      TS21 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// TRAFFICSIGN_022
+///////////////////////////////
+ACTOR TRAFFICSIGN_022 2124
+{
+  Radius 8
+  Height 64
+  Health 1000
+  Mass 1000
+  Reactiontime 8
+  +SOLID
+  +PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  States
+  {
+    Spawn:
+    {
+      TS22 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// TRAFFICSIGN_023
+///////////////////////////////
+ACTOR TRAFFICSIGN_023 2125
+{
+  Radius 8
+  Height 64
+  Health 1000
+  Mass 1000
+  Reactiontime 8
+  +SOLID
+  +PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  States
+  {
+    Spawn:
+    {
+      TS23 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// TRAFFICSIGN_024
+///////////////////////////////
+ACTOR TRAFFICSIGN_024 2126
+{
+  Radius 8
+  Height 64
+  Health 1000
+  Mass 1000
+  Reactiontime 8
+  +SOLID
+  +PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  States
+  {
+    Spawn:
+    {
+      TS24 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// TRAFFICSIGN_025
+///////////////////////////////
+ACTOR TRAFFICSIGN_025 2127
+{
+  Radius 8
+  Height 64
+  Health 1000
+  Mass 1000
+  Reactiontime 8
+  +SOLID
+  +PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  States
+  {
+    Spawn:
+    {
+      TS25 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// TRAFFICSIGN_026
+///////////////////////////////
+ACTOR TRAFFICSIGN_026 2128
+{
+  Radius 8
+  Height 64
+  Health 1000
+  Mass 1000
+  Reactiontime 8
+  +SOLID
+  +PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  States
+  {
+    Spawn:
+    {
+      TS26 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// TRAFFICSIGN_027
+///////////////////////////////
+ACTOR TRAFFICSIGN_027 2129
+{
+  Radius 8
+  Height 64
+  Health 1000
+  Mass 1000
+  Reactiontime 8
+  +SOLID
+  +PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  States
+  {
+    Spawn:
+    {
+      TS27 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// TRAFFICSIGN_028
+///////////////////////////////
+ACTOR TRAFFICSIGN_028 2130
+{
+  Radius 8
+  Height 64
+  Health 1000
+  Mass 1000
+  Reactiontime 8
+  +SOLID
+  +PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  States
+  {
+    Spawn:
+    {
+      TS28 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// TRAFFICSIGN_029
+///////////////////////////////
+ACTOR TRAFFICSIGN_029 2131
+{
+  Radius 8
+  Height 64
+  Health 1000
+  Mass 1000
+  Reactiontime 8
+  +SOLID
+  +PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  States
+  {
+    Spawn:
+    {
+      TS29 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// TRAFFICSIGN_030
+///////////////////////////////
+ACTOR TRAFFICSIGN_030 2132
+{
+  Radius 8
+  Height 64
+  Health 1000
+  Mass 1000
+  Reactiontime 8
+  +SOLID
+  +PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  States
+  {
+    Spawn:
+    {
+      TS30 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// TRAFFICSIGN_031
+///////////////////////////////
+ACTOR TRAFFICSIGN_031 2133
+{
+  Radius 8
+  Height 64
+  Health 1000
+  Mass 1000
+  Reactiontime 8
+  +SOLID
+  +PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  States
+  {
+    Spawn:
+    {
+      TS31 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// TRAFFICSIGN_032
+///////////////////////////////
+ACTOR TRAFFICSIGN_032 2134
+{
+  Radius 8
+  Height 64
+  Health 1000
+  Mass 1000
+  Reactiontime 8
+  +SOLID
+  +PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  States
+  {
+    Spawn:
+    {
+      TS32 A -1
+      Stop
+    }
+  }
+}
+
+

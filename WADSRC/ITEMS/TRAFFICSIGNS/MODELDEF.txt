@@ -1,0 +1,293 @@
+modeldef "TRAFFICSIGNS.ddmodel" 
+{
+  scale 128.0
+}
+
+state "S_TRAFFICSIGN_0010"
+{
+  model "TRAFFICSIGNS.ddmodel"
+  texture "TRAFFICSIGNS.png"
+  frame1 0
+  frame2 0
+}
+
+
+state "S_TRAFFICSIGN_0020"
+{
+  model "TRAFFICSIGNS.ddmodel"
+  texture "TRAFFICSIGNS.png"
+  frame1 1
+  frame2 1
+}
+
+
+state "S_TRAFFICSIGN_0030"
+{
+  model "TRAFFICSIGNS.ddmodel"
+  texture "TRAFFICSIGNS.png"
+  frame1 2
+  frame2 2
+}
+
+
+state "S_TRAFFICSIGN_0040"
+{
+  model "TRAFFICSIGNS.ddmodel"
+  texture "TRAFFICSIGNS.png"
+  frame1 3
+  frame2 3
+}
+
+
+state "S_TRAFFICSIGN_0050"
+{
+  model "TRAFFICSIGNS.ddmodel"
+  texture "TRAFFICSIGNS.png"
+  frame1 4
+  frame2 4
+}
+
+
+state "S_TRAFFICSIGN_0060"
+{
+  model "TRAFFICSIGNS.ddmodel"
+  texture "TRAFFICSIGNS.png"
+  frame1 5
+  frame2 5
+}
+
+
+state "S_TRAFFICSIGN_0070"
+{
+  model "TRAFFICSIGNS.ddmodel"
+  texture "TRAFFICSIGNS.png"
+  frame1 6
+  frame2 6
+}
+
+
+state "S_TRAFFICSIGN_0080"
+{
+  model "TRAFFICSIGNS.ddmodel"
+  texture "TRAFFICSIGNS.png"
+  frame1 7
+  frame2 7
+}
+
+
+state "S_TRAFFICSIGN_0090"
+{
+  model "TRAFFICSIGNS.ddmodel"
+  texture "TRAFFICSIGNS.png"
+  frame1 8
+  frame2 8
+}
+
+
+state "S_TRAFFICSIGN_0100"
+{
+  model "TRAFFICSIGNS.ddmodel"
+  texture "TRAFFICSIGNS.png"
+  frame1 9
+  frame2 9
+}
+
+
+state "S_TRAFFICSIGN_0110"
+{
+  model "TRAFFICSIGNS.ddmodel"
+  texture "TRAFFICSIGNS.png"
+  frame1 10
+  frame2 10
+}
+
+
+state "S_TRAFFICSIGN_0120"
+{
+  model "TRAFFICSIGNS.ddmodel"
+  texture "TRAFFICSIGNS.png"
+  frame1 11
+  frame2 11
+}
+
+
+state "S_TRAFFICSIGN_0130"
+{
+  model "TRAFFICSIGNS.ddmodel"
+  texture "TRAFFICSIGNS.png"
+  frame1 12
+  frame2 12
+}
+
+
+state "S_TRAFFICSIGN_0140"
+{
+  model "TRAFFICSIGNS.ddmodel"
+  texture "TRAFFICSIGNS.png"
+  frame1 13
+  frame2 13
+}
+
+
+state "S_TRAFFICSIGN_0150"
+{
+  model "TRAFFICSIGNS.ddmodel"
+  texture "TRAFFICSIGNS.png"
+  frame1 14
+  frame2 14
+}
+
+
+state "S_TRAFFICSIGN_0160"
+{
+  model "TRAFFICSIGNS.ddmodel"
+  texture "TRAFFICSIGNS.png"
+  frame1 15
+  frame2 15
+}
+
+
+state "S_TRAFFICSIGN_0170"
+{
+  model "TRAFFICSIGNS.ddmodel"
+  texture "TRAFFICSIGNS.png"
+  frame1 16
+  frame2 16
+}
+
+
+state "S_TRAFFICSIGN_0180"
+{
+  model "TRAFFICSIGNS.ddmodel"
+  texture "TRAFFICSIGNS.png"
+  frame1 17
+  frame2 17
+}
+
+
+state "S_TRAFFICSIGN_0190"
+{
+  model "TRAFFICSIGNS.ddmodel"
+  texture "TRAFFICSIGNS.png"
+  frame1 18
+  frame2 18
+}
+
+
+state "S_TRAFFICSIGN_0200"
+{
+  model "TRAFFICSIGNS.ddmodel"
+  texture "TRAFFICSIGNS.png"
+  frame1 19
+  frame2 19
+}
+
+
+state "S_TRAFFICSIGN_0210"
+{
+  model "TRAFFICSIGNS.ddmodel"
+  texture "TRAFFICSIGNS.png"
+  frame1 20
+  frame2 20
+}
+
+
+state "S_TRAFFICSIGN_0220"
+{
+  model "TRAFFICSIGNS.ddmodel"
+  texture "TRAFFICSIGNS.png"
+  frame1 21
+  frame2 21
+}
+
+
+state "S_TRAFFICSIGN_0230"
+{
+  model "TRAFFICSIGNS.ddmodel"
+  texture "TRAFFICSIGNS.png"
+  frame1 22
+  frame2 22
+}
+
+
+state "S_TRAFFICSIGN_0240"
+{
+  model "TRAFFICSIGNS.ddmodel"
+  texture "TRAFFICSIGNS.png"
+  frame1 23
+  frame2 23
+}
+
+
+state "S_TRAFFICSIGN_0250"
+{
+  model "TRAFFICSIGNS.ddmodel"
+  texture "TRAFFICSIGNS.png"
+  frame1 24
+  frame2 24
+}
+
+
+state "S_TRAFFICSIGN_0260"
+{
+  model "TRAFFICSIGNS.ddmodel"
+  texture "TRAFFICSIGNS.png"
+  frame1 25
+  frame2 25
+}
+
+
+state "S_TRAFFICSIGN_0270"
+{
+  model "TRAFFICSIGNS.ddmodel"
+  texture "TRAFFICSIGNS.png"
+  frame1 26
+  frame2 26
+}
+
+
+state "S_TRAFFICSIGN_0280"
+{
+  model "TRAFFICSIGNS.ddmodel"
+  texture "TRAFFICSIGNS.png"
+  frame1 27
+  frame2 27
+}
+
+
+state "S_TRAFFICSIGN_0290"
+{
+  model "TRAFFICSIGNS.ddmodel"
+  texture "TRAFFICSIGNS.png"
+  frame1 28
+  frame2 28
+}
+
+
+state "S_TRAFFICSIGN_0300"
+{
+  model "TRAFFICSIGNS.ddmodel"
+  texture "TRAFFICSIGNS.png"
+  frame1 29
+  frame2 29
+}
+
+
+state "S_TRAFFICSIGN_0310"
+{
+  model "TRAFFICSIGNS.ddmodel"
+  texture "TRAFFICSIGNS.png"
+  frame1 30
+  frame2 30
+}
+
+
+state "S_TRAFFICSIGN_0320"
+{
+  model "TRAFFICSIGNS.ddmodel"
+  texture "TRAFFICSIGNS.png"
+  frame1 31
+  frame2 31
+}
+
+
