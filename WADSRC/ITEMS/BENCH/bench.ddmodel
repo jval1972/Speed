@@ -1,0 +1,112 @@
+model model1;
+
+const
+  TEX_SIZE = 64;
+  
+procedure MakeWall(const x1, z1, x2, z2, h1, h2: float; const u1, v1, u2, v2: integer);
+begin
+  glbegin(GL_QUADS);
+    glTexCoord2f(u1 / TEX_SIZE, v1 / TEX_SIZE); 
+    glVertex3f(x1, h2, z1);
+    glTexCoord2f(u2 / TEX_SIZE, v1 / TEX_SIZE); 
+    glVertex3f(x2, h2, z2);
+    glTexCoord2f(u2 / TEX_SIZE, v2 / TEX_SIZE); 
+    glVertex3f(x2, h1, z2);
+    glTexCoord2f(u1 / TEX_SIZE, v2 / TEX_SIZE); 
+    glVertex3f(x1, h1, z1);
+  glEnd;
+end;
+
+procedure MakeRoof(const x1, z1, x2, z2, h: float; const u1, v1, u2, v2: integer);
+begin
+  glbegin(GL_QUADS);
+    glTexCoord2f(u1 / TEX_SIZE, v1 / TEX_SIZE); 
+    glVertex3f(x1, h, z1);
+    glTexCoord2f(u1 / TEX_SIZE, v2 / TEX_SIZE); 
+    glVertex3f(x1, h, z2);
+    glTexCoord2f(u2 / TEX_SIZE, v2 / TEX_SIZE); 
+    glVertex3f(x2, h, z2);
+    glTexCoord2f(u2 / TEX_SIZE, v1 / TEX_SIZE); 
+    glVertex3f(x2, h, z1);
+  glEnd;
+end;
+
+procedure MakeFloor(const x1, y1, z1, x2, y2, z2: float; const u1, v1, u2, v2: integer;
+  const left, right, back, front: boolean);
+begin
+//  MakeRoof(x1, z1, x2, z2, y1, u1, v1, u1, v2);  
+//  MakeRoof(x1, z1, x2, z2, y2, u1, v1, u1, v2);
+  if left then
+    MakeWall(x1, z1, x1, z2, y1, y2, u1, v1, u2, v2);
+  if back then
+    MakeWall(x1, z2, x2, z2, y1, y2, u1, v1, u2, v2);
+  if right then
+    MakeWall(x2, z2, x2, z1, y1, y2, u1, v1, u2, v2);
+  if front then
+    MakeWall(x2, z1, x1, z1, y1, y2, u1, v1, u2, v2);
+end;
+
+procedure BenchPart(const x1, y1, z1, x2, y2, z2: float; const u1, v1, u2, v2: integer);
+var
+  h: float;
+begin
+  MakeFloor(x1, y1, z1, x2, y2, z2, u1, v1, u2, v2, true, true, true, true);
+  if y1 >= 0.05 then
+    MakeRoof(x1, z1, x2, z2, y1, u1, v1, u2, v2);
+  if y2 >= 0.05 then
+    MakeRoof(x1, z1, x2, z2, y2, u1, v1, u2, v2);
+end;
+
+begin
+  SetFrame(0);
+  BenchPart(-0.4, 0.0, -0.2, -0.32, 0.3, 0.2, 1, 1, 62, 30);
+  BenchPart( 0.4, 0.0, -0.2,  0.32, 0.3, 0.2, 1, 1, 62, 30);
+  
+  BenchPart(-0.5, 0.3, -0.25,  0.5, 0.35, 0.25, 1, 34, 62, 50);
+  
+  SetFrame(1);
+  BenchPart(-0.4, 0.0, -0.2, -0.32, 0.3, 0.2, 1, 1, 62, 30);
+  BenchPart( 0.4, 0.0, -0.2,  0.32, 0.3, 0.2, 1, 1, 62, 30);
+  
+  BenchPart(-0.5, 0.3, -0.2,  0.5, 0.35, -0.1, 1, 34, 62, 50);
+  BenchPart(-0.5, 0.3, -0.05,  0.5, 0.35, 0.05, 1, 34, 62, 50);
+  BenchPart(-0.5, 0.3,  0.1,  0.5, 0.35, 0.2, 1, 34, 62, 50);
+  
+  SetFrame(2);
+  BenchPart(-0.4, 0.0, -0.2, -0.32, 0.3, 0.2, 1, 1, 62, 30);
+  BenchPart(-0.4, 0.3, -0.2, -0.32, 0.65, -0.15, 1, 1, 62, 30);
+  BenchPart( 0.4, 0.0, -0.2,  0.32, 0.3, 0.2, 1, 1, 62, 30);
+  BenchPart( 0.4, 0.3, -0.2,  0.32, 0.65, -0.15, 1, 1, 62, 30);
+  
+  BenchPart(-0.5, 0.3, -0.15,  0.5, 0.4, -0.10, 1, 34, 62, 50);
+  BenchPart(-0.5, 0.45, -0.15,  0.5, 0.5, -0.10, 1, 34, 62, 50);
+  BenchPart(-0.5, 0.55, -0.15,  0.5, 0.6, -0.10, 1, 34, 62, 50);
+  BenchPart(-0.5, 0.3, -0.05,  0.5, 0.35, 0.05, 1, 34, 62, 50);
+  BenchPart(-0.5, 0.3,  0.1,  0.5, 0.35, 0.2, 1, 34, 62, 50);
+  
+  SetFrame(3);
+  BenchPart(-0.4, 0.0, -0.2, -0.32, 0.3, 0.2, 1, 1, 62, 30);
+  BenchPart( 0.4, 0.0, -0.2,  0.32, 0.3, 0.2, 1, 1, 62, 30);
+  
+  BenchPart(-0.5, 0.3, -0.25,  0.5, 0.35, 0.25, 1, 53, 62, 62);
+  
+  SetFrame(4);
+  BenchPart(-0.4, 0.0, -0.2, -0.32, 0.3, 0.2, 1, 1, 62, 30);
+  BenchPart( 0.4, 0.0, -0.2,  0.32, 0.3, 0.2, 1, 1, 62, 30);
+  
+  BenchPart(-0.5, 0.3, -0.2,  0.5, 0.35, -0.1, 1, 53, 62, 62);
+  BenchPart(-0.5, 0.3, -0.05,  0.5, 0.35, 0.05, 1, 53, 62, 62);
+  BenchPart(-0.5, 0.3,  0.1,  0.5, 0.35, 0.2, 1, 53, 62, 62);
+  
+  SetFrame(5);
+  BenchPart(-0.4, 0.0, -0.2, -0.32, 0.3, 0.2, 1, 1, 62, 30);
+  BenchPart(-0.4, 0.3, -0.2, -0.32, 0.65, -0.15, 1, 1, 62, 30);
+  BenchPart( 0.4, 0.0, -0.2,  0.32, 0.3, 0.2, 1, 1, 62, 30);
+  BenchPart( 0.4, 0.3, -0.2,  0.32, 0.65, -0.15, 1, 1, 62, 30);
+  
+  BenchPart(-0.5, 0.3, -0.15,  0.5, 0.4, -0.10, 1, 53, 62, 62);
+  BenchPart(-0.5, 0.45, -0.15,  0.5, 0.5, -0.10, 1, 53, 62, 62);
+  BenchPart(-0.5, 0.55, -0.15,  0.5, 0.6, -0.10, 1, 53, 62, 62);
+  BenchPart(-0.5, 0.3, -0.05,  0.5, 0.35, 0.05, 1, 53, 62, 62);
+  BenchPart(-0.5, 0.3,  0.1,  0.5, 0.35, 0.2, 1, 53, 62, 62);   
+end.

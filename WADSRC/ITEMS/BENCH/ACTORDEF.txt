@@ -1,0 +1,137 @@
+///////////////////////////////
+// BENCH01
+///////////////////////////////
+ACTOR BENCH01 2137
+{
+  Radius 32
+  Height 32
+  Health 100
+  Mass 100
+  Reactiontime 8
+  PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  +SOLID
+  States
+  {
+    Spawn:
+    {
+      BE01 A -1
+      Stop
+    }
+  }
+}
+
+///////////////////////////////
+// BENCH02
+///////////////////////////////
+ACTOR BENCH02 2138
+{
+  Radius 32
+  Height 32
+  Health 100
+  Mass 100
+  Reactiontime 8
+  PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  +SOLID
+  States
+  {
+    Spawn:
+    {
+      BE02 A -1
+      Stop
+    }
+  }
+}
+
+///////////////////////////////
+// BENCH03
+///////////////////////////////
+ACTOR BENCH03 2139
+{
+  Radius 32
+  Height 32
+  Health 100
+  Mass 100
+  Reactiontime 8
+  PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  +SOLID
+  States
+  {
+    Spawn:
+    {
+      BE03 A -1
+      Stop
+    }
+  }
+}
+
+///////////////////////////////
+// BENCH04
+///////////////////////////////
+ACTOR BENCH04 2140
+{
+  Radius 32
+  Height 32
+  Health 100
+  Mass 100
+  Reactiontime 8
+  PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  +SOLID
+  States
+  {
+    Spawn:
+    {
+      BE04 A -1
+      Stop
+    }
+  }
+}
+
+///////////////////////////////
+// BENCH05
+///////////////////////////////
+ACTOR BENCH05 2141
+{
+  Radius 32
+  Height 32
+  Health 100
+  Mass 100
+  Reactiontime 8
+  PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  +SOLID
+  States
+  {
+    Spawn:
+    {
+      BE05 A -1
+      Stop
+    }
+  }
+}
+
+///////////////////////////////
+// BENCH06
+///////////////////////////////
+ACTOR BENCH06 2142
+{
+  Radius 32
+  Height 32
+  Health 100
+  Mass 100
+  Reactiontime 8
+  PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  +SOLID
+  States
+  {
+    Spawn:
+    {
+      BE06 A -1
+      Stop
+    }
+  }
+}
