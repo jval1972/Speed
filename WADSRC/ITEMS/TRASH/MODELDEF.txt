@@ -1,0 +1,19 @@
+modeldef "Trash.ddmodel" 
+{
+  scale 100.0
+}
+
+state S_TRASH010 {
+  model "Trash.ddmodel" 
+  texture "trash1.png"
+  frame1 0
+  frame2 0
+}
+
+state S_TRASH020 {
+  model "Trash.ddmodel" 
+  texture "trash2.png"
+  frame1 0
+  frame2 0
+}
+

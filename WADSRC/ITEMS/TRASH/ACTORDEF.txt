@@ -1,0 +1,46 @@
+///////////////////////////////
+// TRASH01
+///////////////////////////////
+ACTOR TRASH01 2135
+{
+  Radius 16
+  Height 56
+  Health 100
+  Mass 100
+  Reactiontime 8
+  PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  +SOLID
+  States
+  {
+    Spawn:
+    {
+      TRS0 A -1
+      Stop
+    }
+  }
+}
+
+///////////////////////////////
+// TRASH02
+///////////////////////////////
+ACTOR TRASH02 2136
+{
+  Radius 16
+  Height 56
+  Health 100
+  Mass 100
+  Reactiontime 8
+  PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  +SOLID
+  States
+  {
+    Spawn:
+    {
+      TRS1 A -1
+      Stop
+    }
+  }
+}
+

@@ -1,0 +1,45 @@
+model model1;
+
+const
+  TEX_SIZE = 128;
+  
+procedure mycoord(const x, y: integer);
+begin
+  glTexCoord2f(x / TEX_SIZE, y / TEX_SIZE);
+end;
+  
+begin
+  SetFrame(0);
+  glbegin(GL_QUADS);
+  //front
+    mycoord(21, 1); glVertex3f(-0.15, 0.4, 0.15);
+    mycoord(106, 1); glVertex3f( 0.15, 0.4, 0.15);
+    mycoord(106, 126); glVertex3f( 0.12, 0.0, 0.12);
+    mycoord(21, 126); glVertex3f( -0.12, 0.0, 0.12);
+  //left
+    mycoord(21, 1); glVertex3f(-0.15, 0.4,  0.15);
+    mycoord(21, 126); glVertex3f( -0.12, 0.0, 0.12);
+    mycoord(11, 126); glVertex3f( -0.12, 0.0, -0.12);
+    mycoord(11, 1); glVertex3f(-0.15, 0.4,  -0.12);
+  //back
+    mycoord(11, 126); glVertex3f( -0.12, 0.0, -0.12);
+    mycoord(11, 1); glVertex3f(-0.15, 0.4,  -0.12);
+    mycoord(21, 1); glVertex3f( 0.15, 0.4,  -0.12);
+    mycoord(21, 126); glVertex3f( 0.12, 0.0, -0.12);
+  //right
+    mycoord(21, 1); glVertex3f( 0.15, 0.4,  -0.12);
+    mycoord(21, 126); glVertex3f( 0.12, 0.0, -0.12);
+    mycoord(11, 126); glVertex3f( 0.12, 0.0,  0.12);
+    mycoord(11, 1); glVertex3f( 0.15, 0.4,  0.15);
+  glEnd;
+  glBegin(GL_TRIANGLE_FAN);
+  //top
+    mycoord(3, 3);
+    glVertex3f(0.0, 0.45, 0.0);
+    glVertex3f( 0.15, 0.4,  -0.12); 
+    glVertex3f( 0.15, 0.4,  0.15);
+    glVertex3f( -0.15, 0.4,  0.15);
+    glVertex3f( -0.15, 0.4,  -0.12);
+    glVertex3f( 0.15, 0.4,  -0.12); 
+  glEnd;
+end.
