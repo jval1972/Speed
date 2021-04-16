@@ -1,0 +1,8 @@
+sprite=MAPSPR25
+sky=NUBES25
+mountain=MOUNT25
+ground=FLAT0001
+name=Capital city
+length=3735
+best=3000
+level=2
