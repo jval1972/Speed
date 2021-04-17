@@ -52,6 +52,7 @@ uses
   g_game,
   m_fixed,
   tables,
+  r_camera,
   r_defs,
   speed_cars,
   speed_race,
@@ -93,6 +94,7 @@ var
   mpos: Ppatch_t;
   rfinlap: Ppatch_t;
   pendrace: Ppatch_t;
+  salp0, salp1: Ppatch_t;
 
 var
   timelaps: timelaps_t;
@@ -157,6 +159,9 @@ begin
   mpos := W_CacheLumpName('MPOS', PU_STATIC);
   rfinlap := W_CacheLumpName('RFINLAP', PU_STATIC);
   pendrace := W_CacheLumpName('ENDRACE', PU_STATIC);
+  salp0 := W_CacheLumpName('SALP0', PU_STATIC);
+  salp1 := W_CacheLumpName('SALP1', PU_STATIC);
+
   resamplescreen := mallocz(SizeOf(resamplescreen_t));
 end;
 
@@ -458,7 +463,33 @@ begin
   if carinfo[hud_player.mo.carinfo].cartype = ct_formula then
     SH_DrawNeedle(259, 166, $FFE000, ang * ANG1, 51, 60)
   else
-    SH_DrawNeedle(257, 163, $E06060, ang * ANG1, 199, 207)
+    SH_DrawNeedle(257, 163, $E06060, ang * ANG1, 199, 207);
+end;
+
+procedure SH_DrawBoard;
+var
+  p: Ppatch_t;
+  ang: angle_t;
+begin
+  if carinfo[hud_player.mo.carinfo].cartype = ct_formula then
+    p := salp0
+  else
+    p := salp1;
+  V_DrawPatch(0, 199 - p.height, SCN_HUD, p, false);
+
+  // rpm
+  ang := GetIntegerInRange(3 + (hud_player.mo.rpm * 267) div MAX_RPM, 3, 270);
+  if carinfo[hud_player.mo.carinfo].cartype = ct_formula then
+    SH_DrawNeedle(181, 199 - p.height + 34, $FFE000, ang * ANG1, 51, 60)
+  else
+    SH_DrawNeedle(120, 199 - p.height + 32, $E06060, ang * ANG1, 199, 207);
+
+  // speed
+  ang := GetIntegerInRange(3 + (hud_player.mo.enginespeed * 267) div carinfo[hud_player.mo.carinfo].maxspeed, 3, 270);
+  if carinfo[hud_player.mo.carinfo].cartype = ct_formula then
+    SH_DrawNeedle(133, 199 - p.height + 32, $C4C4C4, ang * ANG1, 165, 190)
+  else
+    SH_DrawNeedle(70, 199 - p.height + 30, $C4C4C4, ang * ANG1, 165, 190);
 end;
 
 procedure SH_DrawGears;
@@ -779,11 +810,14 @@ begin
 
     SH_GetTimeLaps(hud_player.mo, @timelaps);
 
+    // Draw speed
+    if chasecamera then
+      SH_DrawSpeed
+    else
+      SH_DrawBoard;
+
     // Draw grears
     SH_DrawGears;
-
-    // Draw speed
-    SH_DrawSpeed;
 
     // Elapsed laps
     SH_DrawNumLaps;
