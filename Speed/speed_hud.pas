@@ -51,6 +51,7 @@ uses
   d_net,
   g_game,
   m_fixed,
+  tables,
   r_defs,
   speed_cars,
   speed_race,
@@ -99,6 +100,28 @@ var
 const
   TIMEDIGITLOOKUP = '0123456789"''';
 
+type
+  point_t = record
+    x, y: integer;
+  end;
+
+  triangle_t = array[0..2] of point_t;
+  Ptriangle_t = ^triangle_t;
+
+const
+  ARROW_RESAMPLE = 4;
+
+type
+  colorinfo_t = record
+    r, g, b: integer;
+  end;
+
+  resamplescreen_t = array[0..320 * ARROW_RESAMPLE - 1, 0..200 * ARROW_RESAMPLE - 1] of colorinfo_t;
+  Presamplescreen_t = ^resamplescreen_t;
+
+var
+  resamplescreen: Presamplescreen_t;
+
 procedure SH_InitSpeedHud;
 var
   i: integer;
@@ -134,6 +157,7 @@ begin
   mpos := W_CacheLumpName('MPOS', PU_STATIC);
   rfinlap := W_CacheLumpName('RFINLAP', PU_STATIC);
   pendrace := W_CacheLumpName('ENDRACE', PU_STATIC);
+  resamplescreen := mallocz(SizeOf(resamplescreen_t));
 end;
 
 var
@@ -141,6 +165,270 @@ var
 
 procedure SH_ShutDownSpeedHud;
 begin
+  memfree(pointer(resamplescreen), SizeOf(resamplescreen_t));
+end;
+
+var
+  rminx, rmaxx, rminy, rmaxy: integer;
+
+procedure SH_DrawColoredTriangle(const tri: Ptriangle_t; const cl: LongWord;
+  const rot: angle_t; const center: point_t);
+
+var
+  cr, cg, cb: integer;
+
+  procedure fillLeftFlatTriangle(v1, v2, v3: point_t);
+  var
+    invslope1, invslope2: fixed_t;
+    cury1, cury2: fixed_t;
+    i, j: integer;
+    v: point_t;
+    iup: integer;
+    idown: integer;
+    jup: integer;
+    jdown: integer;
+  begin
+    if v2.y > v3.y then
+    begin
+      v := v3;
+      v3 := v2;
+      v2 := v;
+    end;
+    invslope1 := Round((v2.y - v1.y) / (v2.x - v1.x) * FRACUNIT);
+    invslope2 := Round((v3.y - v1.y) / (v3.x - v1.x) * FRACUNIT);
+
+    cury1 := v1.y * FRACUNIT;
+    cury2 := cury1;
+
+    iup := v2.x;
+    idown := v1.x;
+
+    for i := idown to iup do
+    begin
+      jup := cury2 div FRACUNIT + 1;
+      if jup >= 0 then
+      begin
+        if jup >= 200 * ARROW_RESAMPLE then
+          jup := 200 * ARROW_RESAMPLE - 1;
+        jdown := cury1 div FRACUNIT;
+        if jdown < 0 then
+          jdown := 0;
+
+        for j := jdown to jup do
+        begin
+          resamplescreen[i, j].r := cr;
+          resamplescreen[i, j].g := cg;
+          resamplescreen[i, j].b := cb;
+        end;
+      end;
+      cury1 := cury1 + invslope1;
+      cury2 := cury2 + invslope2;
+    end;
+  end;
+
+  procedure fillRightFlatTriangle(v1, v2, v3: point_t);
+  var
+    invslope1, invslope2: fixed_t;
+    cury1, cury2: fixed_t;
+    i, j: integer;
+    v: point_t;
+    idown: integer;
+    iup: integer;
+    jup: integer;
+    jdown: integer;
+  begin
+    if v2.y < v1.y then
+    begin
+      v := v2;
+      v2 := v1;
+      v1 := v;
+    end;
+    invslope1 := Round((v3.y - v1.y) / (v3.x - v1.x) * FRACUNIT);
+    invslope2 := Round((v3.y - v2.y) / (v3.x - v2.x) * FRACUNIT);
+
+    cury1 := v3.y * FRACUNIT;
+    cury2 := cury1;
+
+    idown := v1.x + 1;
+
+    iup := v3.x;
+
+    for i := iup downto idown do
+    begin
+      cury1 := cury1 - invslope1;
+      cury2 := cury2 - invslope2;
+
+      jup := cury2 div FRACUNIT + 1;
+      if jup >= 0 then
+      begin
+        if jup >= 200 * ARROW_RESAMPLE then
+          jup := 200 * ARROW_RESAMPLE - 1;
+        jdown := cury1 div FRACUNIT;
+        if jdown < 0 then
+          jdown := 0;
+
+        for j := jdown to jup do
+        begin
+          resamplescreen[i, j].r := cr;
+          resamplescreen[i, j].g := cg;
+          resamplescreen[i, j].b := cb;
+        end;
+      end;
+    end;
+  end;
+
+  procedure _transformcoords(const xx, yy: PInteger);
+  var
+    tmp: integer;
+    ang: angle_t;
+  begin
+    ang := rot shr FRACBITS;
+
+    tmp := ARROW_RESAMPLE * center.x +
+      (ARROW_RESAMPLE * xx^ * fixedcosine[ang] -
+       ARROW_RESAMPLE * yy^ * fixedsine[ang]) div FRACUNIT;
+
+    yy^ := ARROW_RESAMPLE * center.y +
+      (ARROW_RESAMPLE * xx^ * fixedsine[ang] +
+       ARROW_RESAMPLE * yy^ * fixedcosine[ang]) div FRACUNIT;
+
+    xx^ := tmp;
+  end;
+
+var
+  v1, v2, v3, v4: point_t;
+  t: triangle_t;
+  i: integer;
+begin
+  cr := cl and $FF;
+  cg := (cl shr 8) and $FF;
+  cb := (cl shr 16) and $FF;
+
+  t[0] := tri[0];
+  t[1] := tri[1];
+  t[2] := tri[2];
+
+  for i := 0 to 2 do
+  begin
+    _transformcoords(@t[i].x, @t[i].y);
+    if t[i].x < rminx then
+      rminx := t[i].x;
+    if t[i].x > rmaxx then
+      rmaxx := t[i].x;
+    if t[i].y < rminy then
+      rminy := t[i].y;
+    if t[i].y > rmaxy then
+      rmaxy := t[i].y;
+  end;
+
+  if t[1].x < t[0].x then
+  begin
+    v1 := t[1];
+    t[1] := t[0];
+    t[0] := v1;
+  end;
+
+  if t[2].x < t[1].x then
+  begin
+    v1 := t[2];
+    t[2] := t[1];
+    t[1] := v1;
+  end;
+
+  if t[1].x < t[0].x then
+  begin
+    v1 := t[1];
+    t[1] := t[0];
+    t[0] := v1;
+  end;
+
+  if t[0].y < 0 then
+    if t[1].y < 0 then
+      if t[2].y < 0 then
+        Exit;
+
+  if t[0].y >= 200 * ARROW_RESAMPLE - 1 then
+    if t[1].y >= 200 * ARROW_RESAMPLE - 1 then
+      if t[2].y >= 200 * ARROW_RESAMPLE - 1 then
+        Exit;
+
+  v1 := t[0];
+  v2 := t[1];
+  v3 := t[2];
+
+  if v2.x = v3.x then
+  begin
+    fillLeftFlatTriangle(v1, v2, v3);
+    Exit;
+  end;
+
+  if v1.x = v2.x then
+  begin
+    fillRightFlatTriangle(v1, v2, v3);
+    Exit;
+  end;
+
+  v4.y := round(v1.y + ((v2.x - v1.x) / (v3.x - v1.x)) * (v3.y - v1.y));
+  v4.x := v2.x;
+
+  fillLeftFlatTriangle(v1, v2, v4);
+  fillRightFlatTriangle(v2, v4, v3);
+end;
+
+procedure SH_DrawNeedle(const x, y: integer; const cl: LongWord; const rot: angle_t;
+  const pidx1, pidx2: integer);
+var
+  tri: triangle_t;
+  center: point_t;
+  i, j: integer;
+  ii, jj: integer;
+  pixel: colorinfo_t;
+  cc: LongWord;
+begin
+  rminx := MAXINT;
+  rmaxx := -MAXINT;
+  rminy := MAXINT;
+  rmaxy := -MAXINT;
+  center.x := x;
+  center.y := y;
+  tri[0].x := 0;
+  tri[0].y := 0;
+  tri[1].x := 4;
+  tri[1].y := 4;
+  tri[2].x := 0;
+  tri[2].y := 20;
+  SH_DrawColoredTriangle(@tri, cl, rot, center);
+  tri[1].x := -4;
+  SH_DrawColoredTriangle(@tri, cl, rot, center);
+  for i := rminx div ARROW_RESAMPLE - 1 to (1 + rmaxx) div ARROW_RESAMPLE + 1 do
+    for j := rminy div ARROW_RESAMPLE - 1 to (1 + rmaxy) div ARROW_RESAMPLE + 1 do
+    begin
+      pixel.r := 0;
+      pixel.g := 0;
+      pixel.b := 0;
+      for ii := i * ARROW_RESAMPLE to (1 + i) * ARROW_RESAMPLE - 1 do
+        for jj := j * ARROW_RESAMPLE to (1 + j) * ARROW_RESAMPLE - 1 do
+        begin
+          pixel.r := pixel.r + resamplescreen[ii - ARROW_RESAMPLE div 2, jj - ARROW_RESAMPLE div 2].r;
+          pixel.g := pixel.g + resamplescreen[ii - ARROW_RESAMPLE div 2, jj - ARROW_RESAMPLE div 2].g;
+          pixel.b := pixel.b + resamplescreen[ii - ARROW_RESAMPLE div 2, jj - ARROW_RESAMPLE div 2].b;
+        end;
+      pixel.r := pixel.r div (ARROW_RESAMPLE * ARROW_RESAMPLE);
+      pixel.g := pixel.g div (ARROW_RESAMPLE * ARROW_RESAMPLE);
+      pixel.b := pixel.b div (ARROW_RESAMPLE * ARROW_RESAMPLE);
+      cc := pixel.r + (pixel.g shl 8) + (pixel.b shl 16);
+      if cc <> 0 then
+      begin
+        screens[SCN_HUD][j * 320 + i] := V_FindAproxColorIndex(@curpal, cc, pidx1, pidx2);
+        for ii := i * ARROW_RESAMPLE to (1 + i) * ARROW_RESAMPLE - 1 do
+          for jj := j * ARROW_RESAMPLE to (1 + j) * ARROW_RESAMPLE - 1 do
+          begin
+            resamplescreen[ii - ARROW_RESAMPLE div 2, jj - ARROW_RESAMPLE div 2].r := 0;
+            resamplescreen[ii - ARROW_RESAMPLE div 2, jj - ARROW_RESAMPLE div 2].g := 0;
+            resamplescreen[ii - ARROW_RESAMPLE div 2, jj - ARROW_RESAMPLE div 2].b := 0;
+          end;
+      end;
+    end;
 end;
 
 procedure SH_DrawSpeed;
@@ -164,6 +452,7 @@ begin
       xpos := xpos + whitedigitsmall[id].width + 1;
     end;
   end;
+  SH_DrawNeedle(259, 166, $FFE000, (leveltime div 35) * ANG1, 51, 60);
 end;
 
 procedure SH_DrawGears;
