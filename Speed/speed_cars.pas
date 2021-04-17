@@ -41,6 +41,10 @@ const
   KMH_TO_FIXED = 4370; // Speed in fixed point arithmetic
 
 const
+  MAX_RPM = 13000;
+  RPM_FADE = 370; // ~1 sec to drop from 13000 rpm to zero
+
+const
   MAX_RACE_CARS = 20;
 
 type
@@ -935,11 +939,62 @@ begin
   begin
     if p.mo.gear > 1 then
     begin
-      f := p.mo.enginespeed div (CARINFO[p.mo.carinfo].maxspeed div NUM_GEAR_ACCEL_FACTORS);
       if GEAR_ACCEL_FACTORS[p.mo.gear - 1, f] > 0 then
         SH_ShiftGearDown(p.mo, MANUAL_GEAR_CHANGE_TICS, MANUAL_NEXT_GEAR_CHANGE_TICS);
     end;
   end;
+end;
+
+procedure SH_CalcRPM(const mo: Pmobj_t);
+var
+  f: integer;
+  i: integer;
+  maxgearspeed: integer;
+  newrpm: integer;
+begin
+  if (mo.gear = 0) or (mo.geartics > 0) then
+  begin
+    if mo.rpm > RPM_FADE then
+      mo.rpm := mo.rpm - RPM_FADE
+    else
+      mo.rpm := 0;
+    Exit;
+  end;
+
+  f := 0;
+
+  for i := 0 to NUM_GEAR_ACCEL_FACTORS - 1 do
+    if GEAR_ACCEL_FACTORS[mo.gear, i] <> 0 then
+      f := i
+    else
+      Break;
+
+  maxgearspeed := ((1 + f) * CARINFO[mo.carinfo].maxspeed) div NUM_GEAR_ACCEL_FACTORS;
+  if maxgearspeed = 0 then
+  begin
+    if mo.rpm > RPM_FADE then
+      mo.rpm := mo.rpm - RPM_FADE
+    else
+      mo.rpm := 0;
+    Exit;
+  end;
+
+  newrpm := (abs(mo.enginespeed) div KMH_TO_FIXED) * MAX_RPM div (maxgearspeed div KMH_TO_FIXED);
+  if newrpm > MAX_RPM then
+    newrpm := MAX_RPM;
+
+  if mo.rpm > newrpm then
+  begin
+    mo.rpm := mo.rpm - RPM_FADE;
+    if mo.rpm < newrpm then
+      mo.rpm := newrpm;
+  end
+  else if mo.rpm < newrpm then
+  begin
+    mo.rpm := mo.rpm + RPM_FADE;
+    if mo.rpm > newrpm then
+      mo.rpm := newrpm;
+  end
 end;
 
 function SH_GearAccelerationFactor(const mo: Pmobj_t): fixed_t;
@@ -1324,6 +1379,8 @@ begin
   mo.cadeccelerate := cmd.deccelerate;
   mo.carbrake := cmd.brake;
 
+  SH_CalcRPM(mo);
+
   if P_AproxDistance(viewx - mo.x, viewy - mo.y) < MAX_SOUND_DISTANCE then
   begin
     if mo.player = nil then
@@ -1372,7 +1429,8 @@ begin
     cinfo := @carinfo[caller.carinfo];
     speed := caller.enginespeed;
     if caller.caraccelerate <> 0 then
-      frac := GetIntegerInRange(speed * 10 div cinfo.maxspeed, 0, 9)
+      frac := GetIntegerInRange(caller.rpm * 10 div MAX_RPM, 0, 9)
+//      frac := GetIntegerInRange(speed * 10 div cinfo.maxspeed, 0, 9)
     else
       frac := 0;
     if cinfo.cartype = ct_formula then
