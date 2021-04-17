@@ -939,6 +939,7 @@ begin
   begin
     if p.mo.gear > 1 then
     begin
+      f := GetIntegerInRange(p.mo.enginespeed div (CARINFO[p.mo.carinfo].maxspeed div NUM_GEAR_ACCEL_FACTORS), 0, NUM_GEAR_ACCEL_FACTORS - 1);
       if GEAR_ACCEL_FACTORS[p.mo.gear - 1, f] > 0 then
         SH_ShiftGearDown(p.mo, MANUAL_GEAR_CHANGE_TICS, MANUAL_NEXT_GEAR_CHANGE_TICS);
     end;
