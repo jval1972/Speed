@@ -392,13 +392,13 @@ begin
   center.x := x;
   center.y := y;
   tri[0].x := 0;
-  tri[0].y := 0;
-  tri[1].x := 4;
-  tri[1].y := 4;
+  tri[0].y := -2;
+  tri[1].x := 3;
+  tri[1].y := 0;
   tri[2].x := 0;
   tri[2].y := 20;
   SH_DrawColoredTriangle(@tri, cl, rot, center);
-  tri[1].x := -4;
+  tri[1].x := -3;
   SH_DrawColoredTriangle(@tri, cl, rot, center);
   for i := rminx div ARROW_RESAMPLE - 1 to (1 + rmaxx) div ARROW_RESAMPLE + 1 do
     for j := rminy div ARROW_RESAMPLE - 1 to (1 + rmaxy) div ARROW_RESAMPLE + 1 do
@@ -439,6 +439,7 @@ var
   i: integer;
   id: integer;
   xpos: integer;
+  ang: angle_t;
 begin
   V_DrawPatch(260, 195, SCN_HUD, speedometer[Ord(carinfo[hud_player.mo.carinfo].cartype)], false);
   sspeed := itoa(hud_player.mo.enginespeed div KMH_TO_FIXED);
@@ -452,7 +453,12 @@ begin
       xpos := xpos + whitedigitsmall[id].width + 1;
     end;
   end;
-  SH_DrawNeedle(259, 166, $FFE000, (leveltime div 35) * ANG1, 51, 60);
+  // rpm
+  ang := GetIntegerInRange(3 + (hud_player.mo.rpm * 267) div MAX_RPM, 3, 270);
+  if carinfo[hud_player.mo.carinfo].cartype = ct_formula then
+    SH_DrawNeedle(259, 166, $FFE000, ang * ANG1, 51, 60)
+  else
+    SH_DrawNeedle(257, 163, $E06060, ang * ANG1, 199, 207)
 end;
 
 procedure SH_DrawGears;
