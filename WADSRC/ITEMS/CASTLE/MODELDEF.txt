@@ -1,0 +1,174 @@
+modeldef "CASTLE.ddmodel" 
+{
+  scale 128.0
+}
+
+//Turret 3 floors #1 (CASTLE_001)
+state "S_CASTLE_0010"
+{
+  model "CASTLE.ddmodel"
+  texture "CASTLE.png"
+  frame1 0
+  frame2 0
+}
+
+
+//Turret 4 floors #1 (CASTLE_002)
+state "S_CASTLE_0020"
+{
+  model "CASTLE.ddmodel"
+  texture "CASTLE.png"
+  frame1 1
+  frame2 1
+}
+
+
+//Turret 5 floors #1 (CASTLE_003)
+state "S_CASTLE_0030"
+{
+  model "CASTLE.ddmodel"
+  texture "CASTLE.png"
+  frame1 2
+  frame2 2
+}
+
+
+//Turret 3 floors #2 (CASTLE_004)
+state "S_CASTLE_0040"
+{
+  model "CASTLE.ddmodel"
+  texture "CASTLE.png"
+  frame1 3
+  frame2 3
+}
+
+
+//Turret 4 floors #2 (CASTLE_005)
+state "S_CASTLE_0050"
+{
+  model "CASTLE.ddmodel"
+  texture "CASTLE.png"
+  frame1 4
+  frame2 4
+}
+
+
+//Turret 5 floors #2 (CASTLE_006)
+state "S_CASTLE_0060"
+{
+  model "CASTLE.ddmodel"
+  texture "CASTLE.png"
+  frame1 5
+  frame2 5
+}
+
+
+//Wall 2 floors (CASTLE_007)
+state "S_CASTLE_0070"
+{
+  model "CASTLE.ddmodel"
+  texture "CASTLE.png"
+  frame1 6
+  frame2 6
+}
+
+
+//Wall 3 floors (CASTLE_008)
+state "S_CASTLE_0080"
+{
+  model "CASTLE.ddmodel"
+  texture "CASTLE.png"
+  frame1 7
+  frame2 7
+}
+
+
+//Gate #1 (CASTLE_009)
+state "S_CASTLE_0090"
+{
+  model "CASTLE.ddmodel"
+  texture "CASTLE.png"
+  frame1 8
+  frame2 8
+}
+
+
+//Gate #2 (CASTLE_010)
+state "S_CASTLE_0100"
+{
+  model "CASTLE.ddmodel"
+  texture "CASTLE.png"
+  frame1 9
+  frame2 9
+}
+
+
+//Gate #3 (CASTLE_011)
+state "S_CASTLE_0110"
+{
+  model "CASTLE.ddmodel"
+  texture "CASTLE.png"
+  frame1 10
+  frame2 10
+}
+
+
+//Gate Wall (CASTLE_012)
+state "S_CASTLE_0120"
+{
+  model "CASTLE.ddmodel"
+  texture "CASTLE.png"
+  frame1 11
+  frame2 11
+}
+
+
+//House 1 floor (CASTLE_013)
+state "S_CASTLE_0130"
+{
+  model "CASTLE.ddmodel"
+  texture "CASTLE.png"
+  frame1 12
+  frame2 12
+}
+
+
+//House 2 floors (CASTLE_014)
+state "S_CASTLE_0140"
+{
+  model "CASTLE.ddmodel"
+  texture "CASTLE.png"
+  frame1 13
+  frame2 13
+}
+
+
+//House 3 floors (CASTLE_015)
+state "S_CASTLE_0150"
+{
+  model "CASTLE.ddmodel"
+  texture "CASTLE.png"
+  frame1 14
+  frame2 14
+}
+
+
+//House 4 floors (CASTLE_016)
+state "S_CASTLE_0160"
+{
+  model "CASTLE.ddmodel"
+  texture "CASTLE.png"
+  frame1 15
+  frame2 15
+}
+
+
+//Flag (CASTLE_017)
+state "S_CASTLE_0170"
+{
+  model "CASTLE.ddmodel"
+  texture "CASTLE.png"
+  frame1 16
+  frame2 16
+}
+

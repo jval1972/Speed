@@ -1,0 +1,362 @@
+model model1;
+
+const
+  TEX_SIZE = 511;
+  
+procedure mytexcoord(const x, y: integer);
+begin
+  glTexCoord2f((0.5 + x) / TEX_SIZE, (0.5 + y) / TEX_SIZE);
+end;
+
+procedure MakeTuret(const h: float; const u, v: integer);
+begin
+  glbegin(GL_QUADS);
+    mytexcoord(u + 255, v + 255); glVertex3f(-0.5, h, -0.5);
+    mytexcoord(u + 255, v + 1);   glVertex3f(-0.5, h + 1.0, -0.5);
+    mytexcoord(u + 1, v + 1);     glVertex3f( 0.5, h + 1.0, -0.5);
+    mytexcoord(u + 1, v + 255);   glVertex3f( 0.5, h, -0.5);
+
+    mytexcoord(u + 255, v + 255); glVertex3f(-0.5, h, 0.5);
+    mytexcoord(u + 255, v + 1);   glVertex3f(-0.5, h + 1.0, 0.5);
+    mytexcoord(u + 1, v + 1);     glVertex3f( 0.5, h + 1.0, 0.5);
+    mytexcoord(u + 1, v + 255);   glVertex3f( 0.5, h, 0.5);
+
+    mytexcoord(u + 255, v + 255); glVertex3f( 0.5, h, -0.5);
+    mytexcoord(u + 255, v + 1);   glVertex3f( 0.5, h + 1.0, -0.5);
+    mytexcoord(u + 1, v + 1);     glVertex3f( 0.5, h + 1.0, 0.5);
+    mytexcoord(u + 1, v + 255);   glVertex3f( 0.5, h, 0.5);
+
+    mytexcoord(u + 255, v + 255); glVertex3f(-0.5, h, -0.5);
+    mytexcoord(u + 255, v + 1);   glVertex3f(-0.5, h + 1.0, -0.5);
+    mytexcoord(u + 1, v + 1);     glVertex3f(-0.5, h + 1.0, 0.5);
+    mytexcoord(u + 1, v + 255);   glVertex3f(-0.5, h, 0.5);
+  glEnd;
+end;
+
+procedure MakeWall(const h: float; const u, v: integer);
+begin
+  glbegin(GL_QUADS);
+    mytexcoord(u + 255, v + 255); glVertex3f(-0.5, h, -0.25);
+    mytexcoord(u + 255, v + 1);   glVertex3f(-0.5, h + 1.0, -0.25);
+    mytexcoord(u + 1, v + 1);     glVertex3f( 0.5, h + 1.0, -0.25);
+    mytexcoord(u + 1, v + 255);   glVertex3f( 0.5, h, -0.25);
+
+    mytexcoord(u + 255, v + 255); glVertex3f(-0.5, h, 0.25);
+    mytexcoord(u + 255, v + 1);   glVertex3f(-0.5, h + 1.0, 0.25);
+    mytexcoord(u + 1, v + 1);     glVertex3f( 0.5, h + 1.0, 0.25);
+    mytexcoord(u + 1, v + 255);   glVertex3f( 0.5, h, 0.25);
+
+    mytexcoord(u + 255, v + 255); glVertex3f( 0.5, h, -0.25);
+    mytexcoord(u + 255, v + 1);   glVertex3f( 0.5, h + 1.0, -0.25);
+    mytexcoord(u + 1, v + 1);     glVertex3f( 0.5, h + 1.0, 0.25);
+    mytexcoord(u + 1, v + 255);   glVertex3f( 0.5, h, 0.25);
+
+    mytexcoord(u + 255, v + 255); glVertex3f(-0.5, h, -0.25);
+    mytexcoord(u + 255, v + 1);   glVertex3f(-0.5, h + 1.0, -0.25);
+    mytexcoord(u + 1, v + 1);     glVertex3f(-0.5, h + 1.0, 0.25);
+    mytexcoord(u + 1, v + 255);   glVertex3f(-0.5, h, 0.25);
+  glEnd;
+end;
+
+procedure MakeTop(const x, z, h: float; const u, v: integer);
+var
+  h2: float;
+begin
+  h2 := h + 0.22;
+  glbegin(GL_QUADS);
+    mytexcoord(u + 51, v + 51); glVertex3f(x - 0.1, h, z - 0.1);
+    mytexcoord(u + 51, v + 1);   glVertex3f(x - 0.1, h2, z - 0.1);
+    mytexcoord(u + 1, v + 1);     glVertex3f(x + 0.1, h2, z - 0.1);
+    mytexcoord(u + 1, v + 51);   glVertex3f(x + 0.1, h, z - 0.1);
+
+    mytexcoord(u + 51, v + 51); glVertex3f(x - 0.1, h, z + 0.1);
+    mytexcoord(u + 51, v + 1);   glVertex3f(x - 0.1, h2, z + 0.1);
+    mytexcoord(u + 1, v + 1);     glVertex3f(x + 0.1, h2, z + 0.1);
+    mytexcoord(u + 1, v + 51);   glVertex3f(x + 0.1, h, z + 0.1);
+
+    mytexcoord(u + 51, v + 51); glVertex3f(x + 0.1, h, z - 0.1);
+    mytexcoord(u + 51, v + 1);   glVertex3f(x + 0.1, h2, z - 0.1);
+    mytexcoord(u + 1, v + 1);     glVertex3f(x + 0.1, h2, z + 0.1);
+    mytexcoord(u + 1, v + 51);   glVertex3f(x + 0.1, h, z + 0.1);
+
+    mytexcoord(u + 51, v + 51); glVertex3f(x - 0.1, h, z - 0.1);
+    mytexcoord(u + 51, v + 1);   glVertex3f(x - 0.1, h2, z - 0.1);
+    mytexcoord(u + 1, v + 1);     glVertex3f(x - 0.1, h2, z + 0.1);
+    mytexcoord(u + 1, v + 51);   glVertex3f(x - 0.1, h, z + 0.1);
+  glEnd;
+end;
+
+var
+  topcoord: integer;
+  
+function AdvanceTopCoord: integer;
+begin
+  Result := topcoord;
+  topcoord := topcoord + 77;
+  if topcoord > 450 then
+    topcoord := topcoord - 450;    
+end;
+  
+procedure MakeTurretTop(const h: float);
+begin
+  MakeTop(-0.4, -0.4, h, AdvanceTopCoord, 20);
+  MakeTop( 0.0, -0.4, h, AdvanceTopCoord, 20);
+  MakeTop( 0.4, -0.4, h, AdvanceTopCoord, 20);
+  MakeTop(-0.4,  0.4, h, AdvanceTopCoord, 20);
+  MakeTop( 0.0,  0.4, h, AdvanceTopCoord, 20);
+  MakeTop( 0.4,  0.4, h, AdvanceTopCoord, 20);
+  MakeTop(-0.4,  0.0, h, AdvanceTopCoord, 20);
+  MakeTop( 0.4,  0.0, h, AdvanceTopCoord, 20);
+end;
+
+procedure MakeWallTop(const h: float);
+begin
+  MakeTop(-0.4,  0.15, h, AdvanceTopCoord, 20);
+  MakeTop( 0.0,  0.15, h, AdvanceTopCoord, 20);
+  MakeTop( 0.4,  0.15, h, AdvanceTopCoord, 20);
+end;
+
+procedure MakeHouseTop(const x, z, h: float);
+begin
+  glBegin(GL_TRIANGLE_FAN);
+    mytexcoord(383, 388);
+    glVertex3f(0.0, h + (x + z) / 2, 0.0); 
+    mytexcoord(262, 509);
+    glVertex3f(x, h, z); 
+    mytexcoord(504, 509);
+    glVertex3f(x, h, -z); 
+    mytexcoord(262, 509);
+    glVertex3f(-x, h, -z); 
+    mytexcoord(504, 509);
+    glVertex3f(-x, h, z); 
+    mytexcoord(262, 509);
+    glVertex3f(x, h, z); 
+  glEnd;
+end;
+
+const
+  NUMARCHPOINTS = 20;
+  
+var
+  A1x, A1y, A2x, A2y: array[0..NUMARCHPOINTS] of float;
+  
+procedure MakeArch(const r1, r2, z1, z2: float; const tex1, tex2: integer);
+var
+  i: integer;
+  idx: integer;
+  f: float;
+  coord: integer;
+begin
+  for i := 0 to NUMARCHPOINTS do
+  begin
+    f := (i - NUMARCHPOINTS / 2) * pi / NUMARCHPOINTS;
+    A1x[i] := r1 * sin(f);
+    A1y[i] := r1 * cos(f);
+    A2x[i] := r2 * sin(f);
+    A2y[i] := r2 * cos(f);
+  end;
+  coord := AdvanceTopCoord;
+  glBegin(GL_TRIANGLE_STRIP);
+    for i := 0 to NUMARCHPOINTS do
+    begin
+      idx := i;
+      if idx > NUMARCHPOINTS then
+        idx := 0; 
+      mytexcoord(coord + Round(r1 * idx / NUMARCHPOINTS * TEX_SIZE), tex1);
+      glVertex3f(A1x[idx], A1y[idx], z1);
+      mytexcoord(coord + Round(r1 * idx / NUMARCHPOINTS * TEX_SIZE), tex2);
+      glVertex3f(A2x[idx], A2y[idx], z2);
+    end;
+  glEnd;
+end;
+
+const
+  BANNERU = 282;
+  BANNERV = 259;
+  BANNERW = 63;
+  BANNERH = 128;
+  
+procedure bannerpoint(const x, y, z: integer; const scale: float; const xofs, yofs, zofs: float);
+begin
+  mytexcoord(BANNERU + x, BANNERV + y);
+  glVertex3f((x - BANNERW / 2) * scale + xofs, (BANNERH - y - 1) * scale + yofs, (z - BANNERW / 2) * scale + zofs);
+end;
+    
+procedure DrawBanner1(const scale: float; const xofs, yofs, zofs: float);
+begin
+  glBegin(GL_QUADS);
+    bannerpoint(28, 0, 0, scale, xofs, yofs, zofs);
+    bannerpoint(33, 0, 0, scale, xofs, yofs, zofs);
+    bannerpoint(33, 127, 0, scale, xofs, yofs, zofs);
+    bannerpoint(28, 127, 0, scale, xofs, yofs, zofs);
+  
+    bannerpoint(0, 15, 0, scale, xofs, yofs, zofs);
+    bannerpoint(29, 15, 0, scale, xofs, yofs, zofs);
+    bannerpoint(29, 20, 0, scale, xofs, yofs, zofs);
+    bannerpoint(0, 20, 0, scale, xofs, yofs, zofs);
+    
+    bannerpoint(33, 15, 0, scale, xofs, yofs, zofs);
+    bannerpoint(62, 15, 0, scale, xofs, yofs, zofs);
+    bannerpoint(62, 20, 0, scale, xofs, yofs, zofs);
+    bannerpoint(33, 20, 0, scale, xofs, yofs, zofs);    
+  glEnd;
+  
+  glBegin(GL_TRIANGLE_FAN);
+    bannerpoint(29, 24, 0, scale, xofs, yofs, zofs);  
+    bannerpoint(24, 19, 0, scale, xofs, yofs, zofs);  
+    bannerpoint(3, 19, 0, scale, xofs, yofs, zofs);  
+    bannerpoint(3, 103, 0, scale, xofs, yofs, zofs);  
+    bannerpoint(14, 92, 0, scale, xofs, yofs, zofs);  
+    bannerpoint(29, 107, 0, scale, xofs, yofs, zofs);  
+  glEnd;
+    
+  glBegin(GL_TRIANGLE_FAN);
+    bannerpoint(33, 24, 0, scale, xofs, yofs, zofs);  
+    bannerpoint(38, 19, 0, scale, xofs, yofs, zofs);  
+    bannerpoint(59, 19, 0, scale, xofs, yofs, zofs);  
+    bannerpoint(59, 103, 0, scale, xofs, yofs, zofs);  
+    bannerpoint(48, 92, 0, scale, xofs, yofs, zofs);  
+    bannerpoint(33, 107, 0, scale, xofs, yofs, zofs);  
+  glEnd;  
+end;
+    
+var
+  frm: integer;
+  
+procedure NewFrame;
+begin
+  SetFrame(frm);
+  inc(frm);
+end;
+  
+var
+  i, iX: integer;
+  ydown: float;
+begin
+  topcoord := 0;
+  
+  for i := 0 to 1 do
+  begin
+    // Turret 3 stores 
+    NewFrame;
+    MakeTuret(0.0, 0, i * 255);
+    MakeTuret(1.0, 0, 0);
+    MakeTuret(2.0, 254, 0);
+    MakeTurretTop(3.0);
+  
+    // Turret 4 stores 
+    NewFrame;
+    MakeTuret(0.0, 0, i * 255);
+    MakeTuret(1.0, 0, 0);
+    MakeTuret(2.0, 254, 0);
+    MakeTuret(3.0, 254, 0);
+    MakeTurretTop(4.0);
+
+    // Turret 5 stores 
+    NewFrame;
+    MakeTuret(0.0, 0, i * 255);
+    MakeTuret(1.0, 0, 0);
+    MakeTuret(2.0, 254, 0);
+    MakeTuret(3.0, 254, 0);
+    MakeTuret(4.0, 254, 0);
+    MakeTurretTop(5.0);
+  end;
+  
+  // Wall 2 stores
+  NewFrame;
+  MakeWall(0.0, 0, 0);
+  MakeWall(1.0, 0, 0);
+  MakeWallTop(2.0);
+  
+  // Wall 3 stores
+  NewFrame;
+  MakeWall(0.0, 0, 0);
+  MakeWall(1.0, 0, 0);
+  MakeWall(2.0, 0, 0);
+  MakeWallTop(3.0);
+  
+  // Gate
+  for i := 0 to 2 do
+  begin
+    NewFrame;
+  
+    MakeArch(2.5, 2.4, 0.3, 0.3, 1, 22);
+    MakeArch(2.5, 2.4, -0.3, -0.3, 1, 22);
+
+    MakeArch(2.4, 2.2, 0.3, 0.3, 22, 68);
+    MakeArch(2.4, 2.2, -0.3, -0.3, 22, 68);
+  
+    MakeArch(2.2, 2.0, 0.3, 0.3, 22, 68);
+    MakeArch(2.2, 2.0, -0.3, -0.3, 22, 68);
+  
+    MakeArch(2.0, 1.8, 0.3, 0.3, 22, 68);
+    MakeArch(2.0, 1.8, -0.3, -0.3, 22, 68);
+  
+    MakeArch(1.8, 1.8, -0.3, -0.1, 22, 68);
+    MakeArch(1.8, 1.8, -0.1,  0.1, 22, 68);
+    MakeArch(1.8, 1.8,  0.1,  0.3, 22, 68);
+
+    MakeArch(2.5, 2.5, -0.3, -0.1, 22, 68);
+    MakeArch(2.5, 2.5, -0.1,  0.1, 22, 68);
+    MakeArch(2.5, 2.5,  0.1,  0.3, 22, 68);
+  
+    if i > 0 then
+    begin
+      if i = 1 then
+        ydown := 1.2
+      else
+        ydown := 0.0;
+      glBegin(GL_QUADS);
+      for iX := 0 to 19 do
+      begin
+        mytexcoord(270, 260);
+        glVertex3f(iX * 0.1 - 0.98, 2.0, 0.0); 
+        mytexcoord(280, 260);
+        glVertex3f(iX * 0.1 - 0.96, 2.0, 0.0); 
+        mytexcoord(280, 305);
+        glVertex3f(iX * 0.1 - 0.96, ydown, 0.0); 
+        mytexcoord(270, 305);
+        glVertex3f(iX * 0.1 - 0.98, ydown, 0.0); 
+      end;
+      glEnd;
+    end;  
+  end;
+  
+  // Gate top  
+  NewFrame;
+  MakeWall(2.0, 0, 0);
+  MakeWall(3.0, 254, 0);
+  MakeWallTop(4.0);
+  DrawBanner1(1 / 256, 0.0, 4.2, 0.26);   
+  glPopMatrix;
+
+  // House 1
+  NewFrame;
+  MakeTuret(0.0, 254, 0);
+  MakeHouseTop(0.5, 0.5, 1.0); 
+   
+  // House 2
+  NewFrame;
+  MakeTuret(0.0, 254, 0);
+  MakeTuret(1.0, 254, 0);
+  MakeHouseTop(0.5, 0.5, 2.0); 
+   
+  // House 3
+  NewFrame;
+  MakeTuret(0.0, 254, 0);
+  MakeTuret(1.0, 254, 0);
+  MakeTuret(2.0, 254, 0);
+  MakeHouseTop(0.5, 0.5, 3.0); 
+   
+  // House 4
+  NewFrame;
+  MakeTuret(0.0, 254, 0);
+  MakeTuret(1.0, 254, 0);
+  MakeTuret(2.0, 254, 0);
+  MakeTuret(3.0, 254, 0);
+  MakeHouseTop(0.5, 0.5, 4.0); 
+   
+  // Banner 1
+  NewFrame;
+  DrawBanner1(1 / 256, 0.0, 0.0, 0.0);   
+end.

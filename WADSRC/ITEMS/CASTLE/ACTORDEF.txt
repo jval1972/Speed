@@ -1,0 +1,392 @@
+///////////////////////////////
+// CASTLE_001 (Turret 3 floors #1)
+///////////////////////////////
+ACTOR CASTLE_001 2143
+{
+  Radius 64
+  Height 384
+  Health 100000
+  Mass 100000
+  Reactiontime 8
+  +PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  States
+  {
+    Spawn:
+    {
+      CA01 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// CASTLE_002 (Turret 4 floors #1)
+///////////////////////////////
+ACTOR CASTLE_002 2144
+{
+  Radius 64
+  Height 512
+  Health 100000
+  Mass 100000
+  Reactiontime 8
+  +PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  States
+  {
+    Spawn:
+    {
+      CA02 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// CASTLE_003 (Turret 5 floors #1)
+///////////////////////////////
+ACTOR CASTLE_003 2145
+{
+  Radius 64
+  Height 640
+  Health 100000
+  Mass 100000
+  Reactiontime 8
+  +PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  States
+  {
+    Spawn:
+    {
+      CA03 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// CASTLE_004 (Turret 3 floors #2)
+///////////////////////////////
+ACTOR CASTLE_004 2146
+{
+  Radius 64
+  Height 384
+  Health 100000
+  Mass 100000
+  Reactiontime 8
+  +PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  States
+  {
+    Spawn:
+    {
+      CA04 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// CASTLE_005 (Turret 4 floors #2)
+///////////////////////////////
+ACTOR CASTLE_005 2147
+{
+  Radius 64
+  Height 512
+  Health 100000
+  Mass 100000
+  Reactiontime 8
+  +PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  States
+  {
+    Spawn:
+    {
+      CA05 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// CASTLE_006 (Turret 5 floors #2)
+///////////////////////////////
+ACTOR CASTLE_006 2148
+{
+  Radius 64
+  Height 640
+  Health 100000
+  Mass 100000
+  Reactiontime 8
+  +PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  States
+  {
+    Spawn:
+    {
+      CA06 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// CASTLE_007 (Wall 2 floors)
+///////////////////////////////
+ACTOR CASTLE_007 2149
+{
+  Radius 64
+  Height 256
+  Health 100000
+  Mass 100000
+  Reactiontime 8
+  +PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  States
+  {
+    Spawn:
+    {
+      CA07 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// CASTLE_008 (Wall 3 floors)
+///////////////////////////////
+ACTOR CASTLE_008 2150
+{
+  Radius 64
+  Height 384
+  Health 100000
+  Mass 100000
+  Reactiontime 8
+  +PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  States
+  {
+    Spawn:
+    {
+      CA08 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// CASTLE_009 (Gate #1)
+///////////////////////////////
+ACTOR CASTLE_009 2151
+{
+  Radius 192
+  Height 256
+  Health 100000
+  Mass 100000
+  Reactiontime 8
+  +PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  States
+  {
+    Spawn:
+    {
+      CA09 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// CASTLE_010 (Gate #2)
+///////////////////////////////
+ACTOR CASTLE_010 2152
+{
+  Radius 192
+  Height 256
+  Health 100000
+  Mass 100000
+  Reactiontime 8
+  +PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  States
+  {
+    Spawn:
+    {
+      CA10 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// CASTLE_011 (Gate #3)
+///////////////////////////////
+ACTOR CASTLE_011 2153
+{
+  Radius 192
+  Height 256
+  Health 100000
+  Mass 100000
+  Reactiontime 8
+  +PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  States
+  {
+    Spawn:
+    {
+      CA11 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// CASTLE_012 (Gate Wall)
+///////////////////////////////
+ACTOR CASTLE_012 2154
+{
+  Radius 64
+  Height 512
+  Health 100000
+  Mass 100000
+  Reactiontime 8
+  +PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  States
+  {
+    Spawn:
+    {
+      CA12 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// CASTLE_013 (House 1 floor)
+///////////////////////////////
+ACTOR CASTLE_013 2155
+{
+  Radius 64
+  Height 128
+  Health 100000
+  Mass 100000
+  Reactiontime 8
+  +PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  States
+  {
+    Spawn:
+    {
+      CA13 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// CASTLE_014 (House 2 floors)
+///////////////////////////////
+ACTOR CASTLE_014 2156
+{
+  Radius 64
+  Height 256
+  Health 100000
+  Mass 100000
+  Reactiontime 8
+  +PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  States
+  {
+    Spawn:
+    {
+      CA14 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// CASTLE_015 (House 3 floors)
+///////////////////////////////
+ACTOR CASTLE_015 2157
+{
+  Radius 64
+  Height 384
+  Health 100000
+  Mass 100000
+  Reactiontime 8
+  +PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  States
+  {
+    Spawn:
+    {
+      CA15 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// CASTLE_016 (House 4 floors)
+///////////////////////////////
+ACTOR CASTLE_016 2158
+{
+  Radius 64
+  Height 512
+  Health 100000
+  Mass 100000
+  Reactiontime 8
+  +PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  States
+  {
+    Spawn:
+    {
+      CA16 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// CASTLE_017 (Flag)
+///////////////////////////////
+ACTOR CASTLE_017 2159
+{
+  Radius 8
+  Height 48
+  Health 1000
+  Mass 1000
+  Reactiontime 8
+  +SOLID
+  +PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  States
+  {
+    Spawn:
+    {
+      CA17 A -1
+      Stop
+    }
+  }
+}
+
+
