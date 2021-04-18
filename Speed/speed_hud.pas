@@ -475,21 +475,21 @@ begin
     p := salp0
   else
     p := salp1;
-  V_DrawPatch(0, 199 - p.height, SCN_HUD, p, false);
+  V_DrawPatch(0, 200 - p.height, SCN_HUD, p, false);
 
   // rpm
   ang := GetIntegerInRange(3 + (hud_player.mo.rpm * 267) div MAX_RPM, 3, 270);
   if carinfo[hud_player.mo.carinfo].cartype = ct_formula then
-    SH_DrawNeedle(181, 199 - p.height + 34, $FFE000, ang * ANG1, 51, 60)
+    SH_DrawNeedle(181, 200 - p.height + 34, $FFE000, ang * ANG1, 51, 60)
   else
-    SH_DrawNeedle(120, 199 - p.height + 32, $E06060, ang * ANG1, 199, 207);
+    SH_DrawNeedle(120, 200 - p.height + 32, $E06060, ang * ANG1, 199, 207);
 
   // speed
   ang := GetIntegerInRange(3 + (hud_player.mo.enginespeed * 267) div carinfo[hud_player.mo.carinfo].maxspeed, 3, 270);
   if carinfo[hud_player.mo.carinfo].cartype = ct_formula then
-    SH_DrawNeedle(133, 199 - p.height + 32, $C4C4C4, ang * ANG1, 165, 190)
+    SH_DrawNeedle(133, 200 - p.height + 32, $C4C4C4, ang * ANG1, 165, 190)
   else
-    SH_DrawNeedle(70, 199 - p.height + 30, $C4C4C4, ang * ANG1, 165, 190);
+    SH_DrawNeedle(70, 200 - p.height + 30, $C4C4C4, ang * ANG1, 165, 190);
 end;
 
 procedure SH_DrawGears;
