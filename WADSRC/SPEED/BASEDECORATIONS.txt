@@ -68,6 +68,31 @@ ACTOR MT_DECORATION34 34
   }
 }
 
+
+///////////////////////////////
+// TREE3_SMALL
+///////////////////////////////
+ACTOR TREE3_SMALL 2160
+{
+  Radius 12
+  Height 75
+  Health 1000
+  Mass 1000
+  Reactiontime 8
+  Scale 1.5
+  +SOLID
+  +NORENDERINTERPOLATE
+  States
+  {
+    Spawn:
+    {
+      S022 A -1
+      Stop
+    }
+  }
+}
+
+
 ///////////////////////////////
 // MT_DECORATION35 (TREE4)
 ///////////////////////////////
