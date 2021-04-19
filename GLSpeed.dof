@@ -100,7 +100,7 @@ Conditionals=OPENGL;DOOM;
 DebugSourceDirs=
 UsePackages=0
 [Parameters]
-RunParams=-geom 1280x800 -nofullscreen E2M6.zip -hackshareware
+RunParams=-geom 1280x800 -nofullscreen -hackshareware
 HostApplication=
 Launcher=
 UseLauncher=0

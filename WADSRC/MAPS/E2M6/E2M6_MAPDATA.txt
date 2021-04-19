@@ -1,0 +1,8 @@
+sprite=MAPSPR26
+sky=NUBES26
+mountain=MOUNT26
+ground=FLAT0001
+name=The castle
+length=5217
+best=4100
+level=2
