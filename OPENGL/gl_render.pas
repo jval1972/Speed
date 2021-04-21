@@ -2165,7 +2165,6 @@ begin
 
   glColorMask(true, true, true, true); // don't write to the graphics buffer
   glEnable(GL_TEXTURE_2D);
-//  glDisable(GL_DEPTH_TEST);
   glDepthMask(false);
 end;
 
@@ -3106,10 +3105,7 @@ begin
         wall.vt := 0.0
       else
         wall.vt := mip * (ceiling_height - ceilingmin) / linelen;
-{      if (seg.linedef.tranlump >= 0) and general_translucency)
-        wall.alpha= tran_filter_pct/100.0;}
       ADDWALL(@wall);
-//      wall.alpha := 1.0;
     end;
 
 bottomtexture:
@@ -4056,19 +4052,11 @@ begin
       restoreblend := true;
       restoreequation := true;
     end
-
-{    else if info.transparency < 0.9999 then
-    begin
-      gld_StaticLightAlpha(sprite.light, info.transparency);
-      glAlphaFunc(GL_GEQUAL, 0.01);
-      restoreblend := true;
-    end}
     else
       gld_StaticLight(sprite.light);
   end;
 
   last_gltexture := nil;
-//  glBindTexture(GL_TEXTURE_2D, 0);
 
   voxelinf := @voxelmanager.items[info.voxelidx];
   if voxelinf.voxel = nil then
@@ -4448,16 +4436,13 @@ begin
   glRotatef(inv_yaw, 0.0, 1.0, 0.0);
 
   sz := pdls.l.radius;
-//  if GL_CheckVisibility(pdls.x, pdls.y, pdls.z, 2 * sz) then
-  begin
-    glBegin(GL_TRIANGLE_FAN);
-      glColor4f(pdls.l.r * 0.2, pdls.l.g * 0.2, pdls.l.b * 0.2, 0.1);
-      glVertex3f(0.0, 0.0, 0.05);
-      glColor4f(0.0, 0.0, 0.0, 0.1);
-      for i := 0 to 16 do
-        glVertex3f(sz * COS16TABLE[i], sz * SIN16TABLE[i], 0.05);
-    glEnd;
-  end;
+  glBegin(GL_TRIANGLE_FAN);
+    glColor4f(pdls.l.r * 0.2, pdls.l.g * 0.2, pdls.l.b * 0.2, 0.1);
+    glVertex3f(0.0, 0.0, 0.05);
+    glColor4f(0.0, 0.0, 0.0, 0.1);
+    for i := 0 to 16 do
+      glVertex3f(sz * COS16TABLE[i], sz * SIN16TABLE[i], 0.05);
+  glEnd;
 
   glPopMatrix;
 end;
