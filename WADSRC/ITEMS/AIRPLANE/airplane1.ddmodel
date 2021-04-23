@@ -1,0 +1,1230 @@
+model model1;
+
+const 
+  TEX_SIZE = 2048;  
+  
+procedure myvert(const x, y, z, u, v: float);
+var
+  u1, v1: float;
+begin
+  u1 := u;
+  v1 := v;
+  if u1 < 0.01 then
+    u1 := 0.01
+  else if u1 > 0.99 then
+    u1 := 0.99;
+  if v1 < 0.01 then
+    v1 := 0.01
+  else if v1 > 0.99 then
+    v1 := 0.99;
+  glTexCoord2f(u1, v1);
+  glVertex3f(z, y + 0.04, x);
+end;
+  
+const
+  NUMSLICES = 16;
+    
+procedure Cylinder(const r1, r2, left, right, dy1, dy2, dz: float; const Iu1, Iv1a, Iv1b, Iu2, Iv2a, Iv2b: float);
+var
+  i: integer;
+  theta, nextTheta: float;
+  vcenterA, vradiusA: float;
+  vcenterB, vradiusB: float;
+begin
+  vcenterA := (Iv1a + Iv1b) / TEX_SIZE / 2;
+  vradiusA := abs(Iv1a - Iv1b) / TEX_SIZE / 2;
+  vcenterB := (Iv2a + Iv2b) / TEX_SIZE / 2;
+  vradiusB := abs(Iv2a - Iv2b) / TEX_SIZE / 2;
+  for i := 0 to NUMSLICES - 1 do
+  begin  
+    theta := i * 2.0 * PI / NUMSLICES;
+    nextTheta := (i + 1) * 2.0 * PI / NUMSLICES;
+    glBegin(GL_TRIANGLE_STRIP);
+      myvert(left, r1 * cos(theta) + dy1, r1 * sin(theta) + dz, Iu1 / TEX_SIZE, vcenterA + vradiusA * (cos(theta)));
+      myvert(right, r2 * cos(theta) + dy2, r2 * sin(theta) + dz, Iu2 / TEX_SIZE, vcenterB + vradiusB * (cos(theta)));
+      myvert(left, r1 * cos(nextTheta) + dy1, r1 * sin(nextTheta) + dz, Iu1 / TEX_SIZE, vcenterA + vradiusA * (cos(nextTheta)));
+      myvert(right, r2 * cos(nextTheta) + dy2, r2 * sin(nextTheta) + dz, Iu2 / TEX_SIZE, vcenterB + vradiusB * (cos(nextTheta)));
+    glEnd;
+  end;
+end;
+ 
+const
+  MAXPOINTS = 30;
+  
+var
+  numbodypoints: integer;  
+  bodyX, bodyH1, bodyH2: array[0..MAXPOINTS - 1] of float;
+  numwindpoints: integer;
+  windX1, windX2, windY1, windY2: array[0..MAXPOINTS - 1] of float;
+  numturbinepoints: integer;
+  turbineX, turbineH1, turbineH2: array[0..MAXPOINTS - 1] of float;
+
+procedure ClearBodyPoints;
+begin
+  numbodypoints := 0;
+end;
+
+procedure AddBodyPoints(const x, h1, h2: float);
+begin
+  bodyX[numbodypoints] := x;
+  bodyH1[numbodypoints] := h1;
+  bodyH2[numbodypoints] := h2;
+  inc(numbodypoints);
+end;
+
+procedure ClearWindPoints;
+begin
+  numwindpoints := 0;
+end;
+
+procedure AddWindPoints(const x1, y1, x2, y2: integer);
+begin
+  windX1[numwindpoints] := x1;
+  windY1[numwindpoints] := y1;
+  windX2[numwindpoints] := x2;
+  windY2[numwindpoints] := y2;
+  inc(numwindpoints);
+end;
+
+procedure ClearTurbinePoints;
+begin
+  numturbinepoints := 0;
+end;
+
+procedure AddTurbinePoints(const x, h1, h2: integer);
+begin
+  turbineX[numturbinepoints] := x;
+  turbineH1[numturbinepoints] := h1;
+  turbineH2[numturbinepoints] := h2;
+  inc(numturbinepoints);
+end;
+
+const
+  PLANE_SCALE = 1024;
+   
+var
+  backWx1: float;
+  backWy1: float;
+  backWx2: float; 
+  backWy2: float; 
+  backWx3: float; 
+  backWy3: float; 
+  backWx4: float; 
+  backWy4: float;
+     
+procedure SetBackWing(const x1, y1, x2, y2, x3, y3, x4, y4: float);
+begin
+  backWx1 := x1;
+  backWy1 := y1;
+  backWx2 := x2; 
+  backWy2 := y2; 
+  backWx3 := x3; 
+  backWy3 := y3; 
+  backWx4 := x4; 
+  backWy4 := y4;
+end;
+
+// Rear small wings   
+var
+  rearWx1: float;
+  rearWy1: float;
+  rearWx2: float; 
+  rearWy2: float; 
+  rearWx3: float; 
+  rearWy3: float; 
+  rearWx4: float; 
+  rearWy4: float;
+     
+procedure SetRearWings(const x1, y1, x2, y2, x3, y3, x4, y4: float);
+begin
+  rearWx1 := x1;
+  rearWy1 := y1;
+  rearWx2 := x2; 
+  rearWy2 := y2; 
+  rearWx3 := x3; 
+  rearWy3 := y3; 
+  rearWx4 := x4; 
+  rearWy4 := y4;
+end;
+   
+procedure DrawPlane(const windspan, rearwindspan: float; 
+  const tx1, ty1, tz1, tx2, ty2, tz2, tx3, ty3, tz3, tx4, ty4, tz4: float);
+var
+  minx, maxx, minh: float;
+  i, j, i2: integer;
+  r1, r2, left, right, dy1, dy2: float;
+  Iu1, Iv1a, Iv1b, Iu2, Iv2a, Iv2b: float;
+  u1, v1, u2, v2: float;
+  turbX, turbH1, turbH2: array[0..MAXPOINTS - 1] of float;
+  tx: array[0..3] of float;
+  ty: array[0..3] of float;
+  tz: array[0..3] of float;
+begin
+  minx := 100000;
+  maxx := -100000;
+  minh := 100000;
+  for i := 0 to numbodypoints - 1 do
+  begin
+    if bodyX[i] > maxx then
+      maxx := bodyX[i];
+    if bodyX[i] < minx then
+      minx := bodyX[i];
+    if TEX_SIZE - bodyH1[i] < minh then
+      minh := TEX_SIZE - bodyH1[i];
+  end; 
+  
+  // Body
+  for i := 0 to numbodypoints - 2 do
+  begin
+    r1 := (bodyH2[i] - bodyH1[i]) / 2 / PLANE_SCALE;
+    r2 := (bodyH2[i + 1] - bodyH1[i + 1]) / 2 / PLANE_SCALE;
+    left := (bodyX[i] - (maxx - minx) / 2) / PLANE_SCALE; 
+    right := (bodyX[i + 1] - (maxx - minx) / 2) / PLANE_SCALE; 
+    dy1 := (TEX_SIZE - (bodyH2[i] + bodyH1[i]) / 2 - minh) / PLANE_SCALE;
+    dy2 := (TEX_SIZE - (bodyH2[i + 1] + bodyH1[i + 1]) / 2 - minh) / PLANE_SCALE;
+    Iu1 := bodyX[i];
+    Iv1a := bodyH1[i];
+    Iv1b := bodyH2[i];
+    Iu2 := bodyX[i + 1];
+    Iv2a := bodyH1[i + 1];
+    Iv2b := bodyH2[i + 1];
+    Cylinder(r1, r2, left, right, dy1, dy2, 0.0, Iu1, Iv1a, Iv1b, Iu2, Iv2a, Iv2b);
+  end;   
+  
+  // Back wing
+  glBegin(GL_QUADS);
+    myvert(
+      (backWx1 - (maxx - minx) / 2) / PLANE_SCALE,  
+      (TEX_SIZE - backWy1 - minh) / PLANE_SCALE,
+      0.0,
+      backWx1 / TEX_SIZE,
+      backWy1 / TEX_SIZE);
+    myvert(
+      (backWx2 - (maxx - minx) / 2) / PLANE_SCALE,  
+      (TEX_SIZE - backWy2 - minh) / PLANE_SCALE,
+      0.0,
+      backWx2 / TEX_SIZE,
+      backWy2 / TEX_SIZE);
+    myvert(
+      (backWx3 - (maxx - minx) / 2) / PLANE_SCALE,  
+      (TEX_SIZE - backWy3 - minh) / PLANE_SCALE,
+      0.0,
+      backWx3 / TEX_SIZE,
+      backWy3 / TEX_SIZE);
+    myvert(
+      (backWx4 - (maxx - minx) / 2) / PLANE_SCALE,  
+      (TEX_SIZE - backWy4 - minh) / PLANE_SCALE,
+      0.0,
+      backWx4 / TEX_SIZE,
+      backWy4 / TEX_SIZE);      
+
+    myvert(
+      (backWx1 - (maxx - minx) / 2) / PLANE_SCALE,  
+      (TEX_SIZE - backWy1 - minh) / PLANE_SCALE,
+      0.003,
+      backWx1 / TEX_SIZE + 0.001,
+      backWy1 / TEX_SIZE);
+    myvert(
+      (backWx4 - (maxx - minx) / 2) / PLANE_SCALE,  
+      (TEX_SIZE - backWy4 - minh) / PLANE_SCALE,
+      0.003,
+      backWx4 / TEX_SIZE + 0.001,
+      backWy4 / TEX_SIZE);      
+    myvert(
+      (backWx4 - (maxx - minx) / 2) / PLANE_SCALE,  
+      (TEX_SIZE - backWy4 - minh) / PLANE_SCALE,
+      -0.003,
+      backWx4 / TEX_SIZE + 0.001,
+      backWy4 / TEX_SIZE);      
+    myvert(
+      (backWx1 - (maxx - minx) / 2) / PLANE_SCALE,  
+      (TEX_SIZE - backWy1 - minh) / PLANE_SCALE,
+      -0.003,
+      backWx1 / TEX_SIZE + 0.001,
+      backWy1 / TEX_SIZE);
+  glEnd;
+  
+  // Small Rear Wings
+  if rearwindspan > 0 then
+  begin
+    glBegin(GL_QUADS);
+      for j := -1 to 1 do
+        if j <> 0 then
+        begin
+          myvert(
+            (rearWx1 - (maxx - minx) / 2) / PLANE_SCALE,  
+            (TEX_SIZE - rearWy1 - minh) / PLANE_SCALE,
+            0.0,
+            rearWx1 / TEX_SIZE,
+            rearWy1 / TEX_SIZE);
+          myvert(
+            (rearWx2 - (maxx - minx) / 2) / PLANE_SCALE,  
+            (TEX_SIZE - rearWy2 - minh) / PLANE_SCALE,
+            0.0,
+            rearWx2 / TEX_SIZE,
+            rearWy2 / TEX_SIZE);
+          myvert(
+            (rearWx3 - (maxx - minx) / 2) / PLANE_SCALE,  
+            (TEX_SIZE - rearWy3 - minh) / PLANE_SCALE,
+            j * rearwindspan / PLANE_SCALE,
+            rearWx2 / TEX_SIZE,
+            rearWy2 / TEX_SIZE);
+          myvert(
+            (rearWx4 - (maxx - minx) / 2) / PLANE_SCALE,  
+            (TEX_SIZE - rearWy4 - minh) / PLANE_SCALE,
+            j * rearwindspan / PLANE_SCALE,
+            rearWx1 / TEX_SIZE,
+            rearWy1 / TEX_SIZE);
+        end;
+    glEnd;      
+  end;
+    // Main winds 
+  glBegin(GL_QUADS);
+
+  for i := 0 to numwindpoints - 1 do
+  begin
+    i2 := i + 1;
+    if i2 = numwindpoints then
+      i2 := 0;
+      
+    u1 := windX1[i] / TEX_SIZE;
+    v1 := windY1[i] / TEX_SIZE;
+    u2 := windX1[i2] / TEX_SIZE;
+    v2 := windY1[i2] / TEX_SIZE;
+    
+    for j := -1 to 1 do
+      if j <> 0 then
+      begin
+        myvert(
+          (windX1[i] - (maxx - minx) / 2) / PLANE_SCALE, 
+          (TEX_SIZE - windY1[i] - minh) / PLANE_SCALE,
+          0.0,
+          u1, v1);
+        myvert(
+          (windX2[i] - (maxx - minx) / 2) / PLANE_SCALE, 
+          (TEX_SIZE - windY2[i] - minh) / PLANE_SCALE,
+          j * windspan / PLANE_SCALE,
+          u1, v1);
+        myvert(
+          (windX2[i2] - (maxx - minx) / 2) / PLANE_SCALE, 
+          (TEX_SIZE - windY2[i2] - minh) / PLANE_SCALE,
+          j * windspan / PLANE_SCALE,
+          u2, v2);
+        myvert(
+          (windX1[i2] - (maxx - minx) / 2) / PLANE_SCALE, 
+          (TEX_SIZE - windY1[i2] - minh) / PLANE_SCALE,
+          0.0,
+          u2, v2);
+      end;  
+        
+  end;
+  glEnd;
+  
+  // Turbines
+  tx[0] := tx1;
+  ty[0] := ty1;
+  tz[0] := tz1;
+  tx[1] := tx2;
+  ty[1] := ty2;
+  tz[1] := tz2;
+  tx[2] := tx3;
+  ty[2] := ty3;
+  tz[2] := tz3;
+  tx[3] := tx4;
+  ty[3] := ty4;
+  tz[3] := tz4;
+  
+  for j := 0 to 3 do
+    if ty[j] >= 0 then
+    begin
+      for i := 0 to numturbinepoints - 1 do
+      begin   
+        turbX[i] := turbineX[i] - tx[j] + turbineX[0];
+        turbH1[i] := turbineH1[i] + ty[j] - turbineH1[0];
+        turbH2[i] := turbineH2[i] + ty[j] - turbineH2[0];        
+      end;
+
+      for i := 0 to numturbinepoints - 2 do
+      begin
+        r1 := (turbH2[i] - turbH1[i]) / 2 / PLANE_SCALE;
+        r2 := (turbH2[i + 1] - turbH1[i + 1]) / 2 / PLANE_SCALE;
+        left := (turbX[i] - (maxx - minx) / 2) / PLANE_SCALE; 
+        right := (turbX[i + 1] - (maxx - minx) / 2) / PLANE_SCALE; 
+        dy1 := (TEX_SIZE - (turbH2[i] + turbH1[i]) / 2 - minh) / PLANE_SCALE;
+        dy2 := (TEX_SIZE - (turbH2[i + 1] + turbH1[i + 1]) / 2 - minh) / PLANE_SCALE;
+        Iu1 := turbineX[i];
+        Iv1a := turbineH1[i];
+        Iv1b := turbineH2[i];
+        Iu2 := turbineX[i + 1];
+        Iv2a := turbineH1[i + 1];
+        Iv2b := turbineH2[i + 1];
+        Cylinder(r1, r2, left, right, dy1, dy2, tz[j] / PLANE_SCALE, Iu1, Iv1a, Iv1b, Iu2, Iv2a, Iv2b);
+        Cylinder(r1, r2, left, right, dy1, dy2, -tz[j] / PLANE_SCALE, Iu1, Iv1a, Iv1b, Iu2, Iv2a, Iv2b);
+      end;   
+    end;
+end;
+
+procedure Wheel1(const x, z: float);
+var
+  i: integer;
+  slices: integer;
+  theta, nextTheta: float;
+  radius, wwidth: float;
+begin
+  slices := 12;
+  radius := 20 / PLANE_SCALE;
+  wwidth := 6 / PLANE_SCALE;
+  for i := 0 to slices - 1 do
+  begin  
+    theta := i * 2.0 * PI / slices;
+    nextTheta := (i + 1) * 2.0 * PI / slices;
+    glBegin(GL_TRIANGLE_STRIP);
+      myvert(x / PLANE_SCALE + radius * cos(theta),     - radius - radius * sin(theta), z / PLANE_SCALE + wwidth, 140 / TEX_SIZE, 54 / TEX_SIZE);
+      myvert(x / PLANE_SCALE + radius * cos(theta),     - radius - radius * sin(theta), z / PLANE_SCALE - wwidth, 140 / TEX_SIZE, 54 / TEX_SIZE);
+      myvert(x / PLANE_SCALE + radius * cos(nextTheta), - radius - radius * sin(nextTheta), z / PLANE_SCALE + wwidth, 140 / TEX_SIZE, 54 / TEX_SIZE);
+      myvert(x / PLANE_SCALE + radius * cos(nextTheta), - radius - radius * sin(nextTheta), z / PLANE_SCALE - wwidth, 140 / TEX_SIZE, 54 / TEX_SIZE);
+    glEnd;
+  end;
+  
+  glBegin(GL_TRIANGLE_FAN);
+    myvert(x / PLANE_SCALE,     - radius, z / PLANE_SCALE + wwidth, 140.5 / TEX_SIZE, 62.5 / TEX_SIZE);
+    for i := 0 to slices do
+    begin  
+      theta := i * 2.0 * PI / slices;
+      myvert(x / PLANE_SCALE + radius * cos(theta),     - radius - radius * sin(theta), z / PLANE_SCALE + wwidth, (140.5 + 10 * sin(theta)) / TEX_SIZE, (62.5 + 10 * cos(theta)) / TEX_SIZE);
+    end;
+  glEnd;
+  
+  glBegin(GL_TRIANGLE_FAN);
+    myvert(x / PLANE_SCALE,     - radius, z / PLANE_SCALE - wwidth, 140.5 / TEX_SIZE, 62.5 / TEX_SIZE);
+    for i := 0 to slices do
+    begin  
+      theta := i * 2.0 * PI / slices;
+      myvert(x / PLANE_SCALE + radius * cos(theta),     - radius - radius * sin(theta), z / PLANE_SCALE - wwidth, (140.5 + 10 * sin(theta)) / TEX_SIZE, (62.5 + 10 * cos(theta)) / TEX_SIZE);
+    end;
+  glEnd;
+end;
+ 
+procedure WheelHolder(const x, z: float; const h: float);
+var
+  u, v: float;
+  sz: float;
+begin
+  u := 143 / TEX_SIZE;
+  v := 45 / TEX_SIZE;
+  sz := 5 / PLANE_SCALE;
+  glBegin(GL_QUADS);
+    myvert(x / PLANE_SCALE - sz, -20 / PLANE_SCALE,                   z / PLANE_SCALE - sz, u, v);
+    myvert(x / PLANE_SCALE - sz, -20 / PLANE_SCALE + h / PLANE_SCALE, z / PLANE_SCALE - sz, u, v);
+    myvert(x / PLANE_SCALE + sz, -20 / PLANE_SCALE + h / PLANE_SCALE, z / PLANE_SCALE - sz, u, v);
+    myvert(x / PLANE_SCALE + sz, -20 / PLANE_SCALE,                   z / PLANE_SCALE - sz, u, v);
+    
+    myvert(x / PLANE_SCALE - sz, -20 / PLANE_SCALE,                   z / PLANE_SCALE + sz, u, v);
+    myvert(x / PLANE_SCALE - sz, -20 / PLANE_SCALE + h / PLANE_SCALE, z / PLANE_SCALE + sz, u, v);
+    myvert(x / PLANE_SCALE + sz, -20 / PLANE_SCALE + h / PLANE_SCALE, z / PLANE_SCALE + sz, u, v);
+    myvert(x / PLANE_SCALE + sz, -20 / PLANE_SCALE,                   z / PLANE_SCALE + sz, u, v);
+
+    myvert(x / PLANE_SCALE - sz, -20 / PLANE_SCALE,                   z / PLANE_SCALE - sz, u, v);
+    myvert(x / PLANE_SCALE - sz, -20 / PLANE_SCALE + h / PLANE_SCALE, z / PLANE_SCALE - sz, u, v);
+    myvert(x / PLANE_SCALE - sz, -20 / PLANE_SCALE + h / PLANE_SCALE, z / PLANE_SCALE + sz, u, v);
+    myvert(x / PLANE_SCALE - sz, -20 / PLANE_SCALE,                   z / PLANE_SCALE + sz, u, v);
+    
+    myvert(x / PLANE_SCALE + sz, -20 / PLANE_SCALE,                   z / PLANE_SCALE - sz, u, v);
+    myvert(x / PLANE_SCALE + sz, -20 / PLANE_SCALE + h / PLANE_SCALE, z / PLANE_SCALE - sz, u, v);
+    myvert(x / PLANE_SCALE + sz, -20 / PLANE_SCALE + h / PLANE_SCALE, z / PLANE_SCALE + sz, u, v);
+    myvert(x / PLANE_SCALE + sz, -20 / PLANE_SCALE,                   z / PLANE_SCALE + sz, u, v);
+  glEnd;
+end;
+
+var
+  frm: integer;
+  ii: integer;
+  
+procedure NewFrame;
+begin
+  SetFrame(frm);
+  inc(frm);
+end;
+  
+begin
+  NewFrame;
+  ClearBodyPoints;
+  ClearWindPoints;
+  ClearTurbinePoints;
+  AddBodyPoints(14, 223, 223); // x, ylow, yhi
+  AddBodyPoints(16, 228, 218);
+  AddBodyPoints(62, 242, 207);
+  AddBodyPoints(206, 278, 201);
+  AddBodyPoints(301, 291, 201);
+  AddBodyPoints(365, 291, 201);
+  AddBodyPoints(418, 294, 201);
+  AddBodyPoints(587, 291, 201); 
+  AddBodyPoints(692, 291, 201);
+  AddBodyPoints(749, 288, 205);
+  AddBodyPoints(769, 287, 210);
+  AddBodyPoints(775, 285, 215);
+  AddBodyPoints(810, 282, 235);
+  AddBodyPoints(812, 281, 236);
+  AddBodyPoints(812, 281, 236);
+  AddBodyPoints(831, 274, 247);
+  AddBodyPoints(841, 261, 261);
+  SetBackWing(33, 70, 68, 70, 186, 205, 66, 208);  // 4 points in texture
+  SetRearWings(51, 224, 130, 224, 35, 210, 15, 210);
+  AddWindPoints(416, 280, 277, 250); 
+  AddWindPoints(541, 267, 331, 250); 
+  AddWindPoints(571, 267, 341, 250); 
+  AddWindPoints(571, 267, 351, 250); 
+  AddWindPoints(578, 272, 361, 250); 
+  AddWindPoints(577, 286, 361, 250); 
+  AddWindPoints(577, 286, 361, 250);
+  AddTurbinePoints(473, 86, 86);  // Turbine texture coordinates (x, ylow, yhigh) 
+  AddTurbinePoints(479, 92, 80); 
+  AddTurbinePoints(508, 97, 74); 
+  AddTurbinePoints(509, 98, 68); 
+  AddTurbinePoints(514, 99, 68); 
+  AddTurbinePoints(541, 108, 62); 
+  AddTurbinePoints(554, 109, 62); 
+  AddTurbinePoints(568, 108, 62); 
+  AddTurbinePoints(581, 105, 66); 
+  AddTurbinePoints(583, 84, 84); 
+  DrawPlane(
+    320, 80, // wind span 
+    529, 280, 100, // First set of turbines (x, y: texture coordinate, z distance from body) 
+    -1, -1, -1, 
+    -1, -1, -1, 
+    -1, -1, -1
+  );
+  
+  Wheel1(300, -10);
+  WheelHolder(300, 0, 50);
+  Wheel1(300,  10);
+
+  Wheel1(20, -70);
+  WheelHolder(20, -60, 40);
+  Wheel1(20, -50);
+  
+  Wheel1(20, 70);
+  WheelHolder(20, 60, 40);
+  Wheel1(20, 50);
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+  NewFrame;
+  ClearBodyPoints;
+  ClearWindPoints;
+  ClearTurbinePoints;
+  AddBodyPoints(35, 448, 448); // x, ylow, yhi
+  AddBodyPoints(36, 450, 445);
+  AddBodyPoints(87, 468, 433);
+  AddBodyPoints(162, 485, 425);
+  AddBodyPoints(249, 500, 420);
+  AddBodyPoints(265, 502, 419);
+  AddBodyPoints(279, 503, 419);
+  AddBodyPoints(338, 508, 419);
+  AddBodyPoints(445, 508, 419);
+  AddBodyPoints(478, 511, 419);
+  AddBodyPoints(505, 512, 419);
+  AddBodyPoints(668, 512, 419);
+  AddBodyPoints(685, 511, 419);
+  AddBodyPoints(706, 508, 419);
+  AddBodyPoints(718, 505, 419);
+  AddBodyPoints(725, 502, 419);
+  AddBodyPoints(928, 502, 419);
+  AddBodyPoints(945, 502, 420);
+  AddBodyPoints(956, 502, 421);
+  AddBodyPoints(965, 502, 422);
+  AddBodyPoints(973, 502, 423);
+  AddBodyPoints(979, 501, 424);
+  AddBodyPoints(993, 501, 426);
+  AddBodyPoints(1010, 500, 433);
+  AddBodyPoints(1027, 499, 443);
+  AddBodyPoints(1042, 497, 458);
+  AddBodyPoints(1061, 490, 471);
+  AddBodyPoints(1068, 484, 477);
+  AddBodyPoints(1069, 481, 481);
+  SetBackWing(27, 265, 77, 265, 236, 421, 94, 434);  // 4 points in texture
+  SetRearWings(72, 449, 146, 449, 50, 430, 40, 430);
+  AddWindPoints(451, 492, 277, 480); 
+  AddWindPoints(704, 497, 331, 480); 
+  AddWindPoints(731, 491, 341, 480); 
+  AddWindPoints(691, 509, 331, 480);  
+  AddTurbinePoints(579, 346, 346);  // Turbine texture coordinates (x, ylow, yhigh)
+  AddTurbinePoints(580, 360, 333);
+  AddTurbinePoints(623, 368, 324);
+  AddTurbinePoints(645, 369, 322);
+  AddTurbinePoints(670, 368, 322);
+  AddTurbinePoints(675, 368, 321);
+  AddTurbinePoints(692, 367, 321); 
+  AddTurbinePoints(693, 344, 344); 
+  DrawPlane(
+    350, 80, // wind span 
+    660, 508, 120, // First set of turbines (x, y: texture coordinate, z distance from body) 
+    -1, -1, -1, 
+    -1, -1, -1, 
+    -1, -1, -1
+  );
+
+  Wheel1(400, -10);
+  WheelHolder(400, 0, 50);
+  Wheel1(400,  10);
+
+  Wheel1(0, -70);
+  WheelHolder(0, -60, 40);
+  Wheel1(0, -50);
+  
+  Wheel1(0, 70);
+  WheelHolder(0, 60, 40);
+  Wheel1(0, 50);
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+// Brazil Fokker 100
+
+  NewFrame;
+  ClearBodyPoints;
+  ClearWindPoints;
+  ClearTurbinePoints;
+  AddBodyPoints(1324, 100, 100); // x, ylow, yhi
+  AddBodyPoints(1325, 107, 92);
+  AddBodyPoints(1325, 111, 92);
+  AddBodyPoints(1325, 113, 92);
+  AddBodyPoints(1502, 147, 83);
+  AddBodyPoints(1544, 152, 82);
+  AddBodyPoints(1595, 152, 82);
+  AddBodyPoints(1637, 155, 82);
+  AddBodyPoints(1683, 155, 82);
+  AddBodyPoints(1708, 152, 82);
+  AddBodyPoints(1958, 152, 82);
+  AddBodyPoints(1976, 152, 85);
+  AddBodyPoints(1993, 151, 91);
+  AddBodyPoints(2000, 149, 95);
+  AddBodyPoints(2004, 148.5, 99);
+  AddBodyPoints(2014, 147, 110);
+  AddBodyPoints(2029, 143, 116);
+  AddBodyPoints(2041, 136, 127);
+  AddBodyPoints(2042, 131, 131);
+
+  AddWindPoints(1583, 143, 1500, 120);
+  AddWindPoints(1728, 128, 1577, 120);
+  AddWindPoints(1742, 130, 1587, 120);
+  AddWindPoints(1722, 143, 1567, 120);
+   
+  AddTurbinePoints(1440, 40, 40);  // Turbine texture coordinates (x, ylow, yhigh)
+  AddTurbinePoints(1448, 42, 38);
+  AddTurbinePoints(1449, 49, 30);
+  AddTurbinePoints(1491, 55, 24);
+  AddTurbinePoints(1532, 55, 21);
+  AddTurbinePoints(1551, 52, 23);
+  AddTurbinePoints(1555, 49, 25);
+  AddTurbinePoints(1556, 35, 35);
+
+  SetBackWing(1296, 23, 1367, 17, 1428, 87, 1336, 92);  // 4 points in texture
+  SetRearWings(1296, 23, 1337, 24, 1268, 17, 1258, 14);
+
+  glMatrixMode(GL_MODELVIEW);
+  glPushMatrix;
+  glTranslatef(0.0, 0.0, -1.25);
+  DrawPlane(
+    250, 80, // wind span 
+    1452, 102, 43, // First set of turbines (x, y: texture coordinate, z distance from body) 
+    -1, -1, -1, 
+    -1, -1, -1, 
+    -1, -1, -1
+  );
+
+
+  glPopMatrix;
+
+  Wheel1(310, -10);
+  WheelHolder(310, 0, 50);
+  Wheel1(310, 10);
+
+  Wheel1(-30, -70);
+  WheelHolder(-30, -60, 40);
+  Wheel1(-30, -50);
+  
+  Wheel1(-30, 70);
+  WheelHolder(-30, 60, 40);
+  Wheel1(-30, 50);
+  
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+// B757 German 
+
+  NewFrame;
+  ClearBodyPoints;
+  ClearWindPoints;
+  ClearTurbinePoints;
+  AddBodyPoints(838, 200, 200); // x, ylow, yhi
+  AddBodyPoints(839, 202, 197);
+  AddBodyPoints(886, 218, 186);
+  AddBodyPoints(893, 220, 185);
+  AddBodyPoints(1070, 254, 171);
+  AddBodyPoints(1142, 260, 170);
+  AddBodyPoints(1317, 260, 170);
+  AddBodyPoints(1374, 264, 170);
+  AddBodyPoints(1538, 264, 170);
+  AddBodyPoints(1573, 261, 170);
+  AddBodyPoints(1587, 258, 170);
+  AddBodyPoints(1597, 254, 170);
+  AddBodyPoints(1875, 254, 170);
+  AddBodyPoints(1891, 254, 171);
+  AddBodyPoints(1908, 254, 172);
+  AddBodyPoints(1920, 254, 173);
+  AddBodyPoints(1929, 254, 174);
+  AddBodyPoints(1936, 254, 175);
+  AddBodyPoints(1948, 253, 176);
+  AddBodyPoints(1974, 251, 185);
+  AddBodyPoints(1990, 250, 196);
+  AddBodyPoints(2007, 247, 212);
+  AddBodyPoints(2026, 240, 225);
+  AddBodyPoints(2029, 236, 231);
+  AddBodyPoints(2029, 234, 234);
+
+  AddWindPoints(1285, 247, 1120, 230);
+  AddWindPoints(1397, 236, 1160, 230);
+  AddWindPoints(1510, 225, 1200, 230);
+  AddWindPoints(1540, 228, 1210, 230);
+  AddWindPoints(1570, 231, 1220, 230);
+  AddWindPoints(1485, 244, 1185, 230);
+  AddWindPoints(1400, 257, 1150, 230);
+   
+   
+  AddTurbinePoints(1083, 104, 104);  // Turbine texture coordinates (x, ylow, yhigh)
+  AddTurbinePoints(1081, 118, 91);
+  AddTurbinePoints(1116, 124, 83);
+  AddTurbinePoints(1165, 128, 80);
+  AddTurbinePoints(1185, 126, 81);
+  AddTurbinePoints(1191, 125, 82);
+  AddTurbinePoints(1196, 122, 83);
+  AddTurbinePoints(1196, 101, 101);
+  AddTurbinePoints(1155, 85, 80);
+  AddTurbinePoints(1055, 84, 75);
+  AddTurbinePoints(1040, 77, 77);
+
+  SetBackWing(831, 16, 880, 16, 1038, 175, 897, 185);  // 4 points in texture
+  SetRearWings(921, 200, 1009, 195, 900, 165, 880, 170);
+
+  glMatrixMode(GL_MODELVIEW);
+  glPushMatrix;
+  glTranslatef(0.0, 0.0, -0.85);
+  DrawPlane(
+    420, 120, // wind span 
+    700, 260, 125, // First set of turbines (x, y: texture coordinate, z distance from body) 
+    -1, -1, -1, 
+    -1, -1, -1, 
+    -1, -1, -1
+  );
+
+
+  glPopMatrix;
+
+  Wheel1(390, -10);
+  WheelHolder(390, 0, 50);
+  Wheel1(390, 10);
+
+  Wheel1(-80, -70);
+  WheelHolder(-80, -60, 40);
+  Wheel1(-80, -50);
+  
+  Wheel1(-80, 70);
+  WheelHolder(-80, 60, 40);
+  Wheel1(-80, 50);
+  
+  Wheel1(-40, -70);
+  WheelHolder(-40, -60, 40);
+  Wheel1(-40, -50);
+  
+  Wheel1(-40, 70);
+  WheelHolder(-40, 60, 40);
+  Wheel1(-40, 50);
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+// B747-436 England 
+
+  NewFrame;
+  ClearBodyPoints;
+  ClearWindPoints;
+  ClearTurbinePoints;
+  AddBodyPoints(51, 770, 770); // x, ylow, yhi
+  AddBodyPoints(50, 778, 763);
+  AddBodyPoints(61, 791, 749);
+  AddBodyPoints(75, 795, 747);
+  AddBodyPoints(255, 833, 751);
+  AddBodyPoints(528, 888, 751);
+  AddBodyPoints(650, 896, 751);
+  AddBodyPoints(699, 897, 751);
+  AddBodyPoints(769, 906, 751);
+  AddBodyPoints(906, 906, 751);
+  AddBodyPoints(987, 906, 740);
+  AddBodyPoints(1060, 903, 729);
+  AddBodyPoints(1136, 898, 726);
+  AddBodyPoints(1143, 897, 726);
+  AddBodyPoints(1193, 897, 727);
+  AddBodyPoints(1227, 897, 727);
+  AddBodyPoints(1289, 894, 727);
+  AddBodyPoints(1333, 891, 727);
+  AddBodyPoints(1363, 887, 727);
+  AddBodyPoints(1403, 883, 729);
+  AddBodyPoints(1439, 878, 737);
+  AddBodyPoints(1454, 875, 745);
+  AddBodyPoints(1470, 872, 758);
+  AddBodyPoints(1497, 864, 772);
+  AddBodyPoints(1530, 851, 790);
+  AddBodyPoints(1549, 841, 802);
+  AddBodyPoints(1561, 830, 812);
+  AddBodyPoints(1564, 821, 821);
+
+  AddWindPoints(774, 850, 525, 820);
+  AddWindPoints(886, 843, 545, 820);
+  AddWindPoints(1145, 843, 565, 820);
+  AddWindPoints(1174, 860, 585, 820);
+  AddWindPoints(800, 874, 535, 820);
+  
+  AddTurbinePoints(185, 565, 565);  // Turbine texture coordinates (x, ylow, yhigh)
+  AddTurbinePoints(186, 588, 547);
+  AddTurbinePoints(189, 588, 547);
+  AddTurbinePoints(250, 595, 535);
+  AddTurbinePoints(268, 596, 534);
+  AddTurbinePoints(294, 596, 533);
+  AddTurbinePoints(318, 593, 534);
+  AddTurbinePoints(324, 590, 535);
+  AddTurbinePoints(325, 563, 563);
+  AddTurbinePoints(306, 541, 532);
+  AddTurbinePoints(170, 540, 522);
+  AddTurbinePoints(150, 536, 522);
+  AddTurbinePoints(149, 530, 522);
+  AddTurbinePoints(148, 524, 522);
+  AddTurbinePoints(148, 523, 523);
+
+  SetBackWing(9, 532, 98, 532, 348, 753, 96, 748);  // 4 points in texture
+  SetRearWings(121, 776, 215, 770, 62, 735, 24, 738);
+
+  DrawPlane(
+    600, 150, // wind span 
+    -600, 890, 200, // First set of turbines (x, y: texture coordinate, z distance from body) 
+    -480, 880, 320, 
+    -1, -1, -1, 
+    -1, -1, -1
+  );
+
+
+  Wheel1(630, -10);
+  WheelHolder(630, 0, 50);
+  Wheel1(630, 10);
+
+  Wheel1(-20, -60);
+  WheelHolder(-20, -50, 50);
+  Wheel1(-20, -40);
+  
+  Wheel1(-20, 60);
+  WheelHolder(-20, 50, 50);
+  Wheel1(-20, 40);
+  
+  Wheel1(20, -60);
+  WheelHolder(20, -50, 50);
+  Wheel1(20, -40);
+  
+  Wheel1(20, 60);
+  WheelHolder(20, 50, 50);
+  Wheel1(20, 40);
+  
+  Wheel1(65, -60);
+  WheelHolder(65, -50, 50);
+  Wheel1(65, -40);
+  
+  Wheel1(65, 60);
+  WheelHolder(65, 50, 50);
+  Wheel1(65, 40);
+  
+  Wheel1(105, -60);
+  WheelHolder(105, -50, 50);
+  Wheel1(105, -40);
+  
+  Wheel1(105, 60);
+  WheelHolder(105, 50, 50);
+  Wheel1(105, 40);
+  
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+// B717 Mexico 
+
+  NewFrame;
+  ClearBodyPoints;
+  ClearWindPoints;
+  ClearTurbinePoints;
+  AddBodyPoints(410, 645, 645); // x, ylow, yhi
+  AddBodyPoints(411, 652, 637);
+  AddBodyPoints(418, 652, 637);
+  AddBodyPoints(433, 656, 635);
+  AddBodyPoints(470, 663, 627);
+  AddBodyPoints(529, 680, 621);
+  AddBodyPoints(555, 685, 621);
+  AddBodyPoints(612, 694, 621);
+  AddBodyPoints(644, 696, 621);
+  AddBodyPoints(1056, 696, 621);
+  AddBodyPoints(1076, 696, 624);
+  AddBodyPoints(1094, 696, 629);
+  AddBodyPoints(1106, 695, 635);
+  AddBodyPoints(1122, 694, 649);
+  AddBodyPoints(1149, 690, 662);
+  AddBodyPoints(1159, 686, 668);
+  AddBodyPoints(1164, 682, 670);
+  AddBodyPoints(1165, 681, 674);
+  AddBodyPoints(1166, 677, 677);
+
+  AddWindPoints(706, 679, 645, 672);
+  AddWindPoints(808, 673, 680, 672);
+  AddWindPoints(838, 683, 690, 672);
+  AddWindPoints(695, 685, 650, 672);
+  
+  AddTurbinePoints(497, 555, 555);  // Turbine texture coordinates (x, ylow, yhigh)
+  AddTurbinePoints(498, 567, 544);
+  AddTurbinePoints(539, 573, 536);
+  AddTurbinePoints(549, 574, 535);
+  AddTurbinePoints(559, 575, 534);
+  AddTurbinePoints(592, 575, 532);
+  AddTurbinePoints(604, 573, 532);
+  AddTurbinePoints(610, 572, 532);
+  AddTurbinePoints(617, 570, 532);
+  AddTurbinePoints(620, 568, 534);
+  AddTurbinePoints(620, 556, 546);
+
+  SetBackWing(359, 530, 429, 530, 531, 623, 437, 636);  // 4 points in texture
+  SetRearWings(369, 543, 438, 543, 375, 540, 350, 540);
+
+  glMatrixMode(GL_MODELVIEW);
+  glPushMatrix;
+  glTranslatef(0.0, 0.0, -0.45);
+  DrawPlane(
+    300, 110, // wind span 
+    500, 650, 55, // First set of turbines (x, y: texture coordinate, z distance from body) 
+    -1, -1, -1, 
+    -1, -1, -1, 
+    -1, -1, -1
+  );
+  glPopMatrix;
+
+
+  Wheel1(230, 0);
+  WheelHolder(230, -5, 50);
+  WheelHolder(230,  5, 50);
+//  Wheel1(230, 10);
+
+  Wheel1(-80, -60);
+  WheelHolder(-80, -50, 40);
+  Wheel1(-80, -40);
+  
+  Wheel1(-80, 60);
+  WheelHolder(-80, 50, 40);
+  Wheel1(-80, 40);
+  
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+// Generic 
+
+  NewFrame;
+  ClearBodyPoints;
+  ClearWindPoints;
+  ClearTurbinePoints;
+  AddBodyPoints(879, 376, 376); // x, ylow, yhi
+  AddBodyPoints(880, 377, 375);
+  AddBodyPoints(880, 377, 375);
+  AddBodyPoints(898, 385, 370);
+  AddBodyPoints(926, 395, 364);
+  AddBodyPoints(1041, 433, 356);
+  AddBodyPoints(1111, 451, 353);
+  AddBodyPoints(1193, 464, 353);
+  AddBodyPoints(1246, 466, 353);
+  AddBodyPoints(1791, 466, 353);
+  AddBodyPoints(1849, 465, 357);
+  AddBodyPoints(1915, 460, 367);
+  AddBodyPoints(1921, 459, 368);
+  AddBodyPoints(1944, 453, 376);
+  AddBodyPoints(1957, 449, 382);
+  AddBodyPoints(1976, 441, 398);
+  AddBodyPoints(1994, 432, 408);
+  AddBodyPoints(1997, 429, 410);
+  AddBodyPoints(2003, 424, 417);
+  AddBodyPoints(2004, 420, 420);
+
+  AddWindPoints(1328, 441, 1100, 420);
+  AddWindPoints(1448, 432, 1140, 420);
+  AddWindPoints(1522, 432, 1170, 420);
+  AddWindPoints(1572, 440, 1180, 420);
+  
+  AddTurbinePoints(1083, 302, 302);  // Turbine texture coordinates (x, ylow, yhigh)
+  AddTurbinePoints(1084, 310, 295);
+  AddTurbinePoints(1113, 320, 287);
+  AddTurbinePoints(1114, 327, 280);
+  AddTurbinePoints(1133, 333, 277);
+  AddTurbinePoints(1161, 339, 274);
+  AddTurbinePoints(1174, 341, 273);
+  AddTurbinePoints(1189, 341, 273);
+  AddTurbinePoints(1198, 340, 273);
+  AddTurbinePoints(1207, 338, 275);
+  AddTurbinePoints(1219, 333, 277);
+  AddTurbinePoints(1217, 304, 304);
+
+  SetBackWing(849, 246, 982, 246, 1092, 355, 928, 366);  // 4 points in texture
+  SetRearWings(865, 262, 973, 262, 862, 250, 842, 250);
+
+  glMatrixMode(GL_MODELVIEW);
+  glPushMatrix;
+  glTranslatef(0.0, 0.0, -0.85);
+  DrawPlane(
+    400, 120, // wind span 
+    1160, 395, 75, // First set of turbines (x, y: texture coordinate, z distance from body) 
+    -1, -1, -1, 
+    -1, -1, -1, 
+    -1, -1, -1
+  );
+  glPopMatrix;
+
+
+  Wheel1(430, -10);
+  WheelHolder(430, 0, 50);
+  Wheel1(430, 10);
+
+  Wheel1(-80, -60);
+  WheelHolder(-80, -50, 45);
+  Wheel1(-80, -40);
+  
+  Wheel1(-80, 60);
+  WheelHolder(-80, 50, 45);
+  Wheel1(-80, 40);
+  
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+// Antonov 
+
+  NewFrame;
+  ClearBodyPoints;
+  ClearWindPoints;
+  ClearTurbinePoints;
+  AddBodyPoints(8, 1076, 1076); // x, ylow, yhi
+  AddBodyPoints(56, 1101, 1064);
+  AddBodyPoints(84, 1113, 1059);
+  AddBodyPoints(145, 1135, 1052);
+  AddBodyPoints(202, 1153, 1051);
+  AddBodyPoints(316, 1182, 1050);
+  AddBodyPoints(409, 1199, 1049);
+  AddBodyPoints(553, 1217, 1048);
+  AddBodyPoints(589, 1220, 1048);
+  AddBodyPoints(671, 1233, 1048);
+  AddBodyPoints(911, 1233, 1048);
+  AddBodyPoints(980, 1223, 1048);
+  AddBodyPoints(1281, 1217, 1048);
+  AddBodyPoints(1291, 1216, 1049);
+  AddBodyPoints(1338, 1214, 1050);
+  AddBodyPoints(1349, 1213, 1051);
+  AddBodyPoints(1358, 1212, 1053);
+  AddBodyPoints(1387, 1207, 1072);
+  AddBodyPoints(1395, 1206, 1078);
+  AddBodyPoints(1439, 1197, 1094);
+  AddBodyPoints(1467, 1195, 1108);
+  AddBodyPoints(1480, 1193, 1114);
+  AddBodyPoints(1490, 1190, 1120);
+  AddBodyPoints(1500, 1184, 1127);
+  AddBodyPoints(1512, 1170, 1137);
+  AddBodyPoints(1518, 1159, 1147);
+  AddBodyPoints(1520, 1153, 1152);
+
+  AddWindPoints(810, 1067, 652, 1125);
+  AddWindPoints(920, 1060, 674, 1125);
+  AddWindPoints(1020, 1060, 697, 1125);
+  AddWindPoints(1047, 1063, 701, 1125);
+  AddWindPoints(1054, 1072, 702, 1125);
+  AddWindPoints(1047, 1081, 701, 1125);
+  AddWindPoints(950, 1070, 680, 1125);
+  
+  AddTurbinePoints(868, 988, 988);  // Turbine texture coordinates (x, ylow, yhigh)
+  AddTurbinePoints(855, 999, 978);
+  AddTurbinePoints(876, 1005, 974);
+  AddTurbinePoints(878, 1005, 974);
+  AddTurbinePoints(878, 1013, 966);
+  AddTurbinePoints(895, 1017, 962);
+  AddTurbinePoints(910, 1018, 961);
+  AddTurbinePoints(928, 1019, 959);
+  AddTurbinePoints(965, 1019, 959);
+  AddTurbinePoints(978, 1017, 960);
+  AddTurbinePoints(989, 1014, 963);
+  AddTurbinePoints(989, 987, 987);
+  AddTurbinePoints(968, 960, 960);
+  AddTurbinePoints(942, 960, 951);
+  AddTurbinePoints(922, 960, 948);
+  AddTurbinePoints(892, 964, 944);
+  AddTurbinePoints(878, 967, 940);
+  AddTurbinePoints(805, 945, 940);
+  AddTurbinePoints(800, 940, 940);
+
+  SetBackWing(34, 812, 128, 822, 381, 1050, 102, 1060);  // 4 points in texture
+  SetRearWings(89, 1094, 260, 1098, 76, 1071, 23, 1062);
+
+  DrawPlane(
+    800, 180, // wind span 
+    800, 1130, 175, // First set of turbines (x, y: texture coordinate, z distance from body) 
+    845, 1137, 275, 
+    890, 1144, 375, 
+    -1, -1, -1
+  );
+
+
+  Wheel1(530, -10);
+  WheelHolder(530, 0, 50);
+  Wheel1(530, 10);
+
+  for ii := 0 to 5 do
+  begin
+    Wheel1(-40 + ii * 42, -60);
+    WheelHolder(-40 + ii * 42, -50, 45);
+    Wheel1(-40 + ii * 42, -40);
+  
+    Wheel1(-40 + ii * 42, 60);
+    WheelHolder(-40 + ii * 42, 50, 45);
+    Wheel1(-40 + ii * 42, 40);
+  end;
+
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+// B737 - 700 
+
+  NewFrame;
+  ClearBodyPoints;
+  ClearWindPoints;
+  ClearTurbinePoints;
+  AddBodyPoints(1262, 647, 647); // x, ylow, yhi
+  AddBodyPoints(1262, 652, 642);
+  AddBodyPoints(1266, 652, 642);
+  AddBodyPoints(1278, 662, 633);
+  AddBodyPoints(1383, 691, 629);
+  AddBodyPoints(1451, 705, 628);
+  AddBodyPoints(1500, 710, 628);
+  AddBodyPoints(1832, 710, 628);
+  AddBodyPoints(1874, 709, 632);
+  AddBodyPoints(1902, 706, 639);
+  AddBodyPoints(1929, 700, 651);
+  AddBodyPoints(1940, 697, 660);
+  AddBodyPoints(1961, 687, 671);
+  AddBodyPoints(1965, 684, 674);
+  AddBodyPoints(1967, 681, 677);
+  AddBodyPoints(1968, 679, 679);
+
+  AddWindPoints(1600, 687, 1480, 665);
+  AddWindPoints(1695, 685, 1508, 665);
+  AddWindPoints(1723, 686, 1510, 665);
+  AddWindPoints(1695, 693, 1508, 665);
+   
+  AddTurbinePoints(1623, 575, 575);  // Turbine texture coordinates (x, ylow, yhigh)
+  AddTurbinePoints(1630, 578, 572);
+  AddTurbinePoints(1632, 578, 572);
+  AddTurbinePoints(1632, 580, 569);
+  AddTurbinePoints(1649, 585, 564);
+  AddTurbinePoints(1651, 585, 564);
+  AddTurbinePoints(1651, 592, 559);
+  AddTurbinePoints(1682, 595, 553);
+  AddTurbinePoints(1714, 595, 552);
+  AddTurbinePoints(1729, 592, 554);
+  AddTurbinePoints(1734, 590, 556);
+  AddTurbinePoints(1734, 573, 573);
+  AddTurbinePoints(1701, 558, 549);
+  AddTurbinePoints(1600, 553, 546);
+  AddTurbinePoints(1600, 550, 550);
+
+  SetBackWing(1247, 485, 1277, 485, 1407, 628, 1285, 633);  // 4 points in texture
+  SetRearWings(1305, 648, 1362, 646, 1285, 628, 1262, 626);
+
+  glMatrixMode(GL_MODELVIEW);
+  glPushMatrix;
+  glTranslatef(0.0, 0.0, -1.25);
+  DrawPlane(
+    280, 90, // wind span 
+    1640, 710, 100, // First set of turbines (x, y: texture coordinate, z distance from body) 
+    -1, -1, -1, 
+    -1, -1, -1, 
+    -1, -1, -1
+  );
+
+
+  glPopMatrix;
+
+  Wheel1(250, 0);
+  WheelHolder(250, -5, 50);
+  WheelHolder(250, 5, 50);
+
+  Wheel1(-20, -60);
+  WheelHolder(-20, -50, 45);
+  Wheel1(-20, -40);
+  
+  Wheel1(-20, 60);
+  WheelHolder(-20, 50, 45);
+  Wheel1(-20, 40);
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+// Airbus 320 #2
+
+  NewFrame;
+  ClearBodyPoints;
+  ClearWindPoints;
+  ClearTurbinePoints;
+  AddBodyPoints(14, 1273, 1273);
+  AddBodyPoints(16, 1278, 1268);
+  AddBodyPoints(62, 1292, 1257);
+  AddBodyPoints(206, 1328, 1251);
+  AddBodyPoints(301, 1341, 1251);
+  AddBodyPoints(365, 1341, 1251);
+  AddBodyPoints(418, 1344, 1251);
+  AddBodyPoints(587, 1341, 1251);
+  AddBodyPoints(692, 1341, 1251);
+  AddBodyPoints(749, 1338, 1255);
+  AddBodyPoints(769, 1337, 1261);
+  AddBodyPoints(775, 1336, 1264);
+  AddBodyPoints(810, 1332, 1285);
+  AddBodyPoints(812, 1331, 1286);
+  AddBodyPoints(831, 1324, 1297);
+  AddBodyPoints(841, 1311, 1311);
+  SetBackWing(33, 1120, 71, 1120, 186, 1255, 66, 1258);  // 4 points in texture
+  SetRearWings(84, 1278, 132, 1279, 83, 1277, 66, 1277);
+  AddWindPoints(416, 1330, 277, 1300);
+  AddWindPoints(541, 1317, 305, 1300);
+  AddWindPoints(571, 1317, 315, 1300);
+  AddWindPoints(571, 1317, 325, 1300);
+  AddWindPoints(578, 1322, 335, 1300);
+  AddWindPoints(577, 1336, 335, 1300);
+  AddTurbinePoints(187, 1217, 1217);  // Turbine texture coordinates (x, ylow, yhigh) 
+  AddTurbinePoints(219, 1229, 1205); 
+  AddTurbinePoints(228, 1229, 1205); 
+  AddTurbinePoints(234, 1241, 1192); 
+  AddTurbinePoints(275, 1241, 1188); 
+  AddTurbinePoints(287, 1240, 1188); 
+  AddTurbinePoints(299, 1238, 1192); 
+  AddTurbinePoints(299, 1213, 1213);
+  AddTurbinePoints(266, 1191, 1185);
+  AddTurbinePoints(170, 1190, 1184);
+   
+  DrawPlane(
+    320, 80, // wind span 
+    -90, 1348, 100, // First set of turbines (x, y: texture coordinate, z distance from body) 
+    -1, -1, -1, 
+    -1, -1, -1, 
+    -1, -1, -1
+  );
+  
+  Wheel1(310, 0);
+  WheelHolder(310, -5, 50);
+  WheelHolder(310, 5, 50);
+
+  Wheel1(20, -65);
+  WheelHolder(20, -55, 40);
+  Wheel1(20, -45);
+  
+  Wheel1(20, 65);
+  WheelHolder(20, 55, 40);
+  Wheel1(20, 45);
+
+  
+end.

@@ -1,0 +1,105 @@
+modeldef "airplane1.ddmodel" 
+{
+  scale 768.0
+}
+
+//Airbus 320 #1 (AIRPLANE_001)
+state "S_AIRPLANE_0010"
+{
+  model "airplane1.ddmodel"
+  texture "airplane1.png"
+  frame1 0
+  frame2 0
+}
+
+
+//Boeing 757-200 (AIRPLANE_002)
+state "S_AIRPLANE_0020"
+{
+  model "airplane1.ddmodel"
+  texture "airplane1.png"
+  frame1 1
+  frame2 1
+}
+
+
+//Fokker 100 (AIRPLANE_003)
+state "S_AIRPLANE_0030"
+{
+  model "airplane1.ddmodel"
+  texture "airplane1.png"
+  frame1 2
+  frame2 2
+}
+
+
+//Boeing 757-330 (AIRPLANE_004)
+state "S_AIRPLANE_0040"
+{
+  model "airplane1.ddmodel"
+  texture "airplane1.png"
+  frame1 3
+  frame2 3
+}
+
+
+//Boeing 747-436 (AIRPLANE_005)
+state "S_AIRPLANE_0050"
+{
+  model "airplane1.ddmodel"
+  texture "airplane1.png"
+  frame1 4
+  frame2 4
+}
+
+
+//Boeing 717-200 (AIRPLANE_006)
+state "S_AIRPLANE_0060"
+{
+  model "airplane1.ddmodel"
+  texture "airplane1.png"
+  frame1 5
+  frame2 5
+}
+
+
+//Jumpo Jet (AIRPLANE_007)
+state "S_AIRPLANE_0070"
+{
+  model "airplane1.ddmodel"
+  texture "airplane1.png"
+  frame1 6
+  frame2 6
+}
+
+
+//Antonov cargo aircraft (AIRPLANE_008)
+state "S_AIRPLANE_0080"
+{
+  model "airplane1.ddmodel"
+  texture "airplane1.png"
+  frame1 7
+  frame2 7
+}
+
+
+//Boeing 737-700 (AIRPLANE_009)
+state "S_AIRPLANE_0090"
+{
+  model "airplane1.ddmodel"
+  texture "airplane1.png"
+  frame1 8
+  frame2 8
+}
+
+
+//Airbus 320 #2 (AIRPLANE_010)
+state "S_AIRPLANE_0100"
+{
+  model "airplane1.ddmodel"
+  texture "airplane1.png"
+  frame1 9
+  frame2 9
+}
+
+

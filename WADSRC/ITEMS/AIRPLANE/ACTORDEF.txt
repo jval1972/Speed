@@ -1,0 +1,230 @@
+///////////////////////////////
+// AIRPLANE_001 (Airbus 320 #1)
+///////////////////////////////
+ACTOR AIRPLANE_001 2161
+{
+  Radius 256
+  Height 256
+  Health 100000
+  Mass 100000
+  Reactiontime 8
+  +PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  States
+  {
+    Spawn:
+    {
+      AI01 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// AIRPLANE_002 (Boeing 757-200)
+///////////////////////////////
+ACTOR AIRPLANE_002 2162
+{
+  Radius 256
+  Height 256
+  Health 100000
+  Mass 100000
+  Reactiontime 8
+  +PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  States
+  {
+    Spawn:
+    {
+      AI02 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// AIRPLANE_003 (Fokker 100)
+///////////////////////////////
+ACTOR AIRPLANE_003 2163
+{
+  Radius 256
+  Height 256
+  Health 100000
+  Mass 100000
+  Reactiontime 8
+  +PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  States
+  {
+    Spawn:
+    {
+      AI03 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// AIRPLANE_004 (Boeing 757-330)
+///////////////////////////////
+ACTOR AIRPLANE_004 2164
+{
+  Radius 256
+  Height 256
+  Health 100000
+  Mass 100000
+  Reactiontime 8
+  +PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  States
+  {
+    Spawn:
+    {
+      AI04 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// AIRPLANE_005 (Boeing 747-436)
+///////////////////////////////
+ACTOR AIRPLANE_005 2165
+{
+  Radius 384
+  Height 256
+  Health 100000
+  Mass 100000
+  Reactiontime 8
+  +PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  States
+  {
+    Spawn:
+    {
+      AI05 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// AIRPLANE_006 (Boeing 717-200)
+///////////////////////////////
+ACTOR AIRPLANE_006 2166
+{
+  Radius 256
+  Height 256
+  Health 100000
+  Mass 100000
+  Reactiontime 8
+  +PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  States
+  {
+    Spawn:
+    {
+      AI06 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// AIRPLANE_007 (Jumpo Jet)
+///////////////////////////////
+ACTOR AIRPLANE_007 2167
+{
+  Radius 256
+  Height 256
+  Health 100000
+  Mass 100000
+  Reactiontime 8
+  +PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  States
+  {
+    Spawn:
+    {
+      AI07 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// AIRPLANE_008 (Antonov cargo aircraft)
+///////////////////////////////
+ACTOR AIRPLANE_008 2168
+{
+  Radius 384
+  Height 256
+  Health 100000
+  Mass 100000
+  Reactiontime 8
+  +PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  States
+  {
+    Spawn:
+    {
+      AI08 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// AIRPLANE_009 (Boeing 737-700)
+///////////////////////////////
+ACTOR AIRPLANE_009 2169
+{
+  Radius 256
+  Height 256
+  Health 100000
+  Mass 100000
+  Reactiontime 8
+  +PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  States
+  {
+    Spawn:
+    {
+      AI09 A -1
+      Stop
+    }
+  }
+}
+
+
+///////////////////////////////
+// AIRPLANE_010 (Airbus 320 #2)
+///////////////////////////////
+ACTOR AIRPLANE_010 2170
+{
+  Radius 256
+  Height 256
+  Health 100000
+  Mass 100000
+  Reactiontime 8
+  +PRECISESPAWNANGLE
+  +NORENDERINTERPOLATE
+  States
+  {
+    Spawn:
+    {
+      AI10 A -1
+      Stop
+    }
+  }
+}
+
+
