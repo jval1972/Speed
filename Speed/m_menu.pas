@@ -157,6 +157,7 @@ uses
   hu_stuff,
   s_sound,
   sounds,
+  w_pak,
   w_wad,
   z_zone;
 
@@ -2347,7 +2348,7 @@ begin
   M_DrawHeadLine(30, 40, 'Select Course');
 
   y := DEF_MENU_ITEMS_START_Y;
-  for i := Ord(mn_ep1) to Ord(ep_end) - 1 do
+  for i := Ord(mn_ep1) to Epidef.numitems - 1 do
   begin
     if itemOn = i then
       M_WriteText(160, y, EpisodeMenu[i].name, _MA_CENTER or _MC_UPPER, @big_fontY, @big_fontB)
@@ -2374,19 +2375,18 @@ begin
 end;
 
 procedure M_ChooseEpisode(choice: integer);
+var
+  lumpname: string;
 begin
-  if (gamemode = shareware) and (choice <> 0) then
+  if choice <> 0 then
   begin
-    M_StartMessage('Can not find championship'#13#10#13#10 + PRESSKEY, nil, false);
-    M_SetupNextMenu(@ReadDef1);
-    exit;
-  end;
-
-  // Yet another hack...
-  if (gamemode = registered) and (choice > 2) then
-  begin
-    I_Warning('M_ChooseEpisode(): Can not find championship'#13#10);
-    choice := 0;
+    lumpname := 'E' + itoa(choice + 1) + 'M1';
+    if W_CheckNumForName(lumpname) < 0 then
+    begin
+      M_StartMessage('Can not find championship'#13#10#13#10 + PRESSKEY, nil, false);
+      M_SetupNextMenu(@ReadDef1);
+      exit;
+    end;
   end;
 
   menu_episode := choice;
@@ -3973,6 +3973,7 @@ var
   i: integer;
   nc: integer;
   pmi: Pmenuitem_t;
+  sl: TDStringList;
 begin
   threadmenushader := TDThread.Create(@M_Thr_ShadeScreen);
 
@@ -6123,6 +6124,19 @@ begin
   mlastx := 0;
   mlasty := 0;
 
+  sl := TDStringList.Create;
+
+  for i := 1 to 4 do
+  begin
+    sl.Text := PAK_ReadFileAsString('CHAMP' + itoa(i) + '.txt');
+    if sl.Count > 0 then
+    begin
+      EpisodeMenu[i - 1].name := sl.Strings[0];
+      EpiDef.numitems := i;
+    end;
+  end;
+
+  sl.Free;
 end;
 
 end.
