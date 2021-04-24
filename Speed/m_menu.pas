@@ -1677,16 +1677,9 @@ begin
 end;
 
 procedure M_DrawControls;
-var
-  ppos: menupos_t;
 begin
   M_DrawHeadLine(20, 15, 'Options');
   M_DrawHeadLine(30, 40, 'Controls');
-
-  ppos.x := ControlsDef.x;
-  ppos.y := ControlsDef.y + ControlsDef.itemheight * Ord(ctrl_keyboardmode);
-  ppos := M_WriteText(ppos.x, ppos.y, 'Keyboard preset: ', _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
-  M_WriteText(ppos.x, ppos.y, mkeyboardmodes[M_GetKeyboardMode], _MA_LEFT or _MC_UPPER, @hu_fontW, @hu_fontB);
 end;
 
 procedure M_DrawSound;
