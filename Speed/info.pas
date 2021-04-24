@@ -17501,6 +17501,8 @@ begin
   begin
     mobjinfo := malloc(Ord(DO_NUMMOBJTYPES) * SizeOf(mobjinfo_t));
     memcpy(mobjinfo, @DO_mobjinfo, Ord(DO_NUMMOBJTYPES) * SizeOf(mobjinfo_t));
+    for i := Ord(MT_PLAYER) + 1 to Ord(MT_PUSH) - 1 do
+      mobjinfo[i].doomednum := -1;
   end;
 
   if not usethinkers then
