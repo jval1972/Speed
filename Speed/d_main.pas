@@ -1826,7 +1826,7 @@ begin
       gamemission := doom;
       gamemode := retail;
       {$IFNDEF FPC}
-      SUC_SetGameMode('Extended Version');
+      SUC_SetGameMode('GLSpeed - Extended Version');
       {$ENDIF}
     end
     else if W_CheckNumForName('e3m1') <> -1 then
@@ -1834,7 +1834,7 @@ begin
       gamemission := doom;
       gamemode := registered;
       {$IFNDEF FPC}
-      SUC_SetGameMode('Extended Version');
+      SUC_SetGameMode('GLSpeed - Extended Version');
       {$ENDIF}
     end
     else if W_CheckNumForName('e1m1') <> -1 then
@@ -1842,7 +1842,10 @@ begin
       gamemission := doom;
       gamemode := shareware;
       {$IFNDEF FPC}
-      SUC_SetGameMode('Speed Haste');
+      if W_CheckNumForName('e1m3') <> -1 then
+        SUC_SetGameMode('Speed Haste - Registered version')
+      else
+        SUC_SetGameMode('Speed Haste - Shareware version')
       {$ENDIF}
     end
     else
