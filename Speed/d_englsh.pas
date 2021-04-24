@@ -723,34 +723,7 @@ const
   CC_CYBER = 'THE CYBERDEMON';
   CC_HERO = 'OUR HERO';
 
-var
-  MSG_MODIFIEDGAME: string =
-      '===========================================================================' + #13#10 +
-      'ATTENTION:  This version of DOOM has been modified.  If you would like to' + #13#10 +
-      'get a copy of the original game, call 1-800-IDGAMES or see the readme file.' + #13#10 +
-      '        You will not receive technical support for modified games.' + #13#10 +
-      '                      press enter to continue' + #13#10 +
-      '===========================================================================' + #13#10;
-
-  MSG_SHAREWARE: string =
-        '===========================================================================' + #13#10 +
-        '                                Shareware!' + #13#10 +
-        '===========================================================================' + #13#10;
-
-  MSG_COMMERCIAL: string =
-        '===========================================================================' + #13#10 +
-        '                 Commercial product - do not distribute!' + #13#10 +
-        '         Please report software piracy to the SPA: 1-800-388-PIR8' + #13#10 +
-        '===========================================================================' + #13#10;
-
-  MSG_UNDETERMINED: string =
-        '===========================================================================' + #13#10 +
-        '                       Undetermined version! (Ouch)' + #13#10 +
-        '===========================================================================' + #13#10;
-
-
 implementation
-
 
 end.
 

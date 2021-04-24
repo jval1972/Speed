@@ -1878,27 +1878,6 @@ begin
 
   SUC_Progress(61);
 
-  if modifiedgame then
-  // If additonal PWAD files are used, print modified banner
-    printf(MSG_MODIFIEDGAME);
-
-  SUC_Progress(65);
-
-  case gamemode of
-    shareware,
-    indetermined:
-      printf(MSG_SHAREWARE);
-    registered,
-    retail:
-      printf(MSG_COMMERCIAL);
-  else
-    begin
-      printf(MSG_UNDETERMINED);
-    end;
-  end;
-
-  SUC_Progress(66);
-
   printf('Info_InitRandom: Initializing randomizers.'#13#10);
   Info_InitRandom;
 

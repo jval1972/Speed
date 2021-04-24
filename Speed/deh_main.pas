@@ -2806,11 +2806,6 @@ begin
   DEH_AddString(@deh_strings, @T5TEXT, 'T5TEXT');
   DEH_AddString(@deh_strings, @T6TEXT, 'T6TEXT');
 
-  DEH_AddString(@deh_strings, @MSG_MODIFIEDGAME, 'MSG_MODIFIEDGAME');
-  DEH_AddString(@deh_strings, @MSG_SHAREWARE, 'MSG_SHAREWARE');
-  DEH_AddString(@deh_strings, @MSG_COMMERCIAL, 'MSG_COMMERCIAL');
-  DEH_AddString(@deh_strings, @MSG_UNDETERMINED, 'MSG_UNDETERMINED');
-
   DEH_AddString(@deh_strings, @GOTARMOR, 'GOTARMOR');
   DEH_AddString(@deh_strings, @GOTMEGA, 'GOTMEGA');
   DEH_AddString(@deh_strings, @GOTHTHBONUS, 'GOTHTHBONUS');
