@@ -1377,7 +1377,7 @@ begin
 
   mo.carturn := cmd.turn;
   mo.caraccelerate := cmd.accelerate;
-  mo.cadeccelerate := cmd.deccelerate;
+  mo.cardeccelerate := cmd.deccelerate;
   mo.carbrake := cmd.brake;
 
   SH_CalcRPM(mo);

@@ -524,7 +524,7 @@ type
     soundcountdown: integer;
     carturn: fixed_t;
     caraccelerate: fixed_t;
-    cadeccelerate: fixed_t;
+    cardeccelerate: fixed_t;
     carbrake: fixed_t;
     brakesoundcountdown: integer;
     brakesoundorg: degenmobj_t;
