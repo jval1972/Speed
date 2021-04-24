@@ -89,8 +89,6 @@ const
 var
 {$IFDEF OPENGL}
 // Stub variables
-  soft_SCREENWIDTH,
-  soft_SCREENHEIGHT: integer;
   usefake3d: boolean;
   optimizedthingsrendering: boolean;
   force_numwallrenderingthreads_8bit: integer;
@@ -98,7 +96,6 @@ var
   precisescalefromglobalangle: boolean;
   preciseslopedrawing: boolean; // JVAL: Slopes
   r_drawvoxels: boolean;
-  soft_fullscreen: integer = 0;
   r_uselightmaps: boolean = true;
   r_lightmapfadeoutfunc: integer = 0;
   lightmapcolorintensity: integer = 128;
@@ -121,7 +118,7 @@ type
   Pdefault_t = ^default_t;
 
 const
-  NUMDEFAULTS = 207;
+  NUMDEFAULTS = 204;
 
 // JVAL
 // Note: All setable defaults must be in lowercase, don't ask why. Just do it. :)
@@ -133,30 +130,6 @@ const
      defaultivalue: 0;
      defaultbvalue: false;
      _type: tGroup),
-
-    (name: 'soft_screenwidth';
-     location: @{$IFDEF OPENGL}soft_SCREENWIDTH{$ELSE}SCREENWIDTH{$ENDIF};
-     setable: DFS_NEVER;
-     defaultsvalue: '';
-     defaultivalue: 640;
-     defaultbvalue: false;
-     _type: tInteger),
-
-    (name: 'soft_screenheight';
-     location: @{$IFDEF OPENGL}soft_SCREENHEIGHT{$ELSE}SCREENHEIGHT{$ENDIF};
-     setable: DFS_NEVER;
-     defaultsvalue: '';
-     defaultivalue: 400;
-     defaultbvalue: false;
-     _type: tInteger),
-
-    (name: 'soft_fullscreen';
-     location: {$IFDEF OPENGL}@soft_fullscreen{$ELSE}@fullscreen{$ENDIF};
-     setable: DFS_NEVER;
-     defaultsvalue: '';
-     defaultivalue: 0;
-     defaultbvalue: true;
-     _type: tInteger),
 
     (name: 'gl_screenwidth';
      location: @{$IFDEF OPENGL}SCREENWIDTH{$ELSE}gl_SCREENWIDTH{$ENDIF};
