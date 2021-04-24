@@ -1174,13 +1174,8 @@ var
   filename: string;
   scale: integer;
   _time: integer;
-  s_error: string;
   i: integer;
-  j: integer;
-  oldoutproc: TOutProc;
   mb_min: integer; // minimum zone size
-  episodes: integer;
-  err_shown: boolean;
   s1, s2: string;
   kparm: string;
 begin
@@ -1245,38 +1240,11 @@ begin
   else if M_CheckParm('-deathmatch') > 0 then
     deathmatch := 1;
 
-  case gamemode of
-    retail:
-      begin
-        printf(
+  printf(
            '                         ' +
-           'The Ultimate DOOM Startup v%d.%.*d' +
+           'GLSpeed Startup v%d.%.*d' +
            '                           '#13#10,
             [VERSION div 100, 2, VERSION mod 100]);
-      end;
-    shareware:
-      begin
-        printf(
-           '                            ' +
-           'DOOM Shareware Startup v%d.%.*d' +
-           '                           '#13#10,
-            [VERSION div 100, 2, VERSION mod 100]);
-      end;
-    registered:
-      begin
-        printf(
-           '                            ' +
-           'DOOM Registered Startup v%d.%.*d' +
-           '                           '#13#10,
-            [VERSION div 100, 2, VERSION mod 100]);
-      end;
-  else
-      printf(
-         '                         ' +
-         'Public DOOM - v%d.%.*d' +
-         '                           '#13#10,
-          [VERSION div 100, 2, VERSION mod 100]);
-  end;
 
   if devparm then
     printf(D_DEVSTR);
@@ -1910,62 +1878,9 @@ begin
 
   SUC_Progress(61);
 
-  // Check for -file in shareware
-  // JVAL
-  // Allow modified games if -devparm is specified, for debuging reasons
-  if modifiedgame and not devparm then
-  begin
-    err_shown := false;
-    if gamemode = shareware then
-    begin
-      if not hackshareware then
-        I_DevError(#13#10 + 'D_DoomMain(): You cannot use external files with the shareware version. Register!');
-      err_shown := true;
-    end;
-    // Check for fake IWAD with right name,
-    // but w/o all the lumps of the registered version.
-    if not err_shown and (gamemode in [registered, retail]) then
-    begin
-      // These are the lumps that will be checked in IWAD,
-      // if any one is not present, execution will be aborted.
-      s_error := #13#10 + 'D_DoomMain(): This is not the registered version.';
-      episodes := 3;
-      if gamemode = retail then
-        inc(episodes);
-      for i := 2 to episodes do
-        for j := 1 to 9 do
-          if W_CheckNumForName('e' + itoa(i) + 'm' + itoa(j)) < 0 then
-          begin
-            if not err_shown then
-              I_DevError(s_error);
-            err_shown := true;
-          end;
-      if not err_shown then
-      begin
-        if W_CheckNumForName('dphoof') < 0 then
-          I_DevError(s_error)
-        else if W_CheckNumForName('bfgga0') < 0 then
-          I_DevError(s_error)
-        else if W_CheckNumForName('heada1') < 0 then
-          I_DevError(s_error)
-        else if W_CheckNumForName('cybra1') < 0 then
-          I_DevError(s_error)
-        else if W_CheckNumForName('spida1d1') < 0 then
-          I_DevError(s_error);
-      end;
-    end;
-
+  if modifiedgame then
   // If additonal PWAD files are used, print modified banner
     printf(MSG_MODIFIEDGAME);
-    if showmessageboxonmodified then
-    begin
-      oldoutproc := outproc;
-      I_IOSetWindowHandle(SUC_GetHandle);
-      outproc := @I_IOMessageBox; // Print the message again to messagebox
-      printf(MSG_MODIFIEDGAME);
-      outproc := oldoutproc;
-    end;
-  end;
 
   SUC_Progress(65);
 
