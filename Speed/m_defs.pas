@@ -216,14 +216,14 @@ const
      setable: DFS_ALWAYS;
      defaultsvalue: '';
      defaultivalue: 0;
-     defaultbvalue: false;
+     defaultbvalue: true;
      _type: tBoolean),
 
     (name: 'chasecamera_viewxy';
      location: @chasecamera_viewxy;
      setable: DFS_ALWAYS;
      defaultsvalue: '';
-     defaultivalue: 64;
+     defaultivalue: 72;
      defaultbvalue: false;
      _type: tInteger),
 
@@ -505,7 +505,7 @@ const
      setable: DFS_ALWAYS;
      defaultsvalue: '';
      defaultivalue: 1;
-     defaultbvalue: true;
+     defaultbvalue: false;
      _type: tBoolean),
 
     (name: 'fog_density';
@@ -527,7 +527,7 @@ const
     (name: 'gl_tex_filter';
      location: @gl_tex_filter_string;
      setable: DFS_ALWAYS;
-     defaultsvalue: 'GL_LINEAR';
+     defaultsvalue: 'GL_NEAREST';
      defaultivalue: 0;
      defaultbvalue: true;
      _type: tString),
@@ -593,7 +593,7 @@ const
      setable: DFS_ALWAYS;
      defaultsvalue: '';
      defaultivalue: 1;
-     defaultbvalue: true;
+     defaultbvalue: false;
      _type: tBoolean),
 
     (name: 'gl_drawshadows';
@@ -617,7 +617,7 @@ const
      setable: DFS_ALWAYS;
      defaultsvalue: '';
      defaultivalue: 1;
-     defaultbvalue: true;
+     defaultbvalue: false;
      _type: tBoolean),
 
     (name: 'gl_add_all_lines';
