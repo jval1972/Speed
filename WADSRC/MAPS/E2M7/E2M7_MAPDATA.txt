@@ -1,0 +1,8 @@
+sprite=MAPSPR27
+sky=NUBES27
+mountain=MOUNT27
+ground=FLAT0001
+name=The airport
+length=4310
+best=3700
+level=2
