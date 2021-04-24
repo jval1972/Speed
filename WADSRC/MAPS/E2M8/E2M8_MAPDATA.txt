@@ -1,4 +1,4 @@
-sprite=MAPSPR19
+sprite=MAPSPR28
 sky=NUBES0
 mountain=MOUNT3
 ground=FLAT0062
