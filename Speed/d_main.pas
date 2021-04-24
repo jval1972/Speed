@@ -1854,9 +1854,9 @@ begin
   else
   begin
     if (gamemission = doom) and (gamemode = retail) then
-      SUC_SetGameMode('Extended Version')
+      SUC_SetGameMode('GLSpeed - Extended Version')
     else if (gamemission = doom) and (gamemode = registered) then
-      SUC_SetGameMode('Extended Version')
+      SUC_SetGameMode('GLSpeed - Extended Version')
     else if (gamemission = doom) and (gamemode = shareware) then
       SUC_SetGameMode('Speed Haste');
   end;
