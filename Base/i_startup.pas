@@ -286,9 +286,6 @@ procedure TStartUpConsoleForm.OpenDialog1CanClose(Sender: TObject;
   var CanClose: Boolean);
 var
   f: TFileStream;
-  c: char;
-  i: integer;
-  check: string;
 begin
   if OpenDialog1.FileName <> '' then
     if fexists(OpenDialog1.FileName) then
