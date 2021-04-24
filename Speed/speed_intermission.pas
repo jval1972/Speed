@@ -68,7 +68,8 @@ uses
   speed_string_format,
   speed_palette,
   v_data,
-  v_video;
+  v_video,
+  w_wad;
 
 var
   in_tic: integer;
@@ -80,10 +81,13 @@ procedure SH_CheckForInput;
 var
   i: integer;
   player: Pplayer_t;
+  score: Pplayerscore_t;
 begin
   if in_stage_tic < TICRATE div 2 then // Do not allow very fast screen change
     Exit;
 
+  score := @players[consoleplayer].currentscore;
+  
   // check for button presses to skip delays
   for i := 0 to MAXPLAYERS - 1 do
   begin
@@ -102,7 +106,12 @@ begin
         else if in_stage = 4 then
         begin
           if (gametype = gt_championship) and (gamemap < 8) then
-            G_WorldDone
+          begin
+            if W_CheckNumForName('E' + itoa(score.episode) + 'M' + itoa(score.map + 1)) < 0 then
+              D_StartTitle
+            else
+              G_WorldDone;
+          end
           else
             D_StartTitle;
         end;
