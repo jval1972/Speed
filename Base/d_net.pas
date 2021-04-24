@@ -634,9 +634,6 @@ begin
         {$IFDEF DOOM_OR_STRIFE}
         allowterrainsplashes := netbuffer.flags and 4 <> 0;
         {$ENDIF}
-        {$IFDEF DOOM}
-        majorbossdeathendsdoom1level := netbuffer.flags and 8 <> 0;
-        {$ENDIF}
 
         SUC_FinishedNetwork;
         exit;
@@ -671,10 +668,6 @@ begin
         {$IFDEF DOOM_OR_STRIFE}
         if allowterrainsplashes then
           netbuffer.flags := netbuffer.flags or 4;
-        {$ENDIF}
-        {$IFDEF DOOM}
-        if majorbossdeathendsdoom1level then
-          netbuffer.flags := netbuffer.flags or 8;
         {$ENDIF}
 
         HSendPacket(i, NCMD_SETUP);

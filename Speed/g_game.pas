@@ -252,7 +252,6 @@ var
   autorunmode: boolean = false;
   keepcheatsinplayerreborn: boolean = false;
   allowplayerjumps: boolean = true;
-  majorbossdeathendsdoom1level: boolean = false;
 
 var
   p_initialbullets: integer = 50;
@@ -260,7 +259,8 @@ var
   vanilla_demo_off: boolean = false;
 
 var
-  dogs, default_dogs: integer;                // killough 7/19/98: Marine's best friend :)
+  dogs: integer = 0;
+  default_dogs: integer = 0;                // killough 7/19/98: Marine's best friend :)
   dog_jumping, default_dog_jumping: integer;  // killough 10/98
 
 var

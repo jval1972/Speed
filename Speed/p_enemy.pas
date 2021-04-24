@@ -184,7 +184,7 @@ type
 
 
 var
-  continueafterplayerdeath: boolean;
+  continueafterplayerdeath: boolean = false;
 
 implementation
 
@@ -2031,11 +2031,6 @@ begin
                exit;
           8: if mo._type <> Ord(MT_SPIDER) then
                exit;
-        else  // JVAL 21/9/2007 Fixed bug that ended E4M2 after cyberdeamon death
-          begin
-            if not majorbossdeathendsdoom1level then
-              exit;
-          end;
         end;
       end;
   else

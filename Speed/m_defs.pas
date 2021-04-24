@@ -118,7 +118,7 @@ type
   Pdefault_t = ^default_t;
 
 const
-  NUMDEFAULTS = 204;
+  NUMDEFAULTS = 199;
 
 // JVAL
 // Note: All setable defaults must be in lowercase, don't ask why. Just do it. :)
@@ -894,46 +894,6 @@ const
      defaultivalue: 0;
      defaultbvalue: true;
      _type: tBoolean),
-
-    (name: 'allowplayerbreath';
-     location: @allowplayerbreath;
-     setable: DFS_ALWAYS;
-     defaultsvalue: '';
-     defaultivalue: 0;
-     defaultbvalue: false;
-     _type: tBoolean),
-
-    (name: 'majorbossdeathendsdoom1level';
-     location: @majorbossdeathendsdoom1level;
-     setable: DFS_SINGLEPLAYER;
-     defaultsvalue: '';
-     defaultivalue: 0;
-     defaultbvalue: false;
-     _type: tBoolean),
-
-    (name: 'allowterrainsplashes';
-     location: @allowterrainsplashes;
-     setable: DFS_SINGLEPLAYER;
-     defaultsvalue: '';
-     defaultivalue: 0;
-     defaultbvalue: true;
-     _type: tBoolean),
-
-    (name: 'continueafterplayerdeath';
-     location: @continueafterplayerdeath;
-     setable: DFS_SINGLEPLAYER;
-     defaultsvalue: '';
-     defaultivalue: 0;
-     defaultbvalue: true;
-     _type: tBoolean),
-
-    (name: 'dogs';
-     location: @dogs;
-     setable: DFS_ALWAYS;
-     defaultsvalue: '';
-     defaultivalue: 0;
-     defaultbvalue: true;
-     _type: tInteger),
 
     (name: 'dog_jumping';
      location: @dog_jumping;

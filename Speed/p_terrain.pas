@@ -34,7 +34,7 @@ interface
 function P_TerrainTypeForName(flatname: string): integer;
 
 var
-  allowterrainsplashes: boolean;
+  allowterrainsplashes: boolean = false;
 
 const
   FLOOR_SOLID = 0;
