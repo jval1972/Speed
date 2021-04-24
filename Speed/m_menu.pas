@@ -764,11 +764,6 @@ type
     cmp_crashsoundonwall,
     cmp_crashsoundoncar,
     cmp_drawposindicators,
-    cmp_majorbossdeathendsdoom1level,
-    cmp_spawnrandommonsters,
-    cmp_allowterrainsplashes,
-    cmp_continueafterplayerdeath,
-    cmp_dogs,
     cmp_end
   );
 
@@ -827,34 +822,16 @@ type
     kb_down,
     kb_left,
     kb_right,
-    kb_strafeleft,
-    kb_straferight,
-    kb_jump,
-    kb_fire,
-    kb_use,
-    kb_strafe,
-    kb_speed,
-    kb_lookup,
-    kb_lookdown,
-    kb_lookcenter,
+    kb_gearup,
+    kb_geardown,
     kb_lookleft,
     kb_lookright,
-    kb_weapon0,
-    kb_weapon1,
-    kb_weapon2,
-    kb_weapon3,
-    kb_weapon4,
-    kb_weapon5,
-    kb_weapon6,
-    kb_weapon7,
     kb_end
   );
 
 var
-  KeyBindingsMenu1: array[0..Ord(kb_weapon0) - 1] of menuitem_t;
+  KeyBindingsMenu1: array[0..Ord(kb_end) - 1] of menuitem_t;
   KeyBindingsDef1: menu_t;
-  KeyBindingsMenu2: array[0..Ord(kb_end) - Ord(kb_weapon0) - 1] of menuitem_t;
-  KeyBindingsDef2: menu_t;
 
 type
   bindinginfo_t = record
@@ -868,26 +845,10 @@ const
     (text: 'Brake'; pkey: @key_down),
     (text: 'Turn left'; pkey: @key_left),
     (text: 'Turn right'; pkey: @key_right),
-    (text: 'Strafe left'; pkey: @key_strafeleft),
-    (text: 'Strafe right'; pkey: @key_straferight),
-    (text: 'Jump'; pkey: @key_jump),
-    (text: 'Fire'; pkey: @key_fire),
-    (text: 'Use'; pkey: @key_use),
-    (text: 'Strafe'; pkey: @key_strafe),
-    (text: 'Run'; pkey: @key_speed),
-    (text: 'Look up'; pkey: @key_lookup),
-    (text: 'Look down'; pkey: @key_lookdown),
-    (text: 'Look center'; pkey: @key_lookcenter),
+    (text: 'Gear Up'; pkey: @key_gearup),
+    (text: 'Gear Down'; pkey: @key_geardown),
     (text: 'Look left'; pkey: @key_lookleft),
-    (text: 'Look right'; pkey: @key_lookright),
-    (text: 'Fists/Chainsaw'; pkey: @key_weapon0),
-    (text: 'Pistol'; pkey: @key_weapon1),
-    (text: 'Shotgun'; pkey: @key_weapon2),
-    (text: 'Chaingun'; pkey: @key_weapon3),
-    (text: 'Rocket launcher'; pkey: @key_weapon4),
-    (text: 'Plasma gun'; pkey: @key_weapon5),
-    (text: 'BFG 9000'; pkey: @key_weapon6),
-    (text: 'Chainsaw'; pkey: @key_weapon7)
+    (text: 'Look right'; pkey: @key_lookright)
   );
 
 var
@@ -1023,21 +984,7 @@ end;
 
 procedure M_DrawBindings1;
 begin
-  M_DrawBindings(KeyBindingsDef1, 0, Ord(kb_weapon0));
-end;
-
-procedure M_DrawBindings2;
-begin
-  KeyBindingsInfo[Ord(kb_weapon0)].text := 'Fists/Chainsaw';
-  KeyBindingsInfo[Ord(kb_weapon1)].text := 'Pistol';
-  KeyBindingsInfo[Ord(kb_weapon2)].text := 'Shotgun';
-  KeyBindingsInfo[Ord(kb_weapon3)].text := 'Chaingun';
-  KeyBindingsInfo[Ord(kb_weapon4)].text := 'Rocket launcher';
-  KeyBindingsInfo[Ord(kb_weapon5)].text := 'Plasma gun';
-  KeyBindingsInfo[Ord(kb_weapon6)].text := 'BFG 9000';
-  KeyBindingsInfo[Ord(kb_weapon7)].text := 'Chainsaw';
-
-  M_DrawBindings(KeyBindingsDef2, Ord(kb_weapon0), Ord(kb_end));
+  M_DrawBindings(KeyBindingsDef1, 0, Ord(kb_end));
 end;
 
 //
@@ -1050,15 +997,6 @@ begin
   bindkeySlot := choice;
 
   saveOldkey := KeyBindingsInfo[choice].pkey^;
-end;
-
-procedure M_KeyBindingSelect2(choice: integer);
-begin
-  bindkeyEnter := true;
-
-  bindkeySlot := Ord(kb_weapon0) + choice;
-
-  saveOldkey := KeyBindingsInfo[Ord(kb_weapon0) + choice].pkey^;
 end;
 
 type
@@ -1487,26 +1425,10 @@ begin
     SoundVolDef.x, SoundVolDef.y + SoundVolDef.itemheight * (Ord(music_vol) + 1), 16, snd_MusicVolume);
 end;
 
-procedure M_ChangeDogs(choice: integer);
-begin
-  dogs := GetIntegerInRange(dogs, 0, MAXPLAYERS - 1);
-  inc(dogs);
-  if dogs >= MAXPLAYERS then
-    dogs := 0;
-end;
-
 procedure M_DrawCompatibility;
-var
-  ppos: menupos_t;
 begin
   M_DrawHeadLine(20, 15, 'Options');
   M_DrawHeadLine(30, 40, 'Compatibility');
-
-  dogs := GetIntegerInRange(dogs, 0, MAXPLAYERS - 1);
-  ppos.x := CompatibilityDef.x;
-  ppos.y := CompatibilityDef.y + CompatibilityDef.itemheight * Ord(cmp_dogs);
-  ppos := M_WriteText(ppos.x, ppos.y, 'Dogs (Marine Best Friend): ', _MA_LEFT or _MC_UPPER, @hu_fontY, @hu_fontB);
-  M_WriteText(ppos.x, ppos.y, itoa(dogs), _MA_LEFT or _MC_UPPER, @hu_fontW, @hu_fontB);
 end;
 
 const
@@ -5633,57 +5555,6 @@ begin
   pmi.alphaKey := 'i';
   pmi.tag := 0;
 
-  inc(pmi);
-  pmi.status := 1;
-  pmi.name := '!Boss death ends Doom1 level';
-  pmi.cmd := 'majorbossdeathendsdoom1level';
-  pmi.routine := @M_BoolCmd;
-  pmi.pBoolVal := @majorbossdeathendsdoom1level;
-  pmi.pIntVal := nil;
-  pmi.alphaKey := 'd';
-  pmi.tag := 0;
-
-  inc(pmi);
-  pmi.status := 1;
-  pmi.name := '!Spawn random monsters';
-  pmi.cmd := 'spawnrandommonsters';
-  pmi.routine := @M_BoolCmd;
-  pmi.pBoolVal := @spawnrandommonsters;
-  pmi.pIntVal := nil;
-  pmi.alphaKey := 's';
-  pmi.tag := 0;
-
-  inc(pmi);
-  pmi.status := 1;
-  pmi.name := '!Splashes on special terrains';
-  pmi.cmd := 'allowterrainsplashes';
-  pmi.routine := @M_BoolCmd;
-  pmi.pBoolVal := @allowterrainsplashes;
-  pmi.pIntVal := nil;
-  pmi.alphaKey := 't';
-  pmi.tag := 0;
-
-  inc(pmi);
-  pmi.status := 1;
-  pmi.name := '!Monsters fight after player death';
-  pmi.cmd := 'continueafterplayerdeath';
-  pmi.routine := @M_BoolCmd;
-  pmi.pBoolVal := @continueafterplayerdeath;
-  pmi.pIntVal := nil;
-  pmi.alphaKey := 'f';
-  pmi.tag := 0;
-
-  inc(pmi);
-  pmi.status := 1;
-  pmi.name := '!Dogs (Marine Best Friend)';
-  pmi.cmd := '';
-  pmi.routine := @M_ChangeDogs;
-  pmi.pBoolVal := nil;
-  pmi.pIntVal := nil;
-  pmi.alphaKey := 'd';
-  pmi.tag := 0;
-
-
 ////////////////////////////////////////////////////////////////////////////////
 //CompatibilityDef
   CompatibilityDef.numitems := Ord(cmp_end); // # of menu items
@@ -6003,7 +5874,7 @@ begin
 ////////////////////////////////////////////////////////////////////////////////
 //KeyBindingsMenu1
   pmi := @KeyBindingsMenu1[0];
-  for i := 0 to Ord(kb_weapon0) - 1 do
+  for i := 0 to Ord(kb_end) - 1 do
   begin
     pmi.status := 1;
     pmi.name := '';
@@ -6018,10 +5889,8 @@ begin
 
 ////////////////////////////////////////////////////////////////////////////////
 //KeyBindingsDef1
-  KeyBindingsDef1.numitems := Ord(kb_weapon0); // # of menu items
+  KeyBindingsDef1.numitems := Ord(kb_end); // # of menu items
   KeyBindingsDef1.prevMenu := @ControlsDef; // previous menu
-  KeyBindingsDef1.leftMenu := @KeyBindingsDef2; // left menu
-  KeyBindingsDef1.rightMenu := @KeyBindingsDef2; // right menu
   KeyBindingsDef1.menuitems := Pmenuitem_tArray(@KeyBindingsMenu1);  // menu items
   KeyBindingsDef1.drawproc := @M_DrawBindings1;  // draw routine
   KeyBindingsDef1.x := DEF_MENU_ITEMS_START_X;
@@ -6029,36 +5898,6 @@ begin
   KeyBindingsDef1.lastOn := 0; // last item user was on in menu
   KeyBindingsDef1.itemheight := LINEHEIGHT2;
   KeyBindingsDef1.texturebk := true;
-
-////////////////////////////////////////////////////////////////////////////////
-//KeyBindingsMenu2
-  pmi := @KeyBindingsMenu2[0];
-  for i := 0 to Ord(kb_end) - Ord(kb_weapon0) - 1 do
-  begin
-    pmi.status := 1;
-    pmi.name := '';
-    pmi.cmd := '';
-    pmi.routine := @M_KeyBindingSelect2;
-    pmi.pBoolVal := nil;
-    pmi.pIntVal := nil;
-    pmi.alphaKey := Chr(Ord('1') + i);
-    pmi.tag := 0;
-    inc(pmi);
-  end;
-
-////////////////////////////////////////////////////////////////////////////////
-//KeyBindingsDef2
-  KeyBindingsDef2.numitems := Ord(kb_end) - Ord(kb_weapon0); // # of menu items
-  KeyBindingsDef2.prevMenu := @ControlsDef; // previous menu
-  KeyBindingsDef2.leftMenu := @KeyBindingsDef1; // left menu
-  KeyBindingsDef2.rightMenu := @KeyBindingsDef1; // right menu
-  KeyBindingsDef2.menuitems := Pmenuitem_tArray(@KeyBindingsMenu2);  // menu items
-  KeyBindingsDef2.drawproc := @M_DrawBindings2;  // draw routine
-  KeyBindingsDef2.x := DEF_MENU_ITEMS_START_X;
-  KeyBindingsDef2.y := DEF_MENU_ITEMS_START_Y;
-  KeyBindingsDef2.lastOn := 0; // last item user was on in menu
-  KeyBindingsDef2.itemheight := LINEHEIGHT2;
-  KeyBindingsDef2.texturebk := true;
 
 ////////////////////////////////////////////////////////////////////////////////
 //LoadMenu
