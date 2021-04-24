@@ -370,7 +370,7 @@ begin
        ((player.readyweapon <> wp_missile) and (player.readyweapon <> wp_bfg)) then
     begin
       player.attackdown := true;
-      P_FireWeapon(player);
+//      P_FireWeapon(player);
       exit;
     end;
   end
@@ -398,7 +398,7 @@ begin
      (player.health > 0) then
   begin
     player.refire := player.refire + 1;
-    P_FireWeapon(player);
+//    P_FireWeapon(player);
   end
   else
   begin
