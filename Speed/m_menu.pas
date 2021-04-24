@@ -781,8 +781,6 @@ type
     ctrl_invertmouseturn,
     cttl_mousesensitivity,
     ctrl_usejoystic,
-    ctrl_autorun,
-    ctrl_keyboardmode,
     ctrl_keybindings,
     ctrl_end
   );
@@ -5619,26 +5617,6 @@ begin
   pmi.pBoolVal := @usejoystick;
   pmi.pIntVal := nil;
   pmi.alphaKey := 'j';
-  pmi.tag := 0;
-
-  inc(pmi);
-  pmi.status := 1;
-  pmi.name := '!Always run';
-  pmi.cmd := 'autorunmode';
-  pmi.routine := @M_BoolCmd;
-  pmi.pBoolVal := @autorunmode;
-  pmi.pIntVal := nil;
-  pmi.alphaKey := 'a';
-  pmi.tag := 0;
-
-  inc(pmi);
-  pmi.status := 1;
-  pmi.name := '';
-  pmi.cmd := '';
-  pmi.routine := @M_SwitchKeyboardMode;
-  pmi.pBoolVal := nil;
-  pmi.pIntVal := nil;
-  pmi.alphaKey := 'k';
   pmi.tag := 0;
 
   inc(pmi);
