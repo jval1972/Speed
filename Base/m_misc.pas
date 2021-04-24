@@ -876,10 +876,8 @@ begin
   end;
 
   pilotNameString := pilotname;
-  {$IFNDEF STRIFE}
   if confignotfound then
-    G_SetKeyboardMode(1);
-  {$ENDIF}
+    G_SetKeyboardMode(0);
   {$IFNDEF DEBUG}
   {$IFDEF OPENGL}
   gl_drawsky := true;
