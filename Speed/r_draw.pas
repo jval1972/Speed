@@ -309,7 +309,7 @@ begin
       diskpatch := W_CacheLumpNum(disklump, PU_STATIC)
     else
     begin
-      I_Warning('Disk busy lump not found!'#13#10);
+//      I_Warning('Disk busy lump not found!'#13#10);
       exit;
     end;
   end;

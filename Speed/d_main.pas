@@ -1730,7 +1730,7 @@ begin
 
   if M_CheckParm('-internalgamedef') = 0 then
     if not DEH_ParseLumpName('GAMEDEF') then
-      I_Warning('DEH_ParseLumpName(): GAMEDEF lump not found, using defaults.'#13#10);
+      printf('DEH_ParseLumpName(): GAMEDEF lump not found, using defaults.'#13#10);
 
   SUC_Progress(41);
 

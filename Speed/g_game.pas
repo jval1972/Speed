@@ -2492,7 +2492,7 @@ begin
     end;
   end;
 
-  I_Warning('G_DeferedPlayDemo(): Can not find demo %s.'#13#10, [defdemoname]);
+  printf('G_DeferedPlayDemo(): Can not find demo %s.'#13#10, [defdemoname]);
   result := false;
 end;
 
