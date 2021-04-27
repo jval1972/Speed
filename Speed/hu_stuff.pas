@@ -139,6 +139,7 @@ uses
   p_tick,
   r_draw,
   s_sound,
+  speed_mapdata,
   sounds,
   v_data,
   v_video;
@@ -196,13 +197,9 @@ begin
 end;
 
 function HU_TITLE: string;
-var
-  id: integer;
 begin
-  id := (gameepisode - 1) * 9 + gamemap - 1;
-  if IsIntegerInRange(id, 0, NUMMAPNAMES - 1) then
-    Result := mapnames[id]
-  else
+  Result := SH_MapData('E' + itoa(gameepisode) + 'M' + itoa(gamemap)).name;
+  if Result = '' then
     sprintf(Result, 'Championship #%d - Course #%d', [gameepisode, gamemap]);
 end;
 
@@ -228,12 +225,12 @@ const
 
 function HU_TITLEY: integer;
 begin
-  result := V_GetScreenHeight(SCN_FG) * 167 div 200 - hu_fontY[0].height;
+  result := V_GetScreenHeight(SCN_FG) * 199 div 200 - hu_fontY[0].height;
 end;
 
 function HU_LEVELTIMEY: integer;
 begin
-  result := V_GetScreenHeight(SCN_FG) * 167 div 200 - 2 * hu_fontY[0].height;
+  result := V_GetScreenHeight(SCN_FG) * 199 div 200 - 2 * hu_fontY[0].height;
 end;
 
 const
@@ -441,13 +438,7 @@ begin
     @hu_fontY,
     Ord(HU_FONTSTART));
 
-  case gamemode of
-    shareware,
-    registered,
-    retail: s := HU_TITLE;
-  else
-    s := '';
-  end;
+  s := HU_TITLE;
 
   for i := 1 to Length(s) do
     HUlib_addCharToTextLine(@w_title, s[i]);

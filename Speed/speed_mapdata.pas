@@ -202,6 +202,8 @@ begin
     result.skytex := '';
     result.mountaintex := '';
     result.groundtex := '';
+    result.name := '';
+    result.lname := lname;
   end;
 end;
 
