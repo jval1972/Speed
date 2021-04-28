@@ -28,6 +28,15 @@ Advanced scripting (PascalScript).
 ## Downloads
 [version 1.0.1.738 (20210425 - win32)](https://sourceforge.net/projects/speed-game/files/GLSpeed_1.0/GLSpeed_1.0.1.738_bin.zip/download)
 
+## Gameplay videos
+
+[![IMAGE ALT TEXT](http://img.youtube.com/vi/pDM3Rfhn0XE/0.jpg)](http://www.youtube.com/watch?v=pDM3Rfhn0XE "GLSpeed - Track #1 video")
+
+[![IMAGE ALT TEXT](http://img.youtube.com/vi/xVJXXHOoRS4/0.jpg)](http://www.youtube.com/watch?v=xVJXXHOoRS4 "GLSpeed - Custom Track - The stadium")
+
+[![IMAGE ALT TEXT](http://img.youtube.com/vi/X_CleOkjaI0/0.jpg)](http://www.youtube.com/watch?v=X_CleOkjaI0 "GLSpeed - Custom Track - The airport")
+
+
 ## Screenshots
 
 
