@@ -224,7 +224,6 @@ uses
   sc_engine in 'Base\sc_engine.pas',
   sc_params in 'Base\sc_params.pas',
   sounds in 'Speed\sounds.pas',
-  st_lib in 'Speed\st_lib.pas',
   st_stuff in 'Speed\st_stuff.pas',
   tables in 'Base\tables.pas',
   v_data in 'Speed\v_data.pas',
@@ -384,7 +383,10 @@ uses
   r_soft3d in 'Base\r_soft3d.pas',
   s_externalmusic in 'Base\s_externalmusic.pas',
   mn_drawmodel in 'Speed\mn_drawmodel.pas',
-  mn_textwrite in 'Speed\mn_textwrite.pas';
+  mn_textwrite in 'Speed\mn_textwrite.pas',
+  speed_maptexture in 'Speed\speed_maptexture.pas',
+  speed_championship in 'Speed\speed_championship.pas',
+  p_easyslope in 'Base\p_easyslope.pas';
 
 exports
   dd_compile_speed,
