@@ -541,7 +541,7 @@ begin
   begin
     repeat
     until not HUlib_delCharFromTextLine(@w_leveltime);
-    t := leveltime div TICRATE;
+    t := racetime div TICRATE;
     lt := IntToStrZFill(2, t mod 60);
     t := t div 60;
     lt := IntToStrZFill(2, t mod 60) + ':' + lt;
