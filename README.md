@@ -39,7 +39,7 @@ Advanced scripting (PascalScript).
 [![IMAGE ALT TEXT](http://img.youtube.com/vi/X_CleOkjaI0/0.jpg)](http://www.youtube.com/watch?v=X_CleOkjaI0 "GLSpeed - Custom Track - The airport")
 
 
-## Screenshots
+## Screenshots - Original tracks
 
 
 ![Screenshot 1](https://i.postimg.cc/13TDdH1h/SSHOT-Speed-20210424-211656741.png "Screenshot 1")
@@ -47,6 +47,9 @@ Advanced scripting (PascalScript).
 ![Screenshot 2](https://i.postimg.cc/pTMzWLds/SSHOT-Speed-20210424-211955171.png "Screenshot 2")
 
 ![Screenshot 3](https://i.postimg.cc/xCGHcVJn/SSHOT-Speed-20210424-212218059.png "Screenshot 3")
+
+## Screenshots - Expansion pack
+
 
 ![Screenshot 4](https://i.postimg.cc/134pMdTr/SSHOT-Speed-20210424-212828913.png "Screenshot 4")
 
