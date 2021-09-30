@@ -1,6 +1,7 @@
 # GLSpeed
  Remake & expansion pack of the DOS game Speed Haste
-
+ 
+ To run the game you need the speedh.jcl file from the original DOS game.
 
 ## Features
 High screen resolutions.
