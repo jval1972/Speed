@@ -129,23 +129,18 @@ end;
 
 procedure C_CmdHomepage;                           
 begin
-//  Site  : https://sourceforge.net/projects/speed-game/
+  C_CmdGoToWebPage('https://sourceforge.net/projects/speed-game/');
 end;
 
 procedure C_CmdHelp;
 begin
-//  Site  : https://sourceforge.net/projects/speed-game/
-end;
-
-procedure C_CmdForums;
-begin
-  C_CmdGoToWebPage('http://delphidoom.forumotion.com/index.htm');
+  C_CmdGoToWebPage('https://sourceforge.net/projects/speed-game/');
 end;
 
 procedure C_CmdGetLatestVersion;
 begin
   C_ExecuteCmd('ver');
-//  Site  : https://sourceforge.net/projects/speed-game/
+  C_CmdGoToWebPage('https://sourceforge.net/projects/speed-game/files/');
 end;
 
 procedure C_RegisterUtilityCommands;
@@ -157,7 +152,6 @@ begin
   C_AddCmd('homepage', @C_CmdHomepage);
   C_AddCmd('help, documentation', @C_CmdHelp);
   C_AddCmd('getlatestversion, downloadlatestversion', @C_CmdGetLatestVersion);
-  C_AddCmd('forum, forums', @C_CmdForums);
 end;
 
 end.
