@@ -478,13 +478,6 @@ begin
   // JVAL: 3d Floors
   if G_PlayingEngineVersion >= VERSION122 then
   begin
-{    if Psubsector_t(tmthing.subsector).sector = Psubsector_t(thing.subsector).sector then
-      if tmthing.floorz <> thing.floorz then
-      begin
-        result := true;
-        exit;
-      end;
-                                                             }
     if (tmthing.player <> nil) or (thing.player <> nil) then
       if tmfloorz <> thing.floorz then
       begin
