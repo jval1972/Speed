@@ -392,6 +392,11 @@ begin
             Result := PString(pd.location)^;
             Exit;
           end;
+        tString255:
+          begin
+            Result := PString255(pd.location)^;
+            Exit;
+          end;
         tInteger:
           begin
             Result := itoa(PInteger(pd.location)^);
@@ -429,6 +434,11 @@ begin
             Result := atoi(PString(pd.location)^, 0);
             Exit;
           end;
+        tString255:
+          begin
+            Result := atoi(PString255(pd.location)^, 0);
+            Exit;
+          end;
         tInteger:
           begin
             Result := PInteger(pd.location)^;
@@ -464,6 +474,11 @@ begin
         tString:
           begin
             Result := PString(pd.location)^ <> '';
+            Exit;
+          end;
+        tString255:
+          begin
+            Result := PString255(pd.location)^ <> '';
             Exit;
           end;
         tInteger:
