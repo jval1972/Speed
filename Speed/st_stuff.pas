@@ -678,7 +678,7 @@ begin
   if st_stopped then
     exit;
 
-  pal := PByteArray(W_CacheLumpNum(lu_palette, PU_STATIC));
+  pal := W_CacheLumpNum(lu_palette, PU_STATIC);
   I_SetPalette(pal);
   V_SetPalette(pal);
   Z_ChangeTag(pal, PU_CACHE);
