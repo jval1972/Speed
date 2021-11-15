@@ -2016,7 +2016,7 @@ begin
           // JVAL In case that we encounter a fixed_t value
           //      Normal values for pushfactor are 0..1 in ACTORDEF lumps
           //      and 0..FRACUNIT in mobjinfo table
-          if mobj.pushfactor > 64 then
+          if fabs(mobj.pushfactor) > 64 then
             mobj.pushfactor := mobj.pushfactor / FRACUNIT;
           sc.GetString;
         end
@@ -2024,7 +2024,7 @@ begin
         begin
           sc.GetFloat;
           mobj.scale := sc._float;
-          if mobj.scale > 64 then
+          if (mobj.scale) > 64 then
             mobj.scale := mobj.scale / FRACUNIT;
           sc.GetString;
         end
@@ -2032,7 +2032,7 @@ begin
         begin
           sc.GetFloat;
           mobj.gravity := sc._float;
-          if mobj.gravity > 64 then
+          if (mobj.gravity) > 64 then
             mobj.gravity := mobj.gravity / FRACUNIT;
           sc.GetString;
         end
