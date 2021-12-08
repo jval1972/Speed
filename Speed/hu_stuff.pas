@@ -108,7 +108,7 @@ var
 
 var
   destination_keys: array[0..MAXPLAYERS - 1] of string;
-    
+
 var
   shiftxform: array[0..127] of char;
 

@@ -633,7 +633,7 @@ begin
       result := result + ScriptPtr^;
   end;
 end;
-                          
+
 function SC_RemoveLineQuotes(const sctext: string): string;
 var
   stmp: string;

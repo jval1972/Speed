@@ -21,9 +21,9 @@
 //  Foundation, inc., 59 Temple Place - Suite 330, Boston, MA
 //  02111-1307, USA.
 //
-// DESCRIPTION: 
-//  Cheat code checking. 
-// 
+// DESCRIPTION:
+//  Cheat code checking.
+//
 //------------------------------------------------------------------------------
 //  Site  : https://sourceforge.net/projects/speed-game/
 //------------------------------------------------------------------------------
@@ -34,7 +34,7 @@ unit m_cheat;
 
 interface
 
-// 
+//
 // CHEAT SEQUENCE PACKAGE
 //
 

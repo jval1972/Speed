@@ -74,7 +74,7 @@ var
 {$IFNDEF HEXEN}
   sysrndindex: integer = 0;
   sysrndseed: integer = 0;
-{$ENDIF}  
+{$ENDIF}
 
 implementation
 
@@ -858,7 +858,7 @@ begin
   nrndindex := 0;
 {$IFNDEF HEXEN}
   sysrndindex := 0;
-{$ENDIF}  
+{$ENDIF}
   stack.Clear;
 end;
 

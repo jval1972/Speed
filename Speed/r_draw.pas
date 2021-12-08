@@ -115,7 +115,7 @@ uses
 {$IFDEF OPENGL}
   gl_render,
 {$ELSE}
-  r_hires,  
+  r_hires,
 {$ENDIF}
 // State.
   doomstat,

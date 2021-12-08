@@ -139,7 +139,7 @@ interface
 uses
   jpg_morecfg,
 {$ifdef QUANT_2PASS_SUPPORTED}
-  
+
 {$endif}
   jpg_error,
   jpg_lib;

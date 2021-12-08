@@ -135,7 +135,7 @@ begin
   end;
 
   twidth := t.GetWidth;
-  
+
   src := malloc(twidth * 4);
 
   dst := @dest[0];

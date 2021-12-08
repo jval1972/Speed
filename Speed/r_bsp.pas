@@ -121,7 +121,7 @@ var
     tempsec.ceilingheight := ss.floorheight - 1;
     result := not back;
   end;
-  
+
 begin
   if floorlightlevel <> nil then
   begin
@@ -579,7 +579,7 @@ var
   x2: integer;
   tspan: angle_t;
   clipangle2: angle_t;
-{$ENDIF}  
+{$ENDIF}
   angle1: angle_t;
   angle2: angle_t;
   span: angle_t;

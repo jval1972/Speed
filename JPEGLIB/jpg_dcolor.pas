@@ -52,7 +52,7 @@ implementation
 
 uses
   jpg_defErr;
-  
+
 { Private subobject }
 type
   int_Color_Table = array[0..MAXJSAMPLE+1-1] of int;

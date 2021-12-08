@@ -285,7 +285,7 @@ begin
 
   if player.viewz < player.mo.floorz + 4 * FRACUNIT then
     player.viewz := player.mo.floorz + 4 * FRACUNIT;
-    
+
   player.oldviewz := oldviewz;
 end;
 

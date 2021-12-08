@@ -41,7 +41,7 @@ function SH_CreateDoomLevel(const prefix: string; const levelname: string;
   const bufpath: pointer; const bufpathsize: integer;
   const xyscale: integer; const extraflat: string; const wadwriter: TWadWriter): boolean;
 
-type  
+type
   mapspeedpathpoint_t = packed record
     x, y: LongWord;
     dir: LongWord; //word dir;

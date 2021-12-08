@@ -163,7 +163,7 @@ begin
     printf('Please specify the output filename'#13#10);
     exit;
   end;
-  
+
   lp := mallocz(SizeOf(exportlightmap_t));
 
   for x := 0 to LIGHTMAPSIZEX - 1 do

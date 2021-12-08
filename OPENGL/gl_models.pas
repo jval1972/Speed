@@ -53,7 +53,7 @@ type
     mt_i3d,     // Speed Haste
     mt_ddmodel, // DelphiDoom Procedural model (source code)
     mt_dmx,     // DelphiDoom Procedural model (binary)
-    mt_dll,     // External DLL  
+    mt_dll,     // External DLL
     mt_unknown
   );
 
@@ -473,7 +473,7 @@ begin
             end;
           end;
         end;
-        
+
       else
         begin
           I_Warning('SC_ParseModelDefinition(): Unknown token "%s" at line %d'#13#10, [token, sc._Line]);

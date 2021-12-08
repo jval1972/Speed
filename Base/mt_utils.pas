@@ -915,7 +915,7 @@ begin
   exec_threads[0].Wait;
   exec_threads[1].Wait;
   exec_threads[2].Wait;
-  
+
   mt_execute_fetched := False;
 end;
 

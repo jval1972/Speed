@@ -141,7 +141,7 @@ begin
 
     glPopMatrix;
   end;
-  
+
   glEnable(GL_DEPTH_TEST);
 end;
 

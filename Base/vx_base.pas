@@ -82,7 +82,7 @@ var
   voxelmanager: voxelmanager_t;
   voxelstates: Pvoxelstate_tArray;
   numvoxelstates: integer;
-  
+
 procedure VX_InitVoxels;
 
 procedure VX_VoxelsDone;
@@ -516,4 +516,4 @@ begin
 end;
 
 end.
- 
+

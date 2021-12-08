@@ -1063,7 +1063,7 @@ begin
     GeneratePIX(rname, wname, transparentpix.IndexOf(rname) < 0);
     pk3entry.Add(wname + '=' + rname);
   end;
-  
+
   transparentpix.Free;
 
   result := lst.Count > 0;

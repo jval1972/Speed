@@ -127,7 +127,7 @@ begin
 end;
 
 
-procedure C_CmdHomepage;                           
+procedure C_CmdHomepage;
 begin
   C_CmdGoToWebPage('https://sourceforge.net/projects/speed-game/');
 end;

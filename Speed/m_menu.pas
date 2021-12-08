@@ -1938,7 +1938,7 @@ const
     'Automatic',
     'Manual'
   );
-  
+
   str_cartype: array[0..Ord(ct_any)] of string = (
     'Formula 1',
     'Stock',

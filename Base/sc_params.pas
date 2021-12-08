@@ -31,7 +31,7 @@ unit sc_params;
 
 //
 // JVAL
-// Dynamic Custom Parameter List for ACTORDEF LUMPS 
+// Dynamic Custom Parameter List for ACTORDEF LUMPS
 
 interface
 

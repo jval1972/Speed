@@ -73,7 +73,7 @@ procedure P_PlayerInSpecialSector(player: Pplayer_t; const sector: Psector_t; co
 
 function twoSided(sector: integer; line: integer): boolean;
 
-function twoSidedS(sector: Psector_t; line: integer): boolean; 
+function twoSidedS(sector: Psector_t; line: integer): boolean;
 
 function getSide(currentSector: integer; line: integer; side: integer): Pside_t;
 
@@ -249,7 +249,7 @@ type
     thinker: thinker_t;
     _type: vldoor_e;
     sector: Psector_t;
-    line: Pline_t; 
+    line: Pline_t;
     topheight: fixed_t;
     speed: fixed_t;
 
@@ -1447,7 +1447,7 @@ begin
           exit;
         end;
       end;
-      
+
     Ord(YCard):
       begin
         if not player.cards[Ord(it_yellowcard)] and
@@ -2782,7 +2782,7 @@ begin
       end;
       exit; // if not a gun type, do nothing here
     end;
-    
+
   end;
 
   //  Impacts that other things can activate.

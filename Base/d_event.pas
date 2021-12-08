@@ -34,17 +34,17 @@ interface
 
 
 //
-// Event handling. 
+// Event handling.
 //
 // Input event types.
 
 type
   evtype_t = (ev_keydown, ev_keyup, ev_mouse, ev_joystick);
 
-// Event structure. 
-// keys / mouse/joystick buttons 
-// mouse/joystick x move 
-// mouse/joystick y move 
+// Event structure.
+// keys / mouse/joystick buttons
+// mouse/joystick x move
+// mouse/joystick y move
 
   event_t = record
     _type : evtype_t;
@@ -55,7 +55,7 @@ type
   Pevent_t = ^event_t;
 
   gameaction_t = (
-    ga_nothing, 
+    ga_nothing,
     ga_loadlevel,
     ga_newgame,
     ga_loadgame,
@@ -67,18 +67,18 @@ type
     ga_screenshot
   );
 
-// 
-// Button/action code definitions. 
-// 
-// Press "Fire". 
-// Use button, to open doors, activate switches. 
-// Flag: game events, not really buttons. 
-// Flag, weapon change pending. 
-// If true, the next 3 bits hold weapon num. 
-// The 3bit weapon mask and shift, convenience. 
-// Pause the game. 
-// Save the game at each console. 
-// Savegame slot numbers 
+//
+// Button/action code definitions.
+//
+// Press "Fire".
+// Use button, to open doors, activate switches.
+// Flag: game events, not really buttons.
+// Flag, weapon change pending.
+// If true, the next 3 bits hold weapon num.
+// The 3bit weapon mask and shift, convenience.
+// Pause the game.
+// Save the game at each console.
+// Savegame slot numbers
 //  occupy the second byte of buttons.
 
 const

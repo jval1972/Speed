@@ -439,7 +439,7 @@ end;
 procedure transform_update(const ts: Ptransform_t);
 var
   m: matrix_t;
-begin  
+begin
   matrix_mul(@m, @ts.world, @ts.view);
   matrix_mul(@ts.transform, @m, @ts.projection);
 end;

@@ -168,7 +168,7 @@ function ScriptOnExportCheck(Sender: TPSPascalCompiler; Proc: TPSInternalProcedu
 var
   I: Integer;
 begin
-  Result := True; 
+  Result := True;
   for I := Low(EventExportedProcs) to High(EventExportedProcs) do
     if (Proc.Name = EventExportedProcs[I].Name) then
       if not ExportCheck(Sender, Proc,

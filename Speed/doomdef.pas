@@ -185,7 +185,7 @@ const
   TT_AUTOMATIC = 0;
   TT_MANUAL = 1;
 
-type  
+type
 //
 // Key cards.
 //

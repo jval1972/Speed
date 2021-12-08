@@ -33,7 +33,7 @@ interface
 
 uses
   SysUtils;
-  
+
 type
   speedlump_t = packed record
     filename: array[0..23] of char;

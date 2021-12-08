@@ -54,7 +54,7 @@ implementation
 
 uses
   i_system;
-  
+
 var
   globalstack: TIntegerStack;
 

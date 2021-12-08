@@ -177,7 +177,7 @@ uses
   am_map,
   hu_stuff,
   r_draw,
-  v_data, 
+  v_data,
   v_video;
 
 procedure HUlib_init;

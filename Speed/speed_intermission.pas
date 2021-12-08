@@ -87,7 +87,7 @@ begin
     Exit;
 
   score := @players[consoleplayer].currentscore;
-  
+
   // check for button presses to skip delays
   for i := 0 to MAXPLAYERS - 1 do
   begin

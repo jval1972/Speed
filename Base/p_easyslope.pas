@@ -308,7 +308,7 @@ begin
   for i := it.numfloorcontrols to 2 do
     it.floorvertexes[i] := lst.Pointers[i];
   it.numfloorcontrols := 3;
-  
+
   lst.Free;
 end;
 
@@ -346,7 +346,7 @@ begin
   for i := it.numceilingcontrols to 2 do
     it.ceilingvertexes[i] := lst.Pointers[i];
   it.numceilingcontrols := 3;
-  
+
   lst.Free;
 end;
 

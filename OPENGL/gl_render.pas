@@ -2405,7 +2405,7 @@ begin
 
     exit;
   end;
-  
+
   gld_BindTexture(wall.gltexture);
   if wall.flag >= GLDWF_SKY then
   begin
@@ -2747,9 +2747,9 @@ begin
   end
   else
     rellight := 0;
-  
+
   wall.light := gld_CalcLightLevel(ssec.lightlevel + rellight + (extralight shl 5));
-  
+
   if ssec = seg.frontsector then
     other := seg.backsector
   else
@@ -4642,7 +4642,7 @@ begin
   sprite.x2 := hoff;
   sprite.y1 := voff;
   sprite.y2 := voff - (tex.realtexheight / MAP_COEFF);
-  
+
   if vspr.infoscale <> FRACUNIT then
   begin
     sprite.x1 := sprite.x1 * vspr.infoscale / FRACUNIT;

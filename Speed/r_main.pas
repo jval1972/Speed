@@ -1217,7 +1217,7 @@ procedure R_RenderPlayerView(player: Pplayer_t);
 begin
   // new render validcount
   Inc(rendervalidcount);
-  
+
   R_DoRenderPlayerView_SingleThread(player);
 end;
 
