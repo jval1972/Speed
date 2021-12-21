@@ -679,7 +679,7 @@ var
 
     for i := 0 to mobj_flags4_ex.Count - 1 do
     begin
-      flag := mobj_flags3_ex[i];
+      flag := mobj_flags4_ex[i];
       if Pos('MF4_EX_', flag) = 1 then
         flag := Copy(flag, 8, length(flag) - 7)
       else if Pos('MF3_EX_', flag) = 1 then
@@ -884,7 +884,6 @@ var
         m_states[numstates - 1].nextstate := mobj.crashstate + offs;
         m_states[numstates - 1].has_goto := true;
       end
-      {$IFDEF DOOM_OR_STRIFE}
       else if (mobj.statesdefined and RTL_ST_INTERACT <> 0) and statecheckPos('INTERACT', gotostr) then
       begin
         if length(gotostr) > 8 then
@@ -894,7 +893,6 @@ var
         m_states[numstates - 1].nextstate := mobj.interactstate + offs;
         m_states[numstates - 1].has_goto := true;
       end
-      {$ENDIF}
       else
       begin
         //I_Warning('SC_ActordefToDEH(): Unknown label "goto %s"'#13#10, [gotostr]);
@@ -1149,13 +1147,11 @@ var
           result := ORIGINALSTATEMARKER + inf.crashstate;
           exit;
         end
-        {$IFDEF DOOM_OR_STRIFE}
         else if sss1 = 'INTERACT' then
         begin
           result := ORIGINALSTATEMARKER + inf.interactstate;
           exit;
         end
-        {$ENDIF}
         else
         begin
           result := statenames.IndexOfToken('S_' + strupper(inf.name) + '_' + sss);
@@ -1219,13 +1215,11 @@ var
           result := mobj.crashstate;
           exit;
         end
-        {$IFDEF DOOM_OR_STRIFE}
         else if sss1 = 'INTERACT' then
         begin
           result := mobj.interactstate;
           exit;
         end
-        {$ENDIF}
         else
         begin
           for i := 0 to numstates - 1 do
@@ -1322,9 +1316,7 @@ var
     AddMobjStateRes(mobj.xdeathstate, 'Exploding');
     AddMobjStateRes(mobj.healstate, 'Heal');
     AddMobjStateRes(mobj.crashstate, 'Crash');
-    {$IFDEF DOOM_OR_STRIFE}
     AddMobjStateRes(mobj.interactstate, 'Interact');
-    {$ENDIF}
     AddRes('Death Sound = ' + SC_SoundAlias(mobj.deathsound));
     ismissile := Pos('MF_MISSILE', mobj.flags) > 0;
     if ismissile then
@@ -1527,9 +1519,7 @@ begin
   state_tokens.Add('raise:');
   state_tokens.Add('heal:');
   state_tokens.Add('crash:');
-  {$IFDEF DOOM_OR_STRIFE}
   state_tokens.Add('interact:');
-  {$ENDIF}
 
   if devparm then
   begin
@@ -1699,9 +1689,7 @@ begin
       mobj.raisestate := -1;
       mobj.healstate := -1;
       mobj.crashstate := -1;
-      {$IFDEF DOOM_OR_STRIFE}
       mobj.interactstate := -1;
-      {$ENDIF}
       mobj.flags := '';
       {$IFDEF HERETIC_OR_HEXEN}
       mobj.flags2 := '';
@@ -1819,9 +1807,7 @@ begin
           mobj.raisestate := ORIGINALSTATEMARKER + pinf.raisestate;
           mobj.healstate := ORIGINALSTATEMARKER + pinf.healstate;
           mobj.crashstate := ORIGINALSTATEMARKER + pinf.crashstate;
-          {$IFDEF DOOM_OR_STRIFE}
           mobj.interactstate := ORIGINALSTATEMARKER + pinf.interactstate;
-          {$ENDIF}
           if mobj.spawnstate > ORIGINALSTATEMARKER then
             mobj.statesdefined := mobj.statesdefined or RTL_ST_SPAWN;
           if mobj.seestate > ORIGINALSTATEMARKER then
@@ -1842,10 +1828,8 @@ begin
             mobj.statesdefined := mobj.statesdefined or RTL_ST_HEAL;
           if mobj.crashstate > ORIGINALSTATEMARKER then
             mobj.statesdefined := mobj.statesdefined or RTL_ST_CRASH;
-          {$IFDEF DOOM_OR_STRIFE}
           if mobj.interactstate > ORIGINALSTATEMARKER then
             mobj.statesdefined := mobj.statesdefined or RTL_ST_INTERACT;
-          {$ENDIF};
         end;
 
         if not sc.GetString then
@@ -2546,13 +2530,11 @@ var
       exit;
     end;
 
-    {$IFDEF DOOM_OR_STRIFE}
     if st = m.interactstate then
     begin
       AddLn('Goto Interact');
       exit;
     end;
-    {$ENDIF}
 
     result := false;
   end;
@@ -2743,9 +2725,7 @@ begin
   AddState('Raise', m.raisestate);
   AddState('Heal', m.healstate);
   AddState('Crash', m.crashstate);
-  {$IFDEF DOOM_OR_STRIFE}
   AddState('Interact', m.interactstate);
-  {$ENDIF}
   AddLn('}');
   AddLn('}');
   AddLn('');
