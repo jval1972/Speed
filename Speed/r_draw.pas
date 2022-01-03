@@ -110,15 +110,10 @@ uses
   m_argv,
   w_wad,
   z_zone,
-  st_stuff,
   i_system,
-{$IFDEF OPENGL}
-  gl_render,
-{$ELSE}
+{$IFNDEF OPENGL}
   r_hires,
 {$ENDIF}
-// State.
-  doomstat,
   v_data;
 
 //

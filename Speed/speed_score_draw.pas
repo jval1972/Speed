@@ -43,13 +43,10 @@ implementation
 
 uses
   d_delphi,
-  doomdef,
   hu_stuff,
   mn_textwrite,
   speed_cars,
-  speed_string_format,
-  v_data,
-  v_video;
+  speed_string_format;
 
 procedure SH_DrawScoreTableItems(const si: Pspeedtimetableitems_t);
 var

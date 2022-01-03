@@ -76,8 +76,7 @@ uses
   p_slopes,
   p_spec,
   r_main,
-  tables,
-  z_zone;
+  tables;
 
 // Which floor?
 function P_3dFloorNumber(const m: Pmobj_t): integer;

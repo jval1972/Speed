@@ -126,8 +126,7 @@ procedure MDLS_CallFrame(const frm: integer);
 implementation
 
 uses
-  mdl_script,
-  mdl_script_functions;
+  mdl_script;
 
 var
   currentmodelloader: TDDModelLoader;

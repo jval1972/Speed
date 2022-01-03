@@ -36,7 +36,6 @@ interface
 
 uses
 {$IFDEF OPENGL}
-  gl_defs,
   gl_voxels,
 {$ELSE}
   m_fixed,

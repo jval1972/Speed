@@ -4,7 +4,6 @@
 //
 //  Copyright (C) 1995 by Noriaworks
 //  Copyright (C) 1993-1996 by id Software, Inc.
-//  Copyright (C) 2004-2021 by Jim Valavanis
 //  Copyright (C) 2004-2022 by Jim Valavanis
 //
 //  This program is free software; you can redistribute it and/or
@@ -36,7 +35,6 @@ unit speed_end_screen;
 interface
 
 uses
-  d_delphi,
   d_event;
 
 var
@@ -58,11 +56,9 @@ implementation
 uses
   doomdef,
   i_system,
-  gl_main,
   v_data,
   v_video,
-  w_wad,
-  z_zone;
+  w_wad;
 
 var
   e_ticks: integer = 0;

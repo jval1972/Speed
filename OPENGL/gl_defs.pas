@@ -35,8 +35,7 @@ uses
   doomdef,
   dglOpenGL,
   m_fixed,
-  r_draw,
-  speed_xlat_wad;
+  r_draw;
 
 type
   GLTexType = (

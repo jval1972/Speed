@@ -39,7 +39,6 @@ interface
 
 uses
   d_delphi,
-  doomdef,
   m_fixed,
   r_data,
   r_defs,
@@ -81,12 +80,8 @@ const
 implementation
 
 uses
-  tables,
   i_system,
-  r_sky,
-  r_main,
-  r_draw,
-  z_zone;
+  r_sky;
 
 // JVAL: Visplane hash
 const

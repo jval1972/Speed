@@ -36,7 +36,6 @@ interface
 
 uses
   d_delphi,
-  doomdef,
   tables,
 {$IFNDEF OPENGL}
   t_main,
@@ -44,9 +43,6 @@ uses
 // Some more or less basic data types
 // we depend on.
   m_fixed,
-// We rely on the thinker data struct
-// to handle sound origins in sectors.
-  d_think,
 // SECTORS do store MObjs anyway.
   p_mobj_h,
 {$IFNDEF OPENGL}

@@ -79,7 +79,6 @@ implementation
 
 uses
   d_delphi,
-  r_aspect,
   r_main;
 
 type

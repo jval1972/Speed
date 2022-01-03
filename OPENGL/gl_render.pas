@@ -88,16 +88,13 @@ implementation
 
 uses
   doomstat,
-  d_net,
   i_system,
   tables,
   doomtype,
   doomdef,
   d_main,
-  am_map,
   {$IFDEF DOOM}
   r_plane,
-  st_stuff,
   {$ENDIF}
   {$IFDEF DOOM_OR_STRIFE}
   r_colormaps,
@@ -138,13 +135,11 @@ uses
   p_pspr,
   p_tick,
   r_main,
-  r_aspect,
   r_bsp,
   r_draw,
   r_data,
   r_sky,
   r_intrpl,
-  r_things,
   r_lights,
   r_renderstyle,
   sc_engine,

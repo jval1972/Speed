@@ -45,7 +45,6 @@ procedure T_ShutDownDrawTextures;
 implementation
 
 uses
-  doomdef,
   m_fixed,
   r_hires,
   r_mmx,

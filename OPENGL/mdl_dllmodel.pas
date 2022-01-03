@@ -73,7 +73,6 @@ implementation
 uses
   Windows,
   dglOpenGL,
-  doomdef,
   gl_defs,
   i_system,
   w_pak;

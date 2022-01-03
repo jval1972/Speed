@@ -35,8 +35,6 @@ unit r_visplanes;
 interface
 
 uses
-  d_delphi,
-  doomdef,
   m_fixed;
 
 {$IFNDEF OPENGL}

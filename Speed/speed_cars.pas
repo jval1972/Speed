@@ -780,7 +780,6 @@ uses
   d_player,
   i_system,
   info_h,
-  info,
   info_common,
   g_game,
   p_tick,
@@ -793,8 +792,7 @@ uses
   speed_path,
   speed_particles,
   speed_sounds,
-  s_sound,
-  z_zone;
+  s_sound;
 
 procedure SH_InitLevelCars;
 var

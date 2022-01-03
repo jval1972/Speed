@@ -46,7 +46,6 @@ uses
   p_local,
   w_wad,
   m_cheat,
-  i_system,
   dstrings,
   tables,
   m_fixed;
@@ -331,10 +330,8 @@ uses
   c_cmds,
   d_englsh,
   g_game,
-  mt_utils,
   p_mobj_h,
   p_setup,
-  r_data,
   gl_automap,
   speed_things,
   v_data,

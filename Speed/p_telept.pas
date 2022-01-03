@@ -56,7 +56,6 @@ implementation
 uses
   d_delphi,
   doomdef,
-  doomstat,
   d_think,
   d_player,
   info_h,

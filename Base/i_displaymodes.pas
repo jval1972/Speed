@@ -72,13 +72,7 @@ uses
   Windows,
   d_delphi,
   doomdef,
-  r_hires,
-  {$IFDEF OPENGL}
-  gl_main,
-  {$ELSE}
-  i_main,
-  {$ENDIF}
-  i_system;
+  gl_main;
 
 procedure SortDisplayModes;
 

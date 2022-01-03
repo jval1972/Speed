@@ -69,8 +69,7 @@ uses
   doomdata,
   speed_xlat_wad,
   w_pak,
-  w_wad,
-  z_zone;
+  w_wad;
 
 constructor TMapData.Create;
 begin

@@ -46,7 +46,6 @@ implementation
 uses
   d_delphi,
   mdl_script_proclist,
-  mdl_script_functions,
   ps_keywords,
   ps_compiler,
   ps_runtime;

@@ -64,9 +64,7 @@ uses
   p_map,
   p_telept,
   r_defs,
-  r_main,
-  r_data,
-  r_draw;
+  r_main;
 
 const
   CAMERARADIOUS = 8 * FRACUNIT;

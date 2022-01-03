@@ -48,9 +48,7 @@ implementation
 
 uses
   d_delphi,
-  Math,
   m_fixed,
-  i_system,
   {$IFDEF HERETIC}
   r_defs,
   {$ENDIF}

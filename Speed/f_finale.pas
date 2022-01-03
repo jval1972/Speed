@@ -48,7 +48,6 @@ procedure F_Drawer;
 
 procedure F_StartFinale;
 
-
 //
 // Final DOOM 2 animation
 // Casting by id Software.
@@ -84,7 +83,6 @@ implementation
 uses
   d_delphi,
   am_map,
-  d_player,
   d_main,
   g_game,
   info,

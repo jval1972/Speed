@@ -33,8 +33,7 @@ unit speed_palette;
 interface
 
 uses
-  d_delphi,
-  v_video;
+  d_delphi;
 
 procedure SH_CreateDoomPalette(const inppal: PByteArray; const outpal: PByteArray; const colormap: PByteArray);
 

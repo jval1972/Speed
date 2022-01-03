@@ -71,7 +71,6 @@ implementation
 uses
   dglOpenGL,
   gl_defs,
-  gl_tex,
   doomdef,
   i_system,
   sc_engine,

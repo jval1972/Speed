@@ -56,7 +56,6 @@ implementation
 uses
   doomdata,
   m_crc32,
-  r_defs,
   sc_engine,
   speed_defs,
   speed_things,

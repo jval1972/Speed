@@ -58,10 +58,7 @@ uses
   doomdef,
   r_hires,
   m_fixed,
-  i_system,
-  gl_main,
-  v_data,
-  v_video;
+  gl_main;
 
 var
   fade_scr_start: PLongWordArray;

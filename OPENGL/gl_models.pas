@@ -147,7 +147,6 @@ const
 implementation
 
 uses
-  doomdef,
   c_cmds,
   d_main,
   g_game,
@@ -158,7 +157,6 @@ uses
   mdl_ddmodel,
   mdl_dllmodel,
   gl_tex,
-  gl_defs,
   sc_engine,
   sc_tokens,
   sc_states,

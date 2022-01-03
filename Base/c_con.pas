@@ -76,7 +76,6 @@ implementation
 
 uses
   d_delphi,
-  doomstat,
   doomdef,
   c_cmds,
   c_utils,
@@ -93,8 +92,7 @@ uses
   v_data,
   v_video,
   w_utils,
-  w_wad,
-  z_zone;
+  w_wad;
 
 const
   CONSOLE_PROMPTCHAR: string = ']';

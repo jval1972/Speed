@@ -118,7 +118,6 @@ uses
 {$IFDEF OPENGL}
   gl_render, // JVAL OPENGL
   gl_voxels,
-  gl_models,
 {$ENDIF}
   p_mobj_h,
   p_pspr,
@@ -149,9 +148,7 @@ uses
   r_softlights,
 {$ENDIF}
   r_camera,
-  r_renderstyle,
   z_zone,
-  w_sprite,
   w_wad,
   doomstat;
 

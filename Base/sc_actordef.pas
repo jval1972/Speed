@@ -58,7 +58,6 @@ implementation
 
 uses
   TypInfo,
-  doomdef,
   d_main,
   c_cmds,
   deh_base,

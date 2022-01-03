@@ -76,7 +76,6 @@ const
 implementation
 
 uses
-  Math,
   doomdata,
   m_vectors,
   p_gravity,
@@ -84,8 +83,7 @@ uses
   p_setup,
   p_mobj_h,
   p_spec,
-  r_main,
-  tables;
+  r_main;
 
 function ZatPointFloor(const s: Psector_t; const x, y: fixed_t): fixed_t;
 begin

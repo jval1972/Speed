@@ -58,20 +58,15 @@ uses
   tables,
   d_ticcmd,
   d_event,
-  info_h,
-  info,
 {$IFDEF DEBUG}
   i_io,
 {$ENDIF}
   g_game,
-  p_genlin,
-  p_mobj,
   p_tick,
   p_pspr,
   p_local,
   p_setup,    // JVAL: 3d Floors
   p_slopes,   // JVAL: Slopes
-  p_3dfloors, // JVAL: Slopes
   p_spec,
   p_map,
   p_maputl,
@@ -79,8 +74,6 @@ uses
   r_defs,
   speed_cars,
   speed_player,
-  sounds,
-  s_sound,
   doomdef,
   doomstat;
 

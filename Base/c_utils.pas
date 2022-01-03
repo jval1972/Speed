@@ -40,7 +40,6 @@ uses
   c_cmds,
   doomdef,
   gl_main,
-  i_displaymodes,
   i_system;
 
 procedure C_CmdDir(const parm1, parm2: string);

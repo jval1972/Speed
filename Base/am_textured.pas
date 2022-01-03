@@ -47,10 +47,7 @@ implementation
 uses
   d_delphi,
   doomdef,
-  doomdata,
-  d_main,
   am_map,
-  i_system,
 {$IFNDEF OPENGL}
   i_threads,
   r_hires,
@@ -59,18 +56,12 @@ uses
 {$ELSE}
   r_precalc,
   gl_automap,
-  v_data,
 {$ENDIF}
   r_data,
   r_defs,
-  r_main,
   p_setup,
-  p_local,
   m_fixed,
-  tables,
-  v_video,
-  w_wad,
-  z_zone;
+  tables;
 
 type
   drawpoint_t = record
