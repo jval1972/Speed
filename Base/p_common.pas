@@ -4,7 +4,7 @@
 //
 //  Copyright (C) 1995 by Noriaworks
 //  Copyright (C) 1993-1996 by id Software, Inc.
-//  Copyright (C) 2004-2021 by Jim Valavanis
+//  Copyright (C) 2004-2022 by Jim Valavanis
 //
 //  This program is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU General Public License
@@ -357,6 +357,8 @@ const
   SF_SLIPSLOPEDESCENT = 2;
 
 function P_TicsFromState(const st: Pstate_t): integer;
+
+function P_CheckFlag(const mo: Pmobj_t; const aflag: string): boolean;
 
 implementation
 
@@ -3511,6 +3513,98 @@ begin
     exit;
   end;
 
+end;
+
+function P_CheckFlag(const mo: Pmobj_t; const aflag: string): boolean;
+var
+  sflag: string;
+  flg: LongWord;
+  m: boolean;
+  idx: integer;
+begin
+  if mo = nil then
+  begin
+    result := false;
+    exit;
+  end;
+
+  sflag := strtrim(strupper(aflag));
+  if sflag = '' then
+  begin
+    result := false;
+    exit;
+  end;
+
+  if sflag[1] = '+' then
+  begin
+    Delete(sflag, 1, 1);
+    if sflag = '' then
+    begin
+      result := false;
+      exit;
+    end;
+  end;
+
+  m := sflag[1] = 'M';
+
+  idx := -1;
+
+  if m then
+    idx := mobj_flags.IndexOf(sflag);
+  if idx < 0 then
+    idx := mobj_flags.IndexOf('MF_' + sflag);
+  if idx >= 0 then
+  begin
+    flg := 1 shl idx;
+    result := mo.flags and flg <> 0;
+    exit;
+  end;
+
+  if m then
+    idx := mobj_flags_ex.IndexOf(sflag);
+  if idx < 0 then
+    idx := mobj_flags_ex.IndexOf('MF_EX_' + sflag);
+  if idx >= 0 then
+  begin
+    flg := 1 shl idx;
+    result := mo.flags_ex and flg <> 0;
+    exit;
+  end;
+
+  if m then
+    idx := mobj_flags2_ex.IndexOf(sflag);
+  if idx < 0 then
+    idx := mobj_flags2_ex.IndexOf('MF2_EX_' + sflag);
+  if idx >= 0 then
+  begin
+    flg := 1 shl idx;
+    result := mo.flags2_ex and flg <> 0;
+    exit;
+  end;
+
+  if m then
+    idx := mobj_flags3_ex.IndexOf(sflag);
+  if idx < 0 then
+    idx := mobj_flags3_ex.IndexOf('MF3_EX_' + sflag);
+  if idx >= 0 then
+  begin
+    flg := 1 shl idx;
+    result := mo.flags3_ex and flg <> 0;
+    exit;
+  end;
+
+  if m then
+    idx := mobj_flags4_ex.IndexOf(sflag);
+  if idx < 0 then
+    idx := mobj_flags4_ex.IndexOf('MF4_EX_' + sflag);
+  if idx >= 0 then
+  begin
+    flg := 1 shl idx;
+    result := mo.flags4_ex and flg <> 0;
+    exit;
+  end;
+
+  result := false;
 end;
 
 end.
