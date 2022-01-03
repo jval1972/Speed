@@ -117,9 +117,7 @@ type
     function PF_XDEATH(p: TDStrings): string;
     function PF_HEAL(p: TDStrings): string;
     function PF_CRASH(p: TDStrings): string;
-    {$IFDEF DOOM_OR_STRIFE}
     function PF_INTERACT(p: TDStrings): string;
-    {$ENDIF}
     function PF_RAISE(p: TDStrings): string;
   public
     constructor Create; override;
