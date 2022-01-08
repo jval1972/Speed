@@ -1803,6 +1803,8 @@ begin
   mobj_flags3_ex.Add('MF3_EX_NORENDERINTERPOLATE');
 
   mobj_flags4_ex := TDTextList.Create;
+  mobj_flags4_ex.Add('MF4_EX_ALWAYSFINISHSOUND');
+  mobj_flags4_ex.Add('MF4_EX_NEVERFINISHSOUND');
 
   // JVAL: 20200330 - State flags
   state_flags_ex := TDTextList.Create;

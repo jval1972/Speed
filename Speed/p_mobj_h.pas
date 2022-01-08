@@ -371,6 +371,12 @@ const
   // No interpolation
   MF3_EX_NORENDERINTERPOLATE = 128;
 
+const
+  // Ignore full_sounds console variable and always finishes sounds
+  MF4_EX_ALWAYSFINISHSOUND = $1;
+  // Ignore full_sounds console variable and never finishes sounds
+  MF4_EX_NEVERFINISHSOUND = $2;
+
 type
 // Map Object definition.
   Pmobj_t = ^mobj_t;
