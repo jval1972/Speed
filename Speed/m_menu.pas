@@ -724,6 +724,7 @@ type
     snd_preferemp3namesingamedirectory,
     snd_usewav,
     snd_preferewavnamesingamedirectory,
+    snd_fullsounds,
     sound_end
   );
 
@@ -5416,6 +5417,16 @@ begin
   pmi.pBoolVal := @preferewavnamesingamedirectory;
   pmi.pIntVal := nil;
   pmi.alphaKey := 's';
+  pmi.tag := 0;
+
+  inc(pmi);
+  pmi.status := 1;
+  pmi.name := '!Removed Actors finish sounds';
+  pmi.cmd := 'full_sounds';
+  pmi.routine := @M_BoolCmd;
+  pmi.pBoolVal := @full_sounds;
+  pmi.pIntVal := nil;
+  pmi.alphaKey := 'r';
   pmi.tag := 0;
 
 ////////////////////////////////////////////////////////////////////////////////

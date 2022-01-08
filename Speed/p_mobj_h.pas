@@ -4,7 +4,7 @@
 //
 //  Copyright (C) 1995 by Noriaworks
 //  Copyright (C) 1993-1996 by id Software, Inc.
-//  Copyright (C) 2004-2021 by Jim Valavanis
+//  Copyright (C) 2004-2022 by Jim Valavanis
 //
 //  This program is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU General Public License
@@ -57,7 +57,8 @@ type
     z: fixed_t;
   end;
   Pdegenmobj_t = ^degenmobj_t;
-
+  degenmobj_tArray = array[0..$FFF] of degenmobj_t;
+  Pdegenmobj_tArray = ^degenmobj_tArray;
 
 //
 // NOTES: mobj_t
