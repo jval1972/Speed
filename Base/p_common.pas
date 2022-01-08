@@ -1606,7 +1606,7 @@ procedure A_CustomSound1(mo: Pmobj_t);
 begin
   if mo.info.customsound1 <> 0 then
   begin
-    if mo.info.flags_ex and MF_EX_RANDOMCUSTOMSOUND1 <> 0 then
+    if mo.flags_ex and MF_EX_RANDOMCUSTOMSOUND1 <> 0 then
       A_RandomCustomSound1(mo)
     else
       S_StartSound(mo, mo.info.customsound1);
@@ -1617,7 +1617,7 @@ procedure A_CustomSound2(mo: Pmobj_t);
 begin
   if mo.info.customsound2 <> 0 then
   begin
-    if mo.info.flags_ex and MF_EX_RANDOMCUSTOMSOUND2 <> 0 then
+    if mo.flags_ex and MF_EX_RANDOMCUSTOMSOUND2 <> 0 then
       A_RandomCustomSound2(mo)
     else
       S_StartSound(mo, mo.info.customsound2);
@@ -1628,7 +1628,7 @@ procedure A_CustomSound3(mo: Pmobj_t);
 begin
   if mo.info.customsound3 <> 0 then
   begin
-    if mo.info.flags_ex and MF_EX_RANDOMCUSTOMSOUND3 <> 0 then
+    if mo.flags_ex and MF_EX_RANDOMCUSTOMSOUND3 <> 0 then
       A_RandomCustomSound3(mo)
     else
       S_StartSound(mo, mo.info.customsound3);
@@ -1970,17 +1970,17 @@ begin
 
       // handle projectile shooting projectiles - track the
       // links back to a real owner
-      if (actor.info.flags and MF_MISSILE <> 0) or (aimmode and 4 <> 0) then
+      if (actor.flags and MF_MISSILE <> 0) or (aimmode and 4 <> 0) then
       begin
         owner := actor;
-        while (owner.info.flags and MF_MISSILE <> 0) and (owner.target <> nil) do
+        while (owner.flags and MF_MISSILE <> 0) and (owner.target <> nil) do
           owner := owner.target;
          missile.target := owner;
         // automatic handling of seeker missiles
-        if actor.info.flags_ex and missile.info.flags_ex and MF_EX_SEEKERMISSILE <> 0 then
+        if actor.flags_ex and missile.flags_ex and MF_EX_SEEKERMISSILE <> 0 then
           missile.tracer := actor.tracer;
       end
-      else if missile.info.flags_ex and MF_EX_SEEKERMISSILE <> 0 then
+      else if missile.flags_ex and MF_EX_SEEKERMISSILE <> 0 then
       // automatic handling of seeker missiles
         missile.tracer := actor.target;
 
@@ -2063,11 +2063,11 @@ begin
       missile.momy := FixedMul(missilespeed, finesine[ang]);
 
       owner := actor;
-      while (owner.info.flags and MF_MISSILE <> 0) and (owner.target <> nil) do
+      while (owner.flags and MF_MISSILE <> 0) and (owner.target <> nil) do
         owner := owner.target;
        missile.target := owner;
       // automatic handling of seeker missiles
-      if actor.info.flags_ex and missile.info.flags_ex and MF_EX_SEEKERMISSILE <> 0 then
+      if actor.flags_ex and missile.flags_ex and MF_EX_SEEKERMISSILE <> 0 then
         missile.tracer := actor.tracer;
 
     end;
@@ -2450,7 +2450,7 @@ begin
 
   if missile <> nil then
   begin
-    if missile.info.flags_ex and MF_EX_SEEKERMISSILE <> 0 then
+    if missile.flags_ex and MF_EX_SEEKERMISSILE <> 0 then
       missile.tracer := actor.target;
   end;
 
