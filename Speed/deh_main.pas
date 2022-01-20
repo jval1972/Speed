@@ -333,7 +333,8 @@ begin
           13: mobjinfo[mobj_no].xdeathstate := mobj_val;
           14: mobjinfo[mobj_no].deathsound := S_GetSoundNumForName(token2);
           15: mobjinfo[mobj_no].speed := mobj_val;
-          16: mobjinfo[mobj_no].radius := mobj_val;
+          16,
+          50: mobjinfo[mobj_no].radius := mobj_val;
           17: mobjinfo[mobj_no].height := mobj_val;
           18: mobjinfo[mobj_no].mass := mobj_val;
           19: mobjinfo[mobj_no].damage := mobj_val;
@@ -1688,6 +1689,7 @@ begin
   mobj_tokens.Add('FLAGS3_EX');          // .flags3_ex (DelphiDoom)   // 47
   mobj_tokens.Add('FLAGS4_EX');          // .flags4_ex (DelphiDoom)   // 48
   mobj_tokens.Add('ACTIVE SOUND');       // .activesound              // 49 - Alias for 20
+  mobj_tokens.Add('RADIUS');             // .radius                   // 50 - Alias for 16
 
 
   mobj_flags := TDTextList.Create;
