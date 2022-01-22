@@ -114,7 +114,7 @@ type
   Pdefault_t = ^default_t;
 
 const
-  NUMDEFAULTS = 192;
+  NUMDEFAULTS = 193;
 
 // JVAL
 // Note: All setable defaults must be in lowercase, don't ask why. Just do it. :)
@@ -550,6 +550,14 @@ const
      defaultsvalue: '';
      defaultivalue: 0;
      defaultbvalue: true;
+     _type: tBoolean),
+
+    (name: 'gl_old_ripple_effect';
+     location: @gl_old_ripple_effect;
+     setable: DFS_ALWAYS;
+     defaultsvalue: '';
+     defaultivalue: 0;
+     defaultbvalue: false;
      _type: tBoolean),
 
     (name: 'gl_drawsky';

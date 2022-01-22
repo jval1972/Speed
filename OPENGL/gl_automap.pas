@@ -18,7 +18,7 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with this program; if not, write to the Free Software
-//  Foundation, inc., 59 Temple Place - Suite 330, Boston, MA
+//  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 //  02111-1307, USA.
 //
 //  DESCRIPTION:
@@ -242,7 +242,7 @@ begin
   glColor4f(l.r, l.g, l.b, 1.0);
 
   tex := gld_RegisterFlat(l.lump, true);
-  gld_BindFlat(tex);
+  gld_BindFlat(tex, -1);
 
   glBegin(GL_TRIANGLES);
     glTexCoord2f(l.v1 * tex.texturescale, l.u1 * tex.texturescale);

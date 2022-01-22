@@ -63,6 +63,7 @@ type
     buffer_size: integer;
     heightscale: single;
     glTexID: array[0..CR_INVUL] of integer;
+    glRippleTexID: array[0..31] of integer;
     textype: GLTexType;
     mipmap: boolean;
   end;
@@ -95,6 +96,7 @@ var
   // Hack to avoid Intel HD4000 problem with Win10
   // https://communities.intel.com/thread/117626
   gl_no_glfinish_hack: boolean = true;
+  gl_old_ripple_effect: Boolean = False;
   gl_drawposindicators: boolean = true;
 
 type

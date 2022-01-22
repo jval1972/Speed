@@ -2390,7 +2390,7 @@ begin
 
   if (wall.flag = GLDWF_TOPFLUD) or (wall.flag = GLDWF_BOTFLUD) then
   begin
-    gld_BindFlat(wall.gltexture);
+    gld_BindFlat(wall.gltexture, -1);
 
     gld_SetupFloodStencil(wall);
     gld_SetupFloodedPlaneCoords(wall, @c);
@@ -3175,7 +3175,9 @@ bottomtexture:
         else if (backsector <> nil) and (seg.linedef.renderflags and LRF_ISOLATED = 0) and
                 (frontsector.ceilingpic <> skyflatnum) and (backsector.ceilingpic <> skyflatnum) then
         begin
-          gld_AddFlat_Extra(seg.frontsector.iSectorID, seg.backsector.floorpic, seg.frontsector.floorheight, False, seg.frontsector.renderflags and SRF_RIPPLE_CEILING <> 0);
+          gld_AddFlat_Extra(
+            seg.frontsector.iSectorID, seg.backsector.floorpic, seg.frontsector.floorheight,
+            False, seg.frontsector.renderflags and SRF_RIPPLE_CEILING <> 0);
         end;
       end;
     end;
@@ -3300,7 +3302,10 @@ begin
     glActiveTextureARB(GL_TEXTURE0_ARB);
   end;
 
-  gld_BindFlat(flat.gltexture);
+  if flat.ripple and not gl_old_ripple_effect then
+    gld_BindFlat(flat.gltexture, leveltime and 31)
+  else
+    gld_BindFlat(flat.gltexture, -1);
   gld_StaticLight(flat.light);
   glMatrixMode(GL_MODELVIEW);
   glPushMatrix;
@@ -3316,7 +3321,7 @@ begin
                  0.0);
   end;
   {$ENDIF}
-  if flat.ripple then
+  if flat.ripple and gl_old_ripple_effect then
   begin
     gld_MakeRippleMatrix;
     glMatrixMode(GL_TEXTURE);
@@ -3370,7 +3375,7 @@ begin
       end;
     end;
   end;
-  if flat.ripple then
+  if flat.ripple and gl_old_ripple_effect then
   begin
     glPopMatrix;
     glMatrixMode(GL_MODELVIEW);
@@ -3434,13 +3439,29 @@ begin
     // calculate texture offsets
     {$IFDEF DOOM_OR_STRIFE}
     flat.hasoffset := (sector.ceiling_xoffs <> 0) or (sector.ceiling_yoffs <> 0);
-    flat.uoffs := sector.ceiling_xoffs / FLATUVSCALE;
-    flat.voffs := sector.ceiling_yoffs / FLATUVSCALE;
+    if flat.hasoffset then
+    begin
+      flat.uoffs := sector.ceiling_xoffs / FLATUVSCALE;
+      flat.voffs := sector.ceiling_yoffs / FLATUVSCALE;
+    end
+    else
+    begin
+      flat.uoffs := 0.0;
+      flat.voffs := 0.0;
+    end;
     {$ENDIF}
     {$IFDEF HEXEN}
     flat.hasoffset := (plane.xoffs <> 0) or (plane.yoffs <> 0);
-    flat.uoffs := plane.xoffs / FLATUVSCALE;
-    flat.voffs := plane.yoffs / FLATUVSCALE;
+    if flat.hasoffset then
+    begin
+      flat.uoffs := plane.xoffs / FLATUVSCALE;
+      flat.voffs := plane.yoffs / FLATUVSCALE;
+    end
+    else
+    begin
+      flat.uoffs := 0.0;
+      flat.voffs := 0.0;
+    end;
     {$ENDIF}
     flat.ripple := plane.renderflags and SRF_RIPPLE_CEILING <> 0;
 
@@ -3466,13 +3487,29 @@ begin
     // calculate texture offsets
     {$IFDEF DOOM_OR_STRIFE}
     flat.hasoffset := (sector.floor_xoffs <> 0) or (sector.floor_yoffs <> 0);
-    flat.uoffs := sector.floor_xoffs / FLATUVSCALE;
-    flat.voffs := sector.floor_yoffs / FLATUVSCALE;
+    if flat.hasoffset then
+    begin
+      flat.uoffs := sector.floor_xoffs / FLATUVSCALE;
+      flat.voffs := sector.floor_yoffs / FLATUVSCALE;
+    end
+    else
+    begin
+      flat.uoffs := 0.0;
+      flat.voffs := 0.0;
+    end;
     {$ENDIF}
     {$IFDEF HEXEN}
     flat.hasoffset := (plane.xoffs <> 0) or (plane.yoffs <> 0);
-    flat.uoffs := plane.xoffs / FLATUVSCALE;
-    flat.voffs := plane.yoffs / FLATUVSCALE;
+    if flat.hasoffset then
+    begin
+      flat.uoffs := plane.xoffs / FLATUVSCALE;
+      flat.voffs := plane.yoffs / FLATUVSCALE;
+    end
+    else
+    begin
+      flat.uoffs := 0.0;
+      flat.voffs := 0.0;
+    end;
     {$ENDIF}
     flat.ripple := plane.renderflags and SRF_RIPPLE_FLOOR <> 0;
 
@@ -3525,9 +3562,13 @@ begin
     begin
       msec := @sectors[sectors[secID].midsec];
       if viewz < msec.floorheight then
-        gld_AddFlat_3dFloor(secID, msec.floorpic, msec.floorheight, msec.renderflags and SRF_RIPPLE_FLOOR <> 0, msec.lightlevel);
+        gld_AddFlat_3dFloor(
+          secID, msec.floorpic, msec.floorheight, msec.renderflags and SRF_RIPPLE_FLOOR <> 0,
+          msec.lightlevel);
       if viewz > msec.ceilingheight then
-        gld_AddFlat_3dFloor(secID, msec.ceilingpic, msec.ceilingheight, msec.renderflags and SRF_RIPPLE_CEILING <> 0, sectors[secID].lightlevel);
+        gld_AddFlat_3dFloor(
+          secID, msec.ceilingpic, msec.ceilingheight, msec.renderflags and SRF_RIPPLE_CEILING <> 0,
+          sectors[secID].lightlevel);
     end;
 
     // set rendered true

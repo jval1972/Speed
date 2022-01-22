@@ -18,7 +18,7 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with this program; if not, write to the Free Software
-//  Foundation, inc., 59 Temple Place - Suite 330, Boston, MA
+//  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 //  02111-1307, USA.
 //
 // DESCRIPTION:
@@ -259,6 +259,7 @@ uses
   r_precalc,
   r_lights,
   r_intrpl,
+  r_ripple,
   gl_render, // JVAL OPENGL
   gl_clipper,
   gl_tex,
@@ -942,6 +943,8 @@ begin
   R_InitData;
   printf('R_InitCustomColormaps'#13#10);
   R_InitCustomColormaps;
+  printf('R_InitRippleEffects'#13#10);
+  R_InitRippleEffects;
   printf('R_InitInterpolations'#13#10);
   R_InitInterpolations;
   printf('R_InitPointToAngle'#13#10);
