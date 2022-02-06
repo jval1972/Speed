@@ -30,6 +30,8 @@ Both shareware and register versions of the game should work OK.
 
 History
 -------
+Version 1.0.3.743 (20220206)
+-----------------
 Holds up to 2047 bytes for enviroment variables.
 Fixed loading utf16 strings.
 Fixed flags in A_ChangeVelocity() ACTORDEF function.
