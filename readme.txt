@@ -32,7 +32,7 @@ History
 -------
 Version 1.0.3.743 (20220206)
 -----------------
-Holds up to 2047 bytes for enviroment variables.
+Holds up to 2047 bytes for environment variables.
 Fixed loading utf16 strings.
 Fixed flags in A_ChangeVelocity() ACTORDEF function.
 Fixed MF2_EX_CANTLEAVEFLOORPIC flag behavior.
@@ -47,10 +47,10 @@ Fixed problem with the "-" prefix in MF4_EX_xxx flags in ACTORDEF.
 Fix gravity field inheritance in ACTORDEF declarations.
 String and boolean evaluation in parameters of ACTORDEF functions.
 Infinite state cycle error message will display the actor's name.
-Evalueate actor flags in ACTORDEF functions parameters with the FLAG() function.
+Evaluate actor flags in ACTORDEF functions parameters with the FLAG() function.
 3D floor collision logic corrections.
 Auto fix interpolation for instant changes in sectors heights and texture offsets.
-Added full_sounds console variable. When true, the mobjs will finish the ir sounds when removed.
+Added full_sounds console variable. When true, the mobjs will finish their sounds when removed.
 Added MF4_EX_ALWAYSFINISHSOUND & MF4_EX_NEVERFINISHSOUND mobj flags to overwrite the full_sounds console variable.
 Correct evaluation of angle in functions parameter's evaluation.
 Use sound files in pk3 without WAD equivalent. Supported file formats are WAV, OGG, FLAC, OGA, AU, VOC & SND.
