@@ -703,9 +703,9 @@ begin
     exit;
 
   if Pos(';', fnames) > 0 then
-    splitstring(fnames, s1, s2, ';')
+    splitstring_ch(fnames, s1, s2, ';')
   else
-    splitstring(fnames, s1, s2, ',');
+    splitstring_ch(fnames, s1, s2, ',');
   D_AddFile(s1);
   D_WadsAutoLoad(s2);
 end;
@@ -719,9 +719,9 @@ begin
     exit;
 
   if Pos(';', fnames) > 0 then
-    splitstring(fnames, s1, s2, ';')
+    splitstring_ch(fnames, s1, s2, ';')
   else
-    splitstring(fnames, s1, s2, ',');
+    splitstring_ch(fnames, s1, s2, ',');
   PAK_AddFile(s1);
   D_PaksAutoload(s2);
 end;

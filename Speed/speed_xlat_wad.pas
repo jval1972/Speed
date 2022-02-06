@@ -4,7 +4,7 @@
 //
 //  Copyright (C) 1995 by Noriaworks
 //  Copyright (C) 1993-1996 by id Software, Inc.
-//  Copyright (C) 2004-2021 by Jim Valavanis
+//  Copyright (C) 2004-2022 by Jim Valavanis
 //
 //  This program is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU General Public License
@@ -18,7 +18,7 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with this program; if not, write to the Free Software
-//  Foundation, inc., 59 Temple Place - Suite 330, Boston, MA
+//  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 //  02111-1307, USA.
 //
 //------------------------------------------------------------------------------
@@ -230,8 +230,8 @@ var
   begin
     fii := getjcllumpname(@lumps[ii]);
     fjj := getjcllumpname(@lumps[jj]);
-    splitstring(fii, nii, eii, '.');
-    splitstring(fjj, njj, ejj, '.');
+    splitstring_ch(fii, nii, eii, '.');
+    splitstring_ch(fjj, njj, ejj, '.');
     vii := atoi(nii);
     vjj := atoi(njj);
     if vii > vjj then
@@ -354,7 +354,7 @@ begin
     rname := getjcllumpname(@lumps[i]);
     if strupper(RightStr(rname, 4)) = '.IS2' then
     begin
-      splitstring(rname, s1, s2, '.');
+      splitstring_ch(rname, s1, s2, '.');
       if itoa(atoi(s1)) = s1 then
         lst.Add(rname);
     end;
@@ -1027,7 +1027,7 @@ var
   rname, wname: string;
   i: integer;
   lst: TDStringList;
-  s1, s2: string;
+  s1, s2, s4: string;
   aw, ah: integer;
   transparentpix: TDSTringList;
 begin
@@ -1075,15 +1075,18 @@ begin
     rname := getjcllumpname(@lumps[i]);
     if strupper(RightStr(rname, 4)) = '.IS2' then
     begin
-      splitstring(rname, s1, s2, '.');
+      splitstring_ch(rname, s1, s2, '.');
       if itoa(atoi(s1)) <> s1 then
         if strupper(LeftStr(s1, 3)) <> 'XPR' then
-          if strupper(LeftStr(s1, 4)) <> 'SPRK' then
-            if strupper(LeftStr(s1, 4)) <> 'SMOK' then
-              if strupper(LeftStr(s1, 4)) <> 'GND0' then
-                if strupper(LeftStr(s1, 4)) <> 'GND1' then
-                  if strupper(LeftStr(s1, 4)) <> 'GND2' then
+        begin
+          s4 := strupper(LeftStr(s1, 4));
+          if s4 <> 'SPRK' then
+            if s4 <> 'SMOK' then
+              if s4 <> 'GND0' then
+                if s4 <> 'GND1' then
+                  if s4 <> 'GND2' then
                     lst.Add(rname);
+        end;
     end;
   end;
 
@@ -1514,7 +1517,7 @@ begin
     rname := lst2.Strings[i];
     if ReadLump(lumps, numlumps, rname, sbuffer, ssize) then
     begin
-      splitstring(rname, sname, stmp, '.');
+      splitstring_ch(rname, sname, stmp, '.');
       for j := 0 to 9 do
       begin
         SH_RawToWAV(sbuffer, ssize, 11025 + j * 100, FRACUNIT div 2, pcmbuffer, pcmsize);

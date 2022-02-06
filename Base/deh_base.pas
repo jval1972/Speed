@@ -444,7 +444,7 @@ begin
           end
           else if headstr <> '' then
           begin
-            splitstring(strtrim(cs.Strings[i]), s1, s2, '=');
+            splitstring_ch(strtrim(cs.Strings[i]), s1, s2, '=');
             headstr := headstr + ';' + '"' + strtrim(s1) + '"';
           end;
         end;
@@ -460,7 +460,7 @@ begin
         if Pos('//', strtrim(cs.Strings[i])) < 1 then
           if Pos('THING ', strtrim(strupper(cs.Strings[i]))) < 1 then
           begin
-            splitstring(strtrim(cs.Strings[i]), s1, s2, '=');
+            splitstring_ch(strtrim(cs.Strings[i]), s1, s2, '=');
             datstr := datstr + ';' + '"' + strtrim(s2) + '"';
           end
           else
@@ -538,7 +538,7 @@ begin
           end
           else if headstr <> '' then
           begin
-            splitstring(strtrim(cs.Strings[i]), s1, s2, '=');
+            splitstring_ch(strtrim(cs.Strings[i]), s1, s2, '=');
             headstr := headstr + ';' + '"' + strtrim(s1) + '"';
           end;
         end;
@@ -555,7 +555,7 @@ begin
         if Pos('//', strtrim(cs.Strings[i])) < 1 then
           if Pos('FRAME ', strtrim(strupper(cs.Strings[i]))) <> 1 then
           begin
-            splitstring(strtrim(cs.Strings[i]), s1, s2, '=');
+            splitstring_ch(strtrim(cs.Strings[i]), s1, s2, '=');
             for j := 1 to length(s2) do
               if s2[j] = '"' then
                 s2[j] := ' ';

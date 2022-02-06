@@ -18,7 +18,7 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with this program; if not, write to the Free Software
-//  Foundation, inc., 59 Temple Place - Suite 330, Boston, MA
+//  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 //  02111-1307, USA.
 //
 // DESCRIPTION:
@@ -224,7 +224,7 @@ begin
   begin
     strm.Free;
     s1 := fname(vname);
-    splitstring(s1, s2, s3, '.');
+    splitstring_ch(s1, s2, s3, '.');
     lump := W_CheckNumForName(s2, TYPE_VOXEL);
     if lump < 0 then
     begin

@@ -252,13 +252,13 @@ begin
     ppp := Pos('-', st);
     if pps > 0 then
     begin
-      splitstring(st, fw, sw, '+');
+      splitstring_ch(st, fw, sw, '+');
       Result := _stindex(fw) + atoi(sw, 0);
       Exit;
     end;
     if ppp > 0 then
     begin
-      splitstring(st, fw, sw, '-');
+      splitstring_ch(st, fw, sw, '-');
       Result := _stindex(fw) - atoi(sw, 0);
       Exit;
     end;

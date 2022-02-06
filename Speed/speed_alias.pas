@@ -4,7 +4,7 @@
 //
 //  Copyright (C) 1995 by Noriaworks
 //  Copyright (C) 1993-1996 by id Software, Inc.
-//  Copyright (C) 2004-2021 by Jim Valavanis
+//  Copyright (C) 2004-2022 by Jim Valavanis
 //
 //  This program is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU General Public License
@@ -18,7 +18,7 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with this program; if not, write to the Free Software
-//  Foundation, inc., 59 Temple Place - Suite 330, Boston, MA
+//  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 //  02111-1307, USA.
 //
 //------------------------------------------------------------------------------
@@ -70,7 +70,7 @@ begin
     lst.Text := in_text;
     for i := lst.Count - 1 downto 0 do
     begin
-      splitstring(lst.Strings[i], w_entry, r_entry, '=');
+      splitstring_ch(lst.Strings[i], w_entry, r_entry, '=');
       lump := W_CheckNumForName(w_entry);
       if lump >= 0 then
       begin

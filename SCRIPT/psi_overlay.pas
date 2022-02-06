@@ -4,7 +4,7 @@
 //
 //  Copyright (C) 1995 by Noriaworks
 //  Copyright (C) 1993-1996 by id Software, Inc.
-//  Copyright (C) 2004-2021 by Jim Valavanis
+//  Copyright (C) 2004-2022 by Jim Valavanis
 //
 //  This program is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU General Public License
@@ -18,7 +18,7 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with this program; if not, write to the Free Software
-//  Foundation, inc., 59 Temple Place - Suite 330, Boston, MA
+//  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 //  02111-1307, USA.
 //
 // DESCRIPTION:
@@ -1780,8 +1780,8 @@ begin
     Exit;
   end;
 
-  splitstring(s2, sx, tmp1, ' ');
-  splitstring(tmp1, sy, msg, ' ');
+  splitstring_ch(s2, sx, tmp1, ' ');
+  splitstring_ch(tmp1, sy, msg, ' ');
   x := atoi(sx, -1);
   y := atoi(sy, -1);
 
@@ -1817,12 +1817,12 @@ begin
     Exit;
   end;
 
-  splitstring(s2, sx, tmp1, ' ');
-  splitstring(tmp1, sy, tmp2, ' ');
+  splitstring_ch(s2, sx, tmp1, ' ');
+  splitstring_ch(tmp1, sy, tmp2, ' ');
   x := atoi(sx, -1);
   y := atoi(sy, -1);
-  splitstring(tmp2, sred, tmp1, ' ');
-  splitstring(tmp1, sgreen, sblue, ' ');
+  splitstring_ch(tmp2, sred, tmp1, ' ');
+  splitstring_ch(tmp1, sgreen, sblue, ' ');
   red := atoi(sred, 0);
   green := atoi(sgreen, 0);
   blue := atoi(sblue, 0);
