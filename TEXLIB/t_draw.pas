@@ -18,7 +18,7 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with this program; if not, write to the Free Software
-//  Foundation, inc., 59 Temple Place - Suite 330, Boston, MA
+//  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 //  02111-1307, USA.
 //
 //------------------------------------------------------------------------------
@@ -34,12 +34,32 @@ interface
 uses
   d_delphi;
 
+//==============================================================================
+//
+// T_DrawFullScreenPatch
+//
+//==============================================================================
 function T_DrawFullScreenPatch(const texname: string; const dest: PLongWordArray): boolean; overload;
 
+//==============================================================================
+//
+// T_DrawFullScreenPatch
+//
+//==============================================================================
 function T_DrawFullScreenPatch(const texid: integer; const dest: PLongWordArray): boolean; overload;
 
+//==============================================================================
+//
+// T_InitDrawTextures
+//
+//==============================================================================
 procedure T_InitDrawTextures;
 
+//==============================================================================
+//
+// T_ShutDownDrawTextures
+//
+//==============================================================================
 procedure T_ShutDownDrawTextures;
 
 implementation
@@ -66,6 +86,11 @@ var
   drawtextures: Pdrawtexture_tArray;
   numdrawtextures: integer;
 
+//==============================================================================
+//
+// T_GetDrawTextNumForName
+//
+//==============================================================================
 function T_GetDrawTextNumForName(const texname: string): integer;
 var
   lump: integer;
@@ -88,11 +113,21 @@ begin
   inc(numdrawtextures);
 end;
 
+//==============================================================================
+//
+// T_DrawFullScreenPatch
+//
+//==============================================================================
 function T_DrawFullScreenPatch(const texname: string; const dest: PLongWordArray): boolean; overload;
 begin
   result := T_DrawFullScreenPatch(T_GetDrawTextNumForName(texname), dest);
 end;
 
+//==============================================================================
+//
+// T_DrawFullScreenPatch
+//
+//==============================================================================
 function T_DrawFullScreenPatch(const texid: integer; const dest: PLongWordArray): boolean; overload;
 var
   t: PTexture;
@@ -186,12 +221,22 @@ begin
   result := true;
 end;
 
+//==============================================================================
+//
+// T_InitDrawTextures
+//
+//==============================================================================
 procedure T_InitDrawTextures;
 begin
   drawtextures := nil;
   numdrawtextures := 0;
 end;
 
+//==============================================================================
+//
+// T_ShutDownDrawTextures
+//
+//==============================================================================
 procedure T_ShutDownDrawTextures;
 var
   i: integer;

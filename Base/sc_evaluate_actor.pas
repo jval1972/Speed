@@ -34,14 +34,39 @@ interface
 uses
   p_mobj_h;
 
+//==============================================================================
+//
+// SC_InitActorEvaluator
+//
+//==============================================================================
 procedure SC_InitActorEvaluator;
 
+//==============================================================================
+//
+// SC_ShutDownActorEvaluator
+//
+//==============================================================================
 procedure SC_ShutDownActorEvaluator;
 
+//==============================================================================
+//
+// SC_EvaluateActorExpression
+//
+//==============================================================================
 function SC_EvaluateActorExpression(const actor: Pmobj_t; const aexpr: string): string;
 
+//==============================================================================
+//
+// SC_DeclareActorEvaluatorSingleToken
+//
+//==============================================================================
 procedure SC_DeclareActorEvaluatorSingleToken(const token: string);
 
+//==============================================================================
+//
+// SC_IsActorEvaluatorSingleToken
+//
+//==============================================================================
 function SC_IsActorEvaluatorSingleToken(const token: string): boolean;
 
 implementation
@@ -122,7 +147,6 @@ type
     procedure AddFunc(aname: string; afunc: TExtFunc; anump: integer); overload; override;
   end;
 
-
 ////////////////////////////////////////////////////////////////////////////////
 // TActorEvaluator
 constructor TActorEvaluator.Create;
@@ -190,6 +214,11 @@ begin
   AddFunc('RAISE', PF_RAISE, 0);
 end;
 
+//==============================================================================
+//
+// TActorEvaluator.AddFunc
+//
+//==============================================================================
 procedure TActorEvaluator.AddFunc(aname: string; afunc: TObjFunc; anump: integer);
 begin
   if anump = 0 then
@@ -197,6 +226,11 @@ begin
   Inherited;
 end;
 
+//==============================================================================
+//
+// TActorEvaluator.AddFunc
+//
+//==============================================================================
 procedure TActorEvaluator.AddFunc(aname: string; afunc: TExtFunc; anump: integer);
 begin
   if anump = 0 then
@@ -204,12 +238,22 @@ begin
   Inherited;
 end;
 
+//==============================================================================
+// TActorEvaluator.PF_rand
+//
 // Ramdom functions
+//
+//==============================================================================
 function TActorEvaluator.PF_rand(p: TDStrings): string;
 begin
   result := ftoa(P_Random / 255);
 end;
 
+//==============================================================================
+//
+// TActorEvaluator.PF_sysrand
+//
+//==============================================================================
 function TActorEvaluator.PF_sysrand(p: TDStrings): string;
 var
   f1, f2: float;
@@ -229,6 +273,11 @@ begin
   end;
 end;
 
+//==============================================================================
+//
+// TActorEvaluator.PF_random
+//
+//==============================================================================
 function TActorEvaluator.PF_random(p: TDStrings): string;
 var
   f1, f2: float;
@@ -248,6 +297,11 @@ begin
   end;
 end;
 
+//==============================================================================
+//
+// TActorEvaluator.PF_random2
+//
+//==============================================================================
 function TActorEvaluator.PF_random2(p: TDStrings): string;
 var
   mask: integer;
@@ -259,6 +313,11 @@ begin
   result := itoa((N_Random and mask) - (N_Random and mask));
 end;
 
+//==============================================================================
+//
+// TActorEvaluator.PF_frandom
+//
+//==============================================================================
 function TActorEvaluator.PF_frandom(p: TDStrings): string;
 var
   f1, f2: float;
@@ -278,6 +337,11 @@ begin
   end;
 end;
 
+//==============================================================================
+//
+// TActorEvaluator.PF_randompick
+//
+//==============================================================================
 function TActorEvaluator.PF_randompick(p: TDStrings): string;
 begin
   if p.Count = 0 then
@@ -288,53 +352,103 @@ begin
   result := p[N_Random mod p.count];
 end;
 
+//==============================================================================
+// TActorEvaluator.PF_X
+//
 // Actor position and movement
+//
+//==============================================================================
 function TActorEvaluator.PF_X(p: TDStrings): string;
 begin
   result := ftoa(factor.x / FRACUNIT);
 end;
 
+//==============================================================================
+//
+// TActorEvaluator.PF_Y
+//
+//==============================================================================
 function TActorEvaluator.PF_Y(p: TDStrings): string;
 begin
   result := ftoa(factor.y / FRACUNIT);
 end;
 
+//==============================================================================
+//
+// TActorEvaluator.PF_Z
+//
+//==============================================================================
 function TActorEvaluator.PF_Z(p: TDStrings): string;
 begin
   result := ftoa(factor.z / FRACUNIT);
 end;
 
+//==============================================================================
+//
+// TActorEvaluator.PF_MOMX
+//
+//==============================================================================
 function TActorEvaluator.PF_MOMX(p: TDStrings): string;
 begin
   result := ftoa(factor.momx / FRACUNIT);
 end;
 
+//==============================================================================
+//
+// TActorEvaluator.PF_MOMY
+//
+//==============================================================================
 function TActorEvaluator.PF_MOMY(p: TDStrings): string;
 begin
   result := ftoa(factor.momy / FRACUNIT);
 end;
 
+//==============================================================================
+//
+// TActorEvaluator.PF_MOMZ
+//
+//==============================================================================
 function TActorEvaluator.PF_MOMZ(p: TDStrings): string;
 begin
   result := ftoa(factor.momz / FRACUNIT);
 end;
 
+//==============================================================================
+//
+// TActorEvaluator.PF_FLOORZ
+//
+//==============================================================================
 function TActorEvaluator.PF_FLOORZ(p: TDStrings): string;
 begin
   result := ftoa(factor.floorz / FRACUNIT);
 end;
 
+//==============================================================================
+//
+// TActorEvaluator.PF_CEILINGZ
+//
+//==============================================================================
 function TActorEvaluator.PF_CEILINGZ(p: TDStrings): string;
 begin
   result := ftoa(factor.ceilingz / FRACUNIT);
 end;
 
+//==============================================================================
+//
+// TActorEvaluator.PF_ANGLE
+//
+//==============================================================================
 function TActorEvaluator.PF_ANGLE(p: TDStrings): string;
 begin
   result := ftoa(factor.angle / $FFFFFFFF * 360);
 end;
 
+//==============================================================================
+// TActorEvaluator.PF_flag
+//
 // Actor properties
+//
+//==============================================================================
 function TActorEvaluator.PF_flag(p: TDStrings): string;
 begin
   if p.Count = 0 then
@@ -348,46 +462,91 @@ begin
     result := 'FALSE';
 end;
 
+//==============================================================================
+//
+// TActorEvaluator.PF_radius
+//
+//==============================================================================
 function TActorEvaluator.PF_radius(p: TDStrings): string;
 begin
   result := ftoa(factor.radius / FRACUNIT);
 end;
 
+//==============================================================================
+//
+// TActorEvaluator.PF_height
+//
+//==============================================================================
 function TActorEvaluator.PF_height(p: TDStrings): string;
 begin
   result := ftoa(factor.height / FRACUNIT);
 end;
 
+//==============================================================================
+//
+// TActorEvaluator.PF_alpha
+//
+//==============================================================================
 function TActorEvaluator.PF_alpha(p: TDStrings): string;
 begin
   result := ftoa(factor.alpha / FRACUNIT);
 end;
 
+//==============================================================================
+//
+// TActorEvaluator.PF_health
+//
+//==============================================================================
 function TActorEvaluator.PF_health(p: TDStrings): string;
 begin
   result := itoa(factor.health);
 end;
 
+//==============================================================================
+//
+// TActorEvaluator.PF_reactiontime
+//
+//==============================================================================
 function TActorEvaluator.PF_reactiontime(p: TDStrings): string;
 begin
   result := itoa(factor.reactiontime);
 end;
 
+//==============================================================================
+//
+// TActorEvaluator.PF_threshold
+//
+//==============================================================================
 function TActorEvaluator.PF_threshold(p: TDStrings): string;
 begin
   result := itoa(factor.threshold);
 end;
 
+//==============================================================================
+//
+// TActorEvaluator.PF_fastchasetics
+//
+//==============================================================================
 function TActorEvaluator.PF_fastchasetics(p: TDStrings): string;
 begin
   result := itoa(factor.fastchasetics);
 end;
 
+//==============================================================================
+//
+// TActorEvaluator.PF_key
+//
+//==============================================================================
 function TActorEvaluator.PF_key(p: TDStrings): string;
 begin
   result := itoa(factor.key);
 end;
 
+//==============================================================================
+//
+// TActorEvaluator.PF_floorclip
+//
+//==============================================================================
 function TActorEvaluator.PF_floorclip(p: TDStrings): string;
 begin
 {$IFDEF HERETIC}
@@ -401,53 +560,103 @@ begin
 {$ENDIF}
 end;
 
+//==============================================================================
+//
+// TActorEvaluator.PF_gravity
+//
+//==============================================================================
 function TActorEvaluator.PF_gravity(p: TDStrings): string;
 begin
   result := ftoa(factor.gravity / FRACUNIT);
 end;
 
+//==============================================================================
+//
+// TActorEvaluator.PF_pushfactor
+//
+//==============================================================================
 function TActorEvaluator.PF_pushfactor(p: TDStrings): string;
 begin
   result := ftoa(factor.pushfactor / FRACUNIT);
 end;
 
+//==============================================================================
+//
+// TActorEvaluator.PF_scale
+//
+//==============================================================================
 function TActorEvaluator.PF_scale(p: TDStrings): string;
 begin
   result := ftoa(factor.scale / FRACUNIT);
 end;
 
+//==============================================================================
+// TActorEvaluator.PF_MAPSTR
+//
 // Pascalscript map & world variables
+//
+//==============================================================================
 function TActorEvaluator.PF_MAPSTR(p: TDStrings): string;
 begin
   result := PS_GetMapStr(p[0]);
 end;
 
+//==============================================================================
+//
+// TActorEvaluator.PF_WORLDSTR
+//
+//==============================================================================
 function TActorEvaluator.PF_WORLDSTR(p: TDStrings): string;
 begin
   result := PS_GetWorldStr(p[0]);
 end;
 
+//==============================================================================
+//
+// TActorEvaluator.PF_MAPINT
+//
+//==============================================================================
 function TActorEvaluator.PF_MAPINT(p: TDStrings): string;
 begin
   result := itoa(PS_GetMapInt(p[0]));
 end;
 
+//==============================================================================
+//
+// TActorEvaluator.PF_WORLDINT
+//
+//==============================================================================
 function TActorEvaluator.PF_WORLDINT(p: TDStrings): string;
 begin
   result := itoa(PS_GetWorldInt(p[0]));
 end;
 
+//==============================================================================
+//
+// TActorEvaluator.PF_MAPFLOAT
+//
+//==============================================================================
 function TActorEvaluator.PF_MAPFLOAT(p: TDStrings): string;
 begin
   result := ftoa(PS_GetMapFloat(p[0]));
 end;
 
+//==============================================================================
+//
+// TActorEvaluator.PF_WORLDFLOAT
+//
+//==============================================================================
 function TActorEvaluator.PF_WORLDFLOAT(p: TDStrings): string;
 begin
   result := ftoa(PS_GetWorldFloat(p[0]));
 end;
 
+//==============================================================================
+// TActorEvaluator.PF_CUSTOMPARAM
+//
 // Custom params
+//
+//==============================================================================
 function TActorEvaluator.PF_CUSTOMPARAM(p: TDStrings): string;
 var
   parm: Pmobjcustomparam_t;
@@ -459,6 +668,11 @@ begin
     result := '0';
 end;
 
+//==============================================================================
+//
+// TActorEvaluator.PF_TARGETCUSTOMPARAM
+//
+//==============================================================================
 function TActorEvaluator.PF_TARGETCUSTOMPARAM(p: TDStrings): string;
 var
   parm: Pmobjcustomparam_t;
@@ -475,62 +689,122 @@ begin
   result := '0';
 end;
 
+//==============================================================================
+// TActorEvaluator.PF_SPAWN
+//
 // States
+//
+//==============================================================================
 function TActorEvaluator.PF_SPAWN(p: TDStrings): string;
 begin
   result := itoa(factor.info.spawnstate);
 end;
 
+//==============================================================================
+//
+// TActorEvaluator.PF_SEE
+//
+//==============================================================================
 function TActorEvaluator.PF_SEE(p: TDStrings): string;
 begin
   result := itoa(factor.info.seestate);
 end;
 
+//==============================================================================
+//
+// TActorEvaluator.PF_MELEE
+//
+//==============================================================================
 function TActorEvaluator.PF_MELEE(p: TDStrings): string;
 begin
   result := itoa(factor.info.meleestate);
 end;
 
+//==============================================================================
+//
+// TActorEvaluator.PF_MISSILE
+//
+//==============================================================================
 function TActorEvaluator.PF_MISSILE(p: TDStrings): string;
 begin
   result := itoa(factor.info.missilestate);
 end;
 
+//==============================================================================
+//
+// TActorEvaluator.PF_PAIN
+//
+//==============================================================================
 function TActorEvaluator.PF_PAIN(p: TDStrings): string;
 begin
   result := itoa(factor.info.painstate);
 end;
 
+//==============================================================================
+//
+// TActorEvaluator.PF_DEATH
+//
+//==============================================================================
 function TActorEvaluator.PF_DEATH(p: TDStrings): string;
 begin
   result := itoa(factor.info.deathstate);
 end;
 
+//==============================================================================
+//
+// TActorEvaluator.PF_XDEATH
+//
+//==============================================================================
 function TActorEvaluator.PF_XDEATH(p: TDStrings): string;
 begin
   result := itoa(factor.info.xdeathstate);
 end;
 
+//==============================================================================
+//
+// TActorEvaluator.PF_HEAL
+//
+//==============================================================================
 function TActorEvaluator.PF_HEAL(p: TDStrings): string;
 begin
   result := itoa(factor.info.healstate);
 end;
 
+//==============================================================================
+//
+// TActorEvaluator.PF_CRASH
+//
+//==============================================================================
 function TActorEvaluator.PF_CRASH(p: TDStrings): string;
 begin
   result := itoa(factor.info.crashstate);
 end;
 
+//==============================================================================
+//
+// TActorEvaluator.PF_INTERACT
+//
+//==============================================================================
 function TActorEvaluator.PF_INTERACT(p: TDStrings): string;
 begin
   result := itoa(factor.info.interactstate);
 end;
 
+//==============================================================================
+//
+// TActorEvaluator.PF_RAISE
+//
+//==============================================================================
 function TActorEvaluator.PF_RAISE(p: TDStrings): string;
 begin
   result := itoa(factor.info.raisestate);
 end;
 
+//==============================================================================
+//
+// TActorEvaluator.EvaluateActor
+//
+//==============================================================================
 function TActorEvaluator.EvaluateActor(const actor: pmobj_t; const aexpr: string): string;
 begin
   factor := actor;
@@ -541,18 +815,33 @@ var
   actorevaluator: TActorEvaluator;
   actorevaluatorsingletokens: TDStringList;
 
+//==============================================================================
+//
+// SC_InitActorEvaluator
+//
+//==============================================================================
 procedure SC_InitActorEvaluator;
 begin
   actorevaluatorsingletokens := TDStringList.Create;
   actorevaluator := TActorEvaluator.Create;
 end;
 
+//==============================================================================
+//
+// SC_ShutDownActorEvaluator
+//
+//==============================================================================
 procedure SC_ShutDownActorEvaluator;
 begin
   actorevaluator.Free;
   actorevaluatorsingletokens.Free;
 end;
 
+//==============================================================================
+//
+// SC_EvaluateActorExpression
+//
+//==============================================================================
 function SC_EvaluateActorExpression(const actor: Pmobj_t; const aexpr: string): string;
 begin
   try
@@ -562,6 +851,11 @@ begin
   end;
 end;
 
+//==============================================================================
+//
+// SC_DeclareActorEvaluatorSingleToken
+//
+//==============================================================================
 procedure SC_DeclareActorEvaluatorSingleToken(const token: string);
 var
   check: string;
@@ -571,6 +865,11 @@ begin
     actorevaluatorsingletokens.Add(check);
 end;
 
+//==============================================================================
+//
+// SC_IsActorEvaluatorSingleToken
+//
+//==============================================================================
 function SC_IsActorEvaluatorSingleToken(const token: string): boolean;
 var
   check: string;

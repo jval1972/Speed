@@ -4,7 +4,7 @@
 //
 //  Copyright (C) 1995 by Noriaworks
 //  Copyright (C) 1993-1996 by id Software, Inc.
-//  Copyright (C) 2004-2021 by Jim Valavanis
+//  Copyright (C) 2004-2022 by Jim Valavanis
 //
 //  This program is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU General Public License
@@ -18,7 +18,7 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with this program; if not, write to the Free Software
-//  Foundation, inc., 59 Temple Place - Suite 330, Boston, MA
+//  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 //  02111-1307, USA.
 //
 //  DESCRIPTION:
@@ -111,17 +111,45 @@ type
   Pdoomcom_t = ^doomcom_t;
 
 { Create any new ticcmds and broadcast to other players. }
+
+//==============================================================================
+//
+// NetUpdate
+//
+//==============================================================================
 procedure NetUpdate;
 
 { Broadcasts special packets to other players }
 {  to notify of game exit }
+
+//==============================================================================
+//
+// D_QuitNetGame
+//
+//==============================================================================
 procedure D_QuitNetGame;
 
 {? how many ticks to run? }
+
+//==============================================================================
+//
+// D_RunMultipleTicks
+//
+//==============================================================================
 procedure D_RunMultipleTicks;
 
+//==============================================================================
+//
+// D_RunSingleTick
+//
+//==============================================================================
 procedure D_RunSingleTick;
 
+//==============================================================================
+//
+// D_CheckNetGame
+//
+//==============================================================================
 procedure D_CheckNetGame;
 
 var
@@ -195,17 +223,21 @@ var
   reboundpacket: boolean;
   reboundstore: doomdata_t;
 
+//==============================================================================
+// NetbufferSize
 //
-//
-//
+//==============================================================================
 function NetbufferSize: integer;
 begin
   result := integer(@Pdoomdata_t(0).cmds[netbuffer.numtics]);
 end;
 
+//==============================================================================
+// NetbufferChecksum
 //
 // Checksum
 //
+//==============================================================================
 function NetbufferChecksum: LongWord;
 var
   i: integer;
@@ -222,6 +254,11 @@ begin
   result := result and NCMD_CHECKSUM;
 end;
 
+//==============================================================================
+//
+// ExpandTics
+//
+//==============================================================================
 function ExpandTics(low: integer): integer;
 var
   delta: integer;
@@ -250,9 +287,11 @@ begin
   result := 0;
 end;
 
+//==============================================================================
 //
 // HSendPacket
 //
+//==============================================================================
 procedure HSendPacket(node: integer; flags: LongWord);
 var
   i: integer;
@@ -299,10 +338,12 @@ begin
   I_NetCmd;
 end;
 
+//==============================================================================
 //
 // HGetPacket
 // Returns false if no packet is waiting
 //
+//==============================================================================
 function HGetPacket: boolean;
 var
   realretrans: integer;
@@ -380,9 +421,11 @@ begin
   result := true;
 end;
 
+//==============================================================================
 //
 // GetPackets
 //
+//==============================================================================
 procedure GetPackets;
 var
   netconsole: integer;
@@ -486,6 +529,11 @@ end;
 var
   gametime: integer;
 
+//==============================================================================
+//
+// NetUpdate
+//
+//==============================================================================
 procedure NetUpdate;
 var
   nowtime: integer;
@@ -535,7 +583,6 @@ begin
     inc(maketic);
   end;
 
-
   if singletics then
     exit;         // singletic update is syncronous
 
@@ -571,9 +618,11 @@ begin
   GetPackets;
 end;
 
+//==============================================================================
 //
 // D_CheckAbort
 //
+//==============================================================================
 procedure D_CheckAbort;
 var
   ev: Pevent_t;
@@ -597,9 +646,11 @@ begin
   until eventtail = eventhead;
 end;
 
+//==============================================================================
 //
 // D_ArbitrateNetStart
 //
+//==============================================================================
 procedure D_ArbitrateNetStart;
 var
   i: integer;
@@ -694,10 +745,12 @@ begin
   SUC_FinishedNetwork;
 end;
 
+//==============================================================================
 //
 // D_CheckNetGame
 // Works out player numbers among the net participants
 //
+//==============================================================================
 procedure D_CheckNetGame;
 var
   i: integer;
@@ -739,11 +792,13 @@ begin
     [consoleplayer + 1, doomcom.numplayers, doomcom.numnodes]);
 end;
 
+//==============================================================================
 //
 // D_QuitNetGame
 // Called before quitting to leave a net game
 // without hanging the other players
 //
+//==============================================================================
 procedure D_QuitNetGame;
 var
   i, j: integer;
@@ -772,6 +827,11 @@ var
   oldnettics: integer;
   oldentertics: integer = 0;
 
+//==============================================================================
+//
+// D_RunMultipleTicks
+//
+//==============================================================================
 procedure D_RunMultipleTicks;
 var
   i, j: integer;
@@ -957,6 +1017,11 @@ begin
   end;
 end;
 
+//==============================================================================
+//
+// D_RunSingleTick
+//
+//==============================================================================
 procedure D_RunSingleTick;
 begin
   I_StartTic;

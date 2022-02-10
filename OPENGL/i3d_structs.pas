@@ -4,7 +4,7 @@
 //
 //  Copyright (C) 1995 by Noriaworks
 //  Copyright (C) 1993-1996 by id Software, Inc.
-//  Copyright (C) 2004-2021 by Jim Valavanis
+//  Copyright (C) 2004-2022 by Jim Valavanis
 //
 //  This program is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU General Public License
@@ -292,7 +292,6 @@ const
   O3DFF_FLAT    = $0001;     // Face is flat shaded (1st vertex' normal).
   O3DFF_NORDER  = $0002;     // Face should be rendered prior to the rest.
   O3DFF_VISIBLE = $0004;     // Should be though of as visible always.
-
 
 const
   O3DD_FLAT = 0;

@@ -18,7 +18,7 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with this program; if not, write to the Free Software
-//  Foundation, inc., 59 Temple Place - Suite 330, Boston, MA
+//  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 //  02111-1307, USA.
 //
 // DESCRIPTION:
@@ -37,6 +37,11 @@ interface
 uses
   speed_score;
 
+//==============================================================================
+//
+// SH_DrawScoreTableItems
+//
+//==============================================================================
 procedure SH_DrawScoreTableItems(const si: Pspeedtimetableitems_t);
 
 implementation
@@ -48,6 +53,11 @@ uses
   speed_cars,
   speed_string_format;
 
+//==============================================================================
+//
+// SH_DrawScoreTableItems
+//
+//==============================================================================
 procedure SH_DrawScoreTableItems(const si: Pspeedtimetableitems_t);
 var
   ypos: integer;

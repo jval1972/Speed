@@ -4,7 +4,7 @@
 //
 //  Copyright (C) 1995 by Noriaworks
 //  Copyright (C) 1993-1996 by id Software, Inc.
-//  Copyright (C) 2004-2021 by Jim Valavanis
+//  Copyright (C) 2004-2022 by Jim Valavanis
 //
 //  This program is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU General Public License
@@ -18,7 +18,7 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with this program; if not, write to the Free Software
-//  Foundation, inc., 59 Temple Place - Suite 330, Boston, MA
+//  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 //  02111-1307, USA.
 //
 // DESCRIPTION:
@@ -37,20 +37,60 @@ interface
 uses
   i_music;
 
+//==============================================================================
+//
+// I_PlayMik
+//
+//==============================================================================
 procedure I_PlayMik(const data: pointer; const size: integer; const typ: music_t);
 
+//==============================================================================
+//
+// I_PauseMik
+//
+//==============================================================================
 procedure I_PauseMik(const typ: music_t);
 
+//==============================================================================
+//
+// I_ResumeMik
+//
+//==============================================================================
 procedure I_ResumeMik(const typ: music_t);
 
+//==============================================================================
+//
+// I_StopMik
+//
+//==============================================================================
 procedure I_StopMik(const typ: music_t);
 
+//==============================================================================
+//
+// I_InitMik
+//
+//==============================================================================
 procedure I_InitMik;
 
+//==============================================================================
+//
+// I_ShutDownMik
+//
+//==============================================================================
 procedure I_ShutDownMik;
 
+//==============================================================================
+//
+// I_SetMusicVolumeMik
+//
+//==============================================================================
 procedure I_SetMusicVolumeMik(volume: integer; const typ: music_t);
 
+//==============================================================================
+//
+// I_ProcessMik
+//
+//==============================================================================
 procedure I_ProcessMik(const typ: music_t);
 
 implementation
@@ -73,6 +113,11 @@ var
 const
   MIK_FREQ = 44100;
 
+//==============================================================================
+//
+// I_InitMik
+//
+//==============================================================================
 procedure I_InitMik;
 var
   errstr: string;
@@ -87,12 +132,22 @@ begin
   end;
 end;
 
+//==============================================================================
+//
+// I_ShutDownMik
+//
+//==============================================================================
 procedure I_ShutDownMik;
 begin
   MikWin_Free;
   MikWin_FreeLibrary;
 end;
 
+//==============================================================================
+//
+// I_PlayMik
+//
+//==============================================================================
 procedure I_PlayMik(const data: pointer; const size: integer; const typ: music_t);
 var
   mikfilename: string;
@@ -128,6 +183,11 @@ begin
   MikWin_Play(True);
 end;
 
+//==============================================================================
+//
+// I_PauseMik
+//
+//==============================================================================
 procedure I_PauseMik(const typ: music_t);
 begin
   if not mik_init then
@@ -143,6 +203,11 @@ begin
     MikWin_Pause;
 end;
 
+//==============================================================================
+//
+// I_ResumeMik
+//
+//==============================================================================
 procedure I_ResumeMik(const typ: music_t);
 begin
   if not mik_init then
@@ -158,6 +223,11 @@ begin
     MikWin_Pause;
 end;
 
+//==============================================================================
+//
+// I_StopMik
+//
+//==============================================================================
 procedure I_StopMik(const typ: music_t);
 begin
   if not mik_init then
@@ -180,6 +250,11 @@ const
     102,   111,    119,   127
   );
 
+//==============================================================================
+//
+// I_SetMusicVolumeMik
+//
+//==============================================================================
 procedure I_SetMusicVolumeMik(volume: integer; const typ: music_t);
 begin
   if not mik_init then
@@ -194,6 +269,11 @@ begin
   Player_SetVolume(MIK_VOLUME_CONTROL[ibetween(volume, 1, 15)]);
 end;
 
+//==============================================================================
+//
+// I_ProcessMik
+//
+//==============================================================================
 procedure I_ProcessMik(const typ: music_t);
 begin
   if not mik_init then

@@ -4,7 +4,7 @@
 //
 //  Copyright (C) 1995 by Noriaworks
 //  Copyright (C) 1993-1996 by id Software, Inc.
-//  Copyright (C) 2004-2021 by Jim Valavanis
+//  Copyright (C) 2004-2022 by Jim Valavanis
 //
 //  This program is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU General Public License
@@ -18,7 +18,7 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with this program; if not, write to the Free Software
-//  Foundation, inc., 59 Temple Place - Suite 330, Boston, MA
+//  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 //  02111-1307, USA.
 //
 //------------------------------------------------------------------------------
@@ -35,13 +35,33 @@ uses
   d_delphi,
   speed_is2;
 
+//==============================================================================
+//
+// SH_RotatebitmapBuffer90
+//
+//==============================================================================
 procedure SH_RotatebitmapBuffer90(const buf: PByteArray; const w, h: integer);
 
+//==============================================================================
+//
+// SH_FlipbitmapbufferHorz
+//
+//==============================================================================
 procedure SH_FlipbitmapbufferHorz(const buf: PByteArray; const w, h: integer);
 
+//==============================================================================
+//
+// SH_BltImageBuffer
+//
+//==============================================================================
 procedure SH_BltImageBuffer(const inbuf: PByteArray; const inw, inh: integer;
   const outbuf: PByteArray; const x1, x2: integer; const y1, y2: integer);
 
+//==============================================================================
+//
+// SH_ColorReplace
+//
+//==============================================================================
 procedure SH_ColorReplace(const buf: PByteArray; const w, h: integer; const oldc, newc: byte);
 
 type
@@ -72,6 +92,11 @@ type
 
 implementation
 
+//==============================================================================
+//
+// SH_RotatebitmapBuffer90
+//
+//==============================================================================
 procedure SH_RotatebitmapBuffer90(const buf: PByteArray; const w, h: integer);
 var
   i, j: integer;
@@ -94,6 +119,11 @@ begin
   memfree(pointer(img), w * h);
 end;
 
+//==============================================================================
+//
+// SH_FlipbitmapbufferHorz
+//
+//==============================================================================
 procedure SH_FlipbitmapbufferHorz(const buf: PByteArray; const w, h: integer);
 var
   i, j: integer;
@@ -116,6 +146,11 @@ begin
   memfree(pointer(img), w * h);
 end;
 
+//==============================================================================
+//
+// SH_BltImageBuffer
+//
+//==============================================================================
 procedure SH_BltImageBuffer(const inbuf: PByteArray; const inw, inh: integer;
   const outbuf: PByteArray; const x1, x2: integer; const y1, y2: integer);
 var
@@ -137,6 +172,11 @@ begin
     end;
 end;
 
+//==============================================================================
+//
+// SH_ColorReplace
+//
+//==============================================================================
 procedure SH_ColorReplace(const buf: PByteArray; const w, h: integer; const oldc, newc: byte);
 var
   i: integer;
@@ -163,6 +203,11 @@ begin
   inherited;
 end;
 
+//==============================================================================
+//
+// TSpeedBitmap.ApplyTranslationTable
+//
+//==============================================================================
 procedure TSpeedBitmap.ApplyTranslationTable(const trans: PByteArray);
 var
   i: integer;
@@ -171,6 +216,11 @@ begin
     fimg[i] := trans[fimg[i]];
 end;
 
+//==============================================================================
+//
+// TSpeedBitmap.AttachImage
+//
+//==============================================================================
 procedure TSpeedBitmap.AttachImage(const buf: PByteArray; const awidth, aheight: integer);
 var
   i: integer;
@@ -181,6 +231,11 @@ begin
     fimg[i] := buf[i];
 end;
 
+//==============================================================================
+//
+// TSpeedBitmap.AttachIS2
+//
+//==============================================================================
 function TSpeedBitmap.AttachIS2(const is2: IS2_TSprite_p): boolean;
 type
   bmpixels_t = packed array[0..320, 0..200] of byte;
@@ -286,6 +341,11 @@ begin
   result := true;
 end;
 
+//==============================================================================
+//
+// TSpeedBitmap.Clear
+//
+//==============================================================================
 procedure TSpeedBitmap.Clear(const color: byte);
 var
   i: integer;
@@ -294,6 +354,11 @@ begin
     fimg[i] := color;
 end;
 
+//==============================================================================
+//
+// TSpeedBitmap.RightCrop
+//
+//==============================================================================
 procedure TSpeedBitmap.RightCrop(const color: byte);
 
   function _do_crop_right: boolean;
@@ -323,11 +388,21 @@ begin
   repeat until not _do_crop_right;
 end;
 
+//==============================================================================
+//
+// TSpeedBitmap.pos2idx
+//
+//==============================================================================
 function TSpeedBitmap.pos2idx(const x, y: integer): integer;
 begin
   result := x * fheight + y;
 end;
 
+//==============================================================================
+//
+// TSpeedBitmap.Resize
+//
+//==============================================================================
 procedure TSpeedBitmap.Resize(const awidth, aheight: integer);
 var
   oldsz, newsz: integer;
@@ -342,6 +417,11 @@ begin
     realloc(pointer(fimg), oldsz, newsz);
 end;
 
+//==============================================================================
+//
+// TSpeedBitmap.SetWidth
+//
+//==============================================================================
 procedure TSpeedBitmap.SetWidth(const awidth: integer);
 var
   oldsz, newsz: integer;
@@ -355,6 +435,11 @@ begin
     realloc(pointer(fimg), oldsz, newsz);
 end;
 
+//==============================================================================
+//
+// TSpeedBitmap.SetHeight
+//
+//==============================================================================
 procedure TSpeedBitmap.SetHeight(const aheight: integer);
 var
   oldsz, newsz: integer;
@@ -368,6 +453,11 @@ begin
     realloc(pointer(fimg), oldsz, newsz);
 end;
 
+//==============================================================================
+//
+// TSpeedBitmap.GetPixel
+//
+//==============================================================================
 function TSpeedBitmap.GetPixel(x, y: integer): byte;
 begin
   if not IsIntegerInRange(x, 0, fwidth - 1) then
@@ -383,6 +473,11 @@ begin
   result := fimg[pos2idx(x, y)];
 end;
 
+//==============================================================================
+//
+// TSpeedBitmap.SetPixel
+//
+//==============================================================================
 procedure TSpeedBitmap.SetPixel(x, y: integer; const apixel: byte);
 begin
   if not IsIntegerInRange(x, 0, fwidth - 1) then

@@ -4,7 +4,7 @@
 //
 //  Copyright (C) 1995 by Noriaworks
 //  Copyright (C) 1993-1996 by id Software, Inc.
-//  Copyright (C) 2004-2021 by Jim Valavanis
+//  Copyright (C) 2004-2022 by Jim Valavanis
 //
 //  This program is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU General Public License
@@ -40,28 +40,78 @@ uses
   Windows,
   d_delphi;
 
+//==============================================================================
+// GL_InitGraphics
+//
 // Called by D_DoomMain,
 // determines the hardware configuration
 // and sets up the video mode
+//
+//==============================================================================
 procedure GL_InitGraphics;
 
+//==============================================================================
+//
+// GL_ChangeFullScreen
+//
+//==============================================================================
 procedure GL_ChangeFullScreen(const full: boolean);
 
+//==============================================================================
+//
+// GL_SetDisplayMode
+//
+//==============================================================================
 function GL_SetDisplayMode(const newwidth, newheight: integer): boolean;
 
+//==============================================================================
+//
+// I_ShutDownGraphics
+//
+//==============================================================================
 procedure I_ShutDownGraphics;
 
+//==============================================================================
+// I_SetPalette
+//
 // Takes full 8 bit values.
+//
+//==============================================================================
 procedure I_SetPalette(const palette: PByteArray);
 
+//==============================================================================
+//
+// I_FinishUpdate
+//
+//==============================================================================
 procedure I_FinishUpdate;
 
+//==============================================================================
+//
+// I_StartUpdate
+//
+//==============================================================================
 procedure I_StartUpdate;
 
+//==============================================================================
+//
+// I_ReadScreen32
+//
+//==============================================================================
 procedure I_ReadScreen32(dest: pointer);
 
+//==============================================================================
+//
+// I_ReverseScreen
+//
+//==============================================================================
 procedure I_ReverseScreen(const p: PLongWordArray);
 
+//==============================================================================
+//
+// I_RestoreWindowPos
+//
+//==============================================================================
 procedure I_RestoreWindowPos;
 
 var
@@ -75,6 +125,11 @@ var
 var
   gl_initialized: boolean = false;
 
+//==============================================================================
+//
+// DoomMain
+//
+//==============================================================================
 procedure DoomMain;
 
 var
@@ -119,11 +174,21 @@ var
   screen: PLongWordArray;
   oscreen: pointer;
 
+//==============================================================================
+//
+// I_RestoreWindowPos
+//
+//==============================================================================
 procedure I_RestoreWindowPos;
 begin
   SetWindowPos(hMainWnd, HWND_TOP, 0, 0, SCREENWIDTH, SCREENHEIGHT, SWP_SHOWWINDOW);
 end;
 
+//==============================================================================
+//
+// I_DisableAltTab
+//
+//==============================================================================
 procedure I_DisableAltTab;
 var
   old: Boolean;
@@ -144,6 +209,11 @@ begin
   s_alttab_disabled := true;
 end;
 
+//==============================================================================
+//
+// I_EnableAltTab
+//
+//==============================================================================
 procedure I_EnableAltTab;
 var
   old: Boolean;
@@ -170,6 +240,12 @@ var
 {---------------------------------------------------------------------}
 {  Properly destroys the window created at startup (no memory leaks)  }
 {---------------------------------------------------------------------}
+
+//==============================================================================
+//
+// glKillWnd
+//
+//==============================================================================
 procedure glKillWnd;
 begin
   if fullscreen then             // Change back to non fullscreen
@@ -206,6 +282,11 @@ var
   {$ENDIF}
   wipe_tex: glUint = 0;
 
+//==============================================================================
+//
+// I_ShutDownGraphics
+//
+//==============================================================================
 procedure I_ShutDownGraphics;
 begin
   gld_ShutDownTextures;
@@ -232,6 +313,11 @@ begin
   memfree(oscreen, allocscreensize);
 end;
 
+//==============================================================================
+//
+// glEnable2D
+//
+//==============================================================================
 procedure glEnable2D;
 var
   vPort: array[0..3] of GLInt;
@@ -248,6 +334,11 @@ begin
   glLoadIdentity();
 end;
 
+//==============================================================================
+//
+// glDisable2D
+//
+//==============================================================================
 procedure glDisable2D;
 begin
   glMatrixMode(GL_PROJECTION);
@@ -263,6 +354,11 @@ var
 var
   translation_array: array[0..GLDRAWTEXHEIGHT - 1, 0..GLDRAWTEXWIDTH - 1] of LongWord;
 
+//==============================================================================
+//
+// GL_SafeTranslate
+//
+//==============================================================================
 procedure GL_SafeTranslate;
 var
   i, j, k: integer;
@@ -286,6 +382,11 @@ var
   last_y1: integer = MAXINT;
 {$ENDIF}
 
+//==============================================================================
+//
+// I_FinishUpdateWIPE
+//
+//==============================================================================
 procedure I_FinishUpdateWIPE;
 begin
   glPushAttrib(GL_ALL_ATTRIB_BITS);
@@ -315,7 +416,6 @@ begin
     glTexCoord2f(0.0, 0.0);
     glVertex2f(0, SCREENHEIGHT);
   glEnd;
-
 
 // Blend overlay (Menu & Console) over the wipe
   glBindTexture(GL_TEXTURE_2D, overlay_tex);
@@ -359,6 +459,11 @@ begin
   gld_Finish;
 end;
 
+//==============================================================================
+//
+// I_FinishUpdateOverlay
+//
+//==============================================================================
 procedure I_FinishUpdateOverlay(const doflush: boolean);
 {$IFDEF DOOM}
 var
@@ -473,6 +578,11 @@ end;
 var
   wipe: boolean = false;
 
+//==============================================================================
+//
+// I_StartUpdate
+//
+//==============================================================================
 procedure I_StartUpdate;
 begin
   if not wipe then
@@ -491,6 +601,11 @@ begin
 //    printf('I_StartUpdate(): fuck!');
 end;
 
+//==============================================================================
+//
+// I_FinishUpdate
+//
+//==============================================================================
 procedure I_FinishUpdate;
 var
   wipestart: integer;
@@ -541,13 +656,13 @@ begin
   wipe := false;
 end;
 
+//==============================================================================
 //
 // Palette stuff.
 //
-
-//
 // I_SetPalette
 //
+//==============================================================================
 procedure I_SetPalette(const palette: PByteArray);
 var
   dest: PLongWord;
@@ -569,6 +684,11 @@ begin
   end;
 end;
 
+//==============================================================================
+//
+// I_AdjustWindowMode
+//
+//==============================================================================
 function I_AdjustWindowMode: boolean;
 begin
   result := false;
@@ -590,6 +710,12 @@ const
 {------------------------------------------------------------------}
 {  Handle window resize                                            }
 {------------------------------------------------------------------}
+
+//==============================================================================
+//
+// glResizeWnd
+//
+//==============================================================================
 procedure glResizeWnd;
 begin
   glViewport(0, 0, SCREENWIDTH, SCREENHEIGHT);    // Set the viewport for the OpenGL window
@@ -604,6 +730,12 @@ end;
 {------------------------------------------------------------------}
 {  Initialise OpenGL                                               }
 {------------------------------------------------------------------}
+
+//==============================================================================
+//
+// glInit
+//
+//==============================================================================
 procedure glInit;
 begin
   glClearColor(0.0, 0.0, 0.0, 0.0);        // Black Background
@@ -615,6 +747,11 @@ begin
   glEnable(GL_TEXTURE_2D);                     // Enable Texture Mapping
 end;
 
+//==============================================================================
+//
+// WindowProc
+//
+//==============================================================================
 function WindowProc(hWnd: HWND; Msg: UINT; wParam: WPARAM;
   lParam: LPARAM): LRESULT; stdcall; export;
 begin
@@ -667,9 +804,14 @@ begin
   result := DefWindowProc(hWnd, Msg, WParam, LParam);
 end;
 
+//==============================================================================
+// GL_InitGraphics
+//
 // Called by D_DoomMain,
 // determines the hardware configuration
 // and sets up the video mode
+//
+//==============================================================================
 procedure GL_InitGraphics;
 var
   WindowClass: TWndClass;
@@ -868,6 +1010,11 @@ begin
   glTexImage2D(GL_TEXTURE_2D, 0, 4, GLDRAWTEXWIDTH, GLDRAWTEXHEIGHT, 0, GL_BGRA, GL_UNSIGNED_BYTE, screen32);
 end;
 
+//==============================================================================
+//
+// GL_ChangeFullScreen
+//
+//==============================================================================
 procedure GL_ChangeFullScreen(const full: boolean);
 var
   dmScreenSettings: DEVMODE;   // Screen settings (fullscreen, etc...)
@@ -896,7 +1043,11 @@ begin
   I_RestoreWindowPos;
 end;
 
-
+//==============================================================================
+//
+// GL_SetDisplayMode
+//
+//==============================================================================
 function GL_SetDisplayMode(const newwidth, newheight: integer): boolean;
 var
   nwidth, nheight: integer;
@@ -943,11 +1094,21 @@ begin
   end;
 end;
 
+//==============================================================================
+//
+// I_ReadScreen32
+//
+//==============================================================================
 procedure I_ReadScreen32(dest: pointer);
 begin
   glReadPixels(0, 0, SCREENWIDTH, SCREENHEIGHT, GL_BGRA, GL_UNSIGNED_BYTE, dest);
 end;
 
+//==============================================================================
+//
+// I_ReverseScreen
+//
+//==============================================================================
 procedure I_ReverseScreen(const p: PLongWordArray);
 var
   src, dest: PLongWordArray;
@@ -967,6 +1128,11 @@ begin
   end;
 end;
 
+//==============================================================================
+//
+// DoomMain
+//
+//==============================================================================
 procedure DoomMain;
 begin
   I_SetDPIAwareness;

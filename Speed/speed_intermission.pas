@@ -34,14 +34,29 @@ unit speed_intermission;
 
 interface
 
+//==============================================================================
+// SH_Intermission_Ticker
+//
 // Called by main loop
+//
+//==============================================================================
 procedure SH_Intermission_Ticker;
 
+//==============================================================================
+// SH_Intermission_Drawer
+//
 // Called by main loop,
 // draws the intermission directly into the screen buffer.
+//
+//==============================================================================
 procedure SH_Intermission_Drawer;
 
+//==============================================================================
+// SH_Intermission_Start
+//
 // Setup for an intermission screen.
+//
+//==============================================================================
 procedure SH_Intermission_Start;
 
 implementation
@@ -75,6 +90,11 @@ var
   in_stage_tic: integer; // tics in stage
   in_struct: Pwbstartstruct_t;
 
+//==============================================================================
+//
+// SH_CheckForInput
+//
+//==============================================================================
 procedure SH_CheckForInput;
 var
   i: integer;
@@ -117,7 +137,12 @@ begin
   end;
 end;
 
+//==============================================================================
+// SH_Intermission_Ticker
+//
 // Updates stuff each tick
+//
+//==============================================================================
 procedure SH_Intermission_Ticker;
 begin
   inc(in_tic);
@@ -132,6 +157,11 @@ begin
   SH_CheckForInput;
 end;
 
+//==============================================================================
+//
+// SH_StorePlayerScore
+//
+//==============================================================================
 procedure SH_StorePlayerScore;
 var
   score: Pplayerscore_t;
@@ -151,7 +181,12 @@ begin
         SH_UpdateScoreTable(@players[consoleplayer], score.episode, score.map, gameskill);
 end;
 
+//==============================================================================
+// SH_Intermission_Drawer0
+//
 // Race results
+//
+//==============================================================================
 procedure SH_Intermission_Drawer0;
 var
   score: Pplayerscore_t;
@@ -195,6 +230,11 @@ begin
   V_CopyRect(0, 0, SCN_TMP, 320, 200, 0, 0, SCN_FG, true);
 end;
 
+//==============================================================================
+//
+// SH_Intermission_Drawer1
+//
+//==============================================================================
 procedure SH_Intermission_Drawer1;
 var
   score: Pplayerscore_t;
@@ -235,6 +275,11 @@ begin
   V_CopyRect(0, 0, SCN_TMP, 320, 200, 0, 0, SCN_FG, true);
 end;
 
+//==============================================================================
+//
+// SH_Intermission_Drawer2
+//
+//==============================================================================
 procedure SH_Intermission_Drawer2;
 var
   score: Pplayerscore_t;
@@ -279,7 +324,12 @@ begin
   V_CopyRect(0, 0, SCN_TMP, 320, 200, 0, 0, SCN_FG, true);
 end;
 
+//==============================================================================
+// SH_Intermission_Drawer3
+//
 // Race results
+//
+//==============================================================================
 procedure SH_Intermission_Drawer3;
 var
   score: Pplayerscore_t;
@@ -325,6 +375,11 @@ begin
   V_CopyRect(0, 0, SCN_TMP, 320, 200, 0, 0, SCN_FG, true);
 end;
 
+//==============================================================================
+//
+// SH_Intermission_Drawer
+//
+//==============================================================================
 procedure SH_Intermission_Drawer;
 var
   draw_stage: integer;
@@ -341,6 +396,11 @@ begin
   end;
 end;
 
+//==============================================================================
+//
+// SH_Intermission_Start
+//
+//==============================================================================
 procedure SH_Intermission_Start;
 begin
   in_struct := @wminfo;

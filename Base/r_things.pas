@@ -48,19 +48,72 @@ var
   maxvissprite: integer;
 
 {$IFNDEF OPENGL}
+
+//==============================================================================
+//
+// R_DrawMaskedColumn
+//
+//==============================================================================
 procedure R_DrawMaskedColumn(column: Pcolumn_t; const depthscale: fixed_t;
   baseclip: integer = -1; const renderflags: LongWord = 0);
+
+//==============================================================================
+//
+// R_DrawMaskedColumn2
+//
+//==============================================================================
 procedure R_DrawMaskedColumn2(const mc2h: integer); // Use dc_source32
 {$ENDIF}
 
+//==============================================================================
+//
+// R_AddSprites
+//
+//==============================================================================
 procedure R_AddSprites(sec: Psector_t);
+
+//==============================================================================
+//
+// R_InitSprites
+//
+//==============================================================================
 procedure R_InitSprites(namelist: PIntegerArray);
+
+//==============================================================================
+//
+// R_InitNegoArray
+//
+//==============================================================================
 procedure R_InitNegoArray;
+
+//==============================================================================
+//
+// R_ClearSprites
+//
+//==============================================================================
 procedure R_ClearSprites;
 {$IFNDEF OPENGL}
+
+//==============================================================================
+//
+// R_DrawMasked_SingleThread
+//
+//==============================================================================
 procedure R_DrawMasked_SingleThread;
+
+//==============================================================================
+//
+// R_DrawMasked_MultiThread
+//
+//==============================================================================
 procedure R_DrawMasked_MultiThread;
 {$ENDIF}
+
+//==============================================================================
+//
+// R_DrawPlayer
+//
+//==============================================================================
 procedure R_DrawPlayer;
 
 var
@@ -86,14 +139,29 @@ var
   sprites: Pspritedef_tArray;
   numspritespresent: integer;
 
+//==============================================================================
+//
+// R_ShutDownSprites
+//
+//==============================================================================
 procedure R_ShutDownSprites;
 
 const
   MINZ = FRACUNIT * 4;
   BASEYCENTER = 100;
 
+//==============================================================================
+//
+// R_NewVisSprite
+//
+//==============================================================================
 function R_NewVisSprite: Pvissprite_t;
 
+//==============================================================================
+//
+// R_ProjectAdditionalThings
+//
+//==============================================================================
 procedure R_ProjectAdditionalThings;
 
 var
@@ -171,10 +239,12 @@ var
   maxframe: integer;
   spritename: string;
 
+//==============================================================================
 //
 // R_InstallSpriteLump
 // Local function for R_InitSprites.
 //
+//==============================================================================
 procedure R_InstallSpriteLump(lump: integer;
   frame: LongWord; rotation: LongWord; flipped: boolean);
 var
@@ -236,6 +306,7 @@ begin
   sprtemp[frame].flip[rotation] := flipped;
 end;
 
+//==============================================================================
 //
 // R_InitSpriteDefs
 // Pass a null terminated list of sprite names
@@ -251,6 +322,7 @@ end;
 //  letter/number appended.
 // The rotation character can be 0 to signify no rotations.
 //
+//==============================================================================
 procedure R_InitSpriteDefs(namelist: PIntegerArray);
 
   procedure sprtempreset;
@@ -407,13 +479,13 @@ begin
   end;
 end;
 
+//==============================================================================
 //
 // GAME FUNCTIONS
 //
-
-//
 // R_InitNegoArray
 //
+//==============================================================================
 procedure R_InitNegoArray;
 var
   i: integer;
@@ -426,10 +498,12 @@ var
   funny_rotations: TDStringList;
   wrong_frames: TDStringList;
 
+//==============================================================================
 //
 // R_InitSprites
 // Called at program start.
 //
+//==============================================================================
 procedure R_InitSprites(namelist: PIntegerArray);
 begin
   R_InitNegoArray;
@@ -442,20 +516,24 @@ begin
 {$ENDIF}
 end;
 
+//==============================================================================
 //
 // R_ClearSprites
 // Called at frame start.
 //
+//==============================================================================
 procedure R_ClearSprites;
 begin
   vissprite_p := 0;
 end;
 
+//==============================================================================
 //
 // R_NewVisSprite
 //
 // JVAL Now we allocate a new visprite dynamically
 //
+//==============================================================================
 function R_NewVisSprite: Pvissprite_t;
 begin
   if vissprite_p = visspritessize then
@@ -473,6 +551,11 @@ begin
   inc(vissprite_p);
 end;
 
+//==============================================================================
+//
+// R_ShutDownSprites
+//
+//==============================================================================
 procedure R_ShutDownSprites;
 begin
   realloc(pointer(vissprites), visspritessize * SizeOf(Pvissprite_t), 0);
@@ -485,6 +568,11 @@ end;
 
 {$IFNDEF OPENGL}
 
+//==============================================================================
+//
+// R_MaskedAdjustY
+//
+//==============================================================================
 procedure R_MaskedAdjustY(var yl: integer; const yh: integer);
 var
   testfrac: fixed_t;
@@ -510,6 +598,11 @@ end;
 type
   R_DrawMaskedColumn_t = procedure (column: Pcolumn_t; const depthscale: fixed_t; baseclip: integer = -1; const renderflags: LongWord = 0);
 
+//==============================================================================
+//
+// R_DrawMaskedColumn
+//
+//==============================================================================
 procedure R_DrawMaskedColumn(column: Pcolumn_t; const depthscale: fixed_t;
   baseclip: integer = -1; const renderflags: LongWord = 0);
 var
@@ -587,7 +680,12 @@ begin
   dc_texturemid := basetexturemid;
 end;
 
+//==============================================================================
+// R_DrawMaskedColumn2
+//
 // For Walls only
+//
+//==============================================================================
 procedure R_DrawMaskedColumn2(const mc2h: integer); // Use dc_source32
 var
   topscreen: int64;
@@ -630,6 +728,11 @@ end;
 type
   DrawMaskedColumn_Batch_t = procedure (column: Pcolumn_t; baseclip: integer = -1);
 
+//==============================================================================
+//
+// R_DrawMaskedColumn_Batch
+//
+//==============================================================================
 procedure R_DrawMaskedColumn_Batch(column: Pcolumn_t; baseclip: integer = -1);
 var
   topscreen: int64;
@@ -701,6 +804,11 @@ var
   spritefunc_mt: spritefunc_t;
   batchspritefunc_mt: spritefunc_t;
 
+//==============================================================================
+//
+// R_FillSpriteInfo_MT
+//
+//==============================================================================
 procedure R_FillSpriteInfo_MT(const parms: Pspriterenderinfo_t);
 begin
   parms.dc_x := dc_x;
@@ -715,6 +823,11 @@ begin
   parms.proc := spritefunc_mt;
 end;
 
+//==============================================================================
+//
+// R_FillSpriteInfo_BatchMT
+//
+//==============================================================================
 procedure R_FillSpriteInfo_BatchMT(const parms: Pspriterenderinfo_t);
 begin
   parms.dc_x := dc_x;
@@ -729,6 +842,11 @@ begin
   parms.proc := batchspritefunc_mt;
 end;
 
+//==============================================================================
+//
+// R_DrawMaskedColumn_BatchMT
+//
+//==============================================================================
 procedure R_DrawMaskedColumn_BatchMT(column: Pcolumn_t; baseclip: integer = -1);
 var
   topscreen: int64;
@@ -793,6 +911,11 @@ begin
   dc_texturemid := basetexturemid;
 end;
 
+//==============================================================================
+//
+// R_DrawMaskedColumnMT
+//
+//==============================================================================
 procedure R_DrawMaskedColumnMT(column: Pcolumn_t; const depthscale: fixed_t;
   baseclip: integer = -1; const renderflags: LongWord = 0);
 var
@@ -877,6 +1000,11 @@ end;
 const
   MIN_SPRITE_SIZE_MT = 64;
 
+//==============================================================================
+//
+// R_DrawVisSprite
+//
+//==============================================================================
 procedure R_DrawVisSprite(vis: Pvissprite_t; const playerweapon: boolean = false);
 var
   column: Pcolumn_t;
@@ -1100,11 +1228,12 @@ begin
   Z_ChangeTag(patch, PU_CACHE);
 end;
 
+//==============================================================================
 //
 // R_DrawVisSpriteLight
 // Used for sprites that emits light
 //
-
+//==============================================================================
 procedure R_DrawVisSpriteLight(vis: Pvissprite_t; x1: integer; x2: integer);
 var
   texturecolumn: integer;
@@ -1277,12 +1406,14 @@ const
     ( 0,  8,  1,  9,  2, 10,  3, 11,  4, 12,  5, 13,  6, 14,  7, 15, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1),
     ( 0, 16,  8, 17,  1, 18,  9, 19,  2, 20, 10, 21,  3, 22, 11, 23,  4, 24, 12, 25,  5, 26, 13, 27,  6, 28, 14, 29,  7, 30, 15, 31)
   );
-//
+
+//==============================================================================
 //
 // R_ProjectSprite
 // Generates a vissprite for a thing
 //  if it might be visible.
 //
+//==============================================================================
 procedure R_ProjectSprite(thing: Pmobj_t);
 var
   tr_x: fixed_t;
@@ -1702,10 +1833,12 @@ begin
 {$ENDIF}
 end;
 
+//==============================================================================
 //
 // R_AddSprites
 // During BSP traversal, this adds sprites by sector.
 //
+//==============================================================================
 procedure R_AddSprites(sec: Psector_t);
 var
   thing: Pmobj_t;
@@ -1788,6 +1921,11 @@ const
   );
 {$ENDIF}
 
+//==============================================================================
+//
+// R_DrawPSprite
+//
+//==============================================================================
 procedure R_DrawPSprite(psp: Ppspdef_t);
 var
   tx: fixed_t;
@@ -1927,9 +2065,11 @@ begin
 {$ENDIF}
 end;
 
+//==============================================================================
 //
 // R_DrawPlayerSprites
 //
+//==============================================================================
 procedure R_DrawPlayerSprites;
 var
   i: integer;
@@ -1977,9 +2117,12 @@ begin
 end;
 
 {$IFNDEF OPENGL}
+
+//==============================================================================
 //
 // R_DrawSprite
 //
+//==============================================================================
 procedure R_DrawSprite(spr: Pvissprite_t);
 var
   ds: Pdrawseg_t;
@@ -2183,6 +2326,11 @@ begin
   R_DrawVisSprite(spr);
 end;
 
+//==============================================================================
+//
+// R_DrawSpriteLight
+//
+//==============================================================================
 procedure R_DrawSpriteLight(spr: Pvissprite_t);
 var
   ds: Pdrawseg_t;
@@ -2320,6 +2468,11 @@ begin
 
 end;
 
+//==============================================================================
+//
+// R_MarkLights
+//
+//==============================================================================
 procedure R_MarkLights;
 var
   i: integer;
@@ -2331,9 +2484,12 @@ begin
   R_AddAdditionalLights;
 end;
 
+//==============================================================================
+// R_DoDrawMasked
 //
 // R_DrawMasked
 //
+//==============================================================================
 procedure R_DoDrawMasked;
 var
   pds: Pdrawseg_t;
@@ -2373,6 +2529,11 @@ begin
   R_StopDepthBuffer;  // JVAL: 3d Floors
 end;
 
+//==============================================================================
+//
+// R_DrawMasked_SingleThread
+//
+//==============================================================================
 procedure R_DrawMasked_SingleThread;
 begin
   R_SortVisSprites;
@@ -2384,6 +2545,11 @@ begin
   R_DoDrawMasked;
 end;
 
+//==============================================================================
+//
+// R_DrawMasked_MultiThread
+//
+//==============================================================================
 procedure R_DrawMasked_MultiThread;
 begin
   R_WaitSortVisSpritesMT;
@@ -2396,6 +2562,11 @@ begin
 end;
 {$ENDIF}
 
+//==============================================================================
+//
+// RIT_ProjectAdditionalThing
+//
+//==============================================================================
 function RIT_ProjectAdditionalThing(mo: Pmobj_t): boolean;
 begin
   if (mo.state.voxels <> nil) {$IFDEF OPENGL} or (mo.state.models <> nil) {$ENDIF} then
@@ -2407,6 +2578,11 @@ end;
 const
   MAXMODELRADIUS = 384 * FRACUNIT;
 
+//==============================================================================
+//
+// R_ProjectAdditionalThings
+//
+//==============================================================================
 procedure R_ProjectAdditionalThings;
 var
   x: integer;
@@ -2426,6 +2602,11 @@ begin
       P_BlockThingsIterator(x, y, RIT_ProjectAdditionalThing);
 end;
 
+//==============================================================================
+//
+// R_DrawPlayer
+//
+//==============================================================================
 procedure R_DrawPlayer;
 var
   old_centery: fixed_t;

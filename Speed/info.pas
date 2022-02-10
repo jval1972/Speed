@@ -60,6 +60,11 @@ var
   mobjinfo: PmobjinfoArray_t = nil;
   nummobjtypes: integer = Ord(DO_NUMMOBJTYPES);
 
+//==============================================================================
+//
+// Info_Init
+//
+//==============================================================================
 procedure Info_Init(const usethinkers: boolean);
 
 const
@@ -82,7 +87,6 @@ const
     'HDB4', 'HDB5', 'HDB6', 'POB1', 'POB2', 'BRS1', 'TLMP', 'TLP2',
     'SPSH', 'LVAS', 'SLDG', 'SLDN', 'DD01', 'DD02', 'TNT1', 'DOGS', ''
   );
-
 
 implementation
 
@@ -11516,7 +11520,6 @@ const
     flags_ex: 0;              // flags_ex
    )                          // S_DOGS_RAISE6
 
-
   );
 
 const // Doom Original mobjinfo
@@ -17472,6 +17475,11 @@ const // Doom Original mobjinfo
 
   );
 
+//==============================================================================
+//
+// Info_Init
+//
+//==============================================================================
 procedure Info_Init(const usethinkers: boolean);
 var
   i: integer;

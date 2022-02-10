@@ -4,7 +4,7 @@
 //
 //  Copyright (C) 1995 by Noriaworks
 //  Copyright (C) 1993-1996 by id Software, Inc.
-//  Copyright (C) 2004-2021 by Jim Valavanis
+//  Copyright (C) 2004-2022 by Jim Valavanis
 //
 //  This program is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU General Public License
@@ -18,7 +18,7 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with this program; if not, write to the Free Software
-//  Foundation, inc., 59 Temple Place - Suite 330, Boston, MA
+//  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 //  02111-1307, USA.
 //
 // DESCRIPTION:
@@ -142,30 +142,90 @@ const
 const
   TEXTURESIZE = 256;
 
+//==============================================================================
+//
+// device_init
+//
+//==============================================================================
 procedure device_init(const device: Pdevice_t; const width, height: integer);
 
+//==============================================================================
+//
+// camera_at_zero
+//
+//==============================================================================
 procedure camera_at_zero(const device: Pdevice_t; const x, y, z: float);
 
+//==============================================================================
+//
+// device_set_texture
+//
+//==============================================================================
 procedure device_set_texture(const device: Pdevice_t; const tex: TBitmap);
 
+//==============================================================================
+//
+// device_clear
+//
+//==============================================================================
 procedure device_clear(const device: Pdevice_t);
 
+//==============================================================================
+//
+// device_destroy
+//
+//==============================================================================
 procedure device_destroy(const device: Pdevice_t);
 
+//==============================================================================
+//
+// device_draw_primitive
+//
+//==============================================================================
 procedure device_draw_primitive(const device: Pdevice_t; const v1, v2, v3: Pvertex_t);
 
+//==============================================================================
+//
+// matrix_set_rotate
+//
+//==============================================================================
 procedure matrix_set_rotate(const m: Pmatrix_t; x, y, z: float; const theta: float);
 
+//==============================================================================
+//
+// transform_update
+//
+//==============================================================================
 procedure transform_update(const ts: Ptransform_t);
 
+//==============================================================================
+//
+// matrix_add
+//
+//==============================================================================
 procedure matrix_add(const c: Pmatrix_t; const a, b: Pmatrix_t);
 
+//==============================================================================
+//
+// matrix_sub
+//
+//==============================================================================
 procedure matrix_sub(const c: Pmatrix_t; const a, b: Pmatrix_t);
 
+//==============================================================================
+//
+// matrix_mul
+//
+//==============================================================================
 procedure matrix_mul(const c: Pmatrix_t; const a, b: Pmatrix_t);
 
 implementation
 
+//==============================================================================
+//
+// CMID
+//
+//==============================================================================
 function CMID(const x: integer; const amin, amax: integer): integer;
 begin
   if x < amin then
@@ -176,11 +236,21 @@ begin
     Result := x;
 end;
 
+//==============================================================================
+//
+// interp
+//
+//==============================================================================
 function interp(const x1, x2: float; const t: float): float;
 begin
   Result := x1 + (x2 - x1) * t;
 end;
 
+//==============================================================================
+//
+// vector_length
+//
+//==============================================================================
 function vector_length(const v: Pvector_t): float;
 var
   sq: float;
@@ -189,6 +259,11 @@ begin
   Result := Sqrt(sq);
 end;
 
+//==============================================================================
+//
+// vector_add
+//
+//==============================================================================
 procedure vector_add(const z: Pvector_t; const x, y: Pvector_t);
 begin
   z.x := x.x + y.x;
@@ -197,6 +272,11 @@ begin
   z.w := 1.0;
 end;
 
+//==============================================================================
+//
+// vector_sub
+//
+//==============================================================================
 procedure vector_sub(const z: Pvector_t; const x, y: Pvector_t);
 begin
   z.x := x.x - y.x;
@@ -205,11 +285,21 @@ begin
   z.w := 1.0;
 end;
 
+//==============================================================================
+//
+// vector_dotproduct
+//
+//==============================================================================
 function vector_dotproduct(const x, y: Pvector_t): float;
 begin
   Result := x.x * y.x + x.y * y.y + x.z * y.z;
 end;
 
+//==============================================================================
+//
+// vector_crossproduct
+//
+//==============================================================================
 procedure vector_crossproduct(const z: Pvector_t; const x, y: Pvector_t);
 var
   m1, m2, m3: float;
@@ -223,6 +313,11 @@ begin
   z.w := 1.0;
 end;
 
+//==============================================================================
+//
+// vector_interp
+//
+//==============================================================================
 procedure vector_interp(const z: Pvector_t; const x1, x2: Pvector_t; const t: float);
 begin
   z.x := interp(x1.x, x2.x, t);
@@ -231,6 +326,11 @@ begin
   z.w := 1.0;
 end;
 
+//==============================================================================
+//
+// vector_normalize
+//
+//==============================================================================
 procedure vector_normalize(const v: Pvector_t );
 var
   len, inv: float;
@@ -245,6 +345,11 @@ begin
   end;
 end;
 
+//==============================================================================
+//
+// matrix_add
+//
+//==============================================================================
 procedure matrix_add(const c: Pmatrix_t; const a, b: Pmatrix_t);
 var
   i, j: integer;
@@ -254,6 +359,11 @@ begin
       c[i][j] := a[i][j] + b[i][j];
 end;
 
+//==============================================================================
+//
+// matrix_sub
+//
+//==============================================================================
 procedure matrix_sub(const c: Pmatrix_t; const a, b: Pmatrix_t);
 var
   i, j: integer;
@@ -263,6 +373,11 @@ begin
       c[i][j] := a[i][j] - b[i][j];
 end;
 
+//==============================================================================
+//
+// matrix_mul
+//
+//==============================================================================
 procedure matrix_mul(const c: Pmatrix_t; const a, b: Pmatrix_t);
 var
   z: matrix_t;
@@ -278,6 +393,11 @@ begin
   c^ := z;
 end;
 
+//==============================================================================
+//
+// matrix_scale
+//
+//==============================================================================
 procedure matrix_scale(const c: Pmatrix_t; const a: Pmatrix_t; const f: float);
 var
   i, j: integer;
@@ -287,6 +407,11 @@ begin
       c[i][j] := a[i][j] * f;
 end;
 
+//==============================================================================
+//
+// matrix_apply
+//
+//==============================================================================
 procedure matrix_apply(const y: Pvector_t; const x: Pvector_t; const m: Pmatrix_t);
 var
   xx, yy, zz, ww: float;
@@ -301,6 +426,11 @@ begin
   y.w := xx * m[0][3] + yy * m[1][3] + zz * m[2][3] + ww * m[3][3];
 end;
 
+//==============================================================================
+//
+// matrix_set_identity
+//
+//==============================================================================
 procedure matrix_set_identity(const m: Pmatrix_t);
 begin
   m[0][0] := 1.0;
@@ -321,6 +451,11 @@ begin
   m[3][2] := 0.0;
 end;
 
+//==============================================================================
+//
+// matrix_set_zero
+//
+//==============================================================================
 procedure matrix_set_zero(const m: Pmatrix_t);
 begin
   m[0][0] := 0.0;
@@ -341,6 +476,11 @@ begin
   m[3][3] := 0.0;
 end;
 
+//==============================================================================
+//
+// matrix_set_translate
+//
+//==============================================================================
 procedure matrix_set_translate(const m: Pmatrix_t; const x, y, z: float);
 begin
   matrix_set_identity(m);
@@ -349,6 +489,11 @@ begin
   m[3][2] := z;
 end;
 
+//==============================================================================
+//
+// matrix_set_scale
+//
+//==============================================================================
 procedure matrix_set_scale(const m: Pmatrix_t; const x, y, z: float);
 begin
   matrix_set_identity(m);
@@ -357,6 +502,11 @@ begin
   m[2][2] := z;
 end;
 
+//==============================================================================
+//
+// matrix_set_rotate
+//
+//==============================================================================
 procedure matrix_set_rotate(const m: Pmatrix_t; x, y, z: float; const theta: float);
 var
   qsin, qcos: float;
@@ -392,6 +542,11 @@ begin
   m[3][3] := 1.0;
 end;
 
+//==============================================================================
+//
+// matrix_set_lookat
+//
+//==============================================================================
 procedure matrix_set_lookat(m: Pmatrix_t; const eye, at, up: Pvector_t);
 var
   xaxis, yaxis, zaxis: vector_t;
@@ -423,6 +578,11 @@ begin
   m[3][3] := 1.0;
 end;
 
+//==============================================================================
+//
+// matrix_set_perspective
+//
+//==============================================================================
 procedure matrix_set_perspective(const m: Pmatrix_t; const fovy, aspect, zn, zf: float);
 var
   fax: float;
@@ -436,6 +596,11 @@ begin
   m[2][3] := 1.0;
 end;
 
+//==============================================================================
+//
+// transform_update
+//
+//==============================================================================
 procedure transform_update(const ts: Ptransform_t);
 var
   m: matrix_t;
@@ -444,6 +609,11 @@ begin
   matrix_mul(@ts.transform, @m, @ts.projection);
 end;
 
+//==============================================================================
+//
+// transform_init
+//
+//==============================================================================
 procedure transform_init(const ts: Ptransform_t; const width, height: integer);
 var
   aspect: float;
@@ -457,11 +627,21 @@ begin
   transform_update(ts);
 end;
 
+//==============================================================================
+//
+// transform_apply
+//
+//==============================================================================
 procedure transform_apply(const ts: Ptransform_t; const y: Pvector_t; const x: Pvector_t);
 begin
   matrix_apply(y, x, @ts.transform);
 end;
 
+//==============================================================================
+//
+// transform_check_cvv
+//
+//==============================================================================
 function transform_check_cvv(const v: Pvector_t): integer;
 var
   w: float;
@@ -476,6 +656,11 @@ begin
   if v.y >  w then Result := Result or 32;
 end;
 
+//==============================================================================
+//
+// transform_homogenize
+//
+//==============================================================================
 procedure transform_homogenize(const ts: Ptransform_t; const y: Pvector_t; const x: Pvector_t);
 var
   rhw: float;
@@ -487,6 +672,11 @@ begin
   y.w := 1.0;
 end;
 
+//==============================================================================
+//
+// vertex_rhw_init
+//
+//==============================================================================
 procedure vertex_rhw_init(v: Pvertex_t);
 var
   rhw: float;
@@ -500,6 +690,11 @@ begin
   v.color.b := v.color.b * rhw;
 end;
 
+//==============================================================================
+//
+// vertex_interp
+//
+//==============================================================================
 procedure vertex_interp(const y: Pvertex_t; const x1, x2: Pvertex_t; const t: float);
 begin
   vector_interp(@y.pos, @x1.pos, @x2.pos, t);
@@ -511,6 +706,11 @@ begin
   y.rhw := interp(x1.rhw, x2.rhw, t);
 end;
 
+//==============================================================================
+//
+// vertex_division
+//
+//==============================================================================
 procedure vertex_division(const y: Pvertex_t; const x1, x2: Pvertex_t; const w: float);
 var
   inv: float;
@@ -528,6 +728,11 @@ begin
   y.rhw := (x2.rhw - x1.rhw) * inv;
 end;
 
+//==============================================================================
+//
+// vertex_add
+//
+//==============================================================================
 procedure vertex_add(const y: Pvertex_t; const x: Pvertex_t);
 begin
   y.pos.x := y.pos.x + x.pos.x;
@@ -542,6 +747,11 @@ begin
   y.color.b := y.color.b + x.color.b;
 end;
 
+//==============================================================================
+//
+// trapezoid_init_triangle
+//
+//==============================================================================
 function trapezoid_init_triangle(const trap: Ptrapezoid_tArray; p1, p2, p3: Pvertex_t): integer;
 var
   p: Pvertex_t;
@@ -652,6 +862,11 @@ begin
   Result := 2;
 end;
 
+//==============================================================================
+//
+// trapezoid_edge_interp
+//
+//==============================================================================
 procedure trapezoid_edge_interp(const trap: Ptrapezoid_t; const y: float);
 var
   s1, s2, t1, t2: float;
@@ -664,6 +879,11 @@ begin
   vertex_interp(@trap.right.v, @trap.right.v1, @trap.right.v2, t2);
 end;
 
+//==============================================================================
+//
+// trapezoid_init_scan_line
+//
+//==============================================================================
 procedure trapezoid_init_scan_line(const trap: Ptrapezoid_t; const scanline: Pscanline_t;
   const y: integer);
 var
@@ -679,6 +899,11 @@ begin
   vertex_division(@scanline.step, @trap.left.v, @trap.right.v, width);
 end;
 
+//==============================================================================
+//
+// device_init
+//
+//==============================================================================
 procedure device_init(const device: Pdevice_t; const width, height: integer);
 var
   j: integer;
@@ -715,7 +940,6 @@ begin
   for j := 0 to device.tex_height - 1 do
     device.texture[j] := PIUINT32Array(device.bztexture.scanline[j]);
 
-
   device.background := RGB(0, 0, 0);
   device.foreground := RGB(0, 0, 0);
   device.width := width;
@@ -725,6 +949,11 @@ begin
   device.texture_state := TEXTURE_STATE_REPEAT;
 end;
 
+//==============================================================================
+//
+// device_destroy
+//
+//==============================================================================
 procedure device_destroy(const device: Pdevice_t);
 begin
   FreeMem(device.framebuffer, device.height * SizeOf(Pointer));
@@ -740,6 +969,11 @@ begin
   FreeAndNil(device.bztexture);
 end;
 
+//==============================================================================
+//
+// device_set_texture
+//
+//==============================================================================
 procedure device_set_texture(const device: Pdevice_t; const tex: TBitmap);
 var
   j: integer;
@@ -759,6 +993,11 @@ begin
     device.texture[j] := PIUINT32Array(device.bztexture.scanline[j]);
 end;
 
+//==============================================================================
+//
+// device_clear
+//
+//==============================================================================
 procedure device_clear(const device: Pdevice_t);
 var
   x, y: integer;
@@ -776,12 +1015,22 @@ begin
   end;
 end;
 
+//==============================================================================
+//
+// device_pixel
+//
+//==============================================================================
 procedure device_pixel(const device: Pdevice_t; const x, y: integer; const color: IUINT32);
 begin
   if (IUINT32(x) < IUINT32(device.width)) and (IUINT32(y) < IUINT32(device.height)) then
     device.framebuffer[y][x] := color;
 end;
 
+//==============================================================================
+//
+// device_draw_line
+//
+//==============================================================================
 procedure device_draw_line(const device: Pdevice_t; x1, y1, x2, y2: integer;
   const c: IUINT32);
 var
@@ -892,6 +1141,11 @@ begin
   end;
 end;
 
+//==============================================================================
+//
+// device_texture_read
+//
+//==============================================================================
 function device_texture_read(const device: Pdevice_t; u, v: float): IUINT32;
 var
   x, y: integer;
@@ -919,7 +1173,11 @@ begin
   Result := device.texture[y][x];
 end;
 
-
+//==============================================================================
+//
+// device_draw_scanline
+//
+//==============================================================================
 procedure device_draw_scanline(const device: Pdevice_t; const scanline: Pscanline_t);
 var
   framebuffer: PIUINT32Array;
@@ -989,6 +1247,11 @@ begin
   end;
 end;
 
+//==============================================================================
+//
+// device_render_trap
+//
+//==============================================================================
 procedure device_render_trap(const device: Pdevice_t; const trap: Ptrapezoid_t);
 var
   scanline: scanline_t;
@@ -1009,7 +1272,12 @@ begin
   end;
 end;
 
+//==============================================================================
+// device_draw_primitive
+//
 // ?? render_state ???????
+//
+//==============================================================================
 procedure device_draw_primitive(const device: Pdevice_t; const v1, v2, v3: Pvertex_t);
 var
   p1, p2, p3, c1, c2, c3: vector_t;
@@ -1065,6 +1333,11 @@ begin
   end;
 end;
 
+//==============================================================================
+//
+// camera_at_zero
+//
+//==============================================================================
 procedure camera_at_zero(const device: Pdevice_t; const x, y, z: float);
 var
   eye, up, at: vector_t;

@@ -4,7 +4,7 @@
 //
 //  Copyright (C) 1995 by Noriaworks
 //  Copyright (C) 1993-1996 by id Software, Inc.
-//  Copyright (C) 2004-2021 by Jim Valavanis
+//  Copyright (C) 2004-2022 by Jim Valavanis
 //
 //  This program is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU General Public License
@@ -180,6 +180,11 @@ begin
   Inherited Destroy;
 end;
 
+//==============================================================================
+//
+// TI3DModelLoader.GetNumFaces
+//
+//==============================================================================
 function TI3DModelLoader.GetNumFaces: integer;
 begin
   if obj = nil then
@@ -188,6 +193,11 @@ begin
     Result := obj.nFaces;
 end;
 
+//==============================================================================
+//
+// TI3DModelLoader.GetFace
+//
+//==============================================================================
 function TI3DModelLoader.GetFace(Index: Integer): O3DM_TFace_p;
 begin
   if obj = nil then
@@ -198,11 +208,21 @@ begin
     Result := nil;
 end;
 
+//==============================================================================
+//
+// TI3DModelLoader.HasTires
+//
+//==============================================================================
 function TI3DModelLoader.HasTires: boolean;
 begin
   Result := obj.flags and FLOF_HASTIRES <> 0;
 end;
 
+//==============================================================================
+//
+// TI3DModelLoader.FindTireCenters
+//
+//==============================================================================
 procedure TI3DModelLoader.FindTireCenters;
 var
   i, j, k, n: integer;
@@ -250,6 +270,11 @@ begin
   end;
 end;
 
+//==============================================================================
+//
+// TI3DModelLoader.LoadFromStream
+//
+//==============================================================================
 function TI3DModelLoader.LoadFromStream(const strm: TDStream): boolean;
 var
   magic: LongWord;
@@ -379,6 +404,11 @@ begin
   Result := True;
 end;
 
+//==============================================================================
+//
+// TI3DModelLoader.CreateTexture
+//
+//==============================================================================
 function TI3DModelLoader.CreateTexture(const m: O3DM_TMaterial_p): integer;
 type
   TLongWordArrayBuffer = array[0..$3FFF] of LongWord;
@@ -438,6 +468,11 @@ begin
   inc(numtextures);
 end;
 
+//==============================================================================
+//
+// TI3DModelLoader.LoadFromFile
+//
+//==============================================================================
 function TI3DModelLoader.LoadFromFile(const fname: string): boolean;
 var
   fs: TFile;
@@ -450,6 +485,11 @@ begin
   end;
 end;
 
+//==============================================================================
+//
+// TI3DModelLoader.Clear
+//
+//==============================================================================
 procedure TI3DModelLoader.Clear;
 var
   i, l: integer;
@@ -514,6 +554,11 @@ begin
   tireangle := 0.0;
 end;
 
+//==============================================================================
+//
+// TI3DModelLoader.ApplyCorrection
+//
+//==============================================================================
 procedure TI3DModelLoader.ApplyCorrection(const cor: PI3dModelCorrection);
 var
   face: O3DM_TFace_p;
@@ -538,6 +583,11 @@ begin
     face.h.material.color := cor.color;
 end;
 
+//==============================================================================
+//
+// TI3DModelLoader.AddCorrection
+//
+//==============================================================================
 function TI3DModelLoader.AddCorrection(const face: integer; const vertex: integer; const visible: boolean;
   const x, y, z: integer; const du, dv: single; const c: LongWord): boolean;
 var
@@ -589,6 +639,11 @@ begin
   Result := True;
 end;
 
+//==============================================================================
+//
+// TI3DModelLoader.SaveCorrectionsToStream
+//
+//==============================================================================
 procedure TI3DModelLoader.SaveCorrectionsToStream(const strm: TDStream);
 var
   i: integer;
@@ -622,6 +677,11 @@ begin
   end;
 end;
 
+//==============================================================================
+//
+// TI3DModelLoader.SaveCorrectionsToFile
+//
+//==============================================================================
 procedure TI3DModelLoader.SaveCorrectionsToFile(const fname: string);
 var
   fs: TFile;
@@ -634,6 +694,11 @@ begin
   end;
 end;
 
+//==============================================================================
+//
+// TI3DModelLoader.LoadCorrectionsFromStream
+//
+//==============================================================================
 procedure TI3DModelLoader.LoadCorrectionsFromStream(const strm: TDStream);
 var
   sc: TScriptEngine;
@@ -705,6 +770,11 @@ begin
     FindTireCenters;
 end;
 
+//==============================================================================
+//
+// TI3DModelLoader.LoadCorrectionsFromFile
+//
+//==============================================================================
 procedure TI3DModelLoader.LoadCorrectionsFromFile(const fname: string);
 var
   fs: TFile;
@@ -720,18 +790,33 @@ end;
 const
   UVGLCONST = 262144 * 64;
 
+//==============================================================================
+//
+// TI3DModelLoader.UVtoGL
+//
+//==============================================================================
 procedure TI3DModelLoader.UVtoGL(const tx, tv: integer; var du, dv: single);
 begin
   du := -tx / UVGLCONST;
   dv := tv / UVGLCONST;
 end;
 
+//==============================================================================
+//
+// TI3DModelLoader.GLtoUV
+//
+//==============================================================================
 procedure TI3DModelLoader.GLtoUV(const du, dv: single; var tx, tv: integer);
 begin
   tx := -Round(du * UVGLCONST);
   tv := Round(dv * UVGLCONST);
 end;
 
+//==============================================================================
+//
+// TI3DModelLoader.RenderGL
+//
+//==============================================================================
 function TI3DModelLoader.RenderGL(const scalex, scaley, scalez: single;
   const offsetx, offsety, offsetz: single): integer;
 var
@@ -867,6 +952,11 @@ const
 // Thus we slow down the tire rotation so the eye can actually see the rotation
   TIRE_EYE_COEF = 8.0;
 
+//==============================================================================
+//
+// TI3DModelLoader.RenderGLEx
+//
+//==============================================================================
 function TI3DModelLoader.RenderGLEx(const scalex, scaley, scalez: single;
   const offsetx, offsety, offsetz: single; const mo: Pmobj_t): integer;
 var
@@ -882,7 +972,6 @@ begin
   tex1 := cinfo.tex1;
   oldtex2 := cinfo.tex2old;
   tex2 := cinfo.tex2;
-
 
   if HasTires then
   begin
@@ -940,6 +1029,11 @@ begin
     textures[obj.materials[idx2].texid] := savetex2;
 end;
 
+//==============================================================================
+//
+// TI3DModelLoader.RenderSoft
+//
+//==============================================================================
 function TI3DModelLoader.RenderSoft(const device: Pdevice_t; const scalex, scaley, scalez: single;
   const offsetx, offsety, offsetz: single): integer;
 var
@@ -1086,6 +1180,11 @@ begin
   basetex.Free;
 end;
 
+//==============================================================================
+//
+// TI3DModelLoader.RenderSoftEx
+//
+//==============================================================================
 function TI3DModelLoader.RenderSoftEx(const device: Pdevice_t; const scalex, scaley, scalez: single;
   const offsetx, offsety, offsetz: single;
   const oldtex1, tex1, oldtex2, tex2: string): integer;

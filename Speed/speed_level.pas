@@ -35,6 +35,11 @@ uses
   d_delphi,
   w_wadwriter;
 
+//==============================================================================
+//
+// SH_CreateDoomLevel
+//
+//==============================================================================
 function SH_CreateDoomLevel(const prefix: string; const levelname: string;
   const bufmap: pointer; const bufmapsize: integer;
   const bufsec: pointer; const bufsecsize: integer;
@@ -130,6 +135,11 @@ const
   FLSF_VECTOR  = $0001;
   FLSF_NOSCALE = $0002;
 
+//==============================================================================
+//
+// Speed_levelCRC
+//
+//==============================================================================
 function Speed_levelCRC(const aname: string): string;
 var
   lname: string;
@@ -147,6 +157,11 @@ begin
   Result := strupper(Result);
 end;
 
+//==============================================================================
+//
+// SH_CreateDoomLevel
+//
+//==============================================================================
 function SH_CreateDoomLevel(const prefix: string; const levelname: string;
   const bufmap: pointer; const bufmapsize: integer;
   const bufsec: pointer; const bufsecsize: integer;

@@ -44,8 +44,18 @@ uses
   r_defs,
   r_visplanes;  // JVAL: 3d Floors
 
+//==============================================================================
+//
+// R_ClearPlanes
+//
+//==============================================================================
 procedure R_ClearPlanes;
 
+//==============================================================================
+//
+// R_FindPlane
+//
+//==============================================================================
 function R_FindPlane(height: fixed_t; picnum: integer; lightlevel: integer;
   xoffs, yoffs: fixed_t; flags: LongWord; const floor_or_ceiling: boolean;
   slopeSID: integer = -1): Pvisplane_t;
@@ -91,16 +101,19 @@ const
 var
   visplanehash: array[0..VISPLANEHASHSIZE + VISPLANEHASHOVER - 1] of LongWord;
 
+//==============================================================================
 //
 // R_ClearPlanes
 // At begining of frame.
 //
+//==============================================================================
 procedure R_ClearPlanes;
 begin
   ZeroMemory(@visplanehash, SizeOf(visplanehash));
   lastvisplane := 0;
 end;
 
+//==============================================================================
 //
 // R_NewVisPlane
 //
@@ -108,6 +121,7 @@ end;
 //   Create a new visplane
 //   Uses zone memory to allocate top and bottom arrays
 //
+//==============================================================================
 function R_NewVisPlane: Pvisplane_t;
 begin
   if lastvisplane > maxvisplane then
@@ -118,9 +132,11 @@ begin
   inc(lastvisplane);
 end;
 
+//==============================================================================
 //
 // R_VisplaneHash
 //
+//==============================================================================
 function R_VisplaneHash(height: fixed_t; picnum: integer; lightlevel: integer;
   xoffs, yoffs: fixed_t; flags: LongWord; slopeSID: integer): LongWord;
 begin
@@ -136,9 +152,11 @@ begin
   result := result and (VISPLANEHASHSIZE - 1);
 end;
 
+//==============================================================================
 //
 // R_FindPlane
 //
+//==============================================================================
 function R_FindPlane(height: fixed_t; picnum: integer; lightlevel: integer;
   xoffs, yoffs: fixed_t; flags: LongWord; const floor_or_ceiling: boolean;
   slopeSID: integer = -1): Pvisplane_t;

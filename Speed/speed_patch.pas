@@ -4,7 +4,7 @@
 //
 //  Copyright (C) 1995 by Noriaworks
 //  Copyright (C) 1993-1996 by id Software, Inc.
-//  Copyright (C) 2004-2021 by Jim Valavanis
+//  Copyright (C) 2004-2022 by Jim Valavanis
 //
 //  This program is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU General Public License
@@ -18,7 +18,7 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with this program; if not, write to the Free Software
-//  Foundation, inc., 59 Temple Place - Suite 330, Boston, MA
+//  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 //  02111-1307, USA.
 //
 //------------------------------------------------------------------------------
@@ -34,15 +34,35 @@ interface
 uses
   d_delphi;
 
+//==============================================================================
+//
+// SH_CreateDoomPatch
+//
+//==============================================================================
 procedure SH_CreateDoomPatch(const img: PByteArray; const width, height: integer;
   const solid: boolean; out p: pointer; out size: integer; const offsx: integer = -255; const offsy: integer = -255);
 
+//==============================================================================
+//
+// SH_CreateDoomPatchFromLumpData
+//
+//==============================================================================
 procedure SH_CreateDoomPatchFromLumpData(const img: PByteArray;
   const solid: boolean; out p: pointer; out size: integer);
 
+//==============================================================================
+//
+// SH_CreateDoomPatchFromLumpDataPal
+//
+//==============================================================================
 procedure SH_CreateDoomPatchFromLumpDataPal(const img: PByteArray;
   const solid: boolean; const defpal: PLongWordArray; out p: pointer; out size: integer);
 
+//==============================================================================
+//
+// SH_CreateDoomSkyPatch
+//
+//==============================================================================
 procedure SH_CreateDoomSkyPatch(const img: PByteArray; out p: pointer; out size: integer);
 
 implementation
@@ -59,6 +79,11 @@ type
     topoffset: smallint;  // pixels below the origin
   end;
 
+//==============================================================================
+//
+// SH_CreateDoomPatch
+//
+//==============================================================================
 procedure SH_CreateDoomPatch(const img: PByteArray; const width, height: integer;
   const solid: boolean; out p: pointer; out size: integer; const offsx: integer = -255; const offsy: integer = -255);
 var
@@ -152,6 +177,11 @@ begin
   end;
 end;
 
+//==============================================================================
+//
+// SH_CreateDoomPatchFromLumpData
+//
+//==============================================================================
 procedure SH_CreateDoomPatchFromLumpData(const img: PByteArray;
   const solid: boolean; out p: pointer; out size: integer);
 var
@@ -242,6 +272,11 @@ begin
   end;
 end;
 
+//==============================================================================
+//
+// SH_CreateDoomPatchFromLumpDataPal
+//
+//==============================================================================
 procedure SH_CreateDoomPatchFromLumpDataPal(const img: PByteArray;
   const solid: boolean; const defpal: PLongWordArray; out p: pointer; out size: integer);
 var
@@ -273,6 +308,11 @@ begin
   memfree(pointer(newimg), newsize);
 end;
 
+//==============================================================================
+//
+// SH_CreateDoomSkyPatch
+//
+//==============================================================================
 procedure SH_CreateDoomSkyPatch(const img: PByteArray; out p: pointer; out size: integer);
 var
   x, y: integer;

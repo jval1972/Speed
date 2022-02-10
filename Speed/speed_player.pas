@@ -4,7 +4,7 @@
 //
 //  Copyright (C) 1995 by Noriaworks
 //  Copyright (C) 1993-1996 by id Software, Inc.
-//  Copyright (C) 2004-2021 by Jim Valavanis
+//  Copyright (C) 2004-2022 by Jim Valavanis
 //
 //  This program is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU General Public License
@@ -18,7 +18,7 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with this program; if not, write to the Free Software
-//  Foundation, inc., 59 Temple Place - Suite 330, Boston, MA
+//  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 //  02111-1307, USA.
 //
 //------------------------------------------------------------------------------
@@ -34,6 +34,11 @@ interface
 uses
   d_player;
 
+//==============================================================================
+//
+// SH_PlayerThing
+//
+//==============================================================================
 procedure SH_PlayerThing(const p: Pplayer_t);
 
 implementation
@@ -49,6 +54,11 @@ const
 var
   messagesound_id: integer = -1;
 
+//==============================================================================
+//
+// SH_PlayerMessageSound
+//
+//==============================================================================
 procedure SH_PlayerMessageSound(const p: Pplayer_t);
 begin
   if p.messagesoundtarget = nil then
@@ -72,6 +82,11 @@ const
 var
   enginesound_id: integer = -1;
 
+//==============================================================================
+//
+// SH_PlayerEngineSound
+//
+//==============================================================================
 procedure SH_PlayerEngineSound(p: Pplayer_t);
 begin
   if p.enginesoundtarget = nil then
@@ -91,6 +106,11 @@ begin
   SH_EngineSound(p.mo, p.enginesoundtarget);
 end;
 
+//==============================================================================
+//
+// SH_PlayerThing
+//
+//==============================================================================
 procedure SH_PlayerThing(const p: Pplayer_t);
 begin
   SH_PlayerMessageSound(p);

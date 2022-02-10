@@ -4,7 +4,7 @@
 //
 //  Copyright (C) 1995 by Noriaworks
 //  Copyright (C) 1993-1996 by id Software, Inc.
-//  Copyright (C) 2004-2021 by Jim Valavanis
+//  Copyright (C) 2004-2022 by Jim Valavanis
 //
 //  This program is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU General Public License
@@ -18,7 +18,7 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with this program; if not, write to the Free Software
-//  Foundation, inc., 59 Temple Place - Suite 330, Boston, MA
+//  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 //  02111-1307, USA.
 //
 // DESCRIPTION:
@@ -268,18 +268,53 @@ type
     AllKeys
   );
 
+//==============================================================================
+//
+// EV_DoGenFloor
+//
+//==============================================================================
 function EV_DoGenFloor(line: Pline_t): integer;
 
+//==============================================================================
+//
+// EV_DoGenCeiling
+//
+//==============================================================================
 function EV_DoGenCeiling(line: Pline_t): integer;
 
+//==============================================================================
+//
+// EV_DoGenDoor
+//
+//==============================================================================
 function EV_DoGenDoor(line: Pline_t): integer;
 
+//==============================================================================
+//
+// EV_DoGenLockedDoor
+//
+//==============================================================================
 function EV_DoGenLockedDoor(line: Pline_t): integer;
 
+//==============================================================================
+//
+// EV_DoGenLift
+//
+//==============================================================================
 function EV_DoGenLift(line: Pline_t): integer;
 
+//==============================================================================
+//
+// EV_DoGenStairs
+//
+//==============================================================================
 function EV_DoGenStairs(line: Pline_t): integer;
 
+//==============================================================================
+//
+// EV_DoGenCrusher
+//
+//==============================================================================
 function EV_DoGenCrusher(line: Pline_t): integer;
 
 implementation
@@ -307,7 +342,6 @@ uses
 // Generalized Linedef Type handlers
 //
 //////////////////////////////////////////////////////////
-
 //
 // EV_DoGenFloor
 //
@@ -319,6 +353,7 @@ uses
 // jff 02/04/98 Added this routine (and file) to handle generalized
 // floor movers using bit fields in the line special type.
 //
+//==============================================================================
 function EV_DoGenFloor(line: Pline_t): integer;
 var
   secnum: integer;
@@ -502,7 +537,7 @@ manual_floor:
   end;
 end;
 
-
+//==============================================================================
 //
 // EV_DoGenCeiling
 //
@@ -514,6 +549,7 @@ end;
 // jff 02/04/98 Added this routine (and file) to handle generalized
 // floor movers using bit fields in the line special type.
 //
+//==============================================================================
 function EV_DoGenCeiling(line: Pline_t): integer;
 var
   secnum: integer;
@@ -706,6 +742,7 @@ manual_ceiling:
   end;
 end;
 
+//==============================================================================
 //
 // EV_DoGenLift
 //
@@ -714,6 +751,7 @@ end;
 // Passed the linedef activating the lift
 // Returns true if a thinker is created
 //
+//==============================================================================
 function EV_DoGenLift(line: Pline_t): integer;
 var
   secnum: integer;
@@ -847,6 +885,7 @@ manual_lift:
   end;
 end;
 
+//==============================================================================
 //
 // EV_DoGenStairs
 //
@@ -855,6 +894,7 @@ end;
 // Passed the linedef activating the stairs
 // Returns true if a thinker is created
 //
+//==============================================================================
 function EV_DoGenStairs(line: Pline_t): integer;
 var
   secnum: integer;
@@ -1033,6 +1073,7 @@ manual_stair:
     line.special := line.special xor StairDirection; // alternate dir on succ activations
 end;
 
+//==============================================================================
 //
 // EV_DoGenCrusher
 //
@@ -1041,6 +1082,7 @@ end;
 // Passed the linedef activating the crusher
 // Returns true if a thinker created
 //
+//==============================================================================
 function EV_DoGenCrusher(line: Pline_t): integer;
 var
   secnum: integer;
@@ -1127,6 +1169,7 @@ manual_crusher:
   end;
 end;
 
+//==============================================================================
 //
 // EV_DoGenLockedDoor
 //
@@ -1135,6 +1178,7 @@ end;
 // Passed the linedef activating the generalized locked door
 // Returns true if a thinker created
 //
+//==============================================================================
 function EV_DoGenLockedDoor(line: Pline_t): integer;
 var
   secnum: integer;
@@ -1249,6 +1293,7 @@ manual_locked:
   end;
 end;
 
+//==============================================================================
 //
 // EV_DoGenDoor
 //
@@ -1257,6 +1302,7 @@ end;
 // Passed the linedef activating the generalized door
 // Returns true if a thinker created
 //
+//==============================================================================
 function EV_DoGenDoor(line: Pline_t): integer;
 var
   secnum: integer;

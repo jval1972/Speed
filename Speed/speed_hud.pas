@@ -4,7 +4,7 @@
 //
 //  Copyright (C) 1995 by Noriaworks
 //  Copyright (C) 1993-1996 by id Software, Inc.
-//  Copyright (C) 2004-2021 by Jim Valavanis
+//  Copyright (C) 2004-2022 by Jim Valavanis
 //
 //  This program is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU General Public License
@@ -18,7 +18,7 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with this program; if not, write to the Free Software
-//  Foundation, inc., 59 Temple Place - Suite 330, Boston, MA
+//  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 //  02111-1307, USA.
 //
 //------------------------------------------------------------------------------
@@ -31,10 +31,25 @@ unit speed_hud;
 
 interface
 
+//==============================================================================
+//
+// SH_InitSpeedHud
+//
+//==============================================================================
 procedure SH_InitSpeedHud;
 
+//==============================================================================
+//
+// SH_ShutDownSpeedHud
+//
+//==============================================================================
 procedure SH_ShutDownSpeedHud;
 
+//==============================================================================
+//
+// SH_HudDrawer
+//
+//==============================================================================
 procedure SH_HudDrawer;
 
 var
@@ -63,6 +78,11 @@ uses
   w_wad,
   z_zone;
 
+//==============================================================================
+//
+// CmdprintSpeedHud
+//
+//==============================================================================
 procedure CmdprintSpeedHud(const parm: string);
 begin
   if parm = '' then
@@ -124,6 +144,11 @@ type
 var
   resamplescreen: Presamplescreen_t;
 
+//==============================================================================
+//
+// SH_InitSpeedHud
+//
+//==============================================================================
 procedure SH_InitSpeedHud;
 var
   i: integer;
@@ -168,6 +193,11 @@ end;
 var
   hud_player: Pplayer_t;
 
+//==============================================================================
+//
+// SH_ShutDownSpeedHud
+//
+//==============================================================================
 procedure SH_ShutDownSpeedHud;
 begin
   memfree(pointer(resamplescreen), SizeOf(resamplescreen_t));
@@ -176,6 +206,11 @@ end;
 var
   rminx, rmaxx, rminy, rmaxy: integer;
 
+//==============================================================================
+//
+// SH_DrawColoredTriangle
+//
+//==============================================================================
 procedure SH_DrawColoredTriangle(const tri: Ptriangle_t; const cl: LongWord;
   const rot: angle_t; const center: point_t);
 
@@ -380,6 +415,11 @@ begin
   fillRightFlatTriangle(v2, v4, v3);
 end;
 
+//==============================================================================
+//
+// SH_DrawNeedle
+//
+//==============================================================================
 procedure SH_DrawNeedle(const x, y: integer; const cl: LongWord; const rot: angle_t;
   const pidx1, pidx2: integer);
 var
@@ -436,6 +476,11 @@ begin
     end;
 end;
 
+//==============================================================================
+//
+// SH_DrawSpeed
+//
+//==============================================================================
 procedure SH_DrawSpeed;
 const
   S_XPOS: array[0..1] of integer = (265, 262);
@@ -466,6 +511,11 @@ begin
     SH_DrawNeedle(257, 163, $E06060, ang * ANG1, 199, 207);
 end;
 
+//==============================================================================
+//
+// SH_DrawBoard
+//
+//==============================================================================
 procedure SH_DrawBoard;
 var
   p: Ppatch_t;
@@ -492,6 +542,11 @@ begin
     SH_DrawNeedle(70, 200 - p.height + 30, $C4C4C4, ang * ANG1, 165, 190);
 end;
 
+//==============================================================================
+//
+// SH_DrawGears
+//
+//==============================================================================
 procedure SH_DrawGears;
 begin
   V_DrawPatch(307, 195, SCN_HUD, gearbox, false);
@@ -507,6 +562,11 @@ begin
   end;
 end;
 
+//==============================================================================
+//
+// _big_blue_string_width
+//
+//==============================================================================
 function _big_blue_string_width(const s: string): integer;
 var
   i, id: integer;
@@ -520,6 +580,11 @@ begin
   end;
 end;
 
+//==============================================================================
+//
+// _big_blue_string_offset
+//
+//==============================================================================
 function _big_blue_string_offset(const ch: char): integer;
 var
   id: integer;
@@ -530,6 +595,11 @@ begin
     Result := bluedigitbig[id].leftoffset;
 end;
 
+//==============================================================================
+//
+// _small_blue_string_width
+//
+//==============================================================================
 function _small_blue_string_width(const s: string): integer;
 var
   i, id: integer;
@@ -543,6 +613,11 @@ begin
   end;
 end;
 
+//==============================================================================
+//
+// _small_blue_string_offset
+//
+//==============================================================================
 function _small_blue_string_offset(const ch: char): integer;
 var
   id: integer;
@@ -553,6 +628,11 @@ begin
     Result := bluedigitsmall[id].leftoffset;
 end;
 
+//==============================================================================
+//
+// SH_DrawNumLaps
+//
+//==============================================================================
 procedure SH_DrawNumLaps;
 var
   l, t: integer;
@@ -595,6 +675,11 @@ begin
 
 end;
 
+//==============================================================================
+//
+// _draw_lap_time
+//
+//==============================================================================
 procedure _draw_lap_time(const x, y: integer; const tm: integer; const fnt: Ppatch_tPArray);
 var
   i: integer;
@@ -614,6 +699,11 @@ begin
   end;
 end;
 
+//==============================================================================
+//
+// SH_DrawLapTime
+//
+//==============================================================================
 procedure SH_DrawLapTime;
 var
   i: integer;
@@ -665,6 +755,11 @@ begin
   end;
 end;
 
+//==============================================================================
+//
+// _big_white_string_width
+//
+//==============================================================================
 function _big_white_string_width(const s: string): integer;
 var
   i, id: integer;
@@ -678,6 +773,11 @@ begin
   end;
 end;
 
+//==============================================================================
+//
+// _big_white_string_offset
+//
+//==============================================================================
 function _big_white_string_offset(const ch: char): integer;
 var
   id: integer;
@@ -688,6 +788,11 @@ begin
     Result := whitedigitbig[id].leftoffset;
 end;
 
+//==============================================================================
+//
+// _small_white_string_width
+//
+//==============================================================================
 function _small_white_string_width(const s: string): integer;
 var
   i, id: integer;
@@ -701,6 +806,11 @@ begin
   end;
 end;
 
+//==============================================================================
+//
+// _small_white_string_offset
+//
+//==============================================================================
 function _small_white_string_offset(const ch: char): integer;
 var
   id: integer;
@@ -711,6 +821,11 @@ begin
     Result := whitedigitsmall[id].leftoffset;
 end;
 
+//==============================================================================
+//
+// SH_DrawRacePositions
+//
+//==============================================================================
 procedure SH_DrawRacePositions;
 var
   wp, wt: integer;
@@ -749,6 +864,11 @@ begin
   end;
 end;
 
+//==============================================================================
+//
+// SH_DrawLastLap
+//
+//==============================================================================
 procedure SH_DrawLastLap;
 const
   TICS_SHOW_LAST_LAP = 5 * TICRATE; // 5 seconds
@@ -775,6 +895,11 @@ begin
     V_DrawPatch(160, 68, SCN_HUD, rfinlap, false);
 end;
 
+//==============================================================================
+//
+// SH_DrawEndOfRace
+//
+//==============================================================================
 procedure SH_DrawEndOfRace;
 var
   tics: integer;
@@ -797,6 +922,11 @@ begin
     V_DrawPatch(160, 68, SCN_HUD, pendrace, false);
 end;
 
+//==============================================================================
+//
+// SH_HudDrawer
+//
+//==============================================================================
 procedure SH_HudDrawer;
 begin
   if not draw_speed_hud then

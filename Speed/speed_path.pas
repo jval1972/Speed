@@ -4,7 +4,7 @@
 //
 //  Copyright (C) 1995 by Noriaworks
 //  Copyright (C) 1993-1996 by id Software, Inc.
-//  Copyright (C) 2004-2021 by Jim Valavanis
+//  Copyright (C) 2004-2022 by Jim Valavanis
 //
 //  This program is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU General Public License
@@ -18,7 +18,7 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with this program; if not, write to the Free Software
-//  Foundation, inc., 59 Temple Place - Suite 330, Boston, MA
+//  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 //  02111-1307, USA.
 //
 //------------------------------------------------------------------------------
@@ -63,16 +63,36 @@ type
   rtlpath_tArray = array[0..$FF] of rtlpath_t;
   Prtlpath_tArray = ^rtlpath_tArray;
 
+//==============================================================================
+//
+// SH_LoadPath
+//
+//==============================================================================
 function SH_LoadPath(const levelname: string; const lmpthings, lmppath: integer): boolean;
 
+//==============================================================================
+//
+// SH_GetNextPath
+//
+//==============================================================================
 function SH_GetNextPath(const mo: Pmobj_t): Prtlpath_t;
 
+//==============================================================================
+//
+// SH_NotifyPath
+//
+//==============================================================================
 procedure SH_NotifyPath(const mo: Pmobj_t);
 
 type
   timelaps_t = array[0..MAXLAPS - 1] of integer;
   Ptimelaps_t = ^timelaps_t;
 
+//==============================================================================
+//
+// SH_GetTimeLaps
+//
+//==============================================================================
 procedure SH_GetTimeLaps(const mo: Pmobj_t; const tl: Ptimelaps_t);
 
 type
@@ -94,6 +114,11 @@ type
 var
   racepositions: racepositions_t;
 
+//==============================================================================
+//
+// SH_CalculatePositions
+//
+//==============================================================================
 procedure SH_CalculatePositions;
 
 var
@@ -116,6 +141,11 @@ uses
   w_wad,
   z_zone;
 
+//==============================================================================
+//
+// SH_GroupPathSequence
+//
+//==============================================================================
 procedure SH_GroupPathSequence;
 var
   aheadpaths: TDNumberList;
@@ -170,6 +200,11 @@ begin
   aheadpaths.Free;
 end;
 
+//==============================================================================
+//
+// SH_LoadPath
+//
+//==============================================================================
 function SH_LoadPath(const levelname: string; const lmpthings, lmppath: integer): boolean;
 const
   PATH_TO_KMH_DIV = 10240;
@@ -272,6 +307,11 @@ begin
   SH_GroupPathSequence;
 end;
 
+//==============================================================================
+//
+// SH_GetNextPath
+//
+//==============================================================================
 function SH_GetNextPath(const mo: Pmobj_t): Prtlpath_t;
 var
   i: integer;
@@ -312,6 +352,11 @@ begin
   Result := @rtlpaths[best];
 end;
 
+//==============================================================================
+//
+// SH_NotifyPath
+//
+//==============================================================================
 procedure SH_NotifyPath(const mo: Pmobj_t);
 var
   path: Prtlpath_t;
@@ -348,6 +393,11 @@ begin
   end;
 end;
 
+//==============================================================================
+//
+// SH_GetTimeLaps
+//
+//==============================================================================
 procedure SH_GetTimeLaps(const mo: Pmobj_t; const tl: Ptimelaps_t);
 var
   i: integer;
@@ -374,6 +424,11 @@ begin
   end;
 end;
 
+//==============================================================================
+//
+// SH_CalculatePositions
+//
+//==============================================================================
 procedure SH_CalculatePositions;
 var
   think: Pthinker_t;

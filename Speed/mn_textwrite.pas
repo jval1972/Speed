@@ -4,7 +4,7 @@
 //
 //  Copyright (C) 1995 by Noriaworks
 //  Copyright (C) 1993-1996 by id Software, Inc.
-//  Copyright (C) 2004-2021 by Jim Valavanis
+//  Copyright (C) 2004-2022 by Jim Valavanis
 //
 //  This program is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU General Public License
@@ -18,7 +18,7 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with this program; if not, write to the Free Software
-//  Foundation, inc., 59 Temple Place - Suite 330, Boston, MA
+//  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 //  02111-1307, USA.
 //
 //------------------------------------------------------------------------------
@@ -49,11 +49,26 @@ const
   _MC_NOCASE = 0;
   _MCASE_MASK = 12;
 
+//==============================================================================
+//
+// M_WriteText
+//
+//==============================================================================
 function M_WriteText(x, y: integer; const str: string; const flags: integer;
   const font: Ppatch_tPArray; const shadefont: Ppatch_tPArray): menupos_t;
 
+//==============================================================================
+//
+// M_StringWidth
+//
+//==============================================================================
 function M_StringWidth(const str: string; const flags: integer; const font: Ppatch_tPArray): integer;
 
+//==============================================================================
+//
+// M_StringHeight
+//
+//==============================================================================
 function M_StringHeight(const str: string; const font: Ppatch_tPArray): integer;
 
 implementation
@@ -67,14 +82,22 @@ uses
 type
   casefunc_t = function (ch: Char): Char;
 
+//==============================================================================
+//
+// nocase
+//
+//==============================================================================
 function nocase(ch: Char): Char;
 begin
   Result := ch;
 end;
 
+//==============================================================================
+// M_WriteText
 //
 // Write a string using the font
 //
+//==============================================================================
 function M_WriteText(x, y: integer; const str: string; const flags: integer;
   const font: Ppatch_tPArray; const shadefont: Ppatch_tPArray): menupos_t;
 var
@@ -157,9 +180,12 @@ begin
   result.y := cy;
 end;
 
+//==============================================================================
+// M_StringWidth
 //
 // Find string width
 //
+//==============================================================================
 function M_StringWidth(const str: string; const flags: integer; const font: Ppatch_tPArray): integer;
 var
   i: integer;
@@ -186,9 +212,12 @@ begin
   end;
 end;
 
+//==============================================================================
+// M_StringHeight
 //
 // Find string height from hu_fontY chars
 //
+//==============================================================================
 function M_StringHeight(const str: string; const font: Ppatch_tPArray): integer;
 var
   i: integer;

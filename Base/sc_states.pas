@@ -45,14 +45,39 @@ uses
 var
   statenames: TTokenList;
 
+//==============================================================================
+//
+// SC_ParseStatedefLump
+//
+//==============================================================================
 procedure SC_ParseStatedefLump;
 
+//==============================================================================
+//
+// SC_DefaultStatedefLump
+//
+//==============================================================================
 procedure SC_DefaultStatedefLump;
 
+//==============================================================================
+//
+// P_GetStateFromName
+//
+//==============================================================================
 function P_GetStateFromName(const actor: Pmobj_t; const s1: string): integer;
 
+//==============================================================================
+//
+// P_GetStateFromNameWithOffsetCheck
+//
+//==============================================================================
 function P_GetStateFromNameWithOffsetCheck(const actor: Pmobj_t; const s1: string): integer;
 
+//==============================================================================
+//
+// SC_FillStateNames
+//
+//==============================================================================
 procedure SC_FillStateNames;
 
 implementation
@@ -73,6 +98,11 @@ const
 var
   default_states_added: boolean = false;
 
+//==============================================================================
+//
+// SC_DefaultStatedefLump
+//
+//==============================================================================
 procedure SC_DefaultStatedefLump;
 var
   st: statenum_t;
@@ -87,6 +117,11 @@ begin
   end;
 end;
 
+//==============================================================================
+//
+// SC_ParseStatedefLump
+//
+//==============================================================================
 procedure SC_ParseStatedefLump;
 var
   i: integer;
@@ -132,6 +167,11 @@ begin
     SC_DefaultStatedefLump;
 end;
 
+//==============================================================================
+//
+// P_GetStateFromName
+//
+//==============================================================================
 function P_GetStateFromName(const actor: Pmobj_t; const s1: string): integer;
 var
   s, st: string;
@@ -266,6 +306,11 @@ begin
   Result := -1; // JVAL: No match
 end;
 
+//==============================================================================
+//
+// P_GetStateFromNameWithOffsetCheck
+//
+//==============================================================================
 function P_GetStateFromNameWithOffsetCheck(const actor: Pmobj_t; const s1: string): integer;
 var
   s: string;
@@ -288,6 +333,11 @@ begin
     Result := P_GetStateFromName(actor, s);
 end;
 
+//==============================================================================
+//
+// SC_FillStateNames
+//
+//==============================================================================
 procedure SC_FillStateNames;
 begin
   while statenames.Count < numstates do

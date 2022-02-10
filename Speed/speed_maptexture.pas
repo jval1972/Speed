@@ -4,7 +4,7 @@
 //
 //  Copyright (C) 1995 by Noriaworks
 //  Copyright (C) 1993-1996 by id Software, Inc.
-//  Copyright (C) 2004-2021 by Jim Valavanis
+//  Copyright (C) 2004-2022 by Jim Valavanis
 //
 //  This program is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU General Public License
@@ -18,7 +18,7 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with this program; if not, write to the Free Software
-//  Foundation, inc., 59 Temple Place - Suite 330, Boston, MA
+//  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 //  02111-1307, USA.
 //
 // DESCRIPTION:
@@ -108,6 +108,11 @@ type
     property Translation[x, y: integer]: integer read GetTranslation write SetTranslation;
   end;
 
+//==============================================================================
+//
+// SH_CheckMapFlats
+//
+//==============================================================================
 procedure SH_CheckMapFlats;
 
 implementation
@@ -152,16 +157,31 @@ begin
   Inherited;
 end;
 
+//==============================================================================
+//
+// TMapTexture.Clear
+//
+//==============================================================================
 procedure TMapTexture.Clear;
 begin
   ZeroMemory(data, SizeOf(maptexture_t));
 end;
 
+//==============================================================================
+//
+// TMapTexture.getidx
+//
+//==============================================================================
 function TMapTexture.getidx(const x, y: integer): integer;
 begin
   Result := y * TEXSCREENSIZEX + (TEXSCREENSIZEX - x - 1);
 end;
 
+//==============================================================================
+//
+// TMapTexture.SetMapTile
+//
+//==============================================================================
 procedure TMapTexture.SetMapTile(x, y: integer; const tile: integer);
 var
   idx: integer;
@@ -170,6 +190,11 @@ begin
   data.maptiles[idx] := tile;
 end;
 
+//==============================================================================
+//
+// TMapTexture.GetMapTile
+//
+//==============================================================================
 function TMapTexture.GetMapTile(x, y: integer): integer;
 var
   idx: integer;
@@ -178,6 +203,11 @@ begin
   Result := data.maptiles[idx];
 end;
 
+//==============================================================================
+//
+// TMapTexture.SetAngle
+//
+//==============================================================================
 procedure TMapTexture.SetAngle(x, y: integer; const ang: integer);
 var
   idx: integer;
@@ -186,6 +216,11 @@ begin
   data.angles_trans[idx] := (data.angles_trans[idx] and not ANGLE_MASK) + (ang and ANGLE_MASK);
 end;
 
+//==============================================================================
+//
+// TMapTexture.GetAngle
+//
+//==============================================================================
 function TMapTexture.GetAngle(x, y: integer): integer;
 var
   idx: integer;
@@ -194,6 +229,11 @@ begin
   Result := data.angles_trans[idx] and ANGLE_MASK;
 end;
 
+//==============================================================================
+//
+// TMapTexture.SetTranslation
+//
+//==============================================================================
 procedure TMapTexture.SetTranslation(x, y: integer; const trans: integer);
 var
   idx: integer;
@@ -202,6 +242,11 @@ begin
   data.angles_trans[idx] := (data.angles_trans[idx] and ANGLE_MASK) + (trans shl ANGLE_SHIFT);
 end;
 
+//==============================================================================
+//
+// TMapTexture.GetTranslation
+//
+//==============================================================================
 function TMapTexture.GetTranslation(x, y: integer): integer;
 var
   idx: integer;
@@ -210,16 +255,31 @@ begin
   Result := data.angles_trans[idx] shr ANGLE_SHIFT;
 end;
 
+//==============================================================================
+//
+// TMapTexture.SaveToStream
+//
+//==============================================================================
 procedure TMapTexture.SaveToStream(const strm: TStream);
 begin
   strm.Write(data^, SizeOf(maptexture_t));
 end;
 
+//==============================================================================
+//
+// TMapTexture.LoadFromStream
+//
+//==============================================================================
 procedure TMapTexture.LoadFromStream(const strm: TStream);
 begin
   strm.Read(data^, SizeOf(maptexture_t));
 end;
 
+//==============================================================================
+//
+// TMapTexture.GetExportText
+//
+//==============================================================================
 function TMapTexture.GetExportText(const aX1: integer = -1; const aX2: integer = -1;
   const aY1: integer = -1; const aY2: integer = -1): string;
 var
@@ -258,6 +318,11 @@ begin
       Result := Result + _elem_str(iX, iY);
 end;
 
+//==============================================================================
+//
+// TMapTexture.ApplyImportText
+//
+//==============================================================================
 procedure TMapTexture.ApplyImportText(const tx: string; const aX1: integer = -1; const aX2: integer = -1;
   const aY1: integer = -1; const aY2: integer = -1);
 var
@@ -323,6 +388,11 @@ begin
   sc.Free;
 end;
 
+//==============================================================================
+//
+// TMapTexture.GetBitmap
+//
+//==============================================================================
 procedure TMapTexture.GetBitmap(const b: TBitmap; const doublesize: boolean);
 var
   grafs: PByteArray;
@@ -476,6 +546,11 @@ begin
   Z_ChangeTag(pal, PU_CACHE);
 end;
 
+//==============================================================================
+//
+// TMapTexture.GetBuffer4096
+//
+//==============================================================================
 procedure TMapTexture.GetBuffer4096(const buf4096: bmbuffer4096_p);
 var
   grafs: PByteArray;
@@ -578,6 +653,11 @@ begin
   Z_ChangeTag(pal, PU_CACHE);
 end;
 
+//==============================================================================
+//
+// TMapTexture.GetBuffer8192
+//
+//==============================================================================
 procedure TMapTexture.GetBuffer8192(const buf8192: bmbuffer8192_p);
 var
   grafs: PByteArray;
@@ -674,7 +754,6 @@ var
         bmbuffer8192[2 * ix, 2 * iy + 1] := bb;
       end;
 
-
     FreeMem(bmbuffer4096);
   end;
 
@@ -695,11 +774,21 @@ begin
   Z_ChangeTag(pal, PU_CACHE);
 end;
 
+//==============================================================================
+//
+// TMapTexture.AssignTo
+//
+//==============================================================================
 procedure TMapTexture.AssignTo(const amaptexture: TMapTexture);
 begin
   Move(amaptexture.data^, data^, SizeOf(maptexture_t));
 end;
 
+//==============================================================================
+//
+// TMapTexture.GenerateFlatWAD
+//
+//==============================================================================
 procedure TMapTexture.GenerateFlatWAD(const lname, wname: string);
 var
   bmbuffer4096: bmbuffer4096_p;
@@ -720,6 +809,11 @@ begin
   FreeMem(bmbuffer4096, SizeOf(bmbuffer4096_t));
 end;
 
+//==============================================================================
+//
+// SH_CheckMapFlats
+//
+//==============================================================================
 procedure SH_CheckMapFlats;
 var
   i, j, idx: integer;

@@ -74,10 +74,25 @@ type
     property lastdrawframe: integer read flastdrawframe;
   end;
 
+//==============================================================================
+//
+// gld_InitModels
+//
+//==============================================================================
 procedure gld_InitModels;
 
+//==============================================================================
+//
+// gld_CleanModelTextures
+//
+//==============================================================================
 procedure gld_CleanModelTextures;
 
+//==============================================================================
+//
+// gld_ModelsDone
+//
+//==============================================================================
 procedure gld_ModelsDone;
 
 const
@@ -119,7 +134,6 @@ type
     size: integer;
     items: Ptexturemanagetitem_tArray;
   end;
-
 
 type
   modelstate_t = record
@@ -164,6 +178,11 @@ uses
   w_pak,
   w_wad;
 
+//==============================================================================
+//
+// gld_AddModel
+//
+//==============================================================================
 function gld_AddModel(const item: modelmanageritem_t): integer;
 var
   i: integer;
@@ -206,6 +225,11 @@ begin
   inc(modelmanager.size);
 end;
 
+//==============================================================================
+//
+// gld_AddModelState
+//
+//==============================================================================
 procedure gld_AddModelState(const item: modelstate_t);
 begin
   if item.state < 0 then
@@ -219,6 +243,11 @@ begin
   inc(nummodelstates);
 end;
 
+//==============================================================================
+//
+// gld_AddModelTexture
+//
+//==============================================================================
 function gld_AddModelTexture(const texturename: string): integer;
 var
   i: integer;
@@ -246,10 +275,13 @@ end;
 const
   MODELDEFLUMPNAME = 'MODELDEF';
 
+//==============================================================================
+// SC_DoParseModelDefinition
 //
 // SC_ParseModelDefinition
 // JVAL: Parse MODELDEF LUMP
 //
+//==============================================================================
 procedure SC_DoParseModelDefinition(const in_text: string);
 var
   sc: TScriptEngine;
@@ -489,15 +521,22 @@ begin
   modelitem.framemerge.Free;
 end;
 
+//==============================================================================
+//
+// SC_ParseModelDefinition
+//
+//==============================================================================
 procedure SC_ParseModelDefinition(const in_text: string);
 begin
   SC_DoParseModelDefinition(SC_Preprocess(in_text, false));
 end;
 
+//==============================================================================
 //
 // SC_ParseModelDefinitions
 // JVAL: Parse all MODELDEF lumps
 //
+//==============================================================================
 procedure SC_ParseModelDefinitions;
 var
   i: integer;
@@ -511,6 +550,11 @@ begin
   PAK_StringIterator(MODELDEFLUMPNAME + '.txt', SC_ParseModelDefinition);
 end;
 
+//==============================================================================
+//
+// Cmd_ModelMapping
+//
+//==============================================================================
 procedure Cmd_ModelMapping;
 var
   i: integer;
@@ -530,6 +574,11 @@ begin
   end;
 end;
 
+//==============================================================================
+//
+// gld_InitModels
+//
+//==============================================================================
 procedure gld_InitModels;
 begin
   modelmanager.size := 0;
@@ -543,6 +592,11 @@ begin
   C_AddCmd('modelmapping', @Cmd_ModelMapping);
 end;
 
+//==============================================================================
+//
+// gld_CleanModelTextures
+//
+//==============================================================================
 procedure gld_CleanModelTextures;
 var
   i: integer;
@@ -560,6 +614,11 @@ begin
   end;
 end;
 
+//==============================================================================
+//
+// gld_ModelsDone
+//
+//==============================================================================
 procedure gld_ModelsDone;
 var
   i: integer;
@@ -643,8 +702,12 @@ begin
   fmodel.Free;
 end;
 
+//==============================================================================
+// TModel.Draw
+//
 //------------------------------------------------------------------------------
-
+//
+//==============================================================================
 procedure TModel.Draw(const frm1, frm2: integer; const offset: float; const scale: fixed_t);
 begin
   if scale <> FRACUNIT then
@@ -658,8 +721,12 @@ begin
     glPopMatrix;
 end;
 
+//==============================================================================
+// TModel.DrawSimple
+//
 //------------------------------------------------------------------------------
-
+//
+//==============================================================================
 procedure TModel.DrawSimple(const frm: integer; const scale: fixed_t);
 begin
   if scale <> FRACUNIT then

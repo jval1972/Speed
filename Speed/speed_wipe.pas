@@ -18,7 +18,7 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with this program; if not, write to the Free Software
-//  Foundation, inc., 59 Temple Place - Suite 330, Boston, MA
+//  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 //  02111-1307, USA.
 //
 // DESCRIPTION:
@@ -37,10 +37,25 @@ interface
 uses
   d_delphi;
 
+//==============================================================================
+//
+// wipe_StartScreen
+//
+//==============================================================================
 procedure wipe_StartScreen;
 
+//==============================================================================
+//
+// wipe_EndScreen
+//
+//==============================================================================
 procedure wipe_EndScreen;
 
+//==============================================================================
+//
+// wipe_Ticker
+//
+//==============================================================================
 function wipe_Ticker(ticks: integer): boolean;
 
 var
@@ -50,6 +65,11 @@ var
 var
   w_screen32: PLongWordArray = nil;
 
+//==============================================================================
+//
+// wipe_ClearMemory
+//
+//==============================================================================
 procedure wipe_ClearMemory;
 
 implementation
@@ -67,6 +87,11 @@ var
 var
   fadefactor: fixed_t = 0;
 
+//==============================================================================
+//
+// wipe_glsize
+//
+//==============================================================================
 function wipe_glsize(const value: integer): integer;
 begin
   result := 1;
@@ -74,6 +99,11 @@ begin
     result := result * 2;
 end;
 
+//==============================================================================
+//
+// wipe_initFade
+//
+//==============================================================================
 procedure wipe_initFade;
 var
   i, r: integer;
@@ -89,6 +119,11 @@ begin
   fadefactor := FRACUNIT;
 end;
 
+//==============================================================================
+//
+// wipe_ColorFadeAverage
+//
+//==============================================================================
 function wipe_ColorFadeAverage(const c1, c2: LongWord; const factor: fixed_t): LongWord;
 var
   ffade: fixed_t;
@@ -105,6 +140,11 @@ begin
   end;
 end;
 
+//==============================================================================
+//
+// wipe_doFade
+//
+//==============================================================================
 function wipe_doFade(ticks: integer): integer;
 var
   i: integer;
@@ -126,18 +166,33 @@ begin
     result := 0;
 end;
 
+//==============================================================================
+//
+// wipe_exitFade
+//
+//==============================================================================
 procedure wipe_exitFade;
 begin
   memfree(pointer(fade_scr_start), SCREENWIDTH * SCREENHEIGHT * SizeOf(LongWord));
   memfree(pointer(fade_scr_end), SCREENWIDTH * SCREENHEIGHT * SizeOf(LongWord));
 end;
 
+//==============================================================================
+//
+// wipe_ClearMemory
+//
+//==============================================================================
 procedure wipe_ClearMemory;
 begin
   if w_screen32 <> nil then
     memfree(pointer(w_screen32), WIPESCREENWIDTH * WIPESCREENHEIGHT * SizeOf(LongWord));
 end;
 
+//==============================================================================
+//
+// wipe_StartScreen
+//
+//==============================================================================
 procedure wipe_StartScreen;
 begin
   fade_scr_start := malloc(SCREENWIDTH * SCREENHEIGHT * SizeOf(LongWord));
@@ -145,6 +200,11 @@ begin
   I_ReverseScreen(fade_scr_start);
 end;
 
+//==============================================================================
+//
+// wipe_EndScreen
+//
+//==============================================================================
 procedure wipe_EndScreen;
 begin
   fade_scr_end := malloc(SCREENWIDTH * SCREENHEIGHT * SizeOf(LongWord));
@@ -156,6 +216,11 @@ end;
 var
   fading: boolean = false;
 
+//==============================================================================
+//
+// wipe_Ticker
+//
+//==============================================================================
 function wipe_Ticker(ticks: integer): boolean;
 begin
   // initial stuff

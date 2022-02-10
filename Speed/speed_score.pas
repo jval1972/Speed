@@ -4,7 +4,7 @@
 //
 //  Copyright (C) 1995 by Noriaworks
 //  Copyright (C) 1993-1996 by id Software, Inc.
-//  Copyright (C) 2004-2021 by Jim Valavanis
+//  Copyright (C) 2004-2022 by Jim Valavanis
 //
 //  This program is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU General Public License
@@ -18,7 +18,7 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with this program; if not, write to the Free Software
-//  Foundation, inc., 59 Temple Place - Suite 330, Boston, MA
+//  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 //  02111-1307, USA.
 //
 // DESCRIPTION:
@@ -67,12 +67,32 @@ type
 var
   recordtable: speedrecordtable_t;
 
+//==============================================================================
+//
+// SH_UpdateScoreTable
+//
+//==============================================================================
 procedure SH_UpdateScoreTable(const p: Pplayer_t; const epi, map: integer; skill: skill_t);
 
+//==============================================================================
+//
+// SH_LoadScoreTable
+//
+//==============================================================================
 procedure SH_LoadScoreTable;
 
+//==============================================================================
+//
+// SH_SaveScoreTable
+//
+//==============================================================================
 procedure SH_SaveScoreTable;
 
+//==============================================================================
+//
+// SH_CheckLapRecord
+//
+//==============================================================================
 function SH_CheckLapRecord(const epi, map: integer; const ctyp: cartype_t; const t: integer): boolean;
 
 implementation
@@ -83,6 +103,11 @@ uses
   m_base,
   m_argv;
 
+//==============================================================================
+//
+// SH_SortScoreTable
+//
+//==============================================================================
 procedure SH_SortScoreTable(const laps: integer; const epi, map: integer; const ctyp: cartype_t);
 var
   items: speedtimetableitems_t;
@@ -144,6 +169,11 @@ begin
     pitems[pi] := items[pi];
 end;
 
+//==============================================================================
+//
+// SH_UpdateScoreTable
+//
+//==============================================================================
 procedure SH_UpdateScoreTable(const p: Pplayer_t; const epi, map: integer; skill: skill_t);
 var
   totalscore: integer;
@@ -191,6 +221,11 @@ begin
   SH_SaveScoreTable;
 end;
 
+//==============================================================================
+//
+// SH_LoadScoreTable
+//
+//==============================================================================
 procedure SH_LoadScoreTable;
 var
   fname: string;
@@ -227,6 +262,11 @@ begin
   end;
 end;
 
+//==============================================================================
+//
+// SH_SaveScoreTable
+//
+//==============================================================================
 procedure SH_SaveScoreTable;
 var
   fname: string;
@@ -247,6 +287,11 @@ begin
   end;
 end;
 
+//==============================================================================
+//
+// SH_CheckLapRecord
+//
+//==============================================================================
 function SH_CheckLapRecord(const epi, map: integer; const ctyp: cartype_t; const t: integer): boolean;
 begin
   SH_SortScoreTable(0, epi, map, ctyp);

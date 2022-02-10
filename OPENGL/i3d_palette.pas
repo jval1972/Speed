@@ -4,7 +4,7 @@
 //
 //  Copyright (C) 1995 by Noriaworks
 //  Copyright (C) 1993-1996 by id Software, Inc.
-//  Copyright (C) 2004-2021 by Jim Valavanis
+//  Copyright (C) 2004-2022 by Jim Valavanis
 //
 //  This program is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU General Public License
@@ -42,10 +42,25 @@ type
     r, g, b: single;
   end;
 
+//==============================================================================
+//
+// I3DPalColor3f
+//
+//==============================================================================
 function I3DPalColor3f(const idx: byte): i3dcolor3f_t;
 
+//==============================================================================
+//
+// I3DPalColorL
+//
+//==============================================================================
 function I3DPalColorL(const idx: byte): LongWord;
 
+//==============================================================================
+//
+// I3DPalColorIndex
+//
+//==============================================================================
 function I3DPalColorIndex(const c: LongWord): integer;
 
 implementation
@@ -106,6 +121,11 @@ const
     $3F, $10, $3F
   );
 
+//==============================================================================
+//
+// I3DPalColor3f
+//
+//==============================================================================
 function I3DPalColor3f(const idx: byte): i3dcolor3f_t;
 begin
   Result.b := (RawPalette[3 * idx + 2] + 0.5) / 64;
@@ -113,6 +133,11 @@ begin
   Result.r := (RawPalette[3 * idx + 0] + 0.5) / 64;
 end;
 
+//==============================================================================
+//
+// I3DPalColorL
+//
+//==============================================================================
 function I3DPalColorL(const idx: byte): LongWord;
 begin
   Result :=
@@ -121,6 +146,11 @@ begin
     (RawPalette[3 * idx + 0] * 4 + 2);
 end;
 
+//==============================================================================
+//
+// I3DPalColorIndex
+//
+//==============================================================================
 function I3DPalColorIndex(const c: LongWord): integer;
 var
   r, g, b: integer;
@@ -154,6 +184,5 @@ begin
     end;
   end;
 end;
-
 
 end.

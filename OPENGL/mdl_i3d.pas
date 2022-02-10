@@ -4,7 +4,7 @@
 //
 //  Copyright (C) 1995 by Noriaworks
 //  Copyright (C) 1993-1996 by id Software, Inc.
-//  Copyright (C) 2004-2021 by Jim Valavanis
+//  Copyright (C) 2004-2022 by Jim Valavanis
 //
 //  This program is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU General Public License
@@ -92,6 +92,11 @@ begin
   LoadData;
 end;
 
+//==============================================================================
+//
+// TI3DModel.LoadData
+//
+//==============================================================================
 procedure TI3DModel.LoadData;
 var
   strm: TPakStream;
@@ -135,21 +140,41 @@ begin
   Inherited;
 end;
 
+//==============================================================================
+//
+// TI3DModel.Draw
+//
+//==============================================================================
 procedure TI3DModel.Draw(const frm1, frm2: integer; const offset: float);
 begin
   fmdl.RenderGL(fxscale, fyscale, fzscale, fxoffset, fyoffset, fzoffset);
 end;
 
+//==============================================================================
+//
+// TI3DModel.DrawSimple
+//
+//==============================================================================
 procedure TI3DModel.DrawSimple(const frm: integer);
 begin
   fmdl.RenderGL(fxscale, fyscale, fzscale, fxoffset, fyoffset, fzoffset);
 end;
 
+//==============================================================================
+//
+// TI3DModel.DrawCarGL
+//
+//==============================================================================
 procedure TI3DModel.DrawCarGL(const mo: Pmobj_t);
 begin
   fmdl.RenderGLEx(fxscale, fyscale, fzscale, fxoffset, fyoffset, fzoffset, mo);
 end;
 
+//==============================================================================
+//
+// TI3DModel.DrawCarSoft
+//
+//==============================================================================
 procedure TI3DModel.DrawCarSoft(const car: Pcarinfo_t; const device: Pdevice_t);
 begin
   fmdl.RenderSoftEx(
@@ -159,6 +184,5 @@ begin
     car.tex1old, car.tex1, car.tex2old, car.tex2
   );
 end;
-
 
 end.

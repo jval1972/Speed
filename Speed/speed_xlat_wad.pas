@@ -34,8 +34,18 @@ interface
 uses
   d_delphi;
 
+//==============================================================================
+//
+// Speed2Stream_Game
+//
+//==============================================================================
 procedure Speed2Stream_Game(const fname: string; const handle: TDStream);
 
+//==============================================================================
+//
+// Speed2WAD_Game
+//
+//==============================================================================
 procedure Speed2WAD_Game(const fin, fout: string);
 
 const
@@ -150,6 +160,11 @@ begin
   Inherited;
 end;
 
+//==============================================================================
+//
+// TSpeedToWADConverter.Clear
+//
+//==============================================================================
 procedure TSpeedToWADConverter.Clear;
 begin
   if wadwriter <> nil then
@@ -174,6 +189,11 @@ begin
   end;
 end;
 
+//==============================================================================
+//
+// TSpeedToWADConverter.ReadLump
+//
+//==============================================================================
 function TSpeedToWADConverter.ReadLump(const l: Pspeedlump_tArray; const numl: integer;
   const lmp: string; var buf: pointer; var size: integer): boolean;
 var
@@ -194,6 +214,11 @@ begin
   size := 0;
 end;
 
+//==============================================================================
+//
+// TSpeedToWADConverter.FindLump
+//
+//==============================================================================
 function TSpeedToWADConverter.FindLump(const l: Pspeedlump_tArray; const numl: integer;
   const lmp: string): integer;
 var
@@ -208,6 +233,11 @@ begin
   result := -1;
 end;
 
+//==============================================================================
+//
+// TSpeedToWADConverter.ReadHeader
+//
+//==============================================================================
 function TSpeedToWADConverter.ReadHeader: boolean;
 begin
   f.Seek(SizeOf(speedheader_t), sFromEnd);
@@ -215,6 +245,11 @@ begin
   result := header.magic = JCL_MAGIC;
 end;
 
+//==============================================================================
+//
+// TSpeedToWADConverter.ReadDirectory
+//
+//==============================================================================
 function TSpeedToWADConverter.ReadDirectory: boolean;
 var
   i, j: integer;
@@ -266,6 +301,11 @@ begin
 
 end;
 
+//==============================================================================
+//
+// TSpeedToWADConverter.GeneratePalette
+//
+//==============================================================================
 function TSpeedToWADConverter.GeneratePalette: boolean;
 var
   p: pointer;
@@ -301,6 +341,11 @@ begin
   memfree(p, size);
 end;
 
+//==============================================================================
+//
+// TSpeedToWADConverter.GenerateTranslationTables
+//
+//==============================================================================
 function TSpeedToWADConverter.GenerateTranslationTables: boolean;
 var
   p1, p2, p3: pointer;
@@ -331,6 +376,11 @@ begin
   memfree(p3, size3);
 end;
 
+//==============================================================================
+//
+// TSpeedToWADConverter.GenerateTextures
+//
+//==============================================================================
 function TSpeedToWADConverter.GenerateTextures(const pnames, texture1: string): boolean;
 var
   rname, pname: string;
@@ -466,6 +516,11 @@ begin
   lst.Free;
 end;
 
+//==============================================================================
+//
+// TSpeedToWADConverter.GenerateStubTexturesEntry
+//
+//==============================================================================
 function TSpeedToWADConverter.GenerateStubTexturesEntry(const textureX: string): boolean;
 var
   sz: LongWord;
@@ -475,6 +530,11 @@ begin
   Result := True;
 end;
 
+//==============================================================================
+//
+// TSpeedToWADConverter.GenerateLevels
+//
+//==============================================================================
 function TSpeedToWADConverter.GenerateLevels(const scale: integer): boolean;
 type
   circuit_t = record
@@ -625,6 +685,11 @@ begin
   _makelevel('07', '07', 'E1M8', 'MAPSPR07', 'NUBES7', 'MOUNT7' ,extramapflats[7]);
 end;
 
+//==============================================================================
+//
+// TSpeedToWADConverter.GenerateFlats
+//
+//==============================================================================
 function TSpeedToWADConverter.GenerateFlats: boolean;
 var
   position: integer;
@@ -686,6 +751,11 @@ begin
   wadwriter.AddSeparator('F_END');
 end;
 
+//==============================================================================
+//
+// TSpeedToWADConverter.GenerateMapFlats
+//
+//==============================================================================
 function TSpeedToWADConverter.GenerateMapFlats(const doublesize: boolean): boolean;
 var
   position: integer;
@@ -841,6 +911,11 @@ begin
   memfree(pointer(grafs), grafsize);
 end;
 
+//==============================================================================
+//
+// TSpeedToWADConverter.GenerateGraphicWithOutPalette
+//
+//==============================================================================
 function TSpeedToWADConverter.GenerateGraphicWithOutPalette(const rname, wname: string; const solid: boolean): boolean;
 var
   lump: integer;
@@ -869,6 +944,11 @@ begin
   memfree(buf, bufsize);
 end;
 
+//==============================================================================
+//
+// TSpeedToWADConverter.GenerateIS2
+//
+//==============================================================================
 function TSpeedToWADConverter.GenerateIS2(const rname, wname: string; const solid: boolean;
   const rightcrop: boolean; var aw, ah: integer): boolean;
 var
@@ -924,6 +1004,11 @@ begin
   memfree(buf, bufsize);
 end;
 
+//==============================================================================
+//
+// TSpeedToWADConverter.GeneratePIX
+//
+//==============================================================================
 function TSpeedToWADConverter.GeneratePIX(const rname, wname: string; const solid: boolean): boolean;
 var
   lump: integer;
@@ -994,6 +1079,11 @@ begin
   memfree(pointer(buf), bufsize);
 end;
 
+//==============================================================================
+//
+// TSpeedToWADConverter.GenerateGraphicWithPalette
+//
+//==============================================================================
 function TSpeedToWADConverter.GenerateGraphicWithPalette(const rname, wname: string; const solid: boolean): boolean;
 var
   lump: integer;
@@ -1022,6 +1112,11 @@ begin
   memfree(buf, bufsize);
 end;
 
+//==============================================================================
+//
+// TSpeedToWADConverter.GenerateGraphics
+//
+//==============================================================================
 function TSpeedToWADConverter.GenerateGraphics: boolean;
 var
   rname, wname: string;
@@ -1090,7 +1185,6 @@ begin
     end;
   end;
 
-
   for i := 0 to lst.Count - 1 do
   begin
     rname := lst.Strings[i];
@@ -1109,6 +1203,11 @@ begin
 
 end;
 
+//==============================================================================
+//
+// TSpeedToWADConverter.GenerateFonts
+//
+//==============================================================================
 function TSpeedToWADConverter.GenerateFonts: boolean;
 const
   NUM_SMALL_FONT_COLORS = 5;
@@ -1257,7 +1356,6 @@ begin
   end;
   MemFree(pointer(imgout), 8 * 8);
 
-
   BIG_FONT_COLORS[0] := $E2CE4A;
   BIG_FONT_COLORS[1] := $F0F0F0;
   BIG_FONT_COLORS[2] := $0F0F0F;
@@ -1361,6 +1459,11 @@ type
   end;
   Pspriteinfo_t = ^spriteinfo_t;
 
+//==============================================================================
+//
+// TSpeedToWADConverter.GenerateSprites
+//
+//==============================================================================
 function TSpeedToWADConverter.GenerateSprites: boolean;
 
   procedure GenerateOneSprite(const is2: string; const sprname: string);
@@ -1427,6 +1530,11 @@ begin
   result := true;
 end;
 
+//==============================================================================
+//
+// TSpeedToWADConverter.GenerateMusic
+//
+//==============================================================================
 function TSpeedToWADConverter.GenerateMusic: boolean;
 var
   i: integer;
@@ -1469,6 +1577,11 @@ begin
   end;
 end;
 
+//==============================================================================
+//
+// TSpeedToWADConverter.GenerateSounds
+//
+//==============================================================================
 function TSpeedToWADConverter.GenerateSounds: boolean;
 var
   i, j: integer;
@@ -1538,6 +1651,11 @@ begin
   lst2.Free;
 end;
 
+//==============================================================================
+//
+// TSpeedToWADConverter.GeneratePK3ModelEntries
+//
+//==============================================================================
 function TSpeedToWADConverter.GeneratePK3ModelEntries: boolean;
 var
   i: integer;
@@ -1555,6 +1673,11 @@ begin
   end;
 end;
 
+//==============================================================================
+//
+// TSpeedToWADConverter.GenerateGrafs
+//
+//==============================================================================
 function TSpeedToWADConverter.GenerateGrafs: boolean;
 var
   p: pointer;
@@ -1575,6 +1698,11 @@ begin
   memfree(p, size);
 end;
 
+//==============================================================================
+//
+// TSpeedToWADConverter.WritePK3Entry
+//
+//==============================================================================
 procedure TSpeedToWADConverter.WritePK3Entry;
 begin
   if pk3entry = nil then
@@ -1585,6 +1713,11 @@ begin
   wadwriter.AddString(S_SPEEDINF, pk3entry.Text);
 end;
 
+//==============================================================================
+//
+// TSpeedToWADConverter.WriteFlatSizeEntry
+//
+//==============================================================================
 procedure TSpeedToWADConverter.WriteFlatSizeEntry;
 begin
   if sflatsize = nil then
@@ -1595,6 +1728,11 @@ begin
   wadwriter.AddString(FLATSIZELUMPNAME, sflatsize.Text);
 end;
 
+//==============================================================================
+//
+// TSpeedToWADConverter.AddPAKFileSystemEntry
+//
+//==============================================================================
 function TSpeedToWADConverter.AddPAKFileSystemEntry(const lumpname: string; const aliasname: string): boolean;
 var
   lump: integer;
@@ -1611,6 +1749,11 @@ begin
   PAK_AddEntry(lumps[lump].start, lumps[lump].size, aliasname, ffilename);
 end;
 
+//==============================================================================
+//
+// TSpeedToWADConverter.ConvertGame
+//
+//==============================================================================
 procedure TSpeedToWADConverter.ConvertGame(const fname: string);
 begin
   if not fexists(fname) then
@@ -1646,16 +1789,31 @@ begin
   WriteFlatSizeEntry;
 end;
 
+//==============================================================================
+//
+// TSpeedToWADConverter.SavetoFile
+//
+//==============================================================================
 procedure TSpeedToWADConverter.SavetoFile(const fname: string);
 begin
   wadwriter.SaveToFile(fname);
 end;
 
+//==============================================================================
+//
+// TSpeedToWADConverter.SavetoStream
+//
+//==============================================================================
 procedure TSpeedToWADConverter.SavetoStream(const strm: TDStream);
 begin
   wadwriter.SaveToStream(strm);
 end;
 
+//==============================================================================
+//
+// Speed2Stream_Game
+//
+//==============================================================================
 procedure Speed2Stream_Game(const fname: string; const handle: TDStream);
 var
   cnv: TSpeedToWADConverter;
@@ -1669,6 +1827,11 @@ begin
   end;
 end;
 
+//==============================================================================
+//
+// Speed2WAD_Game
+//
+//==============================================================================
 procedure Speed2WAD_Game(const fin, fout: string);
 var
   cnv: TSpeedToWADConverter;

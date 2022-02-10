@@ -18,7 +18,7 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with this program; if not, write to the Free Software
-//  Foundation, inc., 59 Temple Place - Suite 330, Boston, MA
+//  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 //  02111-1307, USA.
 //
 // DESCRIPTION:
@@ -39,8 +39,18 @@ uses
   m_fixed,
   p_mobj_h;
 
+//==============================================================================
+//
+// R_AdjustChaseCamera
+//
+//==============================================================================
 procedure R_AdjustChaseCamera;
 
+//==============================================================================
+//
+// R_AdjustTeleportZoom
+//
+//==============================================================================
 procedure R_AdjustTeleportZoom(const player: Pplayer_t);
 
 var
@@ -69,12 +79,15 @@ uses
 const
   CAMERARADIOUS = 8 * FRACUNIT;
 
+//==============================================================================
+// R_AdjustChaseCamera
 //
 // P_AdjustChaseCamera
 //
 // JVAL: Adjust the chace camera position
 //       A bit clumsy but works OK
 //
+//==============================================================================
 procedure R_AdjustChaseCamera;
 var
   c_an: angle_t;
@@ -138,6 +151,11 @@ begin
 
 end;
 
+//==============================================================================
+//
+// R_AdjustTeleportZoom
+//
+//==============================================================================
 procedure R_AdjustTeleportZoom(const player: Pplayer_t);
 var
   mo: Pmobj_t;

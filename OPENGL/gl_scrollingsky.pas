@@ -4,7 +4,7 @@
 //
 //  Copyright (C) 1995 by Noriaworks
 //  Copyright (C) 1993-1996 by id Software, Inc.
-//  Copyright (C) 2004-2021 by Jim Valavanis
+//  Copyright (C) 2004-2022 by Jim Valavanis
 //
 //  This program is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU General Public License
@@ -31,6 +31,11 @@ unit gl_scrollingsky;
 
 interface
 
+//==============================================================================
+//
+// gld_DrawSky
+//
+//==============================================================================
 procedure gld_DrawSky(const map: integer);
 
 implementation
@@ -53,6 +58,11 @@ const
 const
   SKYDIST = 4096;
 
+//==============================================================================
+//
+// gld_DrawSky
+//
+//==============================================================================
 procedure gld_DrawSky(const map: integer);
 var
   i: integer;

@@ -18,7 +18,7 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with this program; if not, write to the Free Software
-//  Foundation, inc., 59 Temple Place - Suite 330, Boston, MA
+//  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 //  02111-1307, USA.
 //
 // DESCRIPTION:
@@ -66,7 +66,6 @@ var
 
 const
   NUMCOLORMAPS = 32;
-
 
 type
 //
@@ -545,7 +544,6 @@ type
   Pspriteframe_t = ^spriteframe_t;
   spriteframe_tArray = packed array[0..$FFFF] of spriteframe_t;
   Pspriteframe_tArray = ^spriteframe_tArray;
-
 
 //
 // A sprite definition:

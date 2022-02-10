@@ -85,46 +85,122 @@ var
   use32bitfuzzeffect: boolean;
   diher8bittransparency: boolean;
 
+//==============================================================================
+// R_ApplyColormap
 //
 // Utility functions.
 //
+//==============================================================================
 procedure R_ApplyColormap(const ofs, count: integer; const scrn: integer; const cmap: integer);
 
+//==============================================================================
+//
+// R_PointOnSide
+//
+//==============================================================================
 function R_PointOnSide(const x: fixed_t; const y: fixed_t; const node: Pnode_t): boolean;
 
+//==============================================================================
+//
+// R_PointOnSegSide
+//
+//==============================================================================
 function R_PointOnSegSide(x: fixed_t; y: fixed_t; line: Pseg_t): boolean;
 
+//==============================================================================
+//
+// R_PointToAngle
+//
+//==============================================================================
 function R_PointToAngle(x: fixed_t; y: fixed_t): angle_t;
 
+//==============================================================================
+//
+// R_PointToAngleEx
+//
+//==============================================================================
 function R_PointToAngleEx(const x: fixed_t; const y: fixed_t): angle_t;
 
+//==============================================================================
+//
+// R_PointToAngle2
+//
+//==============================================================================
 function R_PointToAngle2(const x1: fixed_t; const y1: fixed_t; const x2: fixed_t; const y2: fixed_t): angle_t;
 
+//==============================================================================
+//
+// R_PointToDist
+//
+//==============================================================================
 function R_PointToDist(const x: fixed_t; const y: fixed_t): fixed_t;
 
+//==============================================================================
+//
+// R_PointInSubsectorClassic
+//
+//==============================================================================
 function R_PointInSubsectorClassic(const x: fixed_t; const y: fixed_t): Psubsector_t;
 
+//==============================================================================
+//
+// R_PointInSubsector
+//
+//==============================================================================
 function R_PointInSubsector(const x: fixed_t; const y: fixed_t): Psubsector_t;
 
+//==============================================================================
+//
+// R_AddPointToBox
+//
+//==============================================================================
 procedure R_AddPointToBox(const x: integer; const y: integer; box: Pfixed_tArray);
 
-
+//==============================================================================
+// R_RenderPlayerView
 //
 // REFRESH - the actual rendering functions.
 //
-
 // Called by G_Drawer.
+//
+//==============================================================================
 procedure R_RenderPlayerView(player: Pplayer_t);
 
+//==============================================================================
+// R_Init
+//
 // Called by startup code.
+//
+//==============================================================================
 procedure R_Init;
+
+//==============================================================================
+//
+// R_ShutDown
+//
+//==============================================================================
 procedure R_ShutDown;
 
+//==============================================================================
+// R_SetViewSize
+//
 // Called by M_Responder.
+//
+//==============================================================================
 procedure R_SetViewSize;
 
+//==============================================================================
+//
+// R_ExecuteSetViewSize
+//
+//==============================================================================
 procedure R_ExecuteSetViewSize;
 
+//==============================================================================
+//
+// R_SetViewAngleOffset
+//
+//==============================================================================
 procedure R_SetViewAngleOffset(const angle: angle_t);
 
 var
@@ -181,7 +257,6 @@ var
 var
   zlightlevels: array[0..LIGHTLEVELS - 1, 0..HLL_MAXLIGHTZ - 1] of fixed_t;
 
-
 var
   viewplayer: Pplayer_t;
 
@@ -210,7 +285,6 @@ var
 // fixed_t    finesine[5*FINEANGLES/4];
 // fixed_t*    finecosine = &finesine[FINEANGLES/4]; // JVAL -> moved to tables.pas
 
-
   linecount: integer;
   loopcount: integer;
 
@@ -218,10 +292,25 @@ var
 
   setsizeneeded: boolean;
 
+//==============================================================================
+//
+// R_GetColormapLightLevel
+//
+//==============================================================================
 function R_GetColormapLightLevel(const cmap: PByteArray): fixed_t;
 
+//==============================================================================
+//
+// R_GetColormap32
+//
+//==============================================================================
 function R_GetColormap32(const cmap: PByteArray): PLongWordArray;
 
+//==============================================================================
+//
+// R_Ticker
+//
+//==============================================================================
 procedure R_Ticker;
 
 var
@@ -271,6 +360,11 @@ var
 // just for profiling purposes
   framecount: integer;
 
+//==============================================================================
+//
+// R_ApplyColormap
+//
+//==============================================================================
 procedure R_ApplyColormap(const ofs, count: integer; const scrn: integer; const cmap: integer);
 var
   src: PByte;
@@ -290,11 +384,13 @@ begin
   end;
 end;
 
+//==============================================================================
 //
 // R_AddPointToBox
 // Expand a given bbox
 // so that it encloses a given point.
 //
+//==============================================================================
 procedure R_AddPointToBox(const x: integer; const y: integer; box: Pfixed_tArray);
 begin
   if x < box[BOXLEFT] then
@@ -307,12 +403,14 @@ begin
     box[BOXTOP] := y;
 end;
 
+//==============================================================================
 //
 // R_PointOnSide
 // Traverse BSP (sub) tree,
 //  check point against partition plane.
 // Returns side 0 (front) or 1 (back).
 //
+//==============================================================================
 function R_PointOnSide(const x: fixed_t; const y: fixed_t; const node: Pnode_t): boolean;
 var
   dx: fixed_t;
@@ -354,6 +452,11 @@ begin
   result := right >= left;
 end;
 
+//==============================================================================
+//
+// R_PointOnSegSide
+//
+//==============================================================================
 function R_PointOnSegSide(x: fixed_t; y: fixed_t; line: Pseg_t): boolean;
 var
   lx: fixed_t;
@@ -405,6 +508,7 @@ begin
   result := left <= right;
 end;
 
+//==============================================================================
 //
 // R_PointToAngle
 // To get a global angle from cartesian coordinates,
@@ -416,6 +520,7 @@ end;
 //
 // JVAL  -> Calculates: result := round(683565275 * (arctan2(y, x)));
 //
+//==============================================================================
 function R_PointToAngle(x: fixed_t; y: fixed_t): angle_t;
 begin
   x := x - viewx;
@@ -506,6 +611,11 @@ begin
   result := 0;
 end;
 
+//==============================================================================
+//
+// R_PointToAngleEx
+//
+//==============================================================================
 function R_PointToAngleEx(const x: fixed_t; const y: fixed_t): angle_t;
 var
   xx, yy: fixed_t;
@@ -515,11 +625,21 @@ begin
   result := Round(arctan2(yy, xx) * (ANG180 / D_PI));
 end;
 
+//==============================================================================
+//
+// R_PointToAngle2
+//
+//==============================================================================
 function R_PointToAngle2(const x1: fixed_t; const y1: fixed_t; const x2: fixed_t; const y2: fixed_t): angle_t;
 begin
   result := R_PointToAngle(x2 - x1 + viewx, y2 - y1 + viewy);
 end;
 
+//==============================================================================
+//
+// R_PointToDist
+//
+//==============================================================================
 function R_PointToDist(const x: fixed_t; const y: fixed_t): fixed_t;
 var
   angle: integer;
@@ -552,9 +672,11 @@ begin
   result := FixedDiv(dx, finecosine[angle]);
 end;
 
+//==============================================================================
 //
 // R_InitPointToAngle
 //
+//==============================================================================
 procedure R_InitPointToAngle;
 {var
   i: integer;
@@ -572,9 +694,11 @@ begin
   end;}
 end;
 
+//==============================================================================
 //
 // R_InitTables
 //
+//==============================================================================
 procedure R_InitTables;
 // JVAL: Caclulate tables constants
 {var
@@ -605,9 +729,11 @@ begin              {
   fixedcosine := Pfixed_tArray(@fixedsine[FIXEDANGLES div 4]);
 end;
 
+//==============================================================================
 //
 // R_InitTextureMapping
 //
+//==============================================================================
 procedure R_InitTextureMapping;
 var
   i: integer;
@@ -670,11 +796,13 @@ begin
   clipangle := xtoviewangle[0];
 end;
 
+//==============================================================================
 //
 // R_InitLightTables
 // Only inits the zlight table,
 //  because the scalelight table changes with view size.
 //
+//==============================================================================
 procedure R_InitLightTables;
 var
   i: integer;
@@ -733,6 +861,11 @@ end;
 var
   olddetail: integer = -1;
 
+//==============================================================================
+//
+// R_SetViewSize
+//
+//==============================================================================
 procedure R_SetViewSize;
 begin
   if not allowlowdetails then
@@ -758,9 +891,11 @@ begin
   end;
 end;
 
+//==============================================================================
 //
 // R_ExecuteSetViewSize
 //
+//==============================================================================
 procedure R_ExecuteSetViewSize;
 var
   i: integer;
@@ -854,7 +989,11 @@ begin
   R_RecalcColormaps;
 end;
 
-
+//==============================================================================
+//
+// R_CmdZAxisShift
+//
+//==============================================================================
 procedure R_CmdZAxisShift(const parm1: string = '');
 var
   newz: boolean;
@@ -874,6 +1013,11 @@ begin
   R_CmdZAxisShift;
 end;
 
+//==============================================================================
+//
+// R_CmdUse32bitfuzzeffect
+//
+//==============================================================================
 procedure R_CmdUse32bitfuzzeffect(const parm1: string = '');
 var
   newusefz: boolean;
@@ -890,6 +1034,11 @@ begin
   R_CmdUse32bitfuzzeffect;
 end;
 
+//==============================================================================
+//
+// R_CmdDiher8bitTransparency
+//
+//==============================================================================
 procedure R_CmdDiher8bitTransparency(const parm1: string = '');
 var
   newdih: boolean;
@@ -908,16 +1057,31 @@ begin
   R_CmdDiher8bitTransparency;
 end;
 
+//==============================================================================
+//
+// R_CmdScreenWidth
+//
+//==============================================================================
 procedure R_CmdScreenWidth;
 begin
   printf('ScreenWidth = %d.'#13#10, [SCREENWIDTH]);
 end;
 
+//==============================================================================
+//
+// R_CmdScreenHeight
+//
+//==============================================================================
 procedure R_CmdScreenHeight;
 begin
   printf('ScreenHeight = %d.'#13#10, [SCREENHEIGHT]);
 end;
 
+//==============================================================================
+//
+// R_CmdClearCache
+//
+//==============================================================================
 procedure R_CmdClearCache;
 begin
   gld_ClearTextureMemory;
@@ -925,16 +1089,22 @@ begin
   printf('Texture cache clear'#13#10);
 end;
 
+//==============================================================================
+//
+// R_CmdResetCache
+//
+//==============================================================================
 procedure R_CmdResetCache;
 begin
   Z_FreeTags(PU_CACHE, PU_CACHE);
   printf('Texture cache reset'#13#10);
 end;
 
-
+//==============================================================================
 //
 // R_Init
 //
+//==============================================================================
 procedure R_Init;
 begin
   printf('R_InitAspect'#13#10);
@@ -986,6 +1156,11 @@ begin
   C_AddCmd('resetcache, resettexturecache', @R_CmdResetCache);
 end;
 
+//==============================================================================
+//
+// R_ShutDown
+//
+//==============================================================================
 procedure R_ShutDown;
 begin
   printf(#13#10 + 'R_ShutDownLightBoost');
@@ -1005,9 +1180,12 @@ begin
   printf(#13#10);
 end;
 
+//==============================================================================
+// R_PointInSubsectorClassic
 //
 // R_PointInSubsector
 //
+//==============================================================================
 function R_PointInSubsectorClassic(const x: fixed_t; const y: fixed_t): Psubsector_t;
 var
   node: Pnode_t;
@@ -1034,6 +1212,11 @@ begin
   result := @subsectors[nodenum and (not NF_SUBSECTOR_V5)]; // JVAL: glbsp
 end;
 
+//==============================================================================
+//
+// R_PointInSubsector
+//
+//==============================================================================
 function R_PointInSubsector(const x: fixed_t; const y: fixed_t): Psubsector_t;
 begin
   result := R_PointInSubsectorPrecalc(x, y);
@@ -1043,9 +1226,12 @@ end;
 
 var
   lastcm: integer = -2;
+
+//==============================================================================
 //
 // R_SetupFrame
 //
+//==============================================================================
 procedure R_SetupFrame(player: Pplayer_t);
 var
   i: integer;
@@ -1154,11 +1340,21 @@ begin
   inc(validcount);
 end;
 
+//==============================================================================
+//
+// R_SetViewAngleOffset
+//
+//==============================================================================
 procedure R_SetViewAngleOffset(const angle: angle_t);
 begin
   viewangleoffset := angle;
 end;
 
+//==============================================================================
+//
+// R_GetColormapLightLevel
+//
+//==============================================================================
 function R_GetColormapLightLevel(const cmap: PByteArray): fixed_t;
 begin
   if cmap = nil then
@@ -1167,6 +1363,11 @@ begin
     result := FRACUNIT - (integer(cmap) - integer(colormaps)) div 256 * FRACUNIT div NUMCOLORMAPS;
 end;
 
+//==============================================================================
+//
+// R_GetColormap32
+//
+//==============================================================================
 function R_GetColormap32(const cmap: PByteArray): PLongWordArray;
 begin
   if cmap = nil then
@@ -1175,10 +1376,12 @@ begin
     result := @colormaps32[(integer(cmap) - integer(colormaps))];
 end;
 
+//==============================================================================
+// R_DoRenderPlayerView_SingleThread
 //
 // R_RenderView
 //
-
+//==============================================================================
 procedure R_DoRenderPlayerView_SingleThread(player: Pplayer_t);
 begin
   R_SetupFrame(player);
@@ -1211,6 +1414,11 @@ begin
   NetUpdate;
 end;
 
+//==============================================================================
+//
+// R_RenderPlayerView
+//
+//==============================================================================
 procedure R_RenderPlayerView(player: Pplayer_t);
 begin
   // new render validcount
@@ -1219,6 +1427,11 @@ begin
   R_DoRenderPlayerView_SingleThread(player);
 end;
 
+//==============================================================================
+//
+// R_Ticker
+//
+//==============================================================================
 procedure R_Ticker;
 begin
   R_InterpolateTicker;

@@ -4,7 +4,7 @@
 //
 //  Copyright (C) 1995 by Noriaworks
 //  Copyright (C) 1993-1996 by id Software, Inc.
-//  Copyright (C) 2004-2021 by Jim Valavanis
+//  Copyright (C) 2004-2022 by Jim Valavanis
 //
 //  This program is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU General Public License
@@ -18,7 +18,7 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with this program; if not, write to the Free Software
-//  Foundation, inc., 59 Temple Place - Suite 330, Boston, MA
+//  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 //  02111-1307, USA.
 //
 // DESCRIPTION:
@@ -50,23 +50,39 @@ var
 // lump number for PLAYPAL
   lu_palette: integer;
 
+//==============================================================================
+// ST_Responder
 //
 // STATUS BAR
 //
-
 // Called by main loop.
+//
+//==============================================================================
 function ST_Responder(ev: Pevent_t): boolean;
 
+//==============================================================================
+// ST_Drawer
+//
 // Called by main loop.
+//
+//==============================================================================
 procedure ST_Drawer;
 
+//==============================================================================
+// ST_Start
+//
 // Called when the console player is spawned on each level.
+//
+//==============================================================================
 procedure ST_Start;
 
+//==============================================================================
+// ST_Init
+//
 // Called by startup code.
+//
+//==============================================================================
 procedure ST_Init;
-
-
 
 // States for status bar code.
 type
@@ -174,8 +190,6 @@ const
     Chr($2a), Chr($ff)  // idclip
   );
 
-
-
   cheat_powerup_seq0: array[0..9] of char = (
     Chr($b2), Chr($26), Chr($62), Chr($a6), Chr($32),
     Chr($f6), Chr($36), Chr($26), Chr($6e), Chr($ff)  // beholdv
@@ -211,7 +225,6 @@ const
     Chr($f6), Chr($36), Chr($26), Chr($ff)  // behold
   );
 
-
   cheat_clev_seq: array[0..9] of char = (
     Chr($b2), Chr($26), Chr($e2), Chr($36), Chr($a6),
     Chr($6e), Chr($1),  Chr($0),  Chr($0),  Chr($ff)  // idclev
@@ -229,7 +242,6 @@ const
     Chr($ea), Chr($ff) // idkeys
   );
 
-
 var
 // Now what?
   cheat_mus: cheatseq_t;
@@ -246,9 +258,12 @@ var
   cheat_clev: cheatseq_t;
   cheat_mypos: cheatseq_t;
 
+//==============================================================================
+// ST_CmdCheckPlayerStatus
 //
 // Commands
 //
+//==============================================================================
 function ST_CmdCheckPlayerStatus: boolean;
 begin
   if (plyr = nil) or (plyr.mo = nil) or (gamestate <> GS_LEVEL) or demoplayback or netgame then
@@ -260,6 +275,11 @@ begin
     result := true;
 end;
 
+//==============================================================================
+//
+// ST_CmdGod
+//
+//==============================================================================
 procedure ST_CmdGod;
 begin
   if not ST_CmdCheckPlayerStatus then
@@ -286,6 +306,11 @@ begin
   end;
 end;
 
+//==============================================================================
+//
+// ST_CmdMassacre
+//
+//==============================================================================
 procedure ST_CmdMassacre;
 begin
   if not ST_CmdCheckPlayerStatus then
@@ -298,6 +323,11 @@ begin
   end;
 end;
 
+//==============================================================================
+//
+// ST_CmdLowGravity
+//
+//==============================================================================
 procedure ST_CmdLowGravity;
 begin
   if not ST_CmdCheckPlayerStatus then
@@ -310,6 +340,11 @@ begin
     plyr._message := STSTR_LGOFF;
 end;
 
+//==============================================================================
+//
+// ST_CmdIDFA
+//
+//==============================================================================
 procedure ST_CmdIDFA;
 var
   i: integer;
@@ -341,6 +376,11 @@ begin
   plyr._message := STSTR_FAADDED;
 end;
 
+//==============================================================================
+//
+// ST_CmdIDKFA
+//
+//==============================================================================
 procedure ST_CmdIDKFA;
 var
   i: integer;
@@ -375,6 +415,11 @@ begin
   plyr._message := STSTR_KFAADDED;
 end;
 
+//==============================================================================
+//
+// ST_CmdIDKEYS
+//
+//==============================================================================
 procedure ST_CmdIDKEYS;
 var
   i: integer;
@@ -388,6 +433,11 @@ begin
   plyr._message := STSTR_KEYSADDED;
 end;
 
+//==============================================================================
+//
+// ST_CmdIDDT
+//
+//==============================================================================
 procedure ST_CmdIDDT;
 begin
   if not ST_CmdCheckPlayerStatus then
@@ -396,6 +446,11 @@ begin
   am_cheating := (am_cheating + 1) mod 3;
 end;
 
+//==============================================================================
+//
+// ST_CmdIDNoClip
+//
+//==============================================================================
 procedure ST_CmdIDNoClip;
 begin
   if not ST_CmdCheckPlayerStatus then
@@ -409,6 +464,11 @@ begin
     plyr._message := STSTR_NCOFF;
 end;
 
+//==============================================================================
+//
+// ST_CmdIDMyPos
+//
+//==============================================================================
 procedure ST_CmdIDMyPos;
 var
   buf: string;
@@ -424,8 +484,13 @@ begin
   plyr._message := buf;
 end;
 
+//==============================================================================
+// ST_Responder
+//
 // Respond to keyboard input events,
 //  intercept cheats.
+//
+//==============================================================================
 function ST_Responder(ev: Pevent_t): boolean;
 var
   i: integer;
@@ -605,6 +670,11 @@ begin
   result := result or ateit;
 end;
 
+//==============================================================================
+//
+// ST_DoPaletteStuff
+//
+//==============================================================================
 procedure ST_DoPaletteStuff;
 var
   palette: integer;
@@ -663,6 +733,11 @@ begin
   end;
 end;
 
+//==============================================================================
+//
+// ST_Drawer
+//
+//==============================================================================
 procedure ST_Drawer;
 begin
   ST_DoPaletteStuff;
@@ -671,6 +746,11 @@ end;
 var
   st_stopped: boolean;
 
+//==============================================================================
+//
+// ST_Stop
+//
+//==============================================================================
 procedure ST_Stop;
 var
   pal: PByteArray;
@@ -686,6 +766,11 @@ begin
   st_stopped := true;
 end;
 
+//==============================================================================
+//
+// ST_Start
+//
+//==============================================================================
 procedure ST_Start;
 begin
   if not st_stopped then
@@ -696,6 +781,11 @@ begin
   plyr := @players[consoleplayer];
 end;
 
+//==============================================================================
+//
+// ST_Init
+//
+//==============================================================================
 procedure ST_Init;
 begin
 ////////////////////////////////////////////////////////////////////////////////

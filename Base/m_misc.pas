@@ -4,7 +4,7 @@
 //
 //  Copyright (C) 1995 by Noriaworks
 //  Copyright (C) 1993-1996 by id Software, Inc.
-//  Copyright (C) 2004-2021 by Jim Valavanis
+//  Copyright (C) 2004-2022 by Jim Valavanis
 //
 //  This program is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU General Public License
@@ -18,7 +18,7 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with this program; if not, write to the Free Software
-//  Foundation, inc., 59 Temple Place - Suite 330, Boston, MA
+//  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 //  02111-1307, USA.
 //
 // DESCRIPTION:
@@ -43,28 +43,88 @@ interface
 var
   screenshotformat: string = 'PNG';
 
+//==============================================================================
+//
+// M_WriteFile
+//
+//==============================================================================
 function M_WriteFile(const name: string; source: pointer; len: integer): boolean;
 
+//==============================================================================
+//
+// M_AppendFile
+//
+//==============================================================================
 function M_AppendFile(const name: string; source: pointer; len: integer): integer;
 
+//==============================================================================
+//
+// M_ReadFile
+//
+//==============================================================================
 function M_ReadFile(const name: string; var buffer: Pointer): integer;
 
+//==============================================================================
+//
+// M_FixScreenshotFormat
+//
+//==============================================================================
 procedure M_FixScreenshotFormat;
 
+//==============================================================================
+//
+// M_ScreenShot
+//
+//==============================================================================
 procedure M_ScreenShot(const filename: string = ''; const silent: boolean = false);
 
+//==============================================================================
+//
+// M_SetDefaults
+//
+//==============================================================================
 procedure M_SetDefaults;
 
+//==============================================================================
+//
+// M_SetDefault
+//
+//==============================================================================
 procedure M_SetDefault(const parm: string);
 
+//==============================================================================
+//
+// M_LoadDefaults
+//
+//==============================================================================
 procedure M_LoadDefaults;
 
+//==============================================================================
+//
+// M_SaveDefaults
+//
+//==============================================================================
 procedure M_SaveDefaults;
 
+//==============================================================================
+//
+// Cmd_Set
+//
+//==============================================================================
 procedure Cmd_Set(const name: string; const value: string);
 
+//==============================================================================
+//
+// Cmd_Get
+//
+//==============================================================================
 procedure Cmd_Get(const name: string);
 
+//==============================================================================
+//
+// Cmd_TypeOf
+//
+//==============================================================================
 procedure Cmd_TypeOf(const name: string);
 
 var
@@ -95,6 +155,11 @@ uses
 {$ENDIF}
   z_zone;
 
+//==============================================================================
+//
+// M_WriteFile
+//
+//==============================================================================
 function M_WriteFile(const name: string; source: pointer; len: integer): boolean;
 var
   handle: file;
@@ -112,6 +177,11 @@ begin
   Result := count > 0;
 end;
 
+//==============================================================================
+//
+// M_AppendFile
+//
+//==============================================================================
 function M_AppendFile(const name: string; source: pointer; len: integer): integer;
 var
   handle: TFile;
@@ -136,6 +206,11 @@ begin
     Result := 0;
 end;
 
+//==============================================================================
+//
+// M_ReadFile
+//
+//==============================================================================
 function M_ReadFile(const name: string; var buffer: Pointer): integer;
 var
   handle: file;
@@ -167,9 +242,12 @@ type
 const
   MSG_ERR_SCREENSHOT = 'Couldn''t create a screenshot';
 
+//==============================================================================
+// M_FixScreenshotFormat
 //
 // M_ScreenShot
 //
+//==============================================================================
 procedure M_FixScreenshotFormat;
 begin
   screenshotformat := strupper(strtrim(screenshotformat));
@@ -186,6 +264,11 @@ begin
         screenshotformat := 'PNG';
 end;
 
+//==============================================================================
+//
+// M_DoScreenShotTGA
+//
+//==============================================================================
 function M_DoScreenShotTGA(const filename: string): boolean;
 var
   buffer: PByteArray;
@@ -217,6 +300,11 @@ begin
   memfree(pointer(buffer), bufsize);
 end;
 
+//==============================================================================
+//
+// M_DoScreenShotPNG
+//
+//==============================================================================
 function M_DoScreenShotPNG(const filename: string): boolean;
 var
   png: TPngObject;
@@ -249,6 +337,11 @@ begin
   memfree(pointer(buf), bufsize);
 end;
 
+//==============================================================================
+//
+// M_ScreenShot
+//
+//==============================================================================
 procedure M_ScreenShot(const filename: string = ''; const silent: boolean = false);
 var
   tganame: string;
@@ -385,6 +478,11 @@ begin
   end;
 end;
 
+//==============================================================================
+//
+// Cmd_Set
+//
+//==============================================================================
 procedure Cmd_Set(const name: string; const value: string);
 var
   i: integer;
@@ -487,6 +585,11 @@ begin
   C_UnknowCommandMsg;
 end;
 
+//==============================================================================
+//
+// Cmd_Get
+//
+//==============================================================================
 procedure Cmd_Get(const name: string);
 var
   i: integer;
@@ -570,6 +673,11 @@ begin
   C_UnknowCommandMsg;
 end;
 
+//==============================================================================
+//
+// Cmd_TypeOf
+//
+//==============================================================================
 procedure Cmd_TypeOf(const name: string);
 var
   i: integer;
@@ -641,7 +749,11 @@ const
 var
   defaultfile: string;
 
-
+//==============================================================================
+//
+// M_SaveDefaults
+//
+//==============================================================================
 procedure M_SaveDefaults;
 var
   i: integer;
@@ -679,11 +791,21 @@ begin
   end;
 end;
 
+//==============================================================================
+//
+// M_SetDefaults
+//
+//==============================================================================
 procedure M_SetDefaults;
 begin
   M_SetDefault('*');
 end;
 
+//==============================================================================
+//
+// M_SetDefault
+//
+//==============================================================================
 procedure M_SetDefault(const parm: string);
 var
   i: integer;
@@ -768,6 +890,11 @@ begin
     end;
 end;
 
+//==============================================================================
+//
+// M_LoadDefaults
+//
+//==============================================================================
 procedure M_LoadDefaults;
 var
   i: integer;

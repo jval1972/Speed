@@ -18,7 +18,7 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with this program; if not, write to the Free Software
-//  Foundation, inc., 59 Temple Place - Suite 330, Boston, MA
+//  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 //  02111-1307, USA.
 //
 //------------------------------------------------------------------------------
@@ -35,16 +35,36 @@ interface
 uses
   d_delphi;
 
+//==============================================================================
+//
+// SH_CreateDoomPalette
+//
+//==============================================================================
 procedure SH_CreateDoomPalette(const inppal: PByteArray; const outpal: PByteArray; const colormap: PByteArray);
 
+//==============================================================================
+// SH_CreateTranslation
+//
 // From palette frompal to palette topal create translation table
 // All arrays must be allocated in memory before calling it
+//
+//==============================================================================
 procedure SH_CreateTranslation(const frompal, topal: PByteArray; const trans: PByteArray);
 
+//==============================================================================
+//
+// SH_FixBufferPalette
+//
+//==============================================================================
 procedure SH_FixBufferPalette(const buf: PByteArray; const x1, x2: integer);
 
 implementation
 
+//==============================================================================
+//
+// SH_ColorShiftPalette
+//
+//==============================================================================
 procedure SH_ColorShiftPalette(const inpal: PByteArray; const outpal: PByteArray;
   const r, g, b: integer; const shift: integer; const steps: integer);
 var
@@ -70,6 +90,11 @@ begin
   end;
 end;
 
+//==============================================================================
+//
+// SH_CopyPalette
+//
+//==============================================================================
 procedure SH_CopyPalette(const inppal, outpal: PByteArray);
 var
   i: integer;
@@ -78,6 +103,11 @@ begin
     outpal[i] := inppal[i];
 end;
 
+//==============================================================================
+//
+// SH_BestColor
+//
+//==============================================================================
 function SH_BestColor(const r, g, b: byte; const palette: PByteArray; const rangel, rangeh: integer): byte;
 var
   i: integer;
@@ -116,6 +146,11 @@ begin
   result := bestcolor;
 end;
 
+//==============================================================================
+//
+// SH_CreateDoomPalette
+//
+//==============================================================================
 procedure SH_CreateDoomPalette(const inppal: PByteArray; const outpal: PByteArray; const colormap: PByteArray);
 const
   NUMLIGHTS = 32;
@@ -186,8 +221,13 @@ begin
 
 end;
 
+//==============================================================================
+// SH_CreateTranslation
+//
 // From palette frompal to palette topal create translation table
 // All arrays must be allocated in memory before calling it
+//
+//==============================================================================
 procedure SH_CreateTranslation(const frompal, topal: PByteArray; const trans: PByteArray);
 var
   i: integer;
@@ -202,6 +242,11 @@ begin
   end;
 end;
 
+//==============================================================================
+//
+// SH_FixBufferPalette
+//
+//==============================================================================
 procedure SH_FixBufferPalette(const buf: PByteArray; const x1, x2: integer);
 var
   i: integer;

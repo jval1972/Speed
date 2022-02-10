@@ -4,7 +4,7 @@
 //
 //  Copyright (C) 1995 by Noriaworks
 //  Copyright (C) 1993-1996 by id Software, Inc.
-//  Copyright (C) 2004-2021 by Jim Valavanis
+//  Copyright (C) 2004-2022 by Jim Valavanis
 //
 //  This program is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU General Public License
@@ -18,7 +18,7 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with this program; if not, write to the Free Software
-//  Foundation, inc., 59 Temple Place - Suite 330, Boston, MA
+//  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 //  02111-1307, USA.
 //
 // DESCRIPTION:
@@ -40,8 +40,18 @@ uses
   p_mobj_h,
   r_defs;
 
+//==============================================================================
+//
+// P_GetMobjGravity
+//
+//==============================================================================
 function P_GetMobjGravity(const mo: Pmobj_t): fixed_t;
 
+//==============================================================================
+//
+// P_GetSectorGravity
+//
+//==============================================================================
 function P_GetSectorGravity(const sec: Psector_t): fixed_t;
 
 implementation
@@ -50,6 +60,11 @@ uses
   doomdef,
   g_game;
 
+//==============================================================================
+//
+// P_GetMobjGravity
+//
+//==============================================================================
 function P_GetMobjGravity(const mo: Pmobj_t): fixed_t;
 begin
   if G_PlayingEngineVersion > VERSION204 then
@@ -60,6 +75,11 @@ begin
     result := GRAVITY;
 end;
 
+//==============================================================================
+//
+// P_GetSectorGravity
+//
+//==============================================================================
 function P_GetSectorGravity(const sec: Psector_t): fixed_t;
 begin
   if G_PlayingEngineVersion < VERSION204 then

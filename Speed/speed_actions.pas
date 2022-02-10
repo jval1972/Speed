@@ -4,7 +4,7 @@
 //
 //  Copyright (C) 1995 by Noriaworks
 //  Copyright (C) 1993-1996 by id Software, Inc.
-//  Copyright (C) 2004-2021 by Jim Valavanis
+//  Copyright (C) 2004-2022 by Jim Valavanis
 //
 //  This program is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU General Public License
@@ -18,7 +18,7 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with this program; if not, write to the Free Software
-//  Foundation, inc., 59 Temple Place - Suite 330, Boston, MA
+//  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 //  02111-1307, USA.
 //
 //------------------------------------------------------------------------------
@@ -34,16 +34,46 @@ interface
 uses
   p_mobj_h;
 
+//==============================================================================
+//
+// A_StartYourEngines
+//
+//==============================================================================
 procedure A_StartYourEngines(mo: Pmobj_t);
 
+//==============================================================================
+//
+// A_StartRace
+//
+//==============================================================================
 procedure A_StartRace(mo: Pmobj_t);
 
+//==============================================================================
+//
+// A_CheckLapRecord
+//
+//==============================================================================
 procedure A_CheckLapRecord(actor: Pmobj_t);
 
+//==============================================================================
+//
+// A_CheckRaceOver
+//
+//==============================================================================
 procedure A_CheckRaceOver(actor: Pmobj_t);
 
+//==============================================================================
+//
+// A_ExitLevel
+//
+//==============================================================================
 procedure A_ExitLevel(actor: Pmobj_t);
 
+//==============================================================================
+//
+// A_ConsolePlayerMessage
+//
+//==============================================================================
 procedure A_ConsolePlayerMessage(actor: Pmobj_t);
 
 implementation
@@ -62,6 +92,11 @@ uses
   speed_score,
   s_sound;
 
+//==============================================================================
+//
+// A_StartYourEngines
+//
+//==============================================================================
 procedure A_StartYourEngines(mo: Pmobj_t);
 var
   pname: string;
@@ -78,11 +113,21 @@ begin
   players[consoleplayer]._message := 'Start your engines';
 end;
 
+//==============================================================================
+//
+// A_StartRace
+//
+//==============================================================================
 procedure A_StartRace(mo: Pmobj_t);
 begin
   race.racestatus := rs_racing;
 end;
 
+//==============================================================================
+//
+// A_CheckLapRecord
+//
+//==============================================================================
 procedure A_CheckLapRecord(actor: Pmobj_t);
 var
   mo: Pmobj_t;
@@ -109,6 +154,11 @@ var
   MT_YOUWIN: integer = -1;
   MT_GAMEOVER: integer = -1;
 
+//==============================================================================
+//
+// A_CheckRaceOver
+//
+//==============================================================================
 procedure A_CheckRaceOver(actor: Pmobj_t);
 var
   mo: Pmobj_t;
@@ -143,11 +193,21 @@ begin
   end;
 end;
 
+//==============================================================================
+//
+// A_ExitLevel
+//
+//==============================================================================
 procedure A_ExitLevel(actor: Pmobj_t);
 begin
   G_ExitLevel;
 end;
 
+//==============================================================================
+//
+// A_ConsolePlayerMessage
+//
+//==============================================================================
 procedure A_ConsolePlayerMessage(actor: Pmobj_t);
 begin
   if not P_CheckStateParams(actor, 1) then

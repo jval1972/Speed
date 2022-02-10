@@ -4,7 +4,7 @@
 //
 //  Copyright (C) 1995 by Noriaworks
 //  Copyright (C) 1993-1996 by id Software, Inc.
-//  Copyright (C) 2004-2021 by Jim Valavanis
+//  Copyright (C) 2004-2022 by Jim Valavanis
 //
 //  This program is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU General Public License
@@ -18,7 +18,7 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with this program; if not, write to the Free Software
-//  Foundation, inc., 59 Temple Place - Suite 330, Boston, MA
+//  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 //  02111-1307, USA.
 //
 //------------------------------------------------------------------------------
@@ -91,12 +91,32 @@ const
   MINLAPS = 2;
   MAXLAPS = 10;
 
+//==============================================================================
+//
+// SH_InitRace
+//
+//==============================================================================
 procedure SH_InitRace(const levelname: string; const lump: integer);
 
+//==============================================================================
+//
+// SH_GroundTypeAtXY
+//
+//==============================================================================
 function SH_GroundTypeAtXY(const x, y: fixed_t): groundtype_t;
 
+//==============================================================================
+//
+// SH_SlipperFactorAtXY
+//
+//==============================================================================
 function SH_SlipperFactorAtXY(const x, y: fixed_t): byte;
 
+//==============================================================================
+//
+// SH_SlipCalculation
+//
+//==============================================================================
 function SH_SlipCalculation(const x: fixed_t; const slip: byte): fixed_t;
 
 implementation
@@ -112,6 +132,11 @@ uses
   w_wad,
   z_zone;
 
+//==============================================================================
+//
+// SH_InitRace
+//
+//==============================================================================
 procedure SH_InitRace(const levelname: string; const lump: integer);
 var
   sl: TDStringList;
@@ -175,6 +200,11 @@ begin
   end;
 end;
 
+//==============================================================================
+//
+// SH_GroundTypeAtXY
+//
+//==============================================================================
 function SH_GroundTypeAtXY(const x, y: fixed_t): groundtype_t;
 var
   nx, ny: integer;
@@ -202,6 +232,11 @@ begin
     Result := gt_unknown;
 end;
 
+//==============================================================================
+//
+// SH_SlipperFactorAtXY
+//
+//==============================================================================
 function SH_SlipperFactorAtXY(const x, y: fixed_t): byte;
 var
   sinfo: Pslipperinessinfo_t;
@@ -210,6 +245,11 @@ begin
   Result := sinfo.smin + Sys_Random mod (sinfo.smax - sinfo.smin + 1);
 end;
 
+//==============================================================================
+//
+// SH_SlipCalculation
+//
+//==============================================================================
 function SH_SlipCalculation(const x: fixed_t; const slip: byte): fixed_t;
 var
   x64: int64;

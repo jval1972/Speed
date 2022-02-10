@@ -407,7 +407,6 @@ const
       name: 'ICE CUBE';
     ),
 
-
     (
       tex1old: 'd_1_5';
       tex1: '';
@@ -730,16 +729,46 @@ const
     )
   );
 
+//==============================================================================
+//
+// SH_InitLevelCars
+//
+//==============================================================================
 procedure SH_InitLevelCars;
 
+//==============================================================================
+//
+// SH_MoveCarPlayer
+//
+//==============================================================================
 procedure SH_MoveCarPlayer(const mo: Pmobj_t);
 
+//==============================================================================
+//
+// SH_MoveCarAI
+//
+//==============================================================================
 procedure SH_MoveCarAI(const mo: Pmobj_t);
 
+//==============================================================================
+//
+// SH_EngineSound
+//
+//==============================================================================
 procedure SH_EngineSound(const caller: Pmobj_t; const soundtarg: Pmobj_t);
 
+//==============================================================================
+//
+// SH_BrakeSound
+//
+//==============================================================================
 procedure SH_BrakeSound(const caller: Pmobj_t);
 
+//==============================================================================
+//
+// SH_InitCars
+//
+//==============================================================================
 procedure SH_InitCars;
 
 var
@@ -794,6 +823,11 @@ uses
   speed_sounds,
   s_sound;
 
+//==============================================================================
+//
+// SH_InitLevelCars
+//
+//==============================================================================
 procedure SH_InitLevelCars;
 var
   mo: Pmobj_t;
@@ -867,6 +901,11 @@ begin
   lst.Free;
 end;
 
+//==============================================================================
+//
+// SH_SetGear
+//
+//==============================================================================
 procedure SH_SetGear(const mo: Pmobj_t; const g: integer);
 begin
   if g <> mo.gear then
@@ -878,6 +917,11 @@ begin
     end;
 end;
 
+//==============================================================================
+//
+// SH_ShiftGearUp
+//
+//==============================================================================
 procedure SH_ShiftGearUp(const mo: Pmobj_t; const gtics, nextgtics: integer);
 begin
   mo.destgear := mo.gear + 1;
@@ -885,6 +929,11 @@ begin
   mo.nextgeartics := nextgtics;
 end;
 
+//==============================================================================
+//
+// SH_ShiftGearDown
+//
+//==============================================================================
 procedure SH_ShiftGearDown(const mo: Pmobj_t; const gtics, nextgtics: integer);
 begin
   mo.destgear := mo.gear - 1;
@@ -892,6 +941,11 @@ begin
   mo.nextgeartics := nextgtics;
 end;
 
+//==============================================================================
+//
+// SH_AutoGearBox
+//
+//==============================================================================
 procedure SH_AutoGearBox(const mo: Pmobj_t);
 var
   cinfo: Pcarinfo_t;
@@ -924,6 +978,11 @@ begin
     end;
 end;
 
+//==============================================================================
+//
+// SH_ManualGearBox
+//
+//==============================================================================
 procedure SH_ManualGearBox(const p: Pplayer_t);
 var
   f: integer;
@@ -944,6 +1003,11 @@ begin
   end;
 end;
 
+//==============================================================================
+//
+// SH_CalcRPM
+//
+//==============================================================================
 procedure SH_CalcRPM(const mo: Pmobj_t);
 var
   f: integer;
@@ -996,6 +1060,11 @@ begin
   end
 end;
 
+//==============================================================================
+//
+// SH_GearAccelerationFactor
+//
+//==============================================================================
 function SH_GearAccelerationFactor(const mo: Pmobj_t): fixed_t;
 var
   cinfo: Pcarinfo_t;
@@ -1013,6 +1082,11 @@ begin
   end;
 end;
 
+//==============================================================================
+//
+// SH_BuildDrivingCmdAI
+//
+//==============================================================================
 procedure SH_BuildDrivingCmdAI(const mo: Pmobj_t; const cmd: Pdrivingcmd_t);
 // JVAL: 20210318 - Accelerator & turn factor depending on skill
 const
@@ -1102,6 +1176,11 @@ end;
 const
   MAX_SPEED_TURN_DECREASE = 40;
 
+//==============================================================================
+//
+// SH_StorePlayerLapTimes
+//
+//==============================================================================
 procedure SH_StorePlayerLapTimes(const p: Pplayer_t);
 var
   score: Pplayerscore_t;
@@ -1128,6 +1207,11 @@ end;
 var
   MT_CHECKLAPRECORD: integer = -1;
 
+//==============================================================================
+//
+// SH_BuildDrivingCmdPlayer
+//
+//==============================================================================
 procedure SH_BuildDrivingCmdPlayer(const mo: Pmobj_t; const cmd: Pdrivingcmd_t);
 var
   p: Pplayer_t;
@@ -1248,6 +1332,11 @@ const
 const
   MAX_SOUND_DISTANCE = 192 * FRACUNIT;
 
+//==============================================================================
+//
+// SH_ExecuteDrivingCmd
+//
+//==============================================================================
 procedure SH_ExecuteDrivingCmd(const mo: Pmobj_t; const cmd: Pdrivingcmd_t);
 var
   enginespeed: fixed_t;
@@ -1390,6 +1479,11 @@ begin
   SH_NotifyPath(mo);
 end;
 
+//==============================================================================
+//
+// SH_MoveCarAI
+//
+//==============================================================================
 procedure SH_MoveCarAI(const mo: Pmobj_t);
 var
   cmd: drivingcmd_t;
@@ -1404,6 +1498,11 @@ var
 const
   PRINT_PLAYER_PATH_TICS = 10;
 
+//==============================================================================
+//
+// SH_MoveCarPlayer
+//
+//==============================================================================
 procedure SH_MoveCarPlayer(const mo: Pmobj_t);
 var
   cmd: drivingcmd_t;
@@ -1416,6 +1515,11 @@ begin
       printf('%d %d %d %d'#13#10, [mo.x div FRACUNIT, mo.y div FRACUNIT, mo.angle div ANG1, mo.enginespeed div KMH_TO_FIXED]);
 end;
 
+//==============================================================================
+//
+// SH_EngineSound
+//
+//==============================================================================
 procedure SH_EngineSound(const caller: Pmobj_t; const soundtarg: Pmobj_t);
 var
   frac: integer;
@@ -1445,6 +1549,11 @@ begin
   dec(soundtarg.soundcountdown);
 end;
 
+//==============================================================================
+//
+// SH_BrakeSound
+//
+//==============================================================================
 procedure SH_BrakeSound(const caller: Pmobj_t);
 var
   sndid: integer;
@@ -1466,6 +1575,11 @@ begin
     dec(caller.brakesoundcountdown);
 end;
 
+//==============================================================================
+//
+// CmdPrintPlayerPath
+//
+//==============================================================================
 procedure CmdPrintPlayerPath(const parm: string);
 begin
   if parm = '' then
@@ -1478,6 +1592,11 @@ begin
   CmdPrintPlayerPath('');
 end;
 
+//==============================================================================
+//
+// SH_InitCars
+//
+//==============================================================================
 procedure SH_InitCars;
 begin
   C_AddCmd('print_player_path', @CmdprintPlayerPath);
