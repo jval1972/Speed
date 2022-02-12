@@ -30,6 +30,8 @@ Both shareware and register versions of the game should work OK.
 
 History
 -------
+Use 64 characters long string for short names in PK3.
+
 Version 1.0.3.743 (20220206)
 -----------------
 Holds up to 2047 bytes for environment variables.
