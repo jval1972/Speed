@@ -127,6 +127,11 @@ uses
   i3d_textures,
   sc_engine;
 
+//==============================================================================
+//
+// TI3DModelLoader.Create
+//
+//==============================================================================
 constructor TI3DModelLoader.Create;
 begin
   Inherited Create;
@@ -173,6 +178,11 @@ begin
   numcorrections := 0;
 end;
 
+//==============================================================================
+//
+// TI3DModelLoader.Destroy
+//
+//==============================================================================
 destructor TI3DModelLoader.Destroy;
 begin
   Clear;

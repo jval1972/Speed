@@ -903,6 +903,11 @@ begin
   Result := Output <> '';
 end;
 
+//==============================================================================
+//
+// TDoomCompiler.CreateDoomCompiler
+//
+//==============================================================================
 constructor TDoomCompiler.CreateDoomCompiler;
 begin
   if dccnt <> 0 then
@@ -922,6 +927,11 @@ begin
   funitnames := TDStringList.Create;
 end;
 
+//==============================================================================
+//
+// TDoomCompiler.Destroy
+//
+//==============================================================================
 destructor TDoomCompiler.Destroy;
 begin
   Dec(dccnt);
@@ -1020,7 +1030,12 @@ begin
   FPP.AdjustMessages(Self);
 end;
 
+//==============================================================================
+// TDoomExec.CreateDoomExec
+//
 // **** TDoomExec ****
+//
+//==============================================================================
 constructor TDoomExec.CreateDoomExec(const aImporter: TPSRuntimeClassImporter);
 begin
   inherited Create;
@@ -1170,6 +1185,11 @@ begin
   //   the actual Free of the objects to the calling Application.
 end;
 
+//==============================================================================
+//
+// TPSDoomRuntimeClassImporter.Create
+//
+//==============================================================================
 constructor TPSDoomRuntimeClassImporter.Create;
 begin
   inherited;

@@ -72,6 +72,11 @@ uses
   w_folders,
   w_pak;
 
+//==============================================================================
+//
+// TI3DModel.Create
+//
+//==============================================================================
 constructor TI3DModel.Create(const name: string;
   const xoffset, yoffset, zoffset: float;
   const xscale, yscale, zscale: float;
@@ -134,6 +139,11 @@ begin
   end;
 end;
 
+//==============================================================================
+//
+// TI3DModel.Destroy
+//
+//==============================================================================
 destructor TI3DModel.Destroy;
 begin
   fmdl.Free;

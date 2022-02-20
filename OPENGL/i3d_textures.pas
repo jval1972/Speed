@@ -71,12 +71,22 @@ type
     destructor Destroy; override;
   end;
 
+//==============================================================================
+//
+// TGLUintClass.Create
+//
+//==============================================================================
 constructor TGLUintClass.Create(const auint: GLUint);
 begin
   Inherited Create;
   uint := auint;
 end;
 
+//==============================================================================
+//
+// TGLUintClass.Destroy
+//
+//==============================================================================
 destructor TGLUintClass.Destroy;
 begin
   glDeleteTextures(1, @uint);

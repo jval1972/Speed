@@ -140,6 +140,11 @@ type
     procedure SavetoStream(const strm: TDStream);
   end;
 
+//==============================================================================
+//
+// TSpeedToWADConverter.Create
+//
+//==============================================================================
 constructor TSpeedToWADConverter.Create;
 begin
   f := nil;
@@ -154,6 +159,11 @@ begin
   Inherited;
 end;
 
+//==============================================================================
+//
+// TSpeedToWADConverter.Destroy
+//
+//==============================================================================
 destructor TSpeedToWADConverter.Destroy;
 begin
   Clear;
