@@ -31,6 +31,7 @@ Both shareware and register versions of the game should work OK.
 History
 -------
 Use 64 characters long string for short names in PK3.
+Fixed missileheight ACTORDEF export.
 
 Version 1.0.3.743 (20220206)
 -----------------
