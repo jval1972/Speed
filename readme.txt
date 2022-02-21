@@ -32,6 +32,7 @@ History
 -------
 Use 64 characters long string for short names in PK3.
 Fixed missileheight ACTORDEF export.
+Fixed wrong coordinates check in sight check.
 
 Version 1.0.3.743 (20220206)
 -----------------

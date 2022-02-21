@@ -113,7 +113,7 @@ begin
 
   if node.dy = 0 then
   begin
-    if x = node.y then
+    if y = node.y then
     begin
       result := 2;
       exit;
