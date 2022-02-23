@@ -34,6 +34,7 @@ Use 64 characters long string for short names in PK3.
 Fixed missileheight ACTORDEF export.
 Fixed wrong coordinates check in sight check.
 Fix of OPENARRAYOFU16 and OPENARRAYOFS16 declarations (PascalScript).
+Fix ReadParameters not setting parameter parser positions even though ValidateParameters does use them (PascalScript).
 
 Version 1.0.3.743 (20220206)
 -----------------
