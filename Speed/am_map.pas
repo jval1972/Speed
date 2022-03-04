@@ -707,7 +707,7 @@ begin
   m_w := FTOM(f_w);
   m_h := FTOM(f_h);
 
-  if gamestate =  gs_level then
+  if gamestate = GS_LEVEL then
   begin
     // find player to center on initially
     pnum := consoleplayer;
@@ -1183,7 +1183,7 @@ end;
 // use a hash algorithm to handle  the common cases.
 //
 //==============================================================================
-function AM_clipMline(ml:  Pmline_t; fl: Pfline_t): boolean;
+function AM_clipMline(ml: Pmline_t; fl: Pfline_t): boolean;
 const
   LEFT = 1;
   RIGHT  = 2;
