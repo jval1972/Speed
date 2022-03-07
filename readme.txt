@@ -36,6 +36,7 @@ Fixed wrong coordinates check in sight check.
 Fix of OPENARRAYOFU16 and OPENARRAYOFS16 declarations (PascalScript).
 Fix ReadParameters not setting parameter parser positions even though ValidateParameters does use them (PascalScript).
 Fixed misspelled of "joystick" in the menus.
+Speed optimizations in R_PointToAngleEx().
 
 Version 1.0.3.743 (20220206)
 -----------------

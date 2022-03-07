@@ -2465,7 +2465,6 @@ begin
   mceilingclip := @cliptop;
 
   R_DrawVisSpriteLight(spr, x1, x2);
-
 end;
 
 //==============================================================================
