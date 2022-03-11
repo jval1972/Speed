@@ -2828,7 +2828,7 @@ begin
       col := 0;
       desttop := @screen32[y * swidth + x];
 
-      sheight := SCREENHEIGHT;
+      sheight := {$IFDEF OPENGL}V_GetScreenHeight(SCN_FG){$ELSE}SCREENHEIGHT{$ENDIF};
 
       while col < pw do
       begin
@@ -3352,7 +3352,7 @@ begin
       col := 0;
       desttop := @screen32[y * swidth + x];
 
-      sheight := SCREENHEIGHT;
+      sheight := {$IFDEF OPENGL}V_GetScreenHeight(SCN_FG){$ELSE}SCREENHEIGHT{$ENDIF};
 
       while col < pw do
       begin
@@ -3517,7 +3517,7 @@ begin
       col := 0;
       desttop := @screen32[y * swidth + x];
 
-      sheight := SCREENHEIGHT;
+      sheight := {$IFDEF OPENGL}V_GetScreenHeight(SCN_FG){$ELSE}SCREENHEIGHT{$ENDIF};;
 
       while col < pw do
       begin
