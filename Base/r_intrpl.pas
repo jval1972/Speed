@@ -674,7 +674,7 @@ procedure R_RestoreInterpolationData;
 var
   r1, r2, r3: mt_range_t;
 begin
-  if usemultithread and (I_GetNumCPUs >=4) and (istruct.numitems + numismobjs >= 4096) then
+  if usemultithread and (I_GetNumCPUs >= 4) and (istruct.numitems + numismobjs >= 4096) then
   begin
     r1.start := 0;
     r1.finish := istruct.numitems div 3;
@@ -794,7 +794,7 @@ begin
   else
   begin
     result := true;
-    if usemultithread and (I_GetNumCPUs >=4) and (istruct.numitems + numismobjs >= 4096) then
+    if usemultithread and (I_GetNumCPUs >= 4) and (istruct.numitems + numismobjs >= 4096) then
     begin
       r1.start := 0;
       r1.finish := istruct.numitems div 3;
