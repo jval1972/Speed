@@ -38,6 +38,7 @@ Fix ReadParameters not setting parameter parser positions even though ValidatePa
 Fixed misspelled of "joystick" in the menus.
 Speed optimizations in R_PointToAngleEx().
 Improved priority logic for sound channel selection.
+Added support for tall patches in PNG format.
 
 Version 1.0.3.743 (20220206)
 -----------------
