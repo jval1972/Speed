@@ -701,7 +701,7 @@ begin
     mo.z := mo.floorz;
 
     if not (G_PlayingEngineVersion in [VERSION111..VERSION118]) then
-      if (not correct_lost_soul_bounce) and (mo.flags and MF_SKULLFLY <> 0) then
+      if not correct_lost_soul_bounce and (mo.flags and MF_SKULLFLY <> 0) then
         mo.momz := -mo.momz;
 
     if (mo.flags and MF_MISSILE <> 0) and (mo.flags and MF_NOCLIP = 0) then
@@ -728,7 +728,7 @@ begin
         grav := grav div 2;
 
     if mo.momz = 0 then
-      mo.momz := - grav * 2
+      mo.momz := -grav * 2
     else
       mo.momz := mo.momz - grav;
 
@@ -850,9 +850,8 @@ begin
 end;
 
 //==============================================================================
-// P_DoMobjThinker
 //
-// P_MobjThinker
+// P_DoMobjThinker
 //
 //==============================================================================
 procedure P_DoMobjThinker(mobj: Pmobj_t);
@@ -870,9 +869,7 @@ begin
     P_XYMovement(mobj);
 
     if not Assigned(mobj.thinker._function.acv) then
-    begin
       exit; // mobj was removed
-    end;
   end;
 
   if mobj.flags_ex and MF_EX_FLOATBOB <> 0 then
@@ -922,7 +919,7 @@ begin
   // calling action functions at transitions
   if mobj.tics <> -1 then
   begin
-    mobj.tics := mobj.tics - 1;
+    dec(mobj.tics);
 
     // you can cycle through multiple states in a tic
     if mobj.tics = 0 then
@@ -941,9 +938,7 @@ begin
     mobj.movecount := mobj.movecount + 1;
 
     if mobj.movecount < 12 * TICRATE then
-    begin
       exit;
-    end;
 
     if leveltime and 31 <> 0 then
       exit;
@@ -1175,8 +1170,8 @@ var
 //==============================================================================
 procedure P_RemoveMobj(mobj: Pmobj_t);
 begin
-  if ((mobj.flags and MF_SPECIAL) <> 0) and
-     ((mobj.flags and MF_DROPPED) = 0) and
+  if (mobj.flags and MF_SPECIAL <> 0) and
+     (mobj.flags and MF_DROPPED = 0) and
      (mobj._type <> Ord(MT_INV)) and
      (mobj._type <> Ord(MT_INS)) then
   begin
