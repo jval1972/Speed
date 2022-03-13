@@ -1120,7 +1120,10 @@ begin
           exit;
         end;
 
-    jumpupmargin := 24 * FRACUNIT;
+    if p <> nil then
+      jumpupmargin := 12 * FRACUNIT
+    else
+      jumpupmargin := 24 * FRACUNIT;
     // JVAL: Version 205
     if G_PlayingEngineVersion >= VERSION205 then
       if (thing.flags2_ex and MF2_EX_JUMPUP <> 0) and (N_Random > 20) then
