@@ -1671,6 +1671,7 @@ var
   th: Pmobj_t;
 begin
   z := z + _SHL(N_Random - N_Random, 10);
+
   th := P_SpawnMobj(x, y, z, Ord(MT_BLUEBLOOD));
   th.momz := FRACUNIT * 2;
   th.tics := th.tics - (N_Random and 3);
@@ -2005,15 +2006,13 @@ begin
   P_CheckMissileSpawn(th);
 end;
 
-//----------------------------------------------------------------------------
+//==============================================================================
 //
 // FUNC P_FaceMobj
 //
 // Returns 1 if 'source' needs to turn clockwise, or 0 if 'source' needs
 // to turn counter clockwise.  'delta' is set to the amount 'source'
 // needs to turn.
-//
-//----------------------------------------------------------------------------
 //
 //==============================================================================
 function P_FaceMobj(source: Pmobj_t; target: Pmobj_t; var delta: angle_t): integer;
