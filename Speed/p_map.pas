@@ -649,6 +649,7 @@ begin
       result := true; // overhead
       exit;
     end;
+
     if tmthing.z + tmthing.height < thing.z then
     begin
       result := true; // underneath
@@ -679,7 +680,7 @@ begin
     if thing.flags and MF_SHOOTABLE = 0 then
     begin
       // didn't do any damage
-      result := (thing.flags and MF_SOLID) = 0;
+      result := thing.flags and MF_SOLID = 0;
       exit;
     end;
 
@@ -725,9 +726,11 @@ begin
     result := thing.flags and MF_SOLID = 0;
 end;
 
-//==============================================================================
 //
 // MOVEMENT CLIPPING
+//
+
+//==============================================================================
 //
 // P_CheckPosition
 // This is purely informative, nothing is modified
@@ -849,12 +852,11 @@ begin
   result := true;
 end;
 
-//=============================================================================
+//==============================================================================
 //
 // P_FakeZMovement
 //
 //     Fake the zmovement so that we can check if a move is legal
-//=============================================================================
 //
 //==============================================================================
 procedure P_FakeZMovement(mo: Pmobj_t);
@@ -895,7 +897,7 @@ begin
     if (mo.info.crashstate <> 0) and (mo.flags and MF_CORPSE <> 0) then
       exit;
   end
-  else if (mo.flags_ex and MF_EX_LOWGRAVITY <> 0) then
+  else if mo.flags_ex and MF_EX_LOWGRAVITY <> 0 then
   begin
     if mo.momz = 0 then
       mo.momz := -(P_GetMobjGravity(mo) div 8) * 2
@@ -930,11 +932,9 @@ end;
 var
   onmobj: Pmobj_t; //generic global onmobj...used for landing on pods/players
 
-//---------------------------------------------------------------------------
+//==============================================================================
 //
 // PIT_CheckOnmobjZ
-//
-//---------------------------------------------------------------------------
 //
 //==============================================================================
 function PIT_CheckOnmobjZ(thing: Pmobj_t): boolean;
@@ -977,12 +977,11 @@ begin
 
 end;
 
-//=============================================================================
+//==============================================================================
 //
 // P_CheckOnmobj(mobj_t *thing)
 //
 //     Checks if the new Z position is legal
-//=============================================================================
 //
 //==============================================================================
 function P_CheckOnmobj(thing: Pmobj_t): Pmobj_t;
@@ -2041,7 +2040,7 @@ begin
     result := true;
     exit;
   end;
-  if (mobj.flags2_ex and MF2_EX_INTERACTIVE) = 0 then
+  if mobj.flags2_ex and MF2_EX_INTERACTIVE = 0 then
   begin
     result := true;
     exit;
@@ -2323,7 +2322,7 @@ begin
 
   nofit := true;
 
-  if crushchange and ((leveltime and 3) = 0) then
+  if crushchange and (leveltime and 3 = 0) then
   begin
     P_DamageMobj(thing, nil, nil, 10);
 
