@@ -39,6 +39,7 @@ Fixed misspelled of "joystick" in the menus.
 Speed optimizations in R_PointToAngleEx().
 Improved priority logic for sound channel selection.
 Added support for tall patches in PNG format.
+Fixes to 3d colissions of actors moving up or down other actors.
 
 Version 1.0.3.743 (20220206)
 -----------------
