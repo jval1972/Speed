@@ -346,7 +346,7 @@ begin
   if mo.tics < 1 then
     mo.tics := 1;
 
-  mo.flags := mo.flags and (not MF_MISSILE);
+  mo.flags := mo.flags and not MF_MISSILE;
 
   A_DeathSound(mo, mo);
 end;
@@ -614,8 +614,8 @@ begin
   if (mo.flags and MF_FLOAT <> 0) and (mo.target <> nil) then
   begin
     // float down towards target if too close
-    if ((mo.flags and MF_SKULLFLY) = 0) and
-       ((mo.flags and MF_INFLOAT) = 0) then
+    if (mo.flags and MF_SKULLFLY = 0) and
+       (mo.flags and MF_INFLOAT = 0) then
     begin
       dist := P_AproxDistance(mo.x - mo.target.x, mo.y - mo.target.y);
 
@@ -1640,6 +1640,7 @@ var
   th: Pmobj_t;
 begin
   z := z + _SHL(N_Random - N_Random, 10);
+
   th := P_SpawnMobj(x, y, z, Ord(MT_GREENBLOOD));
   th.momz := FRACUNIT * 2;
   th.tics := th.tics - (N_Random and 3);
@@ -2048,14 +2049,12 @@ begin
   end;
 end;
 
-//----------------------------------------------------------------------------
+//==============================================================================
 //
 // FUNC P_SeekerMissile
 //
 // The missile's tracer field must be the target.  Returns true if
 // target was tracked, false if not.
-//
-//----------------------------------------------------------------------------
 //
 //==============================================================================
 function P_SeekerMissile(actor: Pmobj_t; thresh, turnMax: angle_t): boolean;
@@ -2114,11 +2113,10 @@ begin
   result := true;
 end;
 
-//---------------------------------------------------------------------------
+//==============================================================================
 //
 // FUNC P_GetThingFloorType
 //
-//---------------------------------------------------------------------------
 // JVAL: 9 December 2007, Added terrain types
 //
 //==============================================================================
@@ -2127,11 +2125,9 @@ begin
   result := flats[Psubsector_t(thing.subsector).sector.floorpic].terraintype;
 end;
 
-//---------------------------------------------------------------------------
+//==============================================================================
 //
 // FUNC P_HitFloor
-//
-//---------------------------------------------------------------------------
 //
 //==============================================================================
 function P_HitFloor(thing: Pmobj_t): integer;
