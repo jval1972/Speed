@@ -926,7 +926,7 @@ begin
       else if level >= NUMCOLORMAPS then
         level := NUMCOLORMAPS - 1;
 
-      def_zlight[i][j] := PByteArray(integer(def_colormaps) + level * 256);
+      def_zlight[i][j] := @def_colormaps[level * 256];
     end;
 
     startmaphi := ((LIGHTLEVELS - 1 - i) * 2 * FRACUNIT) div LIGHTLEVELS;
@@ -1061,7 +1061,7 @@ begin
           level := NUMCOLORMAPS - 1;
       end;
 
-      def_scalelight[i][j] := PByteArray(integer(def_colormaps) + level * 256);
+      def_scalelight[i][j] := @def_colormaps[level * 256];
     end;
   end;
 
