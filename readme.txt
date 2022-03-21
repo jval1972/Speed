@@ -39,6 +39,7 @@ Fixed misspelled of "joystick" in the menus.
 Speed optimizations in R_PointToAngleEx().
 Improved priority logic for sound channel selection.
 Added support for tall patches in PNG format.
+Added SPIN field in VOXELDEF lumps, it compines DROPPEDSPIN & PLACEDSPIN behavior.
 
 Version 1.0.3.743 (20220206)
 -----------------
