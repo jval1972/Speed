@@ -40,6 +40,7 @@ Speed optimizations in R_PointToAngleEx().
 Improved priority logic for sound channel selection.
 Added support for tall patches in PNG format.
 Added SPIN field in VOXELDEF lumps, it compines DROPPEDSPIN & PLACEDSPIN behavior.
+Proper windowed mode.
 
 Version 1.0.3.743 (20220206)
 -----------------
