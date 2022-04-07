@@ -113,7 +113,7 @@ type
   Pdefault_t = ^default_t;
 
 const
-  NUMDEFAULTS = 193;
+  NUMDEFAULTS = 195;
 
 // JVAL
 // Note: All setable defaults must be in lowercase, don't ask why. Just do it. :)
@@ -149,6 +149,22 @@ const
      defaultivalue: 0;
      defaultbvalue: true;
      _type: tBoolean),
+
+    (name: 'windowxpos';
+     location: @windowxpos;
+     setable: DFS_NEVER;
+     defaultsvalue: '';
+     defaultivalue: 0;
+     defaultbvalue: true;
+     _type: tInteger),
+
+    (name: 'windowypos';
+     location: @windowypos;
+     setable: DFS_NEVER;
+     defaultsvalue: '';
+     defaultivalue: 0;
+     defaultbvalue: true;
+     _type: tInteger),
 
     (name: 'interpolate';
      location: @interpolate;
