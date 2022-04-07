@@ -840,7 +840,7 @@ begin
     lpfnWndProc   := @WindowProc;        // Set the window procedure to our func WndProc
     hInstance     := h_Instance;
     hCursor       := LoadCursor(0, IDC_ARROW);
-    lpszClassName := 'Doom32';
+    lpszClassName := 'GLSpeed';
   end;
 
   if RegisterClass(WindowClass) = 0 then  // Attemp to register the window class
