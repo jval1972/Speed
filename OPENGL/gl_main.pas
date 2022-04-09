@@ -1166,7 +1166,7 @@ begin
   if force or (SCREENWIDTH <> nwidth) or (SCREENHEIGHT <> nheight) then
   begin
     MT_WaitTasks;           // Wait for running tasks to stop
-    AM_Stop;                // Stop the aytomap
+    AM_Stop;                // Stop the automap
 
     SCREENWIDTH := nwidth;
     SCREENHEIGHT := nheight;
@@ -1177,7 +1177,7 @@ begin
     glInit;
     glViewport(0, 0, SCREENWIDTH, SCREENHEIGHT);
 
-    AM_Start;               // Start the aytomap
+    AM_Start;               // Start the automap
     C_AdjustScreenSize;
     R_ExecuteSetViewSize;   // Set-up new SCREENWIDTH & SCREENHEIGHT
     overlay.ReCalcOverlayLookUp;
