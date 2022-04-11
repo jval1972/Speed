@@ -27,6 +27,8 @@ Use Doom game editing utilities to create custom content.
 Advanced scripting (PascalScript).
 
 ## Downloads
+[version 1.0.4.745 (20220411 - win32)](https://sourceforge.net/projects/speed-game/files/GLSpeed_1.0/GLSpeed_1.0.4.745_bin.zip/download)
+
 [version 1.0.3.743 (20220206 - win32)](https://sourceforge.net/projects/speed-game/files/GLSpeed_1.0/GLSpeed_1.0.3.743_bin.zip/download)
 
 [version 1.0.2.739 (20210428 - win32)](https://sourceforge.net/projects/speed-game/files/GLSpeed_1.0/GLSpeed_1.0.2.739_bin.zip/download)

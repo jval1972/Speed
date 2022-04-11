@@ -30,6 +30,9 @@ Both shareware and register versions of the game should work OK.
 
 History
 -------
+
+Version 1.0.4.745 (20220411)
+-----------------
 Use 64 characters long string for short names in PK3.
 Fixed missileheight ACTORDEF export.
 Fixed wrong coordinates check in sight check.
