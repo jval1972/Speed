@@ -30,6 +30,7 @@ Both shareware and register versions of the game should work OK.
 
 History
 -------
+Fixed problem with lump reading when a namespace was required.
 
 Version 1.0.4.745 (20220411)
 -----------------
