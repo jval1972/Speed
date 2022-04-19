@@ -31,6 +31,7 @@ Both shareware and register versions of the game should work OK.
 History
 -------
 Fixed problem with lump reading when a namespace was required.
+It will load KVX voxels even if the ".kvx" extension is not defined in VOXELDEF.
 
 Version 1.0.4.745 (20220411)
 -----------------
