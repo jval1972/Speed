@@ -34,7 +34,7 @@ Fixed problem with lump reading when a namespace was required.
 It will load KVX voxels even if the ".kvx" extension is not defined in VOXELDEF.
 Improved ZDoom compatiblility in VOXELDEF lumps.
 Speed optimizations to ACTORDEF parsing.
-Speed optimiations to PascalScript initialization.
+Speed optimizations to PascalScript initialization.
 
 Version 1.0.4.745 (20220411)
 -----------------
