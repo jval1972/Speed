@@ -37,6 +37,7 @@ Speed optimizations to ACTORDEF parsing.
 Speed optimizations to PascalScript initialization.
 Speed optimizations to startup memo text output.
 Correctly checks minimum screen width.
+Displays loading time at startup.
 
 Version 1.0.4.745 (20220411)
 -----------------

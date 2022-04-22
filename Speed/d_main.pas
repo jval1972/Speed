@@ -1362,11 +1362,14 @@ var
   filename: string;
   scale: integer;
   _time: integer;
+  startloadingtime: LongWord;
   i: integer;
   mb_min: integer; // minimum zone size
   s1, s2: string;
   kparm: string;
 begin
+  startloadingtime := I_GetTickCount;
+
   SUC_Open;
   outproc := @SUC_Outproc;
   wadfiles := TDSTringList.Create;
@@ -2191,6 +2194,10 @@ begin
   SUC_Progress(100);
 
   SUC_Close;
+
+  printf(StringOfChar('-', 21) + #13#10);
+  printf('Load time: %2.3f secs'#13#10, [(I_GetTickCount - startloadingtime) / 1000]);
+  printf(StringOfChar('-', 21) + #13#10);
 
   p := M_CheckParm('-playdemo');
   if (p <> 0) and (p < myargc - 1) then
