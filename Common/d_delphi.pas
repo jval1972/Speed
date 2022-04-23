@@ -1456,6 +1456,13 @@ function maxlength(const l: integer; const s: string): string;
 //==============================================================================
 function CharPos(const ch: Char; const s: string): integer;
 
+//==============================================================================
+//
+// Pos1
+//
+//==============================================================================
+function Pos1(const subs, s: string): boolean;
+
 implementation
 
 uses
@@ -6874,6 +6881,49 @@ begin
       exit;
     end;
   result := 0;
+end;
+
+//==============================================================================
+//
+// Pos1
+//
+//==============================================================================
+function Pos1(const subs, s: ansistring): boolean;
+var
+  len1, len1b, len2: integer;
+  i: integer;
+begin
+  len1 := Length(subs);
+  len2 := Length(s);
+  if len2 < len1 then
+  begin
+    Result := False;
+    Exit;
+  end;
+
+  len1b := len1 - 4;
+  i := 1;
+  while i <= len1b do
+  begin
+    if PLongWord(@subs[i])^ <> PLongWord(@s[i])^ then
+    begin
+      Result := False;
+      Exit;
+    end;
+    Inc(i, 4);
+  end;
+
+  while i <= len1 do
+  begin
+    if subs[i] <> s[i] then
+    begin
+      Result := False;
+      Exit;
+    end;
+    Inc(i);
+  end;
+
+  Result := True;
 end;
 
 end.
