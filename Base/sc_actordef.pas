@@ -377,7 +377,7 @@ var
     for i := 0 to mobj_flags.Count - 1 do
     begin
       flag := mobj_flags[i];
-      if Pos('MF_', flag) = 1 then
+      if Pos1('MF_', flag) then
         flag := Copy(flag, 4, length(flag) - 3);
       if sc.MatchFlag(flag) then
       begin
@@ -397,25 +397,40 @@ var
   begin
     result := '';
     acheck := strupper(aflag);
-    if Pos('MF2_EX_', acheck) = 1 then
-      acheck := Copy(acheck, 8, length(acheck) - 7)
-    else if Pos('MF_EX_', acheck) = 1 then
-      acheck := Copy(acheck, 7, length(acheck) - 6)
-    {$IFDEF HERETIC_OR_HEXEN}
-    else if Pos('MF2_', acheck) = 1 then
-      acheck := Copy(acheck, 5, length(acheck) - 4)
-    {$ENDIF}
-    else if Pos('MF_', acheck) = 1 then
-      acheck := Copy(acheck, 4, length(acheck) - 3);
+    if acheck = '' then
+    begin
+      result := inp;
+      exit;
+    end;
+    if acheck[1] = 'M' then
+    begin
+      if Pos1('MF4_EX_', acheck) then
+        acheck := Copy(acheck, 8, length(acheck) - 7)
+      else if Pos1('MF3_EX_', acheck) then
+        acheck := Copy(acheck, 8, length(acheck) - 7)
+      else if Pos1('MF2_EX_', acheck) then
+        acheck := Copy(acheck, 8, length(acheck) - 7)
+      else if Pos1('MF_EX_', acheck) then
+        acheck := Copy(acheck, 7, length(acheck) - 6)
+      {$IFDEF HERETIC_OR_HEXEN}
+      else if Pos1('MF2_', acheck) then
+        acheck := Copy(acheck, 5, length(acheck) - 4)
+      {$ENDIF}
+      else if Pos1('MF_', acheck) then
+        acheck := Copy(acheck, 4, length(acheck) - 3);
+    end;
     sctmp := TScriptEngine.Create(inp);
     while sctmp.GetString do
     begin
       icheck := strupper(sctmp._String);
-      if (icheck <> acheck) and
-         (icheck <> 'MF_' + acheck) and
+      if (icheck <> acheck) and (icheck[1] <> 'M') then
+        result := result + icheck + ' '
+      else if (icheck <> 'MF_' + acheck) and
          (icheck <> 'MF2_' + acheck) and
          (icheck <> 'MF_EX_' + acheck) and
-         (icheck <> 'MF2_EX_' + acheck) then
+         (icheck <> 'MF2_EX_' + acheck) and
+         (icheck <> 'MF3_EX_' + acheck) and
+         (icheck <> 'MF4_EX_' + acheck) then
         result := result + icheck + ' ';
     end;
     sctmp.Free;
@@ -442,7 +457,7 @@ var
     for i := 0 to mobj_flags.Count - 1 do
     begin
       flag := mobj_flags[i];
-      if Pos('MF_', flag) = 1 then
+      if Pos1('MF_', flag) then
         flag := Copy(flag, 4, length(flag) - 3);
       if sc.MatchFlag('-' + flag) then
       begin
@@ -464,9 +479,9 @@ var
     for i := 0 to mobj_flags2.Count - 1 do
     begin
       flag := mobj_flags2[i];
-      if Pos('MF2_', flag) = 1 then
+      if Pos1('MF2_', flag) then
         flag := Copy(flag, 5, length(flag) - 4)
-      else if Pos('MF_', flag) = 1 then
+      else if Pos1('MF_', flag) then
         flag := Copy(flag, 4, length(flag) - 3);
       if sc.MatchFlag2(flag) then
       begin
@@ -500,9 +515,9 @@ var
     for i := 0 to mobj_flags2.Count - 1 do
     begin
       flag := mobj_flags2[i];
-      if Pos('MF2_', flag) = 1 then
+      if Pos1('MF2_', flag) then
         flag := Copy(flag, 5, length(flag) - 4)
-      else if Pos('MF_', flag) = 1 then
+      else if Pos1('MF_', flag) then
         flag := Copy(flag, 4, length(flag) - 3);
       if sc.MatchFlag2('-' + flag) then
       begin
@@ -524,9 +539,9 @@ var
     for i := 0 to mobj_flags_ex.Count - 1 do
     begin
       flag := mobj_flags_ex[i];
-      if Pos('MF_EX_', flag) = 1 then
+      if Pos1('MF_EX_', flag) then
         flag := Copy(flag, 7, length(flag) - 6)
-      else if Pos('MF_', flag) = 1 then
+      else if Pos1('MF_', flag) then
         flag := Copy(flag, 4, length(flag) - 3);
       if sc.MatchFlagEx(flag) then
       begin
@@ -560,9 +575,9 @@ var
     for i := 0 to mobj_flags_ex.Count - 1 do
     begin
       flag := mobj_flags_ex[i];
-      if Pos('MF_EX_', flag) = 1 then
+      if Pos1('MF_EX_', flag) then
         flag := Copy(flag, 7, length(flag) - 6)
-      else if Pos('MF_', flag) = 1 then
+      else if Pos1('MF_', flag) then
         flag := Copy(flag, 4, length(flag) - 3);
       if sc.MatchFlagEx('-' + flag) then
       begin
@@ -583,13 +598,13 @@ var
     for i := 0 to mobj_flags2_ex.Count - 1 do
     begin
       flag := mobj_flags2_ex[i];
-      if Pos('MF2_EX_', flag) = 1 then
+      if Pos1('MF2_EX_', flag) then
         flag := Copy(flag, 8, length(flag) - 7)
-      else if Pos('MF_EX_', flag) = 1 then
+      else if Pos1('MF_EX_', flag) then
         flag := Copy(flag, 7, length(flag) - 6)
-      else if Pos('MF2_', flag) = 1 then
+      else if Pos1('MF2_', flag) then
         flag := Copy(flag, 5, length(flag) - 4)
-      else if Pos('MF_', flag) = 1 then
+      else if Pos1('MF_', flag) then
         flag := Copy(flag, 4, length(flag) - 3);
       if sc.MatchFlag2Ex(flag) then
       begin
@@ -623,13 +638,13 @@ var
     for i := 0 to mobj_flags2_ex.Count - 1 do
     begin
       flag := mobj_flags2_ex[i];
-      if Pos('MF2_EX_', flag) = 1 then
+      if Pos1('MF2_EX_', flag) then
         flag := Copy(flag, 8, length(flag) - 7)
-      else if Pos('MF_EX_', flag) = 1 then
+      else if Pos1('MF_EX_', flag) then
         flag := Copy(flag, 7, length(flag) - 6)
-      else if Pos('MF2_', flag) = 1 then
+      else if Pos1('MF2_', flag) then
         flag := Copy(flag, 5, length(flag) - 4)
-      else if Pos('MF_', flag) = 1 then
+      else if Pos1('MF_', flag) then
         flag := Copy(flag, 4, length(flag) - 3);
       if sc.MatchFlag2Ex('-' + flag) then
       begin
@@ -650,15 +665,15 @@ var
     for i := 0 to mobj_flags3_ex.Count - 1 do
     begin
       flag := mobj_flags3_ex[i];
-      if Pos('MF3_EX_', flag) = 1 then
+      if Pos1('MF3_EX_', flag) then
         flag := Copy(flag, 8, length(flag) - 7)
-      else if Pos('MF2_EX_', flag) = 1 then
+      else if Pos1('MF2_EX_', flag) then
         flag := Copy(flag, 8, length(flag) - 7)
-      else if Pos('MF_EX_', flag) = 1 then
+      else if Pos1('MF_EX_', flag) then
         flag := Copy(flag, 7, length(flag) - 6)
-      else if Pos('MF2_', flag) = 1 then
+      else if Pos1('MF2_', flag) then
         flag := Copy(flag, 5, length(flag) - 4)
-      else if Pos('MF_', flag) = 1 then
+      else if Pos1('MF_', flag) then
         flag := Copy(flag, 4, length(flag) - 3);
       if sc.MatchFlag3Ex(flag) then
       begin
@@ -692,15 +707,15 @@ var
     for i := 0 to mobj_flags3_ex.Count - 1 do
     begin
       flag := mobj_flags3_ex[i];
-      if Pos('MF3_EX_', flag) = 1 then
+      if Pos1('MF3_EX_', flag) then
         flag := Copy(flag, 8, length(flag) - 7)
-      else if Pos('MF2_EX_', flag) = 1 then
+      else if Pos1('MF2_EX_', flag) then
         flag := Copy(flag, 8, length(flag) - 7)
-      else if Pos('MF_EX_', flag) = 1 then
+      else if Pos1('MF_EX_', flag) then
         flag := Copy(flag, 7, length(flag) - 6)
-      else if Pos('MF2_', flag) = 1 then
+      else if Pos1('MF2_', flag) then
         flag := Copy(flag, 5, length(flag) - 4)
-      else if Pos('MF_', flag) = 1 then
+      else if Pos1('MF_', flag) then
         flag := Copy(flag, 4, length(flag) - 3);
       if sc.MatchFlag3Ex('-' + flag) then
       begin
@@ -721,17 +736,17 @@ var
     for i := 0 to mobj_flags4_ex.Count - 1 do
     begin
       flag := mobj_flags4_ex[i];
-      if Pos('MF4_EX_', flag) = 1 then
+      if Pos1('MF4_EX_', flag) then
         flag := Copy(flag, 8, length(flag) - 7)
-      else if Pos('MF3_EX_', flag) = 1 then
+      else if Pos1('MF3_EX_', flag) then
         flag := Copy(flag, 8, length(flag) - 7)
-      else if Pos('MF2_EX_', flag) = 1 then
+      else if Pos1('MF2_EX_', flag) then
         flag := Copy(flag, 8, length(flag) - 7)
-      else if Pos('MF_EX_', flag) = 1 then
+      else if Pos1('MF_EX_', flag) then
         flag := Copy(flag, 7, length(flag) - 6)
-      else if Pos('MF2_', flag) = 1 then
+      else if Pos1('MF2_', flag) then
         flag := Copy(flag, 5, length(flag) - 4)
-      else if Pos('MF_', flag) = 1 then
+      else if Pos1('MF_', flag) then
         flag := Copy(flag, 4, length(flag) - 3);
       if sc.MatchFlag4Ex(flag) then
       begin
@@ -765,17 +780,17 @@ var
     for i := 0 to mobj_flags4_ex.Count - 1 do
     begin
       flag := mobj_flags4_ex[i];
-      if Pos('MF4_EX_', flag) = 1 then
+      if Pos1('MF4_EX_', flag) then
         flag := Copy(flag, 8, length(flag) - 7)
-      else if Pos('MF3_EX_', flag) = 1 then
+      else if Pos1('MF3_EX_', flag) then
         flag := Copy(flag, 8, length(flag) - 7)
-      else if Pos('MF2_EX_', flag) = 1 then
+      else if Pos1('MF2_EX_', flag) then
         flag := Copy(flag, 8, length(flag) - 7)
-      else if Pos('MF_EX_', flag) = 1 then
+      else if Pos1('MF_EX_', flag) then
         flag := Copy(flag, 7, length(flag) - 6)
-      else if Pos('MF2_', flag) = 1 then
+      else if Pos1('MF2_', flag) then
         flag := Copy(flag, 5, length(flag) - 4)
-      else if Pos('MF_', flag) = 1 then
+      else if Pos1('MF_', flag) then
         flag := Copy(flag, 4, length(flag) - 3);
       if sc.MatchFlag4Ex('-' + flag) then
       begin
@@ -794,7 +809,7 @@ var
     len1, len2: integer;
   begin
     sgoto1 := strremovespaces(sgoto);
-    Result := Pos(st, sgoto1) = 1;
+    Result := Pos1(st, sgoto1);
     if Result then
     begin
       len1 := Length(sgoto1);
@@ -831,12 +846,14 @@ var
     savealias: string;
     blevel: integer;
     restline: string;
+    s_token: string;
   begin
     result := false;
     if sc._Finished then
       exit;
     sc.GetString;
-    if sc.MatchString('loop') then
+    s_token := strupper(sc._String);
+    if s_token = 'LOOP' then
     begin
       m_states[numstates - 1].nextstate := base;
       blevel := sc.BracketLevel;
@@ -849,28 +866,28 @@ var
       end;
       exit;
     end
-    else if sc.MatchString('stop') then
+    else if s_token = 'STOP' then
     begin
       if numstates > 0 then
         m_states[numstates - 1].nextstate := -1; // S_NULL
       exit;
     end
-    else if sc.MatchString('wait') then
+    else if s_token = 'WAIT' then
     begin
       if numstates > 0 then
         m_states[numstates - 1].nextstate := numstates - 1; // Same state
       exit;
     end
-    else if sc.MatchString('ACTOR') or
-            sc.MatchString('ACTORALIAS') or
-            sc.MatchString('DEH_PARSE') or
-            sc.MatchString('DEH_PARSE_ALL') or
-            sc.MatchString('COMPILED') or
-            sc.MatchString('PRECOMPILED') or
-            sc.MatchString('EXTERNAL') or
-            sc.MatchString('SCRIPT') or
-            sc.MatchString('THINKER') or
-            sc.MatchString('GLOBAL') then
+    else if (s_token = 'ACTOR') or
+            (s_token = 'ACTORALIAS') or
+            (s_token = 'DEH_PARSE') or
+            (s_token = 'DEH_PARSE_ALL') or
+            (s_token = 'COMPILED') or
+            (s_token = 'PRECOMPILED') or
+            (s_token = 'EXTERNAL') or
+            (s_token = 'SCRIPT') or
+            (s_token = 'THINKER') or
+            (s_token = 'GLOBAL') then
     begin
       if numstates > 0 then
         if not m_states[numstates - 1].has_goto then
@@ -878,7 +895,7 @@ var
       sc.UnGet;
       exit;
     end
-    else if sc.MatchString('goto') then
+    else if s_token = 'GOTO' then
     begin
       gotostr := strupper(sc.GetStringEOL);
       p := Pos('//', gotostr);
@@ -1027,26 +1044,26 @@ var
         alias := '';
     end;
 
-    sprite := sc._string;
+    sprite := sc._String;
     sc.GetString;
-    frames := sc._string;
+    frames := sc._String;
 
     stateflags := 0;
     sc.GetString;
     if sc.MatchString('RANDOMSELECT') then
     begin
       sc.GetInteger;
-      tics := sc._integer;
+      tics := sc._Integer;
       sc.GetInteger;
-      tics2 := sc._integer;
+      tics2 := sc._Integer;
       stateflags := stateflags or MF_EX_STATE_RANDOM_SELECT;
     end
     else if sc.MatchString('RANDOMRANGE') then
     begin
       sc.GetInteger;
-      tics := sc._integer;
+      tics := sc._Integer;
       sc.GetInteger;
-      tics2 := sc._integer;
+      tics2 := sc._Integer;
       stateflags := stateflags or MF_EX_STATE_RANDOM_RANGE;
     end
     else
@@ -1063,7 +1080,7 @@ var
     else
     begin
       if strupper(sc._string) = 'BRIGHT' then
-        stmp := sc._string + ' ' + SC_RemoveLineComments(sc.GetStringEOLUnChanged)
+        stmp := 'BRIGHT ' + SC_RemoveLineComments(sc.GetStringEOLUnChanged)
       else
       begin
         restline := strtrim(SC_RemoveLineComments(sc.GetStringEOLUnChanged));
@@ -1074,12 +1091,12 @@ var
           if restline[1] <> '(' then
             restline := ' ' + restline;
         end;
-        stmp := sc._string + restline;
+        stmp := sc._String + restline;
       end;
 
       bright := false;
-      stmp := strtrim(stmp);
-      if strupper(firstword(stmp)) = 'BRIGHT' then
+      trimproc(stmp);
+      if strupper(firstword_ch(stmp)) = 'BRIGHT' then
       begin
         bright := true;
         action := secondword(stmp);
@@ -1087,7 +1104,7 @@ var
       else if strupper(lastword(stmp)) = 'BRIGHT' then
       begin
         bright := true;
-        action := Copy(stmp, 1, length(stmp) - 7);
+        action := strtrim(Copy(stmp, 1, length(stmp) - 6));
       end
       else
         action := stmp;
@@ -1598,6 +1615,7 @@ var
   stmp: string;
   isreplace, isinherit: boolean;
   rstyle: mobjrenderstyle_t;
+  g_token: string;
 begin
   state_tokens := TDStringList.Create;
   state_tokens.Add('spawn:');
@@ -1646,7 +1664,7 @@ begin
       sc.MustGetString;
       if not sc.NewLine then
       begin
-        th.dn := atoi(sc._string);
+        th.dn := atoi(sc._String);
         sc.MustGetString;
       end;
 
@@ -1806,7 +1824,7 @@ begin
       begin
         SetLength(mobj.name, Length(mobj.name) - 1);
         sc.GetString;
-        mobj.inheritsfrom := sc._string;
+        mobj.inheritsfrom := sc._String;
         isinherit := true;
       end
       else
@@ -1821,7 +1839,7 @@ begin
         begin
           if not sc.GetString then
             break;
-          mobj.inheritsfrom := sc._string;
+          mobj.inheritsfrom := sc._String;
 
         end;
       end;
@@ -1935,9 +1953,9 @@ begin
       end
       else
       begin
-        if StrIsInteger(sc._string) then
+        if StrIsInteger(sc._String) then
         begin
-          mobj.doomednum := atoi(sc._string);
+          mobj.doomednum := atoi(sc._String);
           if not sc.GetString then
             break;
         end;
@@ -1945,8 +1963,9 @@ begin
 
       foundstates := false;
       repeat
+        g_token := strupper(sc._String);
         {$IFDEF STRIFE}
-        if sc.MatchString('name') or sc.MatchString('strifename') then
+        if (g_token = 'NAME') or (g_token = 'STRIFENAME') then
         begin
           sc.GetString;
           mobj.name2 := sc._String;
@@ -1954,24 +1973,24 @@ begin
         end
         else
         {$ENDIF}
-        if sc.MatchString('health') then
+        if (g_token = 'HEALTH') then
         begin
           sc.GetInteger;
-          mobj.spawnhealth := sc._integer;
+          mobj.spawnhealth := sc._Integer;
           sc.GetString;
         end
         // When "inherits" is after the first line of actor we do not copy properties
-        else if sc.MatchString('inherits') or sc.MatchString('inheritsfrom') then
+        else if (g_token = 'INHERITS') or sc.MatchString('INHERITSFROM') then
         begin
           if not sc.GetString then
             break;
-          mobj.inheritsfrom := sc._string;
+          mobj.inheritsfrom := sc._String;
         end
-        else if sc.MatchString('replaces') then
+        else if (g_token = 'REPLACES') then
         begin
           if not sc.GetString then
             break;
-          idx := Info_GetMobjNumForName(sc._string);
+          idx := Info_GetMobjNumForName(sc._String);
           if idx >= 0 then
           begin
             if (mobj.doomednum > 0) and (mobjinfo[idx].doomednum <> mobj.doomednum) then
@@ -1983,21 +2002,21 @@ begin
             end;
           end
           else
-            I_Warning('SC_ActordefToDEH(): Replaces keyword points to an unknown mobj %s'#13#10, [sc._string]);
+            I_Warning('SC_ActordefToDEH(): Replaces keyword points to an unknown mobj %s'#13#10, [sc._String]);
           sc.GetString;
         end
-        else if sc.MatchString('monster') or sc.MatchString('+monster') then
+        else if (g_token = 'MONSTER') or (g_token = '+MONSTER') then
         begin
            mobj.flags := mobj.flags + 'MF_SOLID MF_SHOOTABLE MF_COUNTKILL ';
            sc.GetString;
         end
-        else if sc.MatchString('projectile') or sc.MatchString('+projectile') then
+        else if (g_token = 'PROJECTILE') or sc.MatchString('+PROJECTILE') then
         begin
            mobj.flags := mobj.flags + 'MF_NOGRAVITY MF_DROPOFF  MF_MISSILE ';
            sc.GetString;
         end
 
-        else if sc.MatchString('RENDERSTYLE') then
+        else if (g_token = 'RENDERSTYLE') then
         begin
           sc.GetString;
           rstyle := R_GetRenderstyleForName(sc._String);
@@ -2005,7 +2024,7 @@ begin
           sc.GetString;
         end
 
-        else if sc.MatchString('ALPHA') then
+        else if (g_token = 'ALPHA') then
         begin
           sc.GetFloat;
           mobj.alpha := round(sc._float * FRACUNIT);
@@ -2042,50 +2061,50 @@ begin
         else if MatchFlags4Ex_Delete then
           sc.GetString
 
-        else if sc.MatchString('DEFAULTMISSILE') or sc.MatchString('+DEFAULTMISSILE') then // JVAL: DelphiDoom specific
+        else if (g_token = 'DEFAULTMISSILE') or (g_token = '+DEFAULTMISSILE') then // JVAL: DelphiDoom specific
         begin
           mobj.flags := mobj.flags + 'NOGRAVITY MISSILE NOBLOCKMAP DROPOFF ';
           sc.GetString;
         end
-        else if sc.MatchString('DEFAULTTRANSPARENT') or sc.MatchString('+DEFAULTTRANSPARENT') then // JVAL: DelphiDoom specific
+        else if (g_token = 'DEFAULTTRANSPARENT') or (g_token = '+DEFAULTTRANSPARENT') then // JVAL: DelphiDoom specific
         begin
           mobj.renderstyle := 'TRANSLUCENT';
           mobj.alpha := round(0.67 * FRACUNIT);
           sc.GetString;
         end
-        else if sc.MatchString('DEFAULTADDITIVE') or sc.MatchString('+DEFAULTADDITIVE') then // JVAL: DelphiDoom specific
+        else if (g_token = 'DEFAULTADDITIVE') or (g_token = '+DEFAULTADDITIVE') then // JVAL: DelphiDoom specific
         begin
           mobj.renderstyle := 'ADD';
           mobj.alpha := round(0.67 * FRACUNIT);
           sc.GetString;
         end
 
-        else if sc.MatchString('FULLVOLSOUND') or sc.MatchString('FULLVOLSOUNDS') or
-                sc.MatchString('+FULLVOLSOUND') or sc.MatchString('+FULLVOLSOUNDS') then
+        else if (g_token = 'FULLVOLSOUND') or (g_token = 'FULLVOLSOUNDS') or
+                (g_token = '+FULLVOLSOUND') or (g_token = '+FULLVOLSOUNDS') then
         begin
           mobj.flags2_ex := mobj.flags2_ex + 'FULLVOLACTIVE FULLVOLDEATH FULLVOLSEE FULLVOLPAIN FULLVOLATTACK ';
           sc.GetString;
         end
 
-        else if sc.MatchString('radius') or sc.MatchString('width') then  // JVAL: width -> DelphiDoom specific
+        else if (g_token = 'RADIUS') or (g_token = 'WIDTH') then  // JVAL: width -> DelphiDoom specific
         begin
           sc.GetInteger;
-          mobj.radius := sc._integer;
+          mobj.radius := sc._Integer;
           sc.GetString;
         end
-        else if sc.MatchString('height') then
+        else if (g_token = 'HEIGHT') then
         begin
           sc.GetInteger;
-          mobj.height := sc._integer;
+          mobj.height := sc._Integer;
           sc.GetString;
         end
-        else if sc.MatchString('vspeed') then
+        else if (g_token = 'VSPEED') then
         begin
           sc.GetFloat;
           mobj.vspeed := sc._float;
           sc.GetString;
         end
-        else if sc.MatchString('pushfactor') then
+        else if (g_token = 'PUSHFACTOR') then
         begin
           sc.GetFloat;
           mobj.pushfactor := sc._float;
@@ -2096,7 +2115,7 @@ begin
             mobj.pushfactor := mobj.pushfactor / FRACUNIT;
           sc.GetString;
         end
-        else if sc.MatchString('scale') then
+        else if (g_token = 'SCALE') then
         begin
           sc.GetFloat;
           mobj.scale := sc._float;
@@ -2104,7 +2123,7 @@ begin
             mobj.scale := mobj.scale / FRACUNIT;
           sc.GetString;
         end
-        else if sc.MatchString('gravity') then
+        else if (g_token = 'GRAVITY') then
         begin
           sc.GetFloat;
           mobj.gravity := sc._float;
@@ -2112,144 +2131,144 @@ begin
             mobj.gravity := mobj.gravity / FRACUNIT;
           sc.GetString;
         end
-        else if sc.MatchString('speed') then
+        else if (g_token = 'SPEED') then
         begin
           sc.GetInteger;
-          mobj.speed := sc._integer;
+          mobj.speed := sc._Integer;
           sc.GetString;
         end
-        else if sc.MatchString('damage') then
+        else if (g_token = 'DAMAGE') then
         begin
           sc.GetInteger;
-          mobj.damage := sc._integer;
+          mobj.damage := sc._Integer;
           sc.GetString;
         end
-        else if sc.MatchString('painchance') then
+        else if (g_token = 'PAINCHANCE') then
         begin
           sc.GetInteger;
-          mobj.painchance := sc._integer;
+          mobj.painchance := sc._Integer;
           sc.GetString;
         end
-        else if sc.MatchString('mass') then
+        else if (g_token = 'MASS') then
         begin
           sc.GetInteger;
-          mobj.mass := sc._integer;
+          mobj.mass := sc._Integer;
           sc.GetString;
         end
-        else if sc.MatchString('reactiontime') then
+        else if (g_token = 'REACTIONTIME') then
         begin
           sc.GetInteger;
-          mobj.reactiontime := sc._integer;
+          mobj.reactiontime := sc._Integer;
           sc.GetString;
         end
-        else if sc.MatchString('dropitem') then
+        else if (g_token = 'DROPITEM') then
         begin
           sc.GetString;
-          mobj.dropitem := sc._string;
+          mobj.dropitem := sc._String;
           sc.GetString;
         end
-        else if sc.MatchString('missiletype') then
+        else if (g_token = 'MISSILETYPE') then
         begin
           sc.GetString;
-          mobj.missiletype := sc._string;
+          mobj.missiletype := sc._String;
           sc.GetString;
         end
-        else if sc.MatchString('explosiondamage') then
-        begin
-          sc.GetInteger;
-          mobj.explosiondamage := sc._integer;
-          sc.GetString;
-        end
-        else if sc.MatchString('explosionradius') then
+        else if (g_token = 'EXPLOSIONDAMAGE') then
         begin
           sc.GetInteger;
-          mobj.explosionradius := sc._integer;
+          mobj.explosiondamage := sc._Integer;
           sc.GetString;
         end
-        else if sc.MatchString('meleedamage') then
+        else if (g_token = 'EXPLOSIONRADIUS') then
+        begin
+          sc.GetInteger;
+          mobj.explosionradius := sc._Integer;
+          sc.GetString;
+        end
+        else if (g_token = 'MELEEDAMAGE') then
         begin
           sc.GetInteger;
           mobj.meleedamage := sc._Integer;
           sc.GetString;
         end
-        else if sc.MatchString('seesound') then
+        else if (g_token = 'SEESOUND') then
         begin
           sc.GetString;
           mobj.seesound := sc._String;
           sc.GetString;
         end
-        else if sc.MatchString('attacksound') then
+        else if (g_token = 'ATTACKSOUND') then
         begin
           sc.GetString;
           mobj.attacksound := sc._String;
           sc.GetString;
         end
-        else if sc.MatchString('painsound') then
+        else if (g_token = 'PAINSOUND') then
         begin
           sc.GetString;
           mobj.painsound := sc._String;
           sc.GetString;
         end
-        else if sc.MatchString('deathsound') then
+        else if (g_token = 'DEATHSOUND') then
         begin
           sc.GetString;
           mobj.deathsound := sc._String;
           sc.GetString;
         end
-        else if sc.MatchString('activesound') then
+        else if (g_token = 'ACTIVESOUND') then
         begin
           sc.GetString;
           mobj.activesound := sc._String;
           sc.GetString;
         end
-        else if sc.MatchString('customsound1') then
+        else if (g_token = 'CUSTOMSOUND1') then
         begin
           sc.GetString;
           mobj.customsound1 := sc._String;
           sc.GetString;
         end
-        else if sc.MatchString('customsound2') then
+        else if (g_token = 'CUSTOMSOUND2') then
         begin
           sc.GetString;
           mobj.customsound2 := sc._String;
           sc.GetString;
         end
-        else if sc.MatchString('customsound3') then
+        else if (g_token = 'CUSTOMSOUND3') then
         begin
           sc.GetString;
           mobj.customsound3 := sc._String;
           sc.GetString;
         end
-        else if sc.MatchString('meleesound') then
+        else if (g_token = 'MELEESOUND') then
         begin
           sc.GetString;
           mobj.meleesound := sc._String;
           sc.GetString;
         end
         {$IFDEF DOOM_OR_STRIFE}
-        else if sc.MatchString('missileheight') then
+        else if (g_token = 'MISSILEHEIGHT') then
         begin
           sc.GetInteger;
           mobj.missileheight := sc._Integer;
           sc.GetString;
         end
         {$ENDIF}
-        else if sc.MatchString('states') then
+        else if (g_token = 'STATES') then
         begin
           foundstates := true;
         end
         else
         begin
-          if sc.MatchString('ACTOR') or
-             sc.MatchString('ACTORALIAS') or
-             sc.MatchString('DEH_PARSE') or
-             sc.MatchString('DEH_PARSE_ALL') or
-             sc.MatchString('COMPILED') or
-             sc.MatchString('PRECOMPILED') or
-             sc.MatchString('EXTERNAL') or
-             sc.MatchString('SCRIPT') or
-             sc.MatchString('THINKER') or
-             sc.MatchString('GLOBAL') then
+          if (g_token = 'ACTOR') or
+             (g_token = 'ACTORALIAS') or
+             (g_token = 'DEH_PARSE') or
+             (g_token = 'DEH_PARSE_ALL') or
+             (g_token = 'COMPILED') or
+             (g_token = 'PRECOMPILED') or
+             (g_token = 'EXTERNAL') or
+             (g_token = 'SCRIPT') or
+             (g_token = 'THINKER') or
+             (g_token = 'GLOBAL') then
           begin
             sc.UnGet;
             break;
@@ -2287,16 +2306,17 @@ begin
 
       while sc.GetString do
       begin
-        if sc.MatchString('ACTOR') or
-           sc.MatchString('ACTORALIAS') or
-           sc.MatchString('DEH_PARSE') or
-           sc.MatchString('DEH_PARSE_ALL') or
-           sc.MatchString('COMPILED') or
-           sc.MatchString('PRECOMPILED') or
-           sc.MatchString('EXTERNAL') or
-           sc.MatchString('SCRIPT') or
-           sc.MatchString('THINKER') or
-           sc.MatchString('GLOBAL') then
+        g_token := strupper(sc._String);
+        if (g_token = 'ACTOR') or
+           (g_token = 'ACTORALIAS') or
+           (g_token = 'DEH_PARSE') or
+           (g_token = 'DEH_PARSE_ALL') or
+           (g_token = 'COMPILED') or
+           (g_token = 'PRECOMPILED') or
+           (g_token = 'EXTERNAL') or
+           (g_token = 'SCRIPT') or
+           (g_token = 'THINKER') or
+           (g_token = 'GLOBAL') then
         begin
           SubmitParsedData;
           sc.UnGet;
@@ -2820,7 +2840,7 @@ begin
     AddLn('Meleesound ' + S_GetSoundNameForNum(m.meleesound));
   {$IFDEF DOOM_OR_STRIFE}
   if m.missileheight > 0 then
-    AddLn('Missileheight ' + itoa(m.missileheight));
+    AddLn('MissileHeight ' + itoa(m.missileheight));
   {$ENDIF}
   if m.renderstyle <> mrs_normal then
   begin
