@@ -690,7 +690,7 @@ begin
   xpos := x;
   for i := Length(stmp) downto 1 do
   begin
-    p := Pos(stmp[i], TIMEDIGITLOOKUP) - 1;
+    p := CharPos(stmp[i], TIMEDIGITLOOKUP) - 1;
     if p >= 0 then
     begin
       V_DrawPatch(xpos - fnt[p].leftoffset, y - 8 + fnt[p].topoffset, SCN_HUD, fnt[p], false);

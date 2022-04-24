@@ -261,7 +261,7 @@ begin
         break;
     mustnextline := true;
 
-    splitstring(str, token1, token2);
+    splitstring_ch(str, token1, token2);
 
     ////////////////////////////////////////////////////////////////////////////
     if (token1 = 'THING') or (token1 = 'NEWTHING') then
@@ -306,7 +306,7 @@ begin
         if not DEH_NextLine(s, str, i) then
           break;
 
-        if Pos('=', str) = 0 then
+        if CharPos('=', str) = 0 then
         begin
           mustnextline := false; // Already got line
           break;
@@ -630,7 +630,7 @@ begin
       begin
         if not DEH_NextLine(s, str, i) then
           break;
-        if Pos('=', str) = 0 then
+        if CharPos('=', str) = 0 then
         begin
           mustnextline := false; // Already got line
           break;
@@ -864,7 +864,7 @@ begin
       if not DEH_NextLine(s, str, i) then
         break;
 
-      if Pos('=', str) = 0 then
+      if CharPos('=', str) = 0 then
       begin
         mustnextline := false; // Already got line
         continue;
@@ -920,7 +920,7 @@ begin
         if not DEH_NextLine(s, str, i) then
           break;
 
-        if Pos('=', str) = 0 then
+        if CharPos('=', str) = 0 then
         begin
           mustnextline := false; // Already got line
           break;
@@ -969,7 +969,7 @@ begin
       begin
         if not DEH_NextLine(s, str, i) then
           break;
-        if Pos('=', str) = 0 then
+        if CharPos('=', str) = 0 then
         begin
           mustnextline := false; // Already got line
           break;
@@ -1018,7 +1018,7 @@ begin
         if not DEH_NextLine(s, str, i) then
           break;
 
-        if Pos('=', str) = 0 then
+        if CharPos('=', str) = 0 then
         begin
           mustnextline := false; // Already got line
           break;
@@ -1151,7 +1151,7 @@ begin
         if not DEH_NextLine(s, str, i) then
           break;
 
-        if Pos('=', str) = 0 then
+        if CharPos('=', str) = 0 then
         begin
           mustnextline := false; // Already got line
           break;
@@ -1204,7 +1204,7 @@ begin
       begin
         if not DEH_NextLine(s, str, i) then
           break;
-        if Pos('=', str) = 0 then
+        if CharPos('=', str) = 0 then
         begin
           mustnextline := false; // Already got line
           break;
@@ -1239,7 +1239,7 @@ begin
       begin
         if not DEH_NextLine(s, str, i) then
           break;
-        if Pos('=', str) = 0 then
+        if CharPos('=', str) = 0 then
         begin
           mustnextline := false; // Already got line
           break;
@@ -1287,7 +1287,7 @@ begin
       begin
         if not DEH_NextLine(s, str, i) then
           break;
-        if Pos('=', str) = 0 then
+        if CharPos('=', str) = 0 then
         begin
           mustnextline := false; // Already got line
           break;
@@ -1334,7 +1334,7 @@ begin
       begin
         if not DEH_NextLine(s, str, i) then
           break;
-        if Pos('=', str) = 0 then
+        if CharPos('=', str) = 0 then
         begin
           mustnextline := false; // Already got line
           break;

@@ -362,7 +362,7 @@ begin
     readln(t, cmd);
     cmd := strtrim(cmd);
     if cmd <> '' then
-      if Pos('//', cmd) <> 1 then
+      if not Pos1('//', cmd) then
         C_ExecuteCmd(cmd);
   end;
   close(t);
@@ -750,7 +750,7 @@ begin
   begin
     cmd := strtrim(l.Strings[i]);
     if cmd <> '' then
-      if Pos('//', cmd) <> 1 then
+      if not Pos1('//', cmd) then
         C_ExecuteCmd(cmd);
   end;
   l.Free;

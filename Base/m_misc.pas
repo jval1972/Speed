@@ -251,7 +251,7 @@ const
 procedure M_FixScreenshotFormat;
 begin
   screenshotformat := strupper(strtrim(screenshotformat));
-  if Pos('.', screenshotformat) = 1 then
+  if CharPos('.', screenshotformat) = 1 then
     Delete(screenshotformat, 1, 1);
   if screenshotformat = '' then
   begin
@@ -429,14 +429,14 @@ begin
       pngname := filename + '.png';
     end;
 
-    if Pos('/', tganame) = 0 then
-      if Pos('\', tganame) = 0 then
+    if CharPos('/', tganame) = 0 then
+      if CharPos('\', tganame) = 0 then
         tganame := M_SaveFileName('DATA\SCREENSHOTS\TGA\' + tganame);
-    if Pos('/', jpgname) = 0 then
-      if Pos('\', jpgname) = 0 then
+    if CharPos('/', jpgname) = 0 then
+      if CharPos('\', jpgname) = 0 then
         jpgname := M_SaveFileName('DATA\SCREENSHOTS\JPG\' + jpgname);
-    if Pos('/', pngname) = 0 then
-      if Pos('\', pngname) = 0 then
+    if CharPos('/', pngname) = 0 then
+      if CharPos('\', pngname) = 0 then
         jpgname := M_SaveFileName('DATA\SCREENSHOTS\PNG\' + pngname);
   end;
 
@@ -513,7 +513,7 @@ begin
     exit;
   end;
 
-  if pos('*', name) > 0 then // Is a mask
+  if CharPos('*', name) > 0 then // Is a mask
   begin
     clist := TDStringList.Create;
     try
@@ -613,7 +613,7 @@ begin
     exit;
   end;
 
-  if pos('*', name) > 0 then // Is a mask
+  if CharPos('*', name) > 0 then // Is a mask
   begin
     clist := TDStringList.Create;
     try
@@ -692,7 +692,7 @@ begin
     printf(' Display the type of variable.'#13#10);
   end;
 
-  if pos('*', name) > 0 then // Is a mask
+  if CharPos('*', name) > 0 then // Is a mask
   begin
     clist := TDStringList.Create;
     try
@@ -828,7 +828,7 @@ begin
   else
     setflags := DFS_SINGLEPLAYER;
 
-  if pos('*', parm) > 0 then // Is a mask
+  if CharPos('*', parm) > 0 then // Is a mask
   begin
     clist := TDStringList.Create;
     try
