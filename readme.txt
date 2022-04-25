@@ -32,7 +32,7 @@ History
 -------
 Fixed problem with lump reading when a namespace was required.
 It will load KVX voxels even if the ".kvx" extension is not defined in VOXELDEF.
-Improved ZDoom compatiblility in VOXELDEF lumps.
+Improved ZDoom compatibility in VOXELDEF lumps.
 Speed optimizations to ACTORDEF parsing.
 Speed optimizations to PascalScript initialization.
 Speed optimizations to startup memo text output.
@@ -51,7 +51,7 @@ Fixed misspelled of "joystick" in the menus.
 Speed optimizations in R_PointToAngleEx().
 Improved priority logic for sound channel selection.
 Added support for tall patches in PNG format.
-Added SPIN field in VOXELDEF lumps, it compines DROPPEDSPIN & PLACEDSPIN behavior.
+Added SPIN field in VOXELDEF lumps, it combines DROPPEDSPIN & PLACEDSPIN behavior.
 Proper windowed mode.
 
 Version 1.0.3.743 (20220206)
@@ -95,4 +95,3 @@ Use racetime in automap, not leveltime.
 Version 1.0.1.738 (20210425)
 -----------------
 Initial release.
-
