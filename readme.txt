@@ -39,6 +39,7 @@ Speed optimizations to startup memo text output.
 Correctly checks minimum screen width.
 Displays loading time at startup.
 Speed optimizations to ACTORDEF parsing.
+Optimized DEHACKED csv export.
 
 Version 1.0.4.745 (20220411)
 -----------------
