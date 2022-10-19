@@ -2951,7 +2951,7 @@ var
 begin
   M_DrawHeadLine(20, 15, 'Display Options');
 
-  M_DrawHeadLine(30, 40, 'Appearence');
+  M_DrawHeadLine(30, 40, 'Appearance');
 
   ppos.x := OptionsDisplayAppearanceDef.x;
   ppos.y := OptionsDisplayAppearanceDef.y + OptionsDisplayAppearanceDef.itemheight * Ord(od_shademenubackground);
@@ -5208,7 +5208,7 @@ begin
 
   inc(pmi);
   pmi.status := 1;
-  pmi.name := 'Appearence';
+  pmi.name := 'Appearance';
   pmi.cmd := '';
   pmi.routine := @M_OptionsDisplayAppearance;
   pmi.pBoolVal := nil;
