@@ -226,7 +226,7 @@ var
   ammo: ammotype_t;
 begin
   ammo := weaponinfo[Ord(weapon)].ammo;
-  if netgame and (deathmatch <> 2) and (not dropped) then
+  if netgame and (deathmatch <> 2) and not dropped then
   begin
   // leave placed weapons forever on net games
     if player.weaponowned[Ord(weapon)] <> 0 then
