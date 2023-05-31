@@ -1286,7 +1286,7 @@ begin
         players[consoleplayer]._message := msg;
       end;
 
-      if netgame and (not netdemo) and (gametic mod ticdup = 0) then
+      if netgame and not netdemo and (gametic mod ticdup = 0) then
       begin
         if (gametic > BACKUPTICS) and
            (consistency[i][buf] <> cmd.consistency) then

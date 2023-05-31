@@ -836,7 +836,7 @@ begin
       Pplayer_t(target.player).frags[pDiff(target.player, @players[0], SizeOf(players[0]))] :=
         Pplayer_t(target.player).frags[pDiff(target.player, @players[0], SizeOf(players[0]))] + 1;
 
-    target.flags := target.flags and (not MF_SOLID);
+    target.flags := target.flags and not MF_SOLID;
     Pplayer_t(target.player).playerstate := PST_DEAD;
 
     // JVAL
@@ -984,7 +984,7 @@ begin
 
     // make fall forwards sometimes
     if (damage < 40) and (damage > target.health) and
-       (target.z - inflictor.z > 64 * FRACUNIT) and ((P_Random and 1) <> 0) then
+       (target.z - inflictor.z > 64 * FRACUNIT) and (P_Random and 1 <> 0) then
     begin
       ang := ang + ANG180;
       thrust := thrust * 4;

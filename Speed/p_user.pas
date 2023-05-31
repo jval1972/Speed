@@ -662,7 +662,7 @@ begin
   begin
     player.powers[Ord(pw_invisibility)] := player.powers[Ord(pw_invisibility)] - 1;
     if player.powers[Ord(pw_invisibility)] = 0 then
-      player.mo.flags := player.mo.flags and (not MF_SHADOW);
+      player.mo.flags := player.mo.flags and not MF_SHADOW;
   end;
 
   if player.powers[Ord(pw_infrared)] <> 0 then
