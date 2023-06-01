@@ -257,6 +257,7 @@ const
 const
   CS_fLac = 1130450022; // fLac
   CS_OggS = 1399285583; // OggS
+  CS_CVoc = 1634038339; // Crea
 {$ENDIF}
 
 //==============================================================================
@@ -453,7 +454,7 @@ begin
     len := W_LumpLength(sfx.lumpnum);
     PLData := sfx.data;
 {$IFNDEF DLL}
-    if (PLData[0] = CS_fLac) or (PLData[0] = CS_OggS) then
+    if (PLData[0] = CS_fLac) or (PLData[0] = CS_OggS) or (PLData[0] = CS_CVoc) then
       if Audiolib_DecodeSoundWAD(sfx.data, len, @sfx.data, len, 1) then
         PLData := sfx.data;
 {$ENDIF}
@@ -795,7 +796,7 @@ begin
   begin
     if ChannelBuffers[channel] <> nil then
     begin
-      if (channelids[channel] = id) and (not I_ChannelPlaying(channel)) then
+      if (channelids[channel] = id) and not I_ChannelPlaying(channel) then
       begin
         result := I_RestartChannel(channel, vol, sep);
         exit;
