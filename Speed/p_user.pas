@@ -146,7 +146,7 @@ begin
 
   player.oldviewz := player.viewz;  // JVAL: Slopes
 
-  if (player.cheats and CF_NOMOMENTUM <> 0) or (not onground) then
+  if (player.cheats and CF_NOMOMENTUM <> 0) or not onground then
   begin
     player.viewz := player.mo.z + PVIEWHEIGHT;
 
@@ -185,6 +185,7 @@ begin
         player.deltaviewheight := 1;
     end;
   end;
+
   player.viewz := player.mo.z + player.viewheight + player.viewbob;
 
   if player.viewz > player.mo.ceilingz - 4 * FRACUNIT then
