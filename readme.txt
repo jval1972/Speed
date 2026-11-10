@@ -42,6 +42,9 @@ Speed optimizations to ACTORDEF parsing.
 Optimized DEHACKED csv export.
 Fix problem when starting from different folder than the executable. (https://www.doomworld.com/forum/topic/92113-delphidoom-207734-udmf-umapinfo-mbf21-apr-28-2022/?do=findComment&comment=2487932)
 Creative Voice File inside WAD
+Fixed menu typo.
+Fixed E2M8 problem with track flat.
+Correctly set png screenshop filename in user screenshots.
 
 Version 1.0.4.745 (20220411)
 -----------------
